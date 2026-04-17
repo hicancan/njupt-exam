@@ -1,6 +1,6 @@
 # 📊 Data Inventory & Quality Report
 
-> **Generated on:** 2026-04-15 21:06:44 (Beijing Time)
+> **Generated on:** 2026-04-17 15:22:01 (Beijing Time)
 >
 > This report provides complete visibility into raw Excel data and processing results.
 > You do NOT need to open the original Excel files - all information is captured here.
@@ -9,18 +9,19 @@
 
 | Metric | Value |
 |--------|-------|
-| Total Files Processed | 1 |
-| Total Records Extracted | 1,261 |
-| Parse Success Rate | 0/1261 (0.0%) |
-| Date Range (All Files) | N/A |
-| Unique Classes | ~0 |
-| Unique Courses | ~0 |
+| Total Files Processed | 2 |
+| Total Records Extracted | 328 |
+| Parse Success Rate | 328/328 (100.0%) |
+| Date Range (All Files) | 2026-04-28 ~ 2026-05-27 |
+| Unique Classes | ~264 |
+| Unique Courses | ~15 |
+| Campus Distribution | 仙林 (284), 三牌楼 (35), 锁金 (9) |
 
 ---
 
-## ⚠️ File: `2025-2026学年第二学期课程结束考试组织单位一览表.xlsx`
+## ✅ File: `2025-2026学年第二学期考试安排表（学院组织）-学生用表.xlsx`
 
-**Rows:** 1,261 | **Columns:** 5 | **Parse Success:** 0/1261 | **Date Range:** N/A
+**Rows:** 77 | **Columns:** 9 | **Parse Success:** 77/77 | **Date Range:** 2026-04-28 ~ 2026-05-27
 
 ### 🔹 Part A: Raw Excel Analysis
 
@@ -28,25 +29,29 @@
 
 | # | Excel Column Name | Data Type | Non-Null % | Unique Values | Sample Values |
 |---|-------------------|-----------|------------|---------------|---------------|
-| 1 | `2025-2026学年第二学期课程结束考试组织单位一览表` | object | 100.0% | 28 | 开课学院, 波特兰学院, 材料科学与工程学院 |
-| 2 | `Unnamed: 1` | object | 100.0% | 1,261 | 课程代码, P1401062S, PI310400S |
-| 3 | `Unnamed: 2` | object | 100.0% | 919 | 课程名称, 通信系统与设计（全英文）, 批判性思维（全英文） |
-| 4 | `Unnamed: 3` | object | 100.0% | 3 | 组织单位, 学院, 学校 |
-| 5 | `Unnamed: 4` | object | 100.0% | 4 | 考试时间段, 非集中考试周, 集中考试周2 |
+| 1 | `校区` | object | 100.0% | 2 | 仙林, 三牌楼 |
+| 2 | `开课学院` | object | 100.0% | 3 | 电子与光学工程学院, 管理学院, 自动化学院 |
+| 3 | `课程代码` | object | 100.0% | 13 | DG1113F4S, DG1219F4S, GL1516GLS |
+| 4 | `课程名称` | object | 100.0% | 12 | 光电子学（全英文）, 电波传播理论, 企业资源规划系统与应用(混合式) |
+| 5 | `班级名称` | object | 100.0% | 59 | B230200, B230205, B220204 |
+| 6 | `任课教师` | object | 100.0% | 15 | 郭艳东/曾红丽, 智婷/汪金, 笪海霞 |
+| 7 | `人数` | int64 | 100.0% | 25 | 28, 2, 1 |
+| 8 | `考试时间` | object | 100.0% | 9 | 第11周周3(2026-05-13) 13:30-15:20, 第11周周2(2026-05-12) |
+| 9 | `考试教室` | object | 100.0% | 13 | 教2－101, 教2－102, 教2－201 |
 
 #### Column Mapping (Excel → Standard Field)
 
 | Standard Field | Excel Column | Status |
 |----------------|--------------|--------|
-| `campus` | _(tried: 校区, 校区名称)_ | ❌ Not Found |
-| `course_name` | _(tried: 课程名称, 课程, 考试课程)_ | ❌ Not Found |
-| `course_code` | _(tried: 课程代码, 选课课号)_ | ❌ Not Found |
-| `class_name` | _(tried: 班级名称, 班级, 班级代码)_ | ❌ Not Found |
-| `teacher` | _(tried: 任课教师, 教师, 监考教师)_ | ❌ Not Found |
-| `location` | _(tried: 考试教室, 教室名称, 地点)_ | ❌ Not Found |
-| `raw_time` | _(tried: 考试时间, 时间)_ | ❌ Not Found |
-| `count` | _(tried: 人数, 学生人数, 考试人数)_ | ❌ Not Found |
-| `school` | _(tried: 开课学院, 学院)_ | ❌ Not Found |
+| `campus` | `校区` | ✅ Mapped |
+| `course_name` | `课程名称` | ✅ Mapped |
+| `course_code` | `课程代码` | ✅ Mapped |
+| `class_name` | `班级名称` | ✅ Mapped |
+| `teacher` | `任课教师` | ✅ Mapped |
+| `location` | `考试教室` | ✅ Mapped |
+| `raw_time` | `考试时间` | ✅ Mapped |
+| `count` | `人数` | ✅ Mapped |
+| `school` | `开课学院` | ✅ Mapped |
 | `student_school` | _(tried: 学生所在学院, 所在学院)_ | ❌ Not Found |
 | `major` | _(tried: 专业名称, 专业)_ | ❌ Not Found |
 | `grade` | _(tried: 年级)_ | ❌ Not Found |
@@ -54,11 +59,11 @@
 
 #### Raw Data Sample (First 3 Rows, Unprocessed)
 
-| 2025-2026学年第二学期 | Unnamed: 1 | Unnamed: 2 | Unnamed: 3 | Unnamed: 4 |
-| --- | --- | --- | --- | --- |
-| 开课学院 | 课程代码 | 课程名称 | 组织单位 | 考试时间段 |
-| 波特兰学院 | P1401062S | 通信系统与设计（全英文） | 学院 | 非集中考试周 |
-| 波特兰学院 | PI310400S | 批判性思维（全英文） | 学院 | 非集中考试周 |
+| 校区 | 开课学院 | 课程代码 | 课程名称 | 班级名称 | 任课教师 | 人数 | 考试时间 | 考试教室 |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| 仙林 | 电子与光学工程学院 | DG1113F4S | 光电子学（全英文） | B230200 | 郭艳东/曾红丽 | 28 | 第11周周3(2026-05-13) 1 | 教2－101 |
+| 仙林 | 电子与光学工程学院 | DG1113F4S | 光电子学（全英文） | B230205 | 郭艳东/曾红丽 | 2 | 第11周周3(2026-05-13) 1 | 教2－101 |
+| 仙林 | 电子与光学工程学院 | DG1113F4S | 光电子学（全英文） | B220204 | 智婷/汪金 | 2 | 第11周周3(2026-05-13) 1 | 教2－101 |
 
 ### 🔹 Part B: Processing Results
 
@@ -66,36 +71,98 @@
 
 | Metric | Value |
 |--------|-------|
-| Records Processed | 1,261 |
-| Time Parse Success | 0 |
-| Time Parse Failed | 1,261 |
-| Unique Classes | 0 |
-| Unique Courses | 0 |
-| Avg Exam Duration | 0 min |
+| Records Processed | 77 |
+| Time Parse Success | 77 |
+| Time Parse Failed | 0 |
+| Unique Classes | 59 |
+| Unique Courses | 12 |
+| Avg Exam Duration | 110.0 min |
+| Campus Distribution | 仙林 (70), 三牌楼 (7) |
 
-#### ⚠️ Validation Warnings
-
-Found **1261** rows with parsing issues:
-
-- Row 2: Missing time data (Raw: '')
-- Row 3: Missing time data (Raw: '')
-- Row 4: Missing time data (Raw: '')
-- Row 5: Missing time data (Raw: '')
-- Row 6: Missing time data (Raw: '')
-- Row 7: Missing time data (Raw: '')
-- Row 8: Missing time data (Raw: '')
-- Row 9: Missing time data (Raw: '')
-- Row 10: Missing time data (Raw: '')
-- Row 11: Missing time data (Raw: '')
-- _...and 1251 more_
+#### ✅ Validation: All Passed
 
 #### Processed Data Sample (First 3 Rows)
 
 | class_name | course_name | campus | start_timestamp | location | teacher | count |
 | --- | --- | --- | --- | --- | --- | --- |
-|  |  |  | None |  |  | 0 |
-|  |  |  | None |  |  | 0 |
-|  |  |  | None |  |  | 0 |
+| B230200 | 光电子学（全英文） | 仙林 | 2026-05-13T13:30:00+08:00 | 教2－101 | 郭艳东/曾红丽 | 28 |
+| B230205 | 光电子学（全英文） | 仙林 | 2026-05-13T13:30:00+08:00 | 教2－101 | 郭艳东/曾红丽 | 2 |
+| B220204 | 光电子学（全英文） | 仙林 | 2026-05-13T13:30:00+08:00 | 教2－101 | 智婷/汪金 | 2 |
+
+---
+
+## ✅ File: `2025-2026学年第二学期集中考试周1安排表（学校组织）-学生用表.xlsx`
+
+**Rows:** 251 | **Columns:** 12 | **Parse Success:** 251/251 | **Date Range:** 2026-04-29 ~ 2026-05-23
+
+### 🔹 Part A: Raw Excel Analysis
+
+#### Original Column Names (as in Excel)
+
+| # | Excel Column Name | Data Type | Non-Null % | Unique Values | Sample Values |
+|---|-------------------|-----------|------------|---------------|---------------|
+| 1 | `校区` | object | 100.0% | 3 | 锁金, 三牌楼, 仙林 |
+| 2 | `开课学院` | object | 100.0% | 3 | 通信与信息工程学院, 马克思主义学院, 电子与光学工程学院 |
+| 3 | `课程代码` | object | 100.0% | 4 | TX5262YYS, MY1002T0S, MY3002T0S |
+| 4 | `课程名称` | object | 100.0% | 3 | 模式识别基础, 毛泽东思想和中国特色社会主义理论体系概论, 工程管理与经济决策 |
+| 5 | `班级名称` | object | 100.0% | 205 | B221803, B221805, B221807 |
+| 6 | `任课教师` | object | 100.0% | 20 | 谭智一/傅杰, 周静/韩芬, 王义 |
+| 7 | `人数` | int64 | 100.0% | 27 | 1, 2, 37 |
+| 8 | `考试时间` | object | 100.0% | 3 | 2026年04月29日(13:30-15:20), 2026年05月20日(13:30-15:20) |
+| 9 | `教室名称` | object | 100.0% | 43 | 锁金－604, 锁金－100, 无1 |
+| 10 | `学生所在学院` | object | 100.0% | 18 | 应用技术学院, 通信与信息工程学院, 自动化学院 |
+| 11 | `年级` | int64 | 100.0% | 3 | 2022, 2023, 2024 |
+| 12 | `专业名称` | object | 100.0% | 59 | 信息工程（专转本）, 通信工程, 电子信息工程 |
+
+#### Column Mapping (Excel → Standard Field)
+
+| Standard Field | Excel Column | Status |
+|----------------|--------------|--------|
+| `campus` | `校区` | ✅ Mapped |
+| `course_name` | `课程名称` | ✅ Mapped |
+| `course_code` | `课程代码` | ✅ Mapped |
+| `class_name` | `班级名称` | ✅ Mapped |
+| `teacher` | `任课教师` | ✅ Mapped |
+| `location` | `教室名称` | ✅ Mapped |
+| `raw_time` | `考试时间` | ✅ Mapped |
+| `count` | `人数` | ✅ Mapped |
+| `school` | `开课学院` | ✅ Mapped |
+| `student_school` | `学生所在学院` | ✅ Mapped |
+| `major` | `专业名称` | ✅ Mapped |
+| `grade` | `年级` | ✅ Mapped |
+| `notes` | _(tried: 备注)_ | ❌ Not Found |
+
+#### Raw Data Sample (First 3 Rows, Unprocessed)
+
+| 校区 | 开课学院 | 课程代码 | 课程名称 | 班级名称 | 任课教师 | 人数 | 考试时间 | 教室名称 | 学生所在学院 | 年级 | 专业名称 |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| 锁金 | 通信与信息工程学院 | TX5262YYS | 模式识别基础 | B221803 | 谭智一/傅杰 | 1 | 2026年04月29日(13:30-15 | 锁金－604 | 应用技术学院 | 2022 | 信息工程（专转本） |
+| 锁金 | 通信与信息工程学院 | TX5262YYS | 模式识别基础 | B221805 | 谭智一/傅杰 | 2 | 2026年04月29日(13:30-15 | 锁金－604 | 应用技术学院 | 2022 | 信息工程（专转本） |
+| 锁金 | 通信与信息工程学院 | TX5262YYS | 模式识别基础 | B221807 | 谭智一/傅杰 | 1 | 2026年04月29日(13:30-15 | 锁金－604 | 应用技术学院 | 2022 | 信息工程（专转本） |
+
+### 🔹 Part B: Processing Results
+
+#### Processing Statistics
+
+| Metric | Value |
+|--------|-------|
+| Records Processed | 251 |
+| Time Parse Success | 251 |
+| Time Parse Failed | 0 |
+| Unique Classes | 205 |
+| Unique Courses | 3 |
+| Avg Exam Duration | 110.0 min |
+| Campus Distribution | 锁金 (9), 三牌楼 (28), 仙林 (214) |
+
+#### ✅ Validation: All Passed
+
+#### Processed Data Sample (First 3 Rows)
+
+| class_name | course_name | campus | start_timestamp | location | teacher | count |
+| --- | --- | --- | --- | --- | --- | --- |
+| B221803 | 模式识别基础 | 锁金 | 2026-04-29T13:30:00+08:00 | 锁金－604 | 谭智一/傅杰 | 1 |
+| B221805 | 模式识别基础 | 锁金 | 2026-04-29T13:30:00+08:00 | 锁金－604 | 谭智一/傅杰 | 2 |
+| B221807 | 模式识别基础 | 锁金 | 2026-04-29T13:30:00+08:00 | 锁金－604 | 谭智一/傅杰 | 1 |
 
 ---
 
