@@ -1,6 +1,6 @@
 # 📊 Data Inventory & Quality Report
 
-> **Generated on:** 2026-05-15 16:40:10 (Beijing Time)
+> **Generated on:** 2026-05-18 17:43:21 (Beijing Time)
 >
 > This report provides complete visibility into raw Excel data and processing results.
 > You do NOT need to open the original Excel files - all information is captured here.
@@ -10,18 +10,18 @@
 | Metric | Value |
 |--------|-------|
 | Total Files Processed | 2 |
-| Total Records Extracted | 530 |
-| Parse Success Rate | 530/530 (100.0%) |
+| Total Records Extracted | 766 |
+| Parse Success Rate | 766/766 (100.0%) |
 | Date Range (All Files) | 2026-04-27 ~ 2026-06-29 |
-| Unique Classes | ~407 |
-| Unique Courses | ~33 |
-| Campus Distribution | 仙林 (454), 三牌楼 (67), 锁金 (9) |
+| Unique Classes | ~460 |
+| Unique Courses | ~44 |
+| Campus Distribution | 仙林 (690), 三牌楼 (67), 锁金 (9) |
 
 ---
 
 ## ✅ File: `2025-2026学年第二学期考试安排表（学院组织）-学生用表.xlsx`
 
-**Rows:** 279 | **Columns:** 9 | **Parse Success:** 279/279 | **Date Range:** 2026-04-27 ~ 2026-06-29
+**Rows:** 515 | **Columns:** 9 | **Parse Success:** 515/515 | **Date Range:** 2026-04-27 ~ 2026-06-29
 
 ### 🔹 Part A: Raw Excel Analysis
 
@@ -30,14 +30,14 @@
 | # | Excel Column Name | Data Type | Non-Null % | Unique Values | Sample Values |
 |---|-------------------|-----------|------------|---------------|---------------|
 | 1 | `校区` | object | 100.0% | 2 | 仙林, 三牌楼 |
-| 2 | `开课学院` | object | 100.0% | 6 | 电子与光学工程学院, 管理学院, 自动化学院 |
-| 3 | `课程代码` | object | 100.0% | 35 | DG1113F4S, DG1219F4S, GL1516GLS |
-| 4 | `课程名称` | object | 100.0% | 30 | 光电子学（全英文）, 电波传播理论, 企业资源规划系统与应用(混合式) |
-| 5 | `班级名称` | object | 100.0% | 202 | B230200, B230205, B220204 |
-| 6 | `任课教师` | object | 100.0% | 53 | 郭艳东/曾红丽, 智婷/汪金, 笪海霞 |
-| 7 | `人数` | int64 | 100.0% | 30 | 28, 2, 1 |
-| 8 | `考试时间` | object | 100.0% | 22 | 第11周周3(2026-05-13) 13:30-15:20, 第11周周2(2026-05-12) |
-| 9 | `考试教室` | object | 100.0% | 28 | 教2－101, 教2－102, 教2－201 |
+| 2 | `开课学院` | object | 100.0% | 7 | 电子与光学工程学院, 管理学院, 自动化学院 |
+| 3 | `课程代码` | object | 100.0% | 49 | DG1113F4S, DG1219F4S, GL1516GLS |
+| 4 | `课程名称` | object | 100.0% | 41 | 光电子学（全英文）, 电波传播理论, 企业资源规划系统与应用(混合式) |
+| 5 | `班级名称` | object | 100.0% | 255 | B230200, B230205, B220204 |
+| 6 | `任课教师` | object | 100.0% | 75 | 郭艳东/曾红丽, 智婷/汪金, 笪海霞 |
+| 7 | `人数` | int64 | 100.0% | 37 | 28, 2, 1 |
+| 8 | `考试时间` | object | 100.0% | 29 | 第11周周3(2026-05-13) 13:30-15:20, 第11周周2(2026-05-12) |
+| 9 | `考试教室` | object | 100.0% | 36 | 教2－101, 教2－102, 教2－201 |
 
 #### Column Mapping (Excel → Standard Field)
 
@@ -71,13 +71,13 @@
 
 | Metric | Value |
 |--------|-------|
-| Records Processed | 279 |
-| Time Parse Success | 279 |
+| Records Processed | 515 |
+| Time Parse Success | 515 |
 | Time Parse Failed | 0 |
-| Unique Classes | 202 |
-| Unique Courses | 30 |
+| Unique Classes | 255 |
+| Unique Courses | 41 |
 | Avg Exam Duration | 110.0 min |
-| Campus Distribution | 仙林 (240), 三牌楼 (39) |
+| Campus Distribution | 仙林 (476), 三牌楼 (39) |
 
 #### ✅ Validation: All Passed
 
