@@ -1,6 +1,6 @@
 # 📊 Data Inventory & Quality Report
 
-> **Generated on:** 2026-05-18 17:43:21 (Beijing Time)
+> **Generated on:** 2026-05-19 17:28:52 (Beijing Time)
 >
 > This report provides complete visibility into raw Excel data and processing results.
 > You do NOT need to open the original Excel files - all information is captured here.
@@ -10,12 +10,12 @@
 | Metric | Value |
 |--------|-------|
 | Total Files Processed | 2 |
-| Total Records Extracted | 766 |
-| Parse Success Rate | 766/766 (100.0%) |
+| Total Records Extracted | 769 |
+| Parse Success Rate | 769/769 (100.0%) |
 | Date Range (All Files) | 2026-04-27 ~ 2026-06-29 |
-| Unique Classes | ~460 |
+| Unique Classes | ~463 |
 | Unique Courses | ~44 |
-| Campus Distribution | 仙林 (690), 三牌楼 (67), 锁金 (9) |
+| Campus Distribution | 仙林 (693), 三牌楼 (67), 锁金 (9) |
 
 ---
 
@@ -93,7 +93,7 @@
 
 ## ✅ File: `2025-2026学年第二学期集中考试周1安排表（学校组织）-学生用表.xlsx`
 
-**Rows:** 251 | **Columns:** 12 | **Parse Success:** 251/251 | **Date Range:** 2026-05-06 ~ 2026-05-23
+**Rows:** 254 | **Columns:** 12 | **Parse Success:** 254/254 | **Date Range:** 2026-05-06 ~ 2026-05-23
 
 ### 🔹 Part A: Raw Excel Analysis
 
@@ -105,14 +105,14 @@
 | 2 | `开课学院` | object | 100.0% | 3 | 通信与信息工程学院, 马克思主义学院, 电子与光学工程学院 |
 | 3 | `课程代码` | object | 100.0% | 4 | TX5262YYS, MY1002T0S, MY3002T0S |
 | 4 | `课程名称` | object | 100.0% | 3 | 模式识别基础, 毛泽东思想和中国特色社会主义理论体系概论, 工程管理与经济决策 |
-| 5 | `班级名称` | object | 100.0% | 205 | B221803, B221805, B221807 |
+| 5 | `班级名称` | object | 100.0% | 208 | B221803, B221805, B221807 |
 | 6 | `任课教师` | object | 100.0% | 20 | 谭智一/傅杰, 周静/韩芬, 王义 |
 | 7 | `人数` | int64 | 100.0% | 27 | 1, 2, 37 |
 | 8 | `考试时间` | object | 100.0% | 3 | 2026年05月06日(13:30-15:20), 2026年05月20日(13:30-15:20) |
 | 9 | `教室名称` | object | 100.0% | 43 | 锁金－604, 锁金－100, 无1 |
 | 10 | `学生所在学院` | object | 100.0% | 18 | 应用技术学院, 通信与信息工程学院, 自动化学院 |
 | 11 | `年级` | int64 | 100.0% | 3 | 2022, 2023, 2024 |
-| 12 | `专业名称` | object | 100.0% | 59 | 信息工程（专转本）, 通信工程, 电子信息工程 |
+| 12 | `专业名称` | object | 100.0% | 60 | 信息工程（专转本）, 通信工程, 电子信息工程 |
 
 #### Column Mapping (Excel → Standard Field)
 
@@ -146,13 +146,13 @@
 
 | Metric | Value |
 |--------|-------|
-| Records Processed | 251 |
-| Time Parse Success | 251 |
+| Records Processed | 254 |
+| Time Parse Success | 254 |
 | Time Parse Failed | 0 |
-| Unique Classes | 205 |
+| Unique Classes | 208 |
 | Unique Courses | 3 |
 | Avg Exam Duration | 110.0 min |
-| Campus Distribution | 锁金 (9), 三牌楼 (28), 仙林 (214) |
+| Campus Distribution | 锁金 (9), 三牌楼 (28), 仙林 (217) |
 
 #### ✅ Validation: All Passed
 
