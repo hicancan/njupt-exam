@@ -32,7 +32,7 @@ export function UptimeDisplay({
     return (
         <div className="flex flex-col lg:flex-row items-start lg:items-center gap-y-3 lg:gap-x-6 w-full lg:w-auto">
             {sourceUrl && (
-                <div className="flex flex-col sm:flex-row sm:items-center gap-1 max-w-full overflow-hidden">
+                <div className="flex flex-row items-center gap-1 max-w-full overflow-hidden">
                     <span className="whitespace-nowrap flex-shrink-0">当前数据来源:</span>
                     <a
                         href={sourceUrl}
