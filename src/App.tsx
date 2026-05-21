@@ -145,9 +145,14 @@ function App() {
             )}
 
             {isHomePage && (
-                <div className="absolute top-4 right-6 flex items-center gap-4 z-50">
-                    <ThemeToggle />
-                </div>
+                <>
+                    <div className="absolute top-4 left-6 flex items-center gap-4 z-50 text-[14px] text-[#4d5156] dark:text-[#bdc1c6]">
+                        <a href={`https://${APP_CONFIG.DOMAIN}`} className="hover:underline">{APP_CONFIG.DOMAIN}</a>
+                    </div>
+                    <div className="absolute top-4 right-6 flex items-center gap-4 z-50">
+                        <ThemeToggle />
+                    </div>
+                </>
             )}
 
             <div className={`flex-1 w-full flex flex-col ${isHomePage ? 'items-center justify-center px-4 pb-32' : 'max-w-[730px] ml-0 sm:ml-36 px-4 py-4'}`}>
@@ -212,7 +217,6 @@ function App() {
                     </div>
                     <div className="flex flex-wrap lg:justify-end items-center gap-6">
                         <UptimeDisplay sourceUrl={sourceUrl} sourceTitle={sourceTitle} />
-                        <a href={`https://${APP_CONFIG.DOMAIN}`} className="hover:underline">{APP_CONFIG.DOMAIN}</a>
                     </div>
                 </div>
             </footer>
