@@ -47,7 +47,7 @@
 
 | **桌面端搜索页** | **移动端详情页** |
 |:---:|:---:|
-| <img src="public/assets/desktop_demo.png" alt="Desktop Demo" width="400"/> | <img src="public/assets/mobile_demo.png" alt="Mobile Demo" width="200"/> |
+| <img src="public/assets/desktop_demo_v2.png" alt="Desktop Demo" width="400"/> | <img src="public/assets/mobile_demo_v2.png" alt="Mobile Demo" width="200"/> |
 | *适配 Tailwind v4 的简约设计* | *支持 PWA 离线访问与日历导出* |
 
 </div>
