@@ -1,48 +1,37 @@
+import { Exam } from '@/types';
 import { APP_CONFIG } from '@/constants';
 
 interface ExamListProps {
     classes: string[];
-    onClassClick: (cls: string) => void;
+    onClassClick: (className: string) => void;
 }
 
 export function ExamList({ classes, onClassClick }: ExamListProps) {
+    const displayClasses = classes.slice(0, APP_CONFIG.MAX_CLASS_DISPLAY_COUNT);
+    const hasMore = classes.length > APP_CONFIG.MAX_CLASS_DISPLAY_COUNT;
+
     return (
-        <div className="fade-in max-w-[652px]">
-            <div className="mb-6 px-1">
-                <span className="text-[#70757a] dark:text-[#9aa0a6] text-[14px]">
-                    找到约 {classes.length} 条相关班级结果
-                </span>
+        <div className="w-full mt-2">
+            <div className="text-[14px] text-[#70757a] dark:text-[#9aa0a6] mb-6">
+                请选择具体的班级，共找到 {classes.length} 个匹配项：
             </div>
-            <div className="flex flex-col gap-8">
-                {classes.slice(0, APP_CONFIG.MAX_CLASS_DISPLAY_COUNT).map(cls => (
-                    <div key={cls} className="flex flex-col items-start w-full">
-                        <button
-                            type="button"
-                            onClick={() => onClassClick(cls)}
-                            className="group text-left"
-                        >
-                            <div className="flex items-center gap-2 mb-1.5">
-                                <div className="bg-[#f1f3f4] dark:bg-[#303134] rounded-full p-1">
-                                    <svg className="w-3 h-3 text-[#5f6368] dark:text-[#bdc1c6]" fill="currentColor" viewBox="0 0 20 20">
-                                        <path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z" />
-                                        <path fillRule="evenodd" d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h3a1 1 0 100-2h-3zm-3 4a1 1 0 100 2h.01a1 1 0 100-2H7zm3 0a1 1 0 100 2h3a1 1 0 100-2h-3z" clipRule="evenodd" />
-                                    </svg>
-                                </div>
-                                <span className="text-[14px] text-[#202124] dark:text-[#dadce0] font-normal truncate">
-                                    {APP_CONFIG.DOMAIN} <span className="text-[#5f6368] dark:text-[#9aa0a6]">› class › {cls}</span>
-                                </span>
-                            </div>
-                            <h3 className="text-xl text-[var(--color-google-blue)] dark:text-[var(--color-google-blue-dark)] group-hover:underline font-normal mb-1">
-                                {cls} - NJUPT 考试日程
-                            </h3>
-                        </button>
-                        <p className="text-[14px] text-[var(--color-google-grey)] dark:text-[var(--color-google-grey-dark)] max-w-[600px] leading-[1.58]">
-                            点击查看南京邮电大学 <strong>{cls}</strong> 班级的最新期末考试安排。包含考试时间、考试地点、监考教师等详细信息，支持一键导出至日历软件进行提醒。
-                        </p>
-                    </div>
+            
+            <div className="flex flex-wrap gap-3">
+                {displayClasses.map((cls, index) => (
+                    <button 
+                        key={index} 
+                        onClick={() => onClassClick(cls)}
+                        className="px-5 py-2.5 bg-white dark:bg-[#202124] border border-[#dadce0] dark:border-[#5f6368] rounded-full text-[15px] text-[#1a0dab] dark:text-[#8ab4f8] hover:bg-[#f8f9fa] dark:hover:bg-[#303134] hover:border-[#d2e3fc] dark:hover:border-[#8ab4f8]/30 transition-all shadow-sm hover:shadow active:scale-95 flex items-center gap-2"
+                    >
+                        <span>{cls}</span>
+                        <svg className="w-3.5 h-3.5 opacity-60" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
+                        </svg>
+                    </button>
                 ))}
             </div>
-            {classes.length > APP_CONFIG.MAX_CLASS_DISPLAY_COUNT && (
+
+            {hasMore && (
                 <p className="text-center text-sm text-[var(--color-google-grey)] dark:text-[var(--color-google-grey-dark)] mt-10 pb-10">
                     为提供最相关的结果，我们省略了部分相似的条目，请继续输入以精确查找。
                 </p>
