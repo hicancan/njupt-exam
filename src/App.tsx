@@ -153,7 +153,7 @@ function App() {
                         </div>
                     </div>
                     
-                    <div className="w-full max-w-[730px] mx-auto flex justify-center">
+                    <div className="w-full max-w-[730px] mx-auto flex justify-center sm:px-4">
                         <SearchInput value={inputValue} onChange={handleInput} />
                     </div>
                     
