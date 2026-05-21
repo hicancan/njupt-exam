@@ -30,36 +30,37 @@ export function UptimeDisplay({
     }, [startTime]);
 
     return (
-        <div className="space-y-3">
-            {/* 数据来源 - 最重要的信息放在最上面 */}
+        <div className="flex flex-wrap items-center gap-x-6 gap-y-2">
             {sourceUrl && (
-                <p className="text-slate-500">
-                    数据来源: <a
+                <span className="flex items-center gap-1">
+                    当前数据来源: <a
                         href={sourceUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-indigo-500 hover:text-indigo-600 hover:underline transition-colors font-medium"
+                        className="text-[var(--color-google-blue)] dark:text-[var(--color-google-blue-dark)] hover:underline font-medium"
                         title="点击查看教务处原始通知"
                     >
-                        {sourceTitle || '教务处通知'} ↗
+                        {sourceTitle || '教务处通知'}
                     </a>
-                </p>
+                </span>
             )}
 
-            {/* 同步机制说明 - 强调持续运行而不是显示可能过时的时间 */}
-            <p className="text-slate-400">
-                与官方数据保持同步 · <span className="font-medium">每6小时自动核对</span>
-            </p>
+            <span className="hidden lg:inline text-[#dadce0] dark:text-[#3c4043]">|</span>
 
-            {/* 运行状态和访问量 */}
-            <div className="flex items-center justify-center gap-3 text-slate-400 pt-1">
-                <span className="text-xs">
-                    已稳定运行 <span className="font-mono text-indigo-500 font-medium">{uptime}</span>
+            <span>
+                数据同步 · 每6小时
+            </span>
+
+            <span className="hidden lg:inline text-[#dadce0] dark:text-[#3c4043]">|</span>
+
+            <div className="flex items-center gap-3">
+                <span>
+                    已运行 <span className="font-mono text-[var(--color-google-blue)] dark:text-[var(--color-google-blue-dark)]">{uptime}</span>
                 </span>
-                <span className="opacity-30">|</span>
+                <span className="text-[#dadce0] dark:text-[#3c4043]">|</span>
                 <img
                     src={APP_CONFIG.VISITOR_BADGE_URL}
-                    className="h-4 w-auto opacity-80 hover:opacity-100 transition-opacity"
+                    className="h-4 w-auto opacity-80 hover:opacity-100 transition-opacity grayscale hover:grayscale-0"
                     alt="visitor count"
                     loading="lazy"
                 />

@@ -6,6 +6,16 @@
 */
 @variant dark (&:where(.dark, .dark *));
 
+@theme {
+  --color-google-blue: #1a0dab;
+  --color-google-blue-dark: #8ab4f8;
+  --color-google-green: #006621;
+  --color-google-green-dark: #81c995;
+  --color-google-grey: #4d5156;
+  --color-google-grey-dark: #bdc1c6;
+  --color-google-bg-dark: #202124;
+}
+
 /* 自定义滚动条样式 */
 ::-webkit-scrollbar {
     width: 6px;
