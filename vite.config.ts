@@ -19,24 +19,19 @@ export default defineConfig({
     tailwindcss(),
     VitePWA({
       registerType: 'autoUpdate',
-      includeAssets: ['assets/icon-192.png', 'assets/icon-512.png'],
+      includeAssets: ['assets/logo.png'],
       manifest: {
         name: 'NJUPT Exam Sync',
         short_name: 'ExamSync',
         description: '南邮考试日程助手 - 离线也能查',
-        theme_color: '#4F46E5',
+        theme_color: '#ffffff',
         background_color: '#ffffff',
         start_url: '/',
         display: 'standalone',
         icons: [
           {
-            src: 'assets/icon-192.png',
-            sizes: '192x192',
-            type: 'image/png'
-          },
-          {
-            src: 'assets/icon-512.png',
-            sizes: '512x512',
+            src: 'assets/logo.png',
+            sizes: '192x192 512x512',
             type: 'image/png'
           }
         ]

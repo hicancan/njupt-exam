@@ -127,7 +127,13 @@ function App() {
             {!isHomePage && (
                 <div className="border-b border-[#ebebeb] dark:border-[#3c4043] pb-4 pt-6 px-4 sm:px-8 flex flex-col sm:flex-row items-start sm:items-center gap-6 sticky top-0 bg-white dark:bg-[var(--color-google-bg-dark)] z-30">
                     <div className="flex-shrink-0 flex items-center cursor-pointer" onClick={() => handleInput('')}>
-                        <img src="/assets/logo.png" alt="NJUPT Exam Sync" className="h-[30px] w-auto object-contain" />
+                        <div className="font-bold text-3xl tracking-tighter" style={{ letterSpacing: '-1px' }}>
+                            <span style={{ color: '#4285F4' }}>N</span>
+                            <span style={{ color: '#EA4335' }}>J</span>
+                            <span style={{ color: '#FBBC05' }}>U</span>
+                            <span style={{ color: '#4285F4' }}>P</span>
+                            <span style={{ color: '#34A853' }}>T</span>
+                        </div>
                     </div>
                     <div className="flex-1 w-full max-w-[690px]">
                         <SearchInput value={inputValue} onChange={handleInput} />
@@ -147,8 +153,12 @@ function App() {
             <div className={`flex-1 w-full flex flex-col ${isHomePage ? 'items-center justify-center px-4 pb-32' : 'max-w-[730px] ml-0 sm:ml-36 px-4 py-4'}`}>
                 {isHomePage && (
                     <div className="w-full max-w-[584px] flex flex-col items-center">
-                        <div className="mb-8 select-none">
-                            <img src="/assets/logo.png" alt="NJUPT Exam Sync" className="h-[92px] w-auto object-contain" />
+                        <div className="text-6xl sm:text-[5.5rem] font-bold mb-8 tracking-tighter select-none" style={{ letterSpacing: '-3px' }}>
+                            <span style={{ color: '#4285F4' }}>N</span>
+                            <span style={{ color: '#EA4335' }}>J</span>
+                            <span style={{ color: '#FBBC05' }}>U</span>
+                            <span style={{ color: '#4285F4' }}>P</span>
+                            <span style={{ color: '#34A853' }}>T</span>
                         </div>
                         <div className="w-full">
                             <SearchInput value={inputValue} onChange={handleInput} />
