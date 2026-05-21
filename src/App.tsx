@@ -103,19 +103,19 @@ function App() {
     };
 
     if (loading) return (
-        <div className="min-h-screen flex items-center justify-center bg-slate-50 dark:bg-slate-900 text-slate-500 dark:text-slate-400">
-            <div className="flex flex-col items-center gap-3 animate-pulse">
-                <div className="w-8 h-8 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin"></div>
-                <span className="text-sm font-medium">数据同步中...</span>
+        <div className="min-h-screen flex items-center justify-center bg-white dark:bg-[var(--color-google-bg-dark)] text-[#70757a] dark:text-[#9aa0a6]">
+            <div className="flex flex-col items-center gap-4">
+                <div className="w-8 h-8 border-4 border-[var(--color-google-blue)] dark:border-[var(--color-google-blue-dark)] border-t-transparent rounded-full animate-spin"></div>
+                <span className="text-[14px]">数据同步中...</span>
             </div>
         </div>
     );
 
     if (error) return (
-        <div className="min-h-screen flex items-center justify-center bg-slate-50">
-            <div className="bg-white p-6 rounded-xl shadow-sm border border-red-100 text-center text-red-500">
-                <div className="text-3xl mb-2">⚠️</div>
-                {error}
+        <div className="min-h-screen flex items-center justify-center bg-white dark:bg-[var(--color-google-bg-dark)]">
+            <div className="p-6 text-center text-[#d93025] dark:text-[#f28b82]">
+                <div className="text-3xl mb-3">⚠️</div>
+                <p className="text-[14px]">{error}</p>
             </div>
         </div>
     );
