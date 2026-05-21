@@ -27,13 +27,6 @@ export function UptimeDisplay({
 
     return (
         <div className="flex flex-col lg:flex-row items-start lg:items-center gap-y-3 lg:gap-x-6 w-full lg:w-auto">
-
-            <div>
-                数据同步 · 每6小时
-            </div>
-
-            <span className="hidden lg:inline text-[#dadce0] dark:text-[#3c4043]">|</span>
-
             <div className="flex flex-wrap items-center gap-3">
                 <span className="whitespace-nowrap">
                     已运行 <span className="font-mono text-[var(--color-google-blue)] dark:text-[var(--color-google-blue-dark)]">{uptime}</span>
