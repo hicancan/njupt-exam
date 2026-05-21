@@ -3,14 +3,10 @@ import { APP_CONFIG } from '@/constants';
 
 interface UptimeDisplayProps {
     startTime?: string;
-    sourceUrl?: string | null;
-    sourceTitle?: string | null;
 }
 
 export function UptimeDisplay({
-    startTime = APP_CONFIG.START_TIME_DEFAULT,
-    sourceUrl,
-    sourceTitle
+    startTime = APP_CONFIG.START_TIME_DEFAULT
 }: UptimeDisplayProps) {
     const [uptime, setUptime] = useState<string>('');
 
@@ -31,22 +27,6 @@ export function UptimeDisplay({
 
     return (
         <div className="flex flex-col lg:flex-row items-start lg:items-center gap-y-3 lg:gap-x-6 w-full lg:w-auto">
-            {sourceUrl && (
-                <div className="flex flex-row items-center gap-1 max-w-full overflow-hidden">
-                    <span className="whitespace-nowrap flex-shrink-0">当前数据来源:</span>
-                    <a
-                        href={sourceUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-[var(--color-google-blue)] dark:text-[var(--color-google-blue-dark)] hover:underline font-medium truncate block"
-                        title={sourceTitle || '点击查看教务处原始通知'}
-                    >
-                        {sourceTitle || '教务处通知'}
-                    </a>
-                </div>
-            )}
-
-            <span className="hidden lg:inline text-[#dadce0] dark:text-[#3c4043]">|</span>
 
             <div>
                 数据同步 · 每6小时

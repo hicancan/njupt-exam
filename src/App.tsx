@@ -218,6 +218,8 @@ function App() {
                             onToggleSelection={toggleExamSelection}
                             reminders={reminders}
                             onRemindersChange={setReminders}
+                            sourceUrl={sourceUrl}
+                            sourceTitle={sourceTitle}
                         />
                     )}
                 </div>

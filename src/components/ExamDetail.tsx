@@ -12,6 +12,8 @@ interface ExamDetailProps {
     onToggleSelection: (id: string) => void;
     reminders: number[];
     onRemindersChange: (reminders: number[]) => void;
+    sourceUrl?: string | null;
+    sourceTitle?: string | null;
 }
 
 export function ExamDetail({
@@ -20,7 +22,9 @@ export function ExamDetail({
     selectedIds,
     onToggleSelection,
     reminders,
-    onRemindersChange
+    onRemindersChange,
+    sourceUrl,
+    sourceTitle
 }: ExamDetailProps) {
     const [copyState, setCopyState] = useState<boolean>(false);
 
@@ -113,8 +117,16 @@ export function ExamDetail({
 
             <div className="mt-6 text-[12px] text-[#70757a] dark:text-[#9aa0a6] flex items-start gap-2">
                 <svg className="w-4 h-4 shrink-0 mt-0.5 text-[#fbbc05]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                <p>
-                    免责声明：以上考试信息根据教务处考表自动同步生成。请务必登录教务系统核对，一切以官方最新发布通知和准考证为准。
+                <p className="leading-relaxed">
+                    免责声明：本页考试信息提取自教务处发布的
+                    {sourceUrl ? (
+                        <a href={sourceUrl} target="_blank" rel="noopener noreferrer" className="text-[var(--color-google-blue)] dark:text-[var(--color-google-blue-dark)] hover:underline mx-1">
+                            《{sourceTitle || '最新通知'}》
+                        </a>
+                    ) : (
+                        <span> 教务处通知 </span>
+                    )}
+                    ，经程序自动解析生成。虽有严格数据校验，但无法绝对保证 100% 无误，开发者不对因依赖本工具而导致的任何考试延误或缺考等后果承担责任。
                 </p>
             </div>
         </div>
