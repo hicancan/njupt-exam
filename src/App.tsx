@@ -163,10 +163,6 @@ function App() {
                         <div className="w-full">
                             <SearchInput value={inputValue} onChange={handleInput} />
                         </div>
-                        <div className="mt-8 flex gap-3">
-                            <button className="bg-[#f8f9fa] dark:bg-[#303134] text-sm text-[#3c4043] dark:text-[#e8eaed] px-4 py-2.5 rounded hover:border-[#dadce0] dark:hover:border-[#5f6368] hover:shadow-sm border border-transparent transition-all">Google 搜索</button>
-                            <button className="bg-[#f8f9fa] dark:bg-[#303134] text-sm text-[#3c4043] dark:text-[#e8eaed] px-4 py-2.5 rounded hover:border-[#dadce0] dark:hover:border-[#5f6368] hover:shadow-sm border border-transparent transition-all">手气不错</button>
-                        </div>
                     </div>
                 )}
 
