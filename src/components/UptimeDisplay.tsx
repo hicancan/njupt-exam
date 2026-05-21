@@ -32,14 +32,14 @@ export function UptimeDisplay({
     return (
         <div className="flex flex-col lg:flex-row items-start lg:items-center gap-y-3 lg:gap-x-6 w-full lg:w-auto">
             {sourceUrl && (
-                <div className="flex items-center gap-1">
-                    <span className="whitespace-nowrap">当前数据来源:</span>
+                <div className="flex flex-col sm:flex-row sm:items-center gap-1 max-w-full overflow-hidden">
+                    <span className="whitespace-nowrap flex-shrink-0">当前数据来源:</span>
                     <a
                         href={sourceUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-[var(--color-google-blue)] dark:text-[var(--color-google-blue-dark)] hover:underline font-medium break-all"
-                        title="点击查看教务处原始通知"
+                        className="text-[var(--color-google-blue)] dark:text-[var(--color-google-blue-dark)] hover:underline font-medium truncate block"
+                        title={sourceTitle || '点击查看教务处原始通知'}
                     >
                         {sourceTitle || '教务处通知'}
                     </a>
