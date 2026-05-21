@@ -145,14 +145,14 @@ function App() {
             )}
 
             {isHomePage && (
-                <>
-                    <div className="absolute top-4 left-6 flex items-center gap-4 z-50 text-[14px] text-[#4d5156] dark:text-[#bdc1c6]">
+                <div className="absolute top-0 left-0 right-0 p-4 sm:px-6 flex justify-between items-center z-50">
+                    <div className="text-[14px] text-[#4d5156] dark:text-[#bdc1c6] pt-1">
                         <a href={`https://${APP_CONFIG.DOMAIN}`} className="hover:underline">{APP_CONFIG.DOMAIN}</a>
                     </div>
-                    <div className="absolute top-4 right-6 flex items-center gap-4 z-50">
+                    <div>
                         <ThemeToggle />
                     </div>
-                </>
+                </div>
             )}
 
             <div className={`flex-1 w-full flex flex-col ${isHomePage ? 'items-center justify-center px-4 pb-32' : 'max-w-[730px] ml-0 sm:ml-36 px-4 py-4'}`}>
