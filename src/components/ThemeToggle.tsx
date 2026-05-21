@@ -29,7 +29,7 @@ export function ThemeToggle() {
         <button
             type="button"
             onClick={toggleTheme}
-            className="p-2 rounded-full transition-colors bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400"
+            className="p-2 rounded-full transition-colors bg-transparent text-[#5f6368] dark:text-[#bdc1c6] hover:bg-[#f1f3f4] dark:hover:bg-[#303134]"
             title={isDark ? "切换到亮色模式" : "切换到暗黑模式"}
         >
             {isDark ? <SunIcon className="w-5 h-5" /> : <MoonIcon className="w-5 h-5" />}
