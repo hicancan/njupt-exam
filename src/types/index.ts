@@ -1,6 +1,6 @@
 export interface Exam {
     id: string; // Generated unique id (filename-row)
-    class_name: string; // e.g., "B240402"
+    class_name: string; // e.g., "B250403"
     course_name: string; // e.g., "大学物理"
     location: string; // e.g., "教2-201"
 

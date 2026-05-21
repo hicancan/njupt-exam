@@ -33,7 +33,7 @@ export function SearchInput({ value, onChange }: SearchInputProps) {
                 autoComplete="off"
                 aria-label="输入班级号进行搜索"
                 className="w-full h-[46px] pl-12 pr-12 bg-white dark:bg-[#202124] border border-[#dfe1e5] dark:border-[#5f6368] rounded-full text-[16px] leading-normal outline-none hover:shadow-[0_1px_6px_rgba(32,33,36,0.28)] dark:hover:shadow-[0_1px_6px_rgba(23,23,23,0.8)] focus:shadow-[0_1px_6px_rgba(32,33,36,0.28)] dark:focus:shadow-[0_1px_6px_rgba(23,23,23,0.8)] hover:border-transparent focus:border-transparent transition-all text-[#202124] dark:text-[#bdc1c6]"
-                placeholder="输入班级号 (如 B240402)"
+                placeholder="输入班级号 (如 B250403)"
                 value={value}
                 onChange={(e) => onChange(e.target.value)}
             />

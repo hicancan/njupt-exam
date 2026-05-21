@@ -279,7 +279,7 @@ The processed `all_exams.json` contains these fields per record:
 | Field | Type | Description |
 |-------|------|-------------|
 | `id` | string | Unique identifier (filename-row) |
-| `class_name` | string | Class identifier (e.g., B240402) |
+| `class_name` | string | Class identifier (e.g., B250403) |
 | `course_name` | string | Course name |
 | `course_code` | string | Course code |
 | `campus` | string | Campus name |

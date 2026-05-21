@@ -178,7 +178,7 @@ function App() {
                             <p className="mt-4">建议：</p>
                             <ul className="list-disc pl-8 mt-2 space-y-1">
                                 <li>请检查输入是否正确。</li>
-                                <li>目前仅支持按班级号搜索（如 B240402）。</li>
+                                <li>目前仅支持按班级号搜索（如 B250403）。</li>
                             </ul>
                         </div>
                     )}
