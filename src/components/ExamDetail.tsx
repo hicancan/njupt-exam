@@ -3,7 +3,7 @@ import { Exam } from '@/types';
 import { generateICSContent } from '@/utils/icsGenerator';
 import { ExamCard } from './ExamCard';
 import { ReminderSettings } from './ReminderSettings';
-import { APP_CONFIG } from '@/constants';
+
 
 interface ExamDetailProps {
     className: string;
