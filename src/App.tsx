@@ -4,6 +4,7 @@ import { ThemeToggle } from './components/ThemeToggle';
 import { SearchInput } from './components/SearchInput';
 import { ExamList } from './components/ExamList';
 import { ExamDetail } from './components/ExamDetail';
+import { Logo } from './components/Logo';
 import { SearchResult } from '@/types';
 import { APP_CONFIG } from '@/constants';
 import { useExamData } from '@/hooks/useExamData';
@@ -129,13 +130,7 @@ function App() {
                     {/* Mobile Top Row */}
                     <div className="w-full flex justify-between items-center mb-4 sm:hidden px-4">
                         <div className="flex-shrink-0 flex items-center cursor-pointer" onClick={() => handleInput('')}>
-                            <div className="font-bold text-3xl tracking-tighter" style={{ letterSpacing: '-1px' }}>
-                                <span style={{ color: '#4285F4' }}>N</span>
-                                <span style={{ color: '#EA4335' }}>J</span>
-                                <span style={{ color: '#FBBC05' }}>U</span>
-                                <span style={{ color: '#4285F4' }}>P</span>
-                                <span style={{ color: '#34A853' }}>T</span>
-                            </div>
+                            <Logo size="small" />
                         </div>
                         <div>
                             <ThemeToggle />
@@ -144,13 +139,7 @@ function App() {
 
                     {/* Desktop Absolute Logo */}
                     <div className="hidden sm:flex sm:absolute sm:left-8 sm:top-1/2 sm:-translate-y-1/2 flex-shrink-0 items-center cursor-pointer" onClick={() => handleInput('')}>
-                        <div className="font-bold text-3xl tracking-tighter" style={{ letterSpacing: '-1px' }}>
-                            <span style={{ color: '#4285F4' }}>N</span>
-                            <span style={{ color: '#EA4335' }}>J</span>
-                            <span style={{ color: '#FBBC05' }}>U</span>
-                            <span style={{ color: '#4285F4' }}>P</span>
-                            <span style={{ color: '#34A853' }}>T</span>
-                        </div>
+                        <Logo size="small" />
                     </div>
                     
                     <div className="w-full max-w-[730px] mx-auto flex justify-center px-4 relative z-10">
@@ -178,13 +167,7 @@ function App() {
             <div className={`flex-1 w-full flex flex-col ${isHomePage ? 'items-center justify-center px-4 pb-32' : 'max-w-[730px] mx-auto px-4 py-4'}`}>
                 {isHomePage && (
                     <div className="w-full max-w-[584px] flex flex-col items-center">
-                        <div className="text-6xl sm:text-[5.5rem] font-bold mb-8 tracking-tighter select-none" style={{ letterSpacing: '-3px' }}>
-                            <span style={{ color: '#4285F4' }}>N</span>
-                            <span style={{ color: '#EA4335' }}>J</span>
-                            <span style={{ color: '#FBBC05' }}>U</span>
-                            <span style={{ color: '#4285F4' }}>P</span>
-                            <span style={{ color: '#34A853' }}>T</span>
-                        </div>
+                        <Logo size="large" />
                         <div className="w-full">
                             <SearchInput value={inputValue} onChange={handleInput} />
                         </div>
