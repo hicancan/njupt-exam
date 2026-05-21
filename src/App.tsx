@@ -125,8 +125,8 @@ function App() {
     return (
         <div className="min-h-screen flex flex-col bg-white dark:bg-[var(--color-google-bg-dark)] text-[#202124] dark:text-[#bdc1c6] transition-colors duration-200 font-sans">
             {!isHomePage && (
-                <div className="border-b border-[#ebebeb] dark:border-[#3c4043] pb-4 pt-6 px-4 sm:px-8 flex flex-col sm:flex-row items-start sm:items-center gap-6 sticky top-0 bg-white dark:bg-[var(--color-google-bg-dark)] z-30">
-                    <div className="flex-shrink-0 flex items-center cursor-pointer" onClick={() => handleInput('')}>
+                <div className="border-b border-[#ebebeb] dark:border-[#3c4043] pb-4 pt-6 px-4 sm:px-8 flex flex-col sm:flex-row items-center relative sticky top-0 bg-white dark:bg-[var(--color-google-bg-dark)] z-30">
+                    <div className="sm:absolute sm:left-8 flex-shrink-0 flex items-center cursor-pointer mb-4 sm:mb-0" onClick={() => handleInput('')}>
                         <div className="font-bold text-3xl tracking-tighter" style={{ letterSpacing: '-1px' }}>
                             <span style={{ color: '#4285F4' }}>N</span>
                             <span style={{ color: '#EA4335' }}>J</span>
@@ -135,10 +135,10 @@ function App() {
                             <span style={{ color: '#34A853' }}>T</span>
                         </div>
                     </div>
-                    <div className="flex-1 w-full max-w-[690px]">
+                    <div className="w-full max-w-[730px] mx-auto flex justify-center">
                         <SearchInput value={inputValue} onChange={handleInput} />
                     </div>
-                    <div className="hidden sm:flex ml-auto items-center gap-4">
+                    <div className="hidden sm:flex sm:absolute sm:right-8 items-center gap-4">
                         <ThemeToggle />
                     </div>
                 </div>

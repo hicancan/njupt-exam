@@ -2,7 +2,7 @@
 
 <div align="center">
 
-<img src="public/assets/icon-192.png" width="100" height="100" alt="Logo" />
+<img src="public/assets/logo.png" height="80" alt="Logo" />
 
 ### ✨ 为南邮学子打造的极简考试日程同步工具
 
