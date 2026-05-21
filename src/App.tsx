@@ -238,7 +238,7 @@ function App() {
                         </a>
                     </div>
                     <div className="flex flex-wrap lg:justify-end items-center gap-6">
-                        <UptimeDisplay sourceUrl={sourceUrl} sourceTitle={sourceTitle} />
+                        <UptimeDisplay />
                     </div>
                 </div>
             </footer>
