@@ -126,7 +126,7 @@ function App() {
     return (
         <div className="min-h-screen flex flex-col bg-white dark:bg-[var(--color-google-bg-dark)] text-[#202124] dark:text-[#bdc1c6] transition-colors duration-200 font-sans">
             {!isHomePage && (
-                <div className="border-b border-[#ebebeb] dark:border-[#3c4043] pb-4 pt-4 sm:pt-6 relative sticky top-0 bg-white dark:bg-[var(--color-google-bg-dark)] z-30">
+                <header className="border-b border-[#ebebeb] dark:border-[#3c4043] pb-4 pt-4 sm:pt-6 relative sticky top-0 bg-white dark:bg-[var(--color-google-bg-dark)] z-30">
                     {/* Mobile Top Row */}
                     <div className="w-full flex justify-between items-center mb-4 sm:hidden px-4">
                         <div className="flex-shrink-0 flex items-center cursor-pointer" onClick={() => handleInput('')}>
@@ -150,21 +150,21 @@ function App() {
                     <div className="hidden sm:flex sm:absolute sm:right-8 sm:top-1/2 sm:-translate-y-1/2 items-center gap-4">
                         <ThemeToggle />
                     </div>
-                </div>
+                </header>
             )}
 
             {isHomePage && (
-                <div className="absolute top-0 left-0 right-0 p-4 sm:px-6 flex justify-between items-center z-50">
+                <header className="absolute top-0 left-0 right-0 p-4 sm:px-6 flex justify-between items-center z-50">
                     <div className="text-[14px] text-[#4d5156] dark:text-[#bdc1c6] pt-1">
                         <a href={`https://${APP_CONFIG.DOMAIN}`} className="hover:underline">{APP_CONFIG.DOMAIN}</a>
                     </div>
                     <div>
                         <ThemeToggle />
                     </div>
-                </div>
+                </header>
             )}
 
-            <div className={`flex-1 w-full flex flex-col ${isHomePage ? 'items-center justify-center px-4 pb-32' : 'max-w-[730px] mx-auto px-4 py-4'}`}>
+            <main className={`flex-1 w-full flex flex-col ${isHomePage ? 'items-center justify-center px-4 pb-32' : 'max-w-[730px] mx-auto px-4 py-4'}`}>
                 {isHomePage && (
                     <div className="w-full max-w-[584px] flex flex-col items-center">
                         <Logo size="large" />
@@ -206,7 +206,7 @@ function App() {
                         />
                     )}
                 </div>
-            </div>
+            </main>
 
             <footer className="bg-[#f2f2f2] dark:bg-[#171717] text-[#70757a] dark:text-[#9aa0a6] text-sm border-t border-[#dadce0] dark:border-[#3c4043]">
                 <div className="px-8 py-3 flex flex-col lg:flex-row justify-between lg:items-center gap-4">
