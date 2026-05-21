@@ -125,9 +125,9 @@ function App() {
     return (
         <div className="min-h-screen flex flex-col bg-white dark:bg-[var(--color-google-bg-dark)] text-[#202124] dark:text-[#bdc1c6] transition-colors duration-200 font-sans">
             {!isHomePage && (
-                <div className="border-b border-[#ebebeb] dark:border-[#3c4043] pb-4 pt-4 sm:pt-6 px-4 sm:px-8 flex flex-col sm:flex-row items-center relative sticky top-0 bg-white dark:bg-[var(--color-google-bg-dark)] z-30">
+                <div className="border-b border-[#ebebeb] dark:border-[#3c4043] pb-4 pt-4 sm:pt-6 flex flex-col sm:flex-row items-center relative sticky top-0 bg-white dark:bg-[var(--color-google-bg-dark)] z-30">
                     {/* Mobile Top Row */}
-                    <div className="w-full flex justify-between items-center mb-4 sm:hidden">
+                    <div className="w-full flex justify-between items-center mb-4 sm:hidden px-4">
                         <div className="flex-shrink-0 flex items-center cursor-pointer" onClick={() => handleInput('')}>
                             <div className="font-bold text-3xl tracking-tighter" style={{ letterSpacing: '-1px' }}>
                                 <span style={{ color: '#4285F4' }}>N</span>
@@ -153,7 +153,7 @@ function App() {
                         </div>
                     </div>
                     
-                    <div className="w-full max-w-[730px] mx-auto flex justify-center sm:px-4">
+                    <div className="w-full max-w-[730px] mx-auto flex justify-center px-4">
                         <SearchInput value={inputValue} onChange={handleInput} />
                     </div>
                     

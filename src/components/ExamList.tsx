@@ -11,7 +11,7 @@ export function ExamList({ classes, onClassClick }: ExamListProps) {
     const hasMore = classes.length > APP_CONFIG.MAX_CLASS_DISPLAY_COUNT;
 
     return (
-        <div className="w-full mt-2">
+        <div className="w-full mt-2 fade-in">
             <div className="text-[14px] text-[#70757a] dark:text-[#9aa0a6] mb-6">
                 请选择具体的班级，共找到 {classes.length} 个匹配项：
             </div>

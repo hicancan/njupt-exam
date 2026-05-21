@@ -61,7 +61,7 @@ export function ExamDetail({
     };
 
     return (
-        <div className="fade-in max-w-[652px] pb-10">
+        <div className="fade-in w-full pb-10">
             <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4 mb-6">
                 <div>
                     <h2 className="text-[28px] font-normal text-[#202124] dark:text-[#e8eaed] leading-tight mb-2">
