@@ -6,7 +6,7 @@
 
 ### ✨ 为南邮学子打造的极简考试日程同步工具
 
-[**在线使用**](https://njupt.hicancan.top) · [报告 Bug](https://github.com/hicancan/njupt-exam-sync/issues) · [请求功能](https://github.com/hicancan/njupt-exam-sync/issues)
+[**在线使用**](https://njupt.hicancan.top) · [报告 Bug](https://github.com/hicancan/njupt-exam/issues) · [请求功能](https://github.com/hicancan/njupt-exam/issues)
 
 ![License](https://img.shields.io/badge/license-MIT-green.svg?style=flat-square)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.9-blue.svg?style=flat-square)
@@ -65,8 +65,8 @@
 1. **克隆仓库**
 
     ```bash
-    git clone https://github.com/hicancan/njupt-exam-sync.git
-    cd njupt-exam-sync
+    git clone https://github.com/hicancan/njupt-exam.git
+    cd njupt-exam
     ```
 
 2. **安装依赖**
