@@ -49,6 +49,7 @@ jobs:
         env:
           NJUPT_SEARCH_GITHUB_TOKEN: ${{ secrets.NJUPT_SEARCH_GITHUB_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GEMINI_API_KEYS: ${{ secrets.GEMINI_API_KEYS }}
         run: |
           python scripts/update_search_index.py
           

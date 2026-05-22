@@ -29,7 +29,7 @@ try:
 except ImportError:
     pass
 
-GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY")
+GEMINI_API_KEYS = os.environ.get("GEMINI_API_KEYS") or os.environ.get("GEMINI_API_KEY", "")
 GITHUB_API_BASE = "https://api.github.com"
 GITHUB_FILE_SIZE_LIMIT_BYTES = 250_000
 JOB_API_BASE = "https://njupt.91job.org.cn/web/wsjysc/lbxq"

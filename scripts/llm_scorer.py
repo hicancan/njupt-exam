@@ -1,14 +1,28 @@
 import json
 import time
 import requests
-from typing import Any, Dict, Optional
-from indexer_config import GEMINI_API_KEY, REQUEST_TIMEOUT
+from typing import Any, Dict, List, Optional
+from indexer_config import GEMINI_API_KEYS, REQUEST_TIMEOUT
 
 _last_call_time = 0.0
-_MIN_INTERVAL = 4.1  # Limit to ~14.6 RPM (Free tier is 15 RPM)
+_MIN_INTERVAL = 1.5  # With 3 keys × 15 RPM = 45 RPM total, ~1.3s per call is safe
+
+_api_keys: List[str] = [k.strip() for k in GEMINI_API_KEYS.split(",") if k.strip()] if GEMINI_API_KEYS else []
+_current_key_index = 0
+
+
+def _get_next_key() -> Optional[str]:
+    """Round-robin key rotation."""
+    global _current_key_index
+    if not _api_keys:
+        return None
+    key = _api_keys[_current_key_index % len(_api_keys)]
+    _current_key_index += 1
+    return key
+
 
 def analyze_document_with_llm(title: str, content: str, source_domain: str) -> Optional[Dict[str, Any]]:
-    if not GEMINI_API_KEY:
+    if not _api_keys:
         return None
 
     global _last_call_time
@@ -16,11 +30,9 @@ def analyze_document_with_llm(title: str, content: str, source_domain: str) -> O
     elapsed = now - _last_call_time
     if elapsed < _MIN_INTERVAL:
         time.sleep(_MIN_INTERVAL - elapsed)
-    
+
     _last_call_time = time.time()
 
-    url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-3.1-flash-lite:generateContent?key={GEMINI_API_KEY}"
-    
     prompt = f"""
 你是一个南邮校园信息理解专家系统。
 请根据以下给定网页标题、来源和正文片段，判断该信息是否对学生有用，并提取结构化字段。
@@ -50,26 +62,37 @@ def analyze_document_with_llm(title: str, content: str, source_domain: str) -> O
   "sensitive": false // boolean, 是否含有姓名、学号、手机号等个人隐私
 }}
 """
-    
-    try:
-        payload = {
-            "contents": [{"parts": [{"text": prompt}]}],
-            "generationConfig": {
-                "temperature": 0.1,
-                "responseMimeType": "application/json"
-            }
+
+    payload = {
+        "contents": [{"parts": [{"text": prompt}]}],
+        "generationConfig": {
+            "temperature": 0.1,
+            "responseMimeType": "application/json"
         }
-        response = requests.post(url, json=payload, timeout=REQUEST_TIMEOUT)
-        response.raise_for_status()
-        data = response.json()
-        
-        text_result = data["candidates"][0]["content"]["parts"][0]["text"]
-        result = json.loads(text_result)
-        
-        if "category" not in result or "importance_score" not in result:
-            return None
-            
-        return result
-    except Exception as e:
-        print(f"LLM Scoring Error for '{title}': {e}")
-        return None
+    }
+
+    # Try all keys with round-robin, fallback on failure
+    errors = []
+    for _ in range(len(_api_keys)):
+        key = _get_next_key()
+        if not key:
+            break
+        url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-3.1-flash-lite:generateContent?key={key}"
+        try:
+            response = requests.post(url, json=payload, timeout=REQUEST_TIMEOUT)
+            response.raise_for_status()
+            data = response.json()
+
+            text_result = data["candidates"][0]["content"]["parts"][0]["text"]
+            result = json.loads(text_result)
+
+            if "category" not in result or "importance_score" not in result:
+                return None
+
+            return result
+        except Exception as e:
+            errors.append(f"key=...{key[-6:]}: {e}")
+            continue  # Try next key
+
+    print(f"LLM Scoring Error for '{title}': all keys failed: {errors}")
+    return None
