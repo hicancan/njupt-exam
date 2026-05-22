@@ -28,17 +28,9 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
-      - name: Install Bubblewrap CLI
-        run: npm install -g @bubblewrap/cli
-
-      - name: Configure Bubblewrap
+      - name: Build APK with Bubblewrap Docker
         run: |
-          mkdir -p ~/.bubblewrap
-          echo '{"jdkPath":"'${JAVA_HOME}'","androidSdkPath":"'${ANDROID_SDK_ROOT:-$ANDROID_HOME}'"}' > ~/.bubblewrap/config.json
-
-      - name: Build APK with Bubblewrap
-        run: |
-          bubblewrap build --skipPwaValidation --keystorePassword bubblewrap --keyPassword bubblewrap
+          docker run --rm -v ${{ github.workspace }}:/app -w /app ghcr.io/googlechromelabs/bubblewrap:latest build --skipPwaValidation --keystorePassword bubblewrap --keyPassword bubblewrap
 
       - name: Upload APK as Artifact
         uses: actions/upload-artifact@v4
