@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-22T20:04:25.043823+08:00",
+  "generated_at": "2026-05-22T20:17:55.731609+08:00",
   "total_documents": 113,
   "strategy": "phase1-public-campus-sources-generic-adapter",
   "sources": [
@@ -9,7 +9,7 @@
       "domain": "jwc.njupt.edu.cn",
       "status": "ok",
       "documents": 13,
-      "last_fetch_at": "2026-05-22T20:04:25.043823+08:00",
+      "last_fetch_at": "2026-05-22T20:17:55.731609+08:00",
       "candidates": 14,
       "filtered_out": 1
     },
@@ -19,7 +19,7 @@
       "domain": "xsc.njupt.edu.cn",
       "status": "ok",
       "documents": 12,
-      "last_fetch_at": "2026-05-22T20:04:25.043823+08:00",
+      "last_fetch_at": "2026-05-22T20:17:55.731609+08:00",
       "candidates": 14,
       "filtered_out": 2
     },
@@ -29,7 +29,7 @@
       "domain": "pg.njupt.edu.cn",
       "status": "ok",
       "documents": 14,
-      "last_fetch_at": "2026-05-22T20:04:25.043823+08:00",
+      "last_fetch_at": "2026-05-22T20:17:55.731609+08:00",
       "candidates": 14,
       "filtered_out": 0
     },
@@ -39,7 +39,7 @@
       "domain": "ygb.njupt.edu.cn",
       "status": "ok",
       "documents": 12,
-      "last_fetch_at": "2026-05-22T20:04:25.043823+08:00",
+      "last_fetch_at": "2026-05-22T20:17:55.731609+08:00",
       "candidates": 14,
       "filtered_out": 2
     },
@@ -49,7 +49,7 @@
       "domain": "youth.njupt.edu.cn",
       "status": "ok",
       "documents": 9,
-      "last_fetch_at": "2026-05-22T20:04:25.043823+08:00",
+      "last_fetch_at": "2026-05-22T20:17:55.731609+08:00",
       "candidates": 14,
       "filtered_out": 5
     },
@@ -59,7 +59,7 @@
       "domain": "cxcy.njupt.edu.cn",
       "status": "ok",
       "documents": 14,
-      "last_fetch_at": "2026-05-22T20:04:25.043823+08:00",
+      "last_fetch_at": "2026-05-22T20:17:55.731609+08:00",
       "candidates": 14,
       "filtered_out": 0
     },
@@ -69,7 +69,7 @@
       "domain": "njupt.91job.org.cn",
       "status": "ok",
       "documents": 18,
-      "last_fetch_at": "2026-05-22T20:04:25.043823+08:00"
+      "last_fetch_at": "2026-05-22T20:17:55.731609+08:00"
     },
     {
       "id": "lib",
@@ -77,7 +77,7 @@
       "domain": "lib.njupt.edu.cn",
       "status": "ok",
       "documents": 11,
-      "last_fetch_at": "2026-05-22T20:04:25.043823+08:00",
+      "last_fetch_at": "2026-05-22T20:17:55.731609+08:00",
       "candidates": 14,
       "filtered_out": 3
     },
@@ -87,7 +87,7 @@
       "domain": "bwc.njupt.edu.cn",
       "status": "ok",
       "documents": 4,
-      "last_fetch_at": "2026-05-22T20:04:25.043823+08:00",
+      "last_fetch_at": "2026-05-22T20:17:55.731609+08:00",
       "candidates": 11,
       "filtered_out": 7
     },
@@ -97,7 +97,7 @@
       "domain": "hqc.njupt.edu.cn",
       "status": "ok",
       "documents": 6,
-      "last_fetch_at": "2026-05-22T20:04:25.043823+08:00",
+      "last_fetch_at": "2026-05-22T20:17:55.731609+08:00",
       "candidates": 14,
       "filtered_out": 8
     },
@@ -107,7 +107,7 @@
       "domain": "github.com",
       "status": "error",
       "documents": 0,
-      "last_fetch_at": "2026-05-22T20:04:25.043823+08:00",
+      "last_fetch_at": "2026-05-22T20:17:55.731609+08:00",
       "error": "403 Client Error: rate limit exceeded for url: https://api.github.com/repos/hicancan/njupt-net"
     },
     {
@@ -116,7 +116,7 @@
       "domain": "github.com",
       "status": "error",
       "documents": 0,
-      "last_fetch_at": "2026-05-22T20:04:25.043823+08:00",
+      "last_fetch_at": "2026-05-22T20:17:55.731609+08:00",
       "error": "403 Client Error: rate limit exceeded for url: https://api.github.com/repos/hicancan/njupt-jwxt-assistant"
     },
     {
@@ -125,7 +125,7 @@
       "domain": "github.com",
       "status": "error",
       "documents": 0,
-      "last_fetch_at": "2026-05-22T20:04:25.043823+08:00",
+      "last_fetch_at": "2026-05-22T20:17:55.731609+08:00",
       "error": "403 Client Error: rate limit exceeded for url: https://api.github.com/repos/ZsgsDesign/NOJ"
     },
     {
@@ -134,7 +134,7 @@
       "domain": "github.com",
       "status": "error",
       "documents": 0,
-      "last_fetch_at": "2026-05-22T20:04:25.043823+08:00",
+      "last_fetch_at": "2026-05-22T20:17:55.731609+08:00",
       "error": "403 Client Error: rate limit exceeded for url: https://api.github.com/repos/NJUPTFreeExams/NJUPT-General-Free-Exams"
     },
     {
@@ -143,7 +143,7 @@
       "domain": "github.com",
       "status": "error",
       "documents": 0,
-      "last_fetch_at": "2026-05-22T20:04:25.043823+08:00",
+      "last_fetch_at": "2026-05-22T20:17:55.731609+08:00",
       "error": "403 Client Error: rate limit exceeded for url: https://api.github.com/repos/NJUPTFreeExams/NJUPT-CST-Free-Exams"
     },
     {
@@ -152,7 +152,7 @@
       "domain": "github.com",
       "status": "error",
       "documents": 0,
-      "last_fetch_at": "2026-05-22T20:04:25.043823+08:00",
+      "last_fetch_at": "2026-05-22T20:17:55.731609+08:00",
       "error": "403 Client Error: rate limit exceeded for url: https://api.github.com/repos/NJUPTFreeExams/NJUPT-CS-FREE"
     },
     {
@@ -161,7 +161,7 @@
       "domain": "github.com",
       "status": "error",
       "documents": 0,
-      "last_fetch_at": "2026-05-22T20:04:25.043823+08:00",
+      "last_fetch_at": "2026-05-22T20:17:55.731609+08:00",
       "error": "403 Client Error: rate limit exceeded for url: https://api.github.com/repos/bmxbmx3/cn_sort"
     },
     {
@@ -170,7 +170,7 @@
       "domain": "github.com",
       "status": "error",
       "documents": 0,
-      "last_fetch_at": "2026-05-22T20:04:25.043823+08:00",
+      "last_fetch_at": "2026-05-22T20:17:55.731609+08:00",
       "error": "403 Client Error: rate limit exceeded for url: https://api.github.com/repos/leftjs/StudentGradesManageSystem"
     },
     {
@@ -179,7 +179,7 @@
       "domain": "github.com",
       "status": "error",
       "documents": 0,
-      "last_fetch_at": "2026-05-22T20:04:25.043823+08:00",
+      "last_fetch_at": "2026-05-22T20:17:55.731609+08:00",
       "error": "403 Client Error: rate limit exceeded for url: https://api.github.com/repos/renyuanzhe/NJUPT-CS-Courses"
     },
     {
@@ -188,7 +188,7 @@
       "domain": "github.com",
       "status": "error",
       "documents": 0,
-      "last_fetch_at": "2026-05-22T20:04:25.043823+08:00",
+      "last_fetch_at": "2026-05-22T20:17:55.731609+08:00",
       "error": "403 Client Error: rate limit exceeded for url: https://api.github.com/repos/Wonz5130/NJUPT-Yellow-Page"
     },
     {
@@ -197,7 +197,7 @@
       "domain": "github.com",
       "status": "error",
       "documents": 0,
-      "last_fetch_at": "2026-05-22T20:04:25.043823+08:00",
+      "last_fetch_at": "2026-05-22T20:17:55.731609+08:00",
       "error": "403 Client Error: rate limit exceeded for url: https://api.github.com/repos/GreenPomelo/Undergraduate"
     },
     {
@@ -206,7 +206,7 @@
       "domain": "github.com",
       "status": "error",
       "documents": 0,
-      "last_fetch_at": "2026-05-22T20:04:25.043823+08:00",
+      "last_fetch_at": "2026-05-22T20:17:55.731609+08:00",
       "error": "403 Client Error: rate limit exceeded for url: https://api.github.com/repos/NJUPTFreeExams/NJUPT-AUTO-Free-Exams"
     },
     {
@@ -215,7 +215,7 @@
       "domain": "github.com",
       "status": "error",
       "documents": 0,
-      "last_fetch_at": "2026-05-22T20:04:25.043823+08:00",
+      "last_fetch_at": "2026-05-22T20:17:55.731609+08:00",
       "error": "403 Client Error: rate limit exceeded for url: https://api.github.com/repos/NJUPT-CG/NCTF2018"
     },
     {
@@ -224,7 +224,7 @@
       "domain": "github.com",
       "status": "error",
       "documents": 0,
-      "last_fetch_at": "2026-05-22T20:04:25.043823+08:00",
+      "last_fetch_at": "2026-05-22T20:17:55.731609+08:00",
       "error": "403 Client Error: rate limit exceeded for url: https://api.github.com/repos/gzr-lgtm/NJUPThesis-Bachelor"
     },
     {
@@ -233,7 +233,7 @@
       "domain": "github.com",
       "status": "error",
       "documents": 0,
-      "last_fetch_at": "2026-05-22T20:04:25.043823+08:00",
+      "last_fetch_at": "2026-05-22T20:17:55.731609+08:00",
       "error": "403 Client Error: rate limit exceeded for url: https://api.github.com/repos/gaoliang/NJUPT-API"
     },
     {
@@ -242,7 +242,7 @@
       "domain": "github.com",
       "status": "error",
       "documents": 0,
-      "last_fetch_at": "2026-05-22T20:04:25.043823+08:00",
+      "last_fetch_at": "2026-05-22T20:17:55.731609+08:00",
       "error": "403 Client Error: rate limit exceeded for url: https://api.github.com/repos/xiafanglongfei/NJUPT-auto-evaluate"
     },
     {
@@ -251,7 +251,7 @@
       "domain": "github.com",
       "status": "error",
       "documents": 0,
-      "last_fetch_at": "2026-05-22T20:04:25.043823+08:00",
+      "last_fetch_at": "2026-05-22T20:17:55.731609+08:00",
       "error": "403 Client Error: rate limit exceeded for url: https://api.github.com/repos/NJUPTFreeExams/NJUPT-TE-Free-Exams"
     },
     {
@@ -260,7 +260,7 @@
       "domain": "github.com",
       "status": "error",
       "documents": 0,
-      "last_fetch_at": "2026-05-22T20:04:25.043823+08:00",
+      "last_fetch_at": "2026-05-22T20:17:55.731609+08:00",
       "error": "403 Client Error: rate limit exceeded for url: https://api.github.com/repos/kaijy91/NJUPT_NET"
     },
     {
@@ -269,7 +269,7 @@
       "domain": "github.com",
       "status": "error",
       "documents": 0,
-      "last_fetch_at": "2026-05-22T20:04:25.043823+08:00",
+      "last_fetch_at": "2026-05-22T20:17:55.731609+08:00",
       "error": "403 Client Error: rate limit exceeded for url: https://api.github.com/repos/s235784/NJUPT_AutoLogin"
     },
     {
@@ -278,7 +278,7 @@
       "domain": "github.com",
       "status": "error",
       "documents": 0,
-      "last_fetch_at": "2026-05-22T20:04:25.043823+08:00",
+      "last_fetch_at": "2026-05-22T20:17:55.731609+08:00",
       "error": "403 Client Error: rate limit exceeded for url: https://api.github.com/repos/Freedomisgood/NjuptCmcc"
     },
     {
@@ -287,7 +287,7 @@
       "domain": "github.com",
       "status": "error",
       "documents": 0,
-      "last_fetch_at": "2026-05-22T20:04:25.043823+08:00",
+      "last_fetch_at": "2026-05-22T20:17:55.731609+08:00",
       "error": "403 Client Error: rate limit exceeded for url: https://api.github.com/repos/love98ooo/ZhengFangJiaoWuSystemTampermonkeyScript"
     },
     {
@@ -296,7 +296,7 @@
       "domain": "github.com",
       "status": "error",
       "documents": 0,
-      "last_fetch_at": "2026-05-22T20:04:25.043823+08:00",
+      "last_fetch_at": "2026-05-22T20:17:55.731609+08:00",
       "error": "403 Client Error: rate limit exceeded for url: https://api.github.com/repos/NJUPT-NAVI/NJUPT-Survival-Guide"
     },
     {
@@ -305,7 +305,7 @@
       "domain": "github.com",
       "status": "error",
       "documents": 0,
-      "last_fetch_at": "2026-05-22T20:04:25.043823+08:00",
+      "last_fetch_at": "2026-05-22T20:17:55.731609+08:00",
       "error": "403 Client Error: rate limit exceeded for url: https://api.github.com/repos/bmxbmx3/finger_vein_recognition"
     },
     {
@@ -314,7 +314,7 @@
       "domain": "github.com",
       "status": "error",
       "documents": 0,
-      "last_fetch_at": "2026-05-22T20:04:25.043823+08:00",
+      "last_fetch_at": "2026-05-22T20:17:55.731609+08:00",
       "error": "403 Client Error: rate limit exceeded for url: https://api.github.com/repos/lux-QAQ/NJUPT_Fastlogin"
     },
     {
@@ -323,7 +323,7 @@
       "domain": "github.com",
       "status": "error",
       "documents": 0,
-      "last_fetch_at": "2026-05-22T20:04:25.043823+08:00",
+      "last_fetch_at": "2026-05-22T20:17:55.731609+08:00",
       "error": "403 Client Error: rate limit exceeded for url: https://api.github.com/repos/NJUPTFreeExams/njuptfreeexams.github.io"
     },
     {
@@ -332,7 +332,7 @@
       "domain": "github.com",
       "status": "error",
       "documents": 0,
-      "last_fetch_at": "2026-05-22T20:04:25.043823+08:00",
+      "last_fetch_at": "2026-05-22T20:17:55.731609+08:00",
       "error": "403 Client Error: rate limit exceeded for url: https://api.github.com/repos/dhiyu/NJUPT-Bachelor"
     },
     {
@@ -341,7 +341,7 @@
       "domain": "github.com",
       "status": "error",
       "documents": 0,
-      "last_fetch_at": "2026-05-22T20:04:25.043823+08:00",
+      "last_fetch_at": "2026-05-22T20:17:55.731609+08:00",
       "error": "403 Client Error: rate limit exceeded for url: https://api.github.com/repos/yosunpeng/postgraduate_test_njupt"
     },
     {
@@ -350,7 +350,7 @@
       "domain": "github.com",
       "status": "error",
       "documents": 0,
-      "last_fetch_at": "2026-05-22T20:04:25.043823+08:00",
+      "last_fetch_at": "2026-05-22T20:17:55.731609+08:00",
       "error": "403 Client Error: rate limit exceeded for url: https://api.github.com/repos/NJUPTFreeExams/NJUPT-InfoSec-Free-Exams"
     },
     {
@@ -359,7 +359,7 @@
       "domain": "github.com",
       "status": "error",
       "documents": 0,
-      "last_fetch_at": "2026-05-22T20:04:25.043823+08:00",
+      "last_fetch_at": "2026-05-22T20:17:55.731609+08:00",
       "error": "403 Client Error: rate limit exceeded for url: https://api.github.com/repos/ace-trump-tech/NJUPT-Graduation-thesis"
     },
     {
@@ -368,7 +368,7 @@
       "domain": "github.com",
       "status": "error",
       "documents": 0,
-      "last_fetch_at": "2026-05-22T20:04:25.043823+08:00",
+      "last_fetch_at": "2026-05-22T20:17:55.731609+08:00",
       "error": "403 Client Error: rate limit exceeded for url: https://api.github.com/repos/Yolumia/NJUPT-NETWORK"
     },
     {
@@ -377,7 +377,7 @@
       "domain": "github.com",
       "status": "error",
       "documents": 0,
-      "last_fetch_at": "2026-05-22T20:04:25.043823+08:00",
+      "last_fetch_at": "2026-05-22T20:17:55.731609+08:00",
       "error": "403 Client Error: rate limit exceeded for url: https://api.github.com/repos/Moonike1217/NJUPTExamICSBuilder"
     },
     {
@@ -386,7 +386,7 @@
       "domain": "github.com",
       "status": "error",
       "documents": 0,
-      "last_fetch_at": "2026-05-22T20:04:25.043823+08:00",
+      "last_fetch_at": "2026-05-22T20:17:55.731609+08:00",
       "error": "403 Client Error: rate limit exceeded for url: https://api.github.com/repos/musnows/Njupt-Wifi-Login"
     }
   ]

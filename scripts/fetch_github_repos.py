@@ -2,6 +2,7 @@ import os
 import json
 import urllib.request
 import urllib.error
+from update_search_index import infer_category
 
 # This script fetches high star njupt repos and appends them to config/github_search_sources.json
 CONFIG_PATH = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "config", "github_search_sources.json")
@@ -46,7 +47,7 @@ def update_config():
         new_source = {
             "repo": repo_full_name,
             "label": description[:30] + ("..." if len(description) > 30 else ""),
-            "category": "项目",
+            "category": infer_category(description),
             "audience": ["本科生", "研究生"],
             "include": ["README.md", "*.md"],
             "exclude": ["**/node_modules/**", "**/dist/**", "**/build/**", "**/.git/**"],

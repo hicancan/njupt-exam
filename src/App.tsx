@@ -394,11 +394,33 @@ function App() {
         }
     }, [classSearchResult.exams.length, classSearchResult.mode, currentClass, searchQuery]);
 
+    useEffect(() => {
+        const handlePopState = () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const classParam = urlParams.get('class')?.toUpperCase();
+            const qParam = urlParams.get('q');
+            
+            setInputValue(classParam || qParam || '');
+            setSearchQuery(classParam || qParam || '');
+            setManualSelection(classParam || null);
+            setSelectedCategory(classParam ? '考试' : '全部');
+            setIsHomeState(!classParam && !qParam);
+        };
+
+        window.addEventListener('popstate', handlePopState);
+        return () => window.removeEventListener('popstate', handlePopState);
+    }, []);
+
     const handleInputChange = (value: string) => {
         setInputValue(value);
     };
 
     const handleSearchSubmit = (value: string) => {
+        const trimmed = value.trim();
+        const nextUrl = trimmed.length >= 2 ? `${window.location.pathname}?${new URLSearchParams({ q: trimmed }).toString()}` : window.location.pathname;
+        if (window.location.search !== new URLSearchParams(nextUrl.split('?')[1] || '').toString()) {
+            window.history.pushState(null, '', nextUrl);
+        }
         setSearchQuery(value);
         setIsHomeState(false);
         if (manualSelection && value.toUpperCase() !== manualSelection) {
@@ -407,6 +429,8 @@ function App() {
     };
 
     const handleQuickSearch = (nextQuery: string, category: CategoryFilter) => {
+        const nextUrl = `${window.location.pathname}?${new URLSearchParams({ q: nextQuery }).toString()}`;
+        window.history.pushState(null, '', nextUrl);
         setInputValue(nextQuery);
         setSearchQuery(nextQuery);
         setSelectedCategory(category);
@@ -416,6 +440,8 @@ function App() {
 
     const handleOpenClass = (className: string) => {
         if (!className) return;
+        const nextUrl = `${window.location.pathname}?${new URLSearchParams({ class: className.toUpperCase() }).toString()}`;
+        window.history.pushState(null, '', nextUrl);
         setInputValue(className.toUpperCase());
         setSearchQuery(className.toUpperCase());
         setSelectedCategory('考试');
@@ -424,11 +450,11 @@ function App() {
     };
 
     const handleGoHome = () => {
+        window.history.pushState(null, '', window.location.pathname);
         setInputValue('');
         setSearchQuery('');
         setSelectedCategory('全部');
         setIsHomeState(true);
-        window.history.replaceState(null, '', window.location.pathname);
     };
 
     const isLoading = examLoading || searchLoading;
