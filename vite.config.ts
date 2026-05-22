@@ -54,6 +54,9 @@ export default defineConfig({
               },
               cacheableResponse: {
                 statuses: [0, 200]
+              },
+              broadcastUpdate: {
+                channelName: 'exam-data-update-channel'
               }
             }
           }

@@ -10,10 +10,12 @@ import { useExamData } from '@/hooks/useExamData';
 import { useClassSearch } from '@/hooks/useClassSearch';
 import { useSelectedExamIds } from '@/hooks/useSelectedExamIds';
 import { usePwaInstall } from '@/hooks/usePwaInstall';
+import { useDataUpdateNotifier } from '@/hooks/useDataUpdateNotifier';
 
 function App() {
     const { exams: allExams, loading, error, sourceUrl, sourceTitle, generatedAt, totalRecords } = useExamData();
     const { canInstall, install } = usePwaInstall();
+    const { newDataAvailable, reloadToUpdate } = useDataUpdateNotifier();
 
     // UI State
     const [inputValue, setInputValue] = useState<string>(() => {
@@ -200,6 +202,21 @@ function App() {
                     </div>
                 </div>
             </footer>
+
+            {/* Update Toast */}
+            {newDataAvailable && (
+                <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-[100] fade-in">
+                    <div className="bg-[#1a73e8] dark:bg-[var(--color-google-blue-dark)] text-white px-5 py-3 rounded-full shadow-lg flex items-center gap-3 text-sm font-medium whitespace-nowrap border border-transparent dark:border-[#3c4043]">
+                        <span>✨ 发现最新的考试数据</span>
+                        <button 
+                            onClick={reloadToUpdate}
+                            className="bg-white text-[#1a73e8] dark:text-[var(--color-google-blue-dark)] px-4 py-1.5 rounded-full hover:bg-gray-100 transition-colors cursor-pointer"
+                        >
+                            立刻刷新
+                        </button>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }
