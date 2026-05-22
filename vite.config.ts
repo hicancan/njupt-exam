@@ -56,7 +56,8 @@ export default defineConfig({
                 statuses: [0, 200]
               },
               broadcastUpdate: {
-                channelName: 'exam-data-update-channel'
+                channelName: 'exam-data-update-channel',
+                options: {}
               }
             }
           }
