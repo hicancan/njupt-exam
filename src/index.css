@@ -16,15 +16,21 @@
   --color-google-bg-dark: #202124;
 }
 
-/* 自定义滚动条样式 */
+/* 自定义滚动条样式 (跨浏览器现代方案) */
+@layer base {
+    * {
+        scrollbar-width: thin;
+        scrollbar-color: #cbd5e1 transparent;
+    }
+}
+
+/* 兼容旧版 Webkit */
 ::-webkit-scrollbar {
     width: 6px;
 }
-
 ::-webkit-scrollbar-track {
     background: transparent;
 }
-
 ::-webkit-scrollbar-thumb {
     background: #cbd5e1;
     border-radius: 3px;
