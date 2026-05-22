@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-22T21:57:58.902589+08:00",
+  "generated_at": "2026-05-22T22:18:03.418021+08:00",
   "total_documents": 18,
   "strategy": "phase1-public-campus-sources-generic-adapter",
   "sources": [
@@ -9,7 +9,7 @@
       "domain": "jwc.njupt.edu.cn",
       "status": "error",
       "documents": 0,
-      "last_fetch_at": "2026-05-22T21:57:58.902589+08:00",
+      "last_fetch_at": "2026-05-22T22:18:03.418021+08:00",
       "error": "name 'NAV_TITLES' is not defined"
     },
     {
@@ -18,7 +18,7 @@
       "domain": "xsc.njupt.edu.cn",
       "status": "error",
       "documents": 0,
-      "last_fetch_at": "2026-05-22T21:57:58.902589+08:00",
+      "last_fetch_at": "2026-05-22T22:18:03.418021+08:00",
       "error": "name 'NAV_TITLES' is not defined"
     },
     {
@@ -27,7 +27,7 @@
       "domain": "pg.njupt.edu.cn",
       "status": "error",
       "documents": 0,
-      "last_fetch_at": "2026-05-22T21:57:58.902589+08:00",
+      "last_fetch_at": "2026-05-22T22:18:03.418021+08:00",
       "error": "name 'NAV_TITLES' is not defined"
     },
     {
@@ -36,7 +36,7 @@
       "domain": "ygb.njupt.edu.cn",
       "status": "error",
       "documents": 0,
-      "last_fetch_at": "2026-05-22T21:57:58.902589+08:00",
+      "last_fetch_at": "2026-05-22T22:18:03.418021+08:00",
       "error": "name 'NAV_TITLES' is not defined"
     },
     {
@@ -45,7 +45,7 @@
       "domain": "youth.njupt.edu.cn",
       "status": "error",
       "documents": 0,
-      "last_fetch_at": "2026-05-22T21:57:58.902589+08:00",
+      "last_fetch_at": "2026-05-22T22:18:03.418021+08:00",
       "error": "name 'NAV_TITLES' is not defined"
     },
     {
@@ -54,7 +54,7 @@
       "domain": "cxcy.njupt.edu.cn",
       "status": "error",
       "documents": 0,
-      "last_fetch_at": "2026-05-22T21:57:58.902589+08:00",
+      "last_fetch_at": "2026-05-22T22:18:03.418021+08:00",
       "error": "name 'NAV_TITLES' is not defined"
     },
     {
@@ -63,7 +63,7 @@
       "domain": "njupt.91job.org.cn",
       "status": "ok",
       "documents": 18,
-      "last_fetch_at": "2026-05-22T21:57:58.902589+08:00"
+      "last_fetch_at": "2026-05-22T22:18:03.418021+08:00"
     },
     {
       "id": "lib",
@@ -71,7 +71,7 @@
       "domain": "lib.njupt.edu.cn",
       "status": "error",
       "documents": 0,
-      "last_fetch_at": "2026-05-22T21:57:58.902589+08:00",
+      "last_fetch_at": "2026-05-22T22:18:03.418021+08:00",
       "error": "name 'NAV_TITLES' is not defined"
     },
     {
@@ -80,7 +80,7 @@
       "domain": "bwc.njupt.edu.cn",
       "status": "error",
       "documents": 0,
-      "last_fetch_at": "2026-05-22T21:57:58.902589+08:00",
+      "last_fetch_at": "2026-05-22T22:18:03.418021+08:00",
       "error": "name 'NAV_TITLES' is not defined"
     },
     {
@@ -89,7 +89,7 @@
       "domain": "hqc.njupt.edu.cn",
       "status": "error",
       "documents": 0,
-      "last_fetch_at": "2026-05-22T21:57:58.902589+08:00",
+      "last_fetch_at": "2026-05-22T22:18:03.418021+08:00",
       "error": "name 'NAV_TITLES' is not defined"
     },
     {
@@ -98,7 +98,7 @@
       "domain": "github.com",
       "status": "error",
       "documents": 0,
-      "last_fetch_at": "2026-05-22T21:57:58.902589+08:00",
+      "last_fetch_at": "2026-05-22T22:18:03.418021+08:00",
       "error": "name 'CATEGORY_KEYWORDS' is not defined"
     },
     {
@@ -107,7 +107,7 @@
       "domain": "github.com",
       "status": "error",
       "documents": 0,
-      "last_fetch_at": "2026-05-22T21:57:58.902589+08:00",
+      "last_fetch_at": "2026-05-22T22:18:03.418021+08:00",
       "error": "name 'CATEGORY_KEYWORDS' is not defined"
     },
     {
@@ -116,7 +116,7 @@
       "domain": "github.com",
       "status": "error",
       "documents": 0,
-      "last_fetch_at": "2026-05-22T21:57:58.902589+08:00",
+      "last_fetch_at": "2026-05-22T22:18:03.418021+08:00",
       "error": "name 'CATEGORY_KEYWORDS' is not defined"
     },
     {
@@ -125,7 +125,7 @@
       "domain": "github.com",
       "status": "error",
       "documents": 0,
-      "last_fetch_at": "2026-05-22T21:57:58.902589+08:00",
+      "last_fetch_at": "2026-05-22T22:18:03.418021+08:00",
       "error": "name 'CATEGORY_KEYWORDS' is not defined"
     },
     {
@@ -134,7 +134,7 @@
       "domain": "github.com",
       "status": "error",
       "documents": 0,
-      "last_fetch_at": "2026-05-22T21:57:58.902589+08:00",
+      "last_fetch_at": "2026-05-22T22:18:03.418021+08:00",
       "error": "name 'CATEGORY_KEYWORDS' is not defined"
     },
     {
@@ -143,7 +143,7 @@
       "domain": "github.com",
       "status": "error",
       "documents": 0,
-      "last_fetch_at": "2026-05-22T21:57:58.902589+08:00",
+      "last_fetch_at": "2026-05-22T22:18:03.418021+08:00",
       "error": "name 'CATEGORY_KEYWORDS' is not defined"
     },
     {
@@ -152,7 +152,7 @@
       "domain": "github.com",
       "status": "error",
       "documents": 0,
-      "last_fetch_at": "2026-05-22T21:57:58.902589+08:00",
+      "last_fetch_at": "2026-05-22T22:18:03.418021+08:00",
       "error": "name 'CATEGORY_KEYWORDS' is not defined"
     },
     {
@@ -161,7 +161,7 @@
       "domain": "github.com",
       "status": "error",
       "documents": 0,
-      "last_fetch_at": "2026-05-22T21:57:58.902589+08:00",
+      "last_fetch_at": "2026-05-22T22:18:03.418021+08:00",
       "error": "name 'CATEGORY_KEYWORDS' is not defined"
     },
     {
@@ -170,7 +170,7 @@
       "domain": "github.com",
       "status": "error",
       "documents": 0,
-      "last_fetch_at": "2026-05-22T21:57:58.902589+08:00",
+      "last_fetch_at": "2026-05-22T22:18:03.418021+08:00",
       "error": "name 'CATEGORY_KEYWORDS' is not defined"
     },
     {
@@ -179,7 +179,7 @@
       "domain": "github.com",
       "status": "error",
       "documents": 0,
-      "last_fetch_at": "2026-05-22T21:57:58.902589+08:00",
+      "last_fetch_at": "2026-05-22T22:18:03.418021+08:00",
       "error": "name 'CATEGORY_KEYWORDS' is not defined"
     },
     {
@@ -188,7 +188,7 @@
       "domain": "github.com",
       "status": "error",
       "documents": 0,
-      "last_fetch_at": "2026-05-22T21:57:58.902589+08:00",
+      "last_fetch_at": "2026-05-22T22:18:03.418021+08:00",
       "error": "name 'CATEGORY_KEYWORDS' is not defined"
     },
     {
@@ -197,7 +197,7 @@
       "domain": "github.com",
       "status": "error",
       "documents": 0,
-      "last_fetch_at": "2026-05-22T21:57:58.902589+08:00",
+      "last_fetch_at": "2026-05-22T22:18:03.418021+08:00",
       "error": "name 'CATEGORY_KEYWORDS' is not defined"
     },
     {
@@ -206,7 +206,7 @@
       "domain": "github.com",
       "status": "error",
       "documents": 0,
-      "last_fetch_at": "2026-05-22T21:57:58.902589+08:00",
+      "last_fetch_at": "2026-05-22T22:18:03.418021+08:00",
       "error": "name 'CATEGORY_KEYWORDS' is not defined"
     },
     {
@@ -215,7 +215,7 @@
       "domain": "github.com",
       "status": "error",
       "documents": 0,
-      "last_fetch_at": "2026-05-22T21:57:58.902589+08:00",
+      "last_fetch_at": "2026-05-22T22:18:03.418021+08:00",
       "error": "name 'CATEGORY_KEYWORDS' is not defined"
     },
     {
@@ -224,7 +224,7 @@
       "domain": "github.com",
       "status": "error",
       "documents": 0,
-      "last_fetch_at": "2026-05-22T21:57:58.902589+08:00",
+      "last_fetch_at": "2026-05-22T22:18:03.418021+08:00",
       "error": "name 'CATEGORY_KEYWORDS' is not defined"
     },
     {
@@ -233,7 +233,7 @@
       "domain": "github.com",
       "status": "error",
       "documents": 0,
-      "last_fetch_at": "2026-05-22T21:57:58.902589+08:00",
+      "last_fetch_at": "2026-05-22T22:18:03.418021+08:00",
       "error": "name 'CATEGORY_KEYWORDS' is not defined"
     },
     {
@@ -242,7 +242,7 @@
       "domain": "github.com",
       "status": "error",
       "documents": 0,
-      "last_fetch_at": "2026-05-22T21:57:58.902589+08:00",
+      "last_fetch_at": "2026-05-22T22:18:03.418021+08:00",
       "error": "name 'CATEGORY_KEYWORDS' is not defined"
     },
     {
@@ -251,7 +251,7 @@
       "domain": "github.com",
       "status": "error",
       "documents": 0,
-      "last_fetch_at": "2026-05-22T21:57:58.902589+08:00",
+      "last_fetch_at": "2026-05-22T22:18:03.418021+08:00",
       "error": "name 'CATEGORY_KEYWORDS' is not defined"
     },
     {
@@ -260,7 +260,7 @@
       "domain": "github.com",
       "status": "error",
       "documents": 0,
-      "last_fetch_at": "2026-05-22T21:57:58.902589+08:00",
+      "last_fetch_at": "2026-05-22T22:18:03.418021+08:00",
       "error": "name 'CATEGORY_KEYWORDS' is not defined"
     },
     {
@@ -269,7 +269,7 @@
       "domain": "github.com",
       "status": "error",
       "documents": 0,
-      "last_fetch_at": "2026-05-22T21:57:58.902589+08:00",
+      "last_fetch_at": "2026-05-22T22:18:03.418021+08:00",
       "error": "name 'CATEGORY_KEYWORDS' is not defined"
     },
     {
@@ -278,7 +278,7 @@
       "domain": "github.com",
       "status": "error",
       "documents": 0,
-      "last_fetch_at": "2026-05-22T21:57:58.902589+08:00",
+      "last_fetch_at": "2026-05-22T22:18:03.418021+08:00",
       "error": "name 'CATEGORY_KEYWORDS' is not defined"
     },
     {
@@ -287,7 +287,7 @@
       "domain": "github.com",
       "status": "error",
       "documents": 0,
-      "last_fetch_at": "2026-05-22T21:57:58.902589+08:00",
+      "last_fetch_at": "2026-05-22T22:18:03.418021+08:00",
       "error": "name 'CATEGORY_KEYWORDS' is not defined"
     },
     {
@@ -296,7 +296,7 @@
       "domain": "github.com",
       "status": "error",
       "documents": 0,
-      "last_fetch_at": "2026-05-22T21:57:58.902589+08:00",
+      "last_fetch_at": "2026-05-22T22:18:03.418021+08:00",
       "error": "name 'CATEGORY_KEYWORDS' is not defined"
     },
     {
@@ -305,7 +305,7 @@
       "domain": "github.com",
       "status": "error",
       "documents": 0,
-      "last_fetch_at": "2026-05-22T21:57:58.902589+08:00",
+      "last_fetch_at": "2026-05-22T22:18:03.418021+08:00",
       "error": "name 'CATEGORY_KEYWORDS' is not defined"
     },
     {
@@ -314,7 +314,7 @@
       "domain": "github.com",
       "status": "error",
       "documents": 0,
-      "last_fetch_at": "2026-05-22T21:57:58.902589+08:00",
+      "last_fetch_at": "2026-05-22T22:18:03.418021+08:00",
       "error": "name 'CATEGORY_KEYWORDS' is not defined"
     },
     {
@@ -323,7 +323,7 @@
       "domain": "github.com",
       "status": "error",
       "documents": 0,
-      "last_fetch_at": "2026-05-22T21:57:58.902589+08:00",
+      "last_fetch_at": "2026-05-22T22:18:03.418021+08:00",
       "error": "name 'CATEGORY_KEYWORDS' is not defined"
     },
     {
@@ -332,7 +332,7 @@
       "domain": "github.com",
       "status": "error",
       "documents": 0,
-      "last_fetch_at": "2026-05-22T21:57:58.902589+08:00",
+      "last_fetch_at": "2026-05-22T22:18:03.418021+08:00",
       "error": "name 'CATEGORY_KEYWORDS' is not defined"
     },
     {
@@ -341,7 +341,7 @@
       "domain": "github.com",
       "status": "error",
       "documents": 0,
-      "last_fetch_at": "2026-05-22T21:57:58.902589+08:00",
+      "last_fetch_at": "2026-05-22T22:18:03.418021+08:00",
       "error": "name 'CATEGORY_KEYWORDS' is not defined"
     },
     {
@@ -350,7 +350,7 @@
       "domain": "github.com",
       "status": "error",
       "documents": 0,
-      "last_fetch_at": "2026-05-22T21:57:58.902589+08:00",
+      "last_fetch_at": "2026-05-22T22:18:03.418021+08:00",
       "error": "name 'CATEGORY_KEYWORDS' is not defined"
     },
     {
@@ -359,7 +359,7 @@
       "domain": "github.com",
       "status": "error",
       "documents": 0,
-      "last_fetch_at": "2026-05-22T21:57:58.902589+08:00",
+      "last_fetch_at": "2026-05-22T22:18:03.418021+08:00",
       "error": "name 'CATEGORY_KEYWORDS' is not defined"
     },
     {
@@ -368,7 +368,7 @@
       "domain": "github.com",
       "status": "error",
       "documents": 0,
-      "last_fetch_at": "2026-05-22T21:57:58.902589+08:00",
+      "last_fetch_at": "2026-05-22T22:18:03.418021+08:00",
       "error": "name 'CATEGORY_KEYWORDS' is not defined"
     },
     {
@@ -377,7 +377,7 @@
       "domain": "github.com",
       "status": "error",
       "documents": 0,
-      "last_fetch_at": "2026-05-22T21:57:58.902589+08:00",
+      "last_fetch_at": "2026-05-22T22:18:03.418021+08:00",
       "error": "name 'CATEGORY_KEYWORDS' is not defined"
     }
   ]
