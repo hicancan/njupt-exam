@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Exam } from '@/types';
+import { buildExamCalendarFilename } from '@/utils/downloadFilename';
 import { generateICSContent } from '@/utils/icsGenerator';
 import { ExamCard } from './ExamCard';
 import { ReminderSettings } from './ReminderSettings';
@@ -14,7 +15,22 @@ interface ExamDetailProps {
     onRemindersChange: (reminders: number[]) => void;
     sourceUrl?: string | null;
     sourceTitle?: string | null;
+    generatedAt?: string | null;
+    totalRecords?: number | null;
 }
+
+const formatGeneratedAt = (isoString?: string | null): string | null => {
+    if (!isoString) return null;
+    const date = new Date(isoString);
+    if (Number.isNaN(date.getTime())) return isoString;
+    return date.toLocaleString('zh-CN', {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit'
+    });
+};
 
 export function ExamDetail({
     className,
@@ -24,16 +40,28 @@ export function ExamDetail({
     reminders,
     onRemindersChange,
     sourceUrl,
-    sourceTitle
+    sourceTitle,
+    generatedAt,
+    totalRecords
 }: ExamDetailProps) {
     const [copyState, setCopyState] = useState<boolean>(false);
+    const generatedLabel = formatGeneratedAt(generatedAt);
 
     const copyShareLink = () => {
         const url = window.location.href;
-        navigator.clipboard.writeText(url).then(() => {
-            setCopyState(true);
-            setTimeout(() => setCopyState(false), 2000);
-        });
+        if (!navigator.clipboard) {
+            alert('复制失败，请手动复制浏览器地址栏链接');
+            return;
+        }
+
+        navigator.clipboard.writeText(url)
+            .then(() => {
+                setCopyState(true);
+                setTimeout(() => setCopyState(false), 2000);
+            })
+            .catch(() => {
+                alert('复制失败，请手动复制浏览器地址栏链接');
+            });
     };
 
     const downloadICS = () => {
@@ -48,12 +76,14 @@ export function ExamDetail({
         try {
             const content = generateICSContent(validExams, className, reminders);
             const blob = new Blob([content], { type: 'text/calendar;charset=utf-8' });
+            const objectUrl = URL.createObjectURL(blob);
             const link = document.createElement('a');
-            link.href = URL.createObjectURL(blob);
-            link.download = `NJUPT_Exams_${className}.ics`;
+            link.href = objectUrl;
+            link.download = buildExamCalendarFilename(className);
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
+            window.setTimeout(() => URL.revokeObjectURL(objectUrl), 0);
         } catch (err) {
             console.error('ICS generation failed:', err);
             alert('日历文件生成失败，请稍后重试或联系开发者');
@@ -126,7 +156,10 @@ export function ExamDetail({
                     ) : (
                         <span> 教务处通知 </span>
                     )}
-                    ，由程序每 6 小时自动同步并解析生成。虽有严格数据校验，但无法绝对保证 100% 无误，开发者不对因依赖本工具而导致的任何考试延误或缺考等后果承担责任。
+                    ，由程序每 6 小时自动同步并解析生成
+                    {generatedLabel ? <span>，数据生成时间：{generatedLabel}</span> : null}
+                    {typeof totalRecords === 'number' ? <span>，当前记录数：{totalRecords}</span> : null}
+                    。虽已做结构校验，但无法绝对保证 100% 无误，开发者不对因依赖本工具而导致的任何考试延误或缺考等后果承担责任。
                 </p>
             </div>
         </div>

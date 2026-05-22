@@ -85,6 +85,10 @@ jobs:
         if: steps.check_updates.outputs.skip_deploy != 'true'
         run: npm run lint
 
+      - name: Run tests 🧪
+        if: steps.check_updates.outputs.skip_deploy != 'true'
+        run: npm test
+
       - name: Build project 🏗️
         if: steps.check_updates.outputs.skip_deploy != 'true'
         run: npm run build

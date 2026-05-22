@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Exam, Manifest } from '@/types';
 import { APP_CONFIG } from '@/constants';
+import { assertManifestMatchesExams, parseExamData, parseManifest } from '@/utils/examDataContract';
 
 interface UseExamDataResult {
     exams: Exam[];
@@ -8,7 +9,23 @@ interface UseExamDataResult {
     error: string | null;
     sourceUrl: string | null;
     sourceTitle: string | null;
+    generatedAt: string | null;
+    totalRecords: number | null;
 }
+
+const fetchJson = async (url: string, signal: AbortSignal): Promise<unknown> => {
+    const response = await fetch(url, { cache: 'no-cache', signal });
+
+    if (!response.ok) {
+        throw new Error(`数据请求失败: ${url} HTTP ${response.status}`);
+    }
+
+    try {
+        return await response.json();
+    } catch {
+        throw new Error(`数据文件不是有效 JSON: ${url}`);
+    }
+};
 
 export function useExamData(): UseExamDataResult {
     const [exams, setExams] = useState<Exam[]>([]);
@@ -16,15 +33,21 @@ export function useExamData(): UseExamDataResult {
     const [error, setError] = useState<string | null>(null);
     const [sourceUrl, setSourceUrl] = useState<string | null>(null);
     const [sourceTitle, setSourceTitle] = useState<string | null>(null);
+    const [generatedAt, setGeneratedAt] = useState<string | null>(null);
+    const [totalRecords, setTotalRecords] = useState<number | null>(null);
 
     useEffect(() => {
-        const fetchOptions: RequestInit = { cache: 'no-cache' };
+        const controller = new AbortController();
 
         Promise.all([
-            fetch(APP_CONFIG.DATA_URLS.EXAMS, fetchOptions).then(r => r.json() as Promise<Exam[]>),
-            fetch(APP_CONFIG.DATA_URLS.SUMMARY, fetchOptions).then(r => r.json() as Promise<Manifest>).catch(() => null)
+            fetchJson(APP_CONFIG.DATA_URLS.EXAMS, controller.signal),
+            fetchJson(APP_CONFIG.DATA_URLS.SUMMARY, controller.signal)
         ])
-            .then(([examsData, manifestData]) => {
+            .then(([examsPayload, manifestPayload]) => {
+                const examsData = parseExamData(examsPayload, APP_CONFIG.DATA_URLS.EXAMS);
+                const manifestData: Manifest = parseManifest(manifestPayload, APP_CONFIG.DATA_URLS.SUMMARY);
+                assertManifestMatchesExams(manifestData, examsData);
+
                 const sortedExams = [...examsData].sort((a, b) => {
                     if (a.start_timestamp && b.start_timestamp) {
                         return a.start_timestamp.localeCompare(b.start_timestamp);
@@ -33,20 +56,23 @@ export function useExamData(): UseExamDataResult {
                 });
 
                 setExams(sortedExams);
-
-                if (manifestData && manifestData.generated_at) {
-                    setSourceUrl(manifestData.source_url || null);
-                    setSourceTitle(manifestData.source_title || null);
-                }
-
+                setSourceUrl(manifestData.source_url || null);
+                setSourceTitle(manifestData.source_title || null);
+                setGeneratedAt(manifestData.generated_at);
+                setTotalRecords(manifestData.total_records);
                 setLoading(false);
             })
             .catch(err => {
+                if (err instanceof DOMException && err.name === 'AbortError') {
+                    return;
+                }
                 console.error(err);
-                setError(`无法加载数据，请检查网络连接 (${APP_CONFIG.DATA_URLS.EXAMS})`);
+                setError(err instanceof Error ? err.message : '无法加载数据：未知错误');
                 setLoading(false);
             });
+
+        return () => controller.abort();
     }, []);
 
-    return { exams, loading, error, sourceUrl, sourceTitle };
+    return { exams, loading, error, sourceUrl, sourceTitle, generatedAt, totalRecords };
 }

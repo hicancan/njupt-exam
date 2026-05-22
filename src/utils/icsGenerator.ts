@@ -19,7 +19,7 @@ const formatICSDate = (isoString?: string): string | null => {
  * 生成 ASCII 安全的 UID
  * RFC 5545 建议 UID 使用 ASCII 字符以确保兼容性
  */
-const generateUID = (examId: string, index: number): string => {
+const generateUID = (examId: string): string => {
     // 将中文文件名转换为 hash
     let hash = 0;
     for (let i = 0; i < examId.length; i++) {
@@ -28,7 +28,7 @@ const generateUID = (examId: string, index: number): string => {
         hash = hash & hash; // Convert to 32bit integer
     }
     const hashStr = Math.abs(hash).toString(36);
-    return `exam-${hashStr}-${index}@${APP_CONFIG.DOMAIN}`;
+    return `exam-${hashStr}@${APP_CONFIG.DOMAIN}`;
 };
 
 // RFC 5545 标准要求转义特殊字符
@@ -106,11 +106,14 @@ export const generateICSContent = (exams: Exam[], className: string, reminders: 
         'END:VTIMEZONE'
     ];
 
-    exams.forEach((exam, index) => {
+    exams.forEach((exam) => {
         if (!exam.start_timestamp || !exam.end_timestamp) return;
 
         const start = formatICSDate(exam.start_timestamp);
         const end = formatICSDate(exam.end_timestamp);
+        if (!start || !end) {
+            throw new Error(`Invalid exam time for ${exam.id}`);
+        }
 
         const descText = [
             `课程代码: ${exam.course_code || '-'}`,
@@ -126,7 +129,7 @@ export const generateICSContent = (exams: Exam[], className: string, reminders: 
         const summary = exam.course_name;
 
         lines.push('BEGIN:VEVENT');
-        lines.push(`UID:${generateUID(exam.id, index)}`);
+        lines.push(`UID:${generateUID(exam.id)}`);
         lines.push(`DTSTAMP:${now}`);
         // 修复：强制指定亚洲/上海时区，避免浮动时间问题
         lines.push(`DTSTART;TZID=Asia/Shanghai:${start}`);

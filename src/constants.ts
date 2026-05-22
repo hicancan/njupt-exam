@@ -1,5 +1,5 @@
 export const APP_CONFIG = {
-    APP_NAME: 'NJUPT Exam Sync',
+    APP_NAME: 'njupt-exam',
     PAGE_TITLE: '考试日程助手',
     PAGE_SUBTITLE: '南邮学子专属 · 班级号极速查询 · 自动同步',
     DOMAIN: 'hicancan.top',

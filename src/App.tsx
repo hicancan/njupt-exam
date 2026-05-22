@@ -1,88 +1,42 @@
-import { useState, useEffect, useMemo, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { UptimeDisplay } from './components/UptimeDisplay';
 import { ThemeToggle } from './components/ThemeToggle';
 import { SearchInput } from './components/SearchInput';
 import { ExamList } from './components/ExamList';
 import { ExamDetail } from './components/ExamDetail';
 import { Logo } from './components/Logo';
-import { SearchResult } from '@/types';
 import { APP_CONFIG } from '@/constants';
 import { useExamData } from '@/hooks/useExamData';
+import { useClassSearch } from '@/hooks/useClassSearch';
+import { useSelectedExamIds } from '@/hooks/useSelectedExamIds';
 
 function App() {
-    const { exams: allExams, loading, error, sourceUrl, sourceTitle } = useExamData();
+    const { exams: allExams, loading, error, sourceUrl, sourceTitle, generatedAt, totalRecords } = useExamData();
 
     // UI State
     const [inputValue, setInputValue] = useState<string>(() => {
         const urlParams = new URLSearchParams(window.location.search);
-        return urlParams.get('class') || '';
+        return urlParams.get('class')?.toUpperCase() || '';
     });
     const [manualSelection, setManualSelection] = useState<string | null>(() => {
         const urlParams = new URLSearchParams(window.location.search);
-        return urlParams.get('class') || null;
+        return urlParams.get('class')?.toUpperCase() || null;
     });
     const [reminders, setReminders] = useState<number[]>([30, 60]);
-    const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
 
-    // 追踪已同步选中状态的班级，避免重复设置
-    const prevSyncedClassRef = useRef<string | null>(null);
+    const searchResult = useClassSearch(allExams, inputValue, manualSelection);
+    const currentClass = searchResult.mode === 'DETAIL' ? searchResult.classes[0] || null : null;
+    const { selectedIds, toggleExamSelection } = useSelectedExamIds(currentClass, searchResult.exams);
 
-    const searchResult = useMemo<SearchResult>(() => {
-        if (!inputValue || inputValue.length < 2) {
-            return { mode: 'EMPTY', classes: [], exams: [] };
-        }
-        const term = inputValue.trim().toUpperCase();
-        if (manualSelection) {
-            return {
-                mode: 'DETAIL',
-                classes: [manualSelection],
-                exams: allExams.filter(e => e.class_name === manualSelection)
-            };
-        }
-        const matchedExams = allExams.filter(e =>
-            e.class_name && e.class_name.toUpperCase().includes(term)
-        );
-        const uniqueClasses = Array.from(new Set(matchedExams.map(e => e.class_name))).sort();
-        if (uniqueClasses.length === 0) return { mode: 'NOT_FOUND', classes: [], exams: [] };
-        if (uniqueClasses.length === 1) {
-            return { mode: 'DETAIL', classes: uniqueClasses, exams: matchedExams };
-        }
-        return { mode: 'LIST', classes: uniqueClasses, exams: [] };
-    }, [allExams, inputValue, manualSelection]);
-
-    /**
-     * 处理选中状态同步和 URL 同步
-     * 
-     * 注意：此处故意在 useEffect 中调用 setSelectedIds。
-     * React 19 的 react-hooks/set-state-in-effect 规则禁止这样做，
-     * 但这是"响应外部变化自动同步状态"的合法需求：
-     * - 不能使用 useMemo（因为用户可以手动修改选中状态）
-     * - 不能在渲染期间访问 ref（react-hooks/refs 规则）
-     * - 不能用 key 重置（会丢失用户的其他交互状态）
-     * 
-     * 使用 prevSyncedClassRef 确保只在班级实际变化时才更新选中状态，
-     * 避免用户手动取消勾选后被重新全选。
-     */
     useEffect(() => {
-        const currentClass = searchResult.mode === 'DETAIL' ? searchResult.classes[0] : null;
-
         if (searchResult.mode === 'DETAIL' && currentClass && searchResult.exams.length > 0) {
-            // 只在班级变化时更新选中状态
-            if (currentClass !== prevSyncedClassRef.current) {
-                prevSyncedClassRef.current = currentClass;
-                // eslint-disable-next-line react-hooks/set-state-in-effect -- 合法场景：响应班级变化自动同步初始选中状态
-                setSelectedIds(new Set(searchResult.exams.map(e => e.id)));
-            }
-            // 同步 URL
-            const newUrl = `${window.location.pathname}?class=${currentClass}`;
+            const query = new URLSearchParams({ class: currentClass }).toString();
+            const newUrl = `${window.location.pathname}?${query}`;
             window.history.replaceState(null, '', newUrl);
         } else if (searchResult.mode === 'EMPTY') {
-            prevSyncedClassRef.current = null;
             window.history.replaceState(null, '', window.location.pathname);
-        } else {
-            prevSyncedClassRef.current = null;
         }
-    }, [searchResult.mode, searchResult.classes, searchResult.exams]);
+    }, [currentClass, searchResult.exams.length, searchResult.mode]);
 
     const handleInput = (val: string) => {
         setInputValue(val);
@@ -94,13 +48,6 @@ function App() {
     const handleClassClick = (cls: string) => {
         setInputValue(cls);
         setManualSelection(cls);
-    };
-
-    const toggleExamSelection = (id: string) => {
-        const newSet = new Set(selectedIds);
-        if (newSet.has(id)) newSet.delete(id);
-        else newSet.add(id);
-        setSelectedIds(newSet);
     };
 
     if (loading) return (
@@ -203,6 +150,8 @@ function App() {
                             onRemindersChange={setReminders}
                             sourceUrl={sourceUrl}
                             sourceTitle={sourceTitle}
+                            generatedAt={generatedAt}
+                            totalRecords={totalRecords}
                         />
                     )}
                 </div>

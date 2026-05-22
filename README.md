@@ -1,4 +1,4 @@
-# 📅 NJUPT Exam Sync (南邮考试日程助手)
+# 📅 njupt-exam (南邮考试日程助手)
 
 <div align="center">
 
@@ -20,7 +20,7 @@
 
 ## 📖 项目简介 (Introduction)
 
-**NJUPT Exam Sync** 是一个轻量级、无需登录的纯前端工具，旨在解决教务处 Excel 考表查询繁琐、难以保存的问题。
+**njupt-exam** 是一个轻量级、无需登录的纯前端工具，旨在解决教务处 Excel 考表查询繁琐、难以保存的问题。
 
 只需输入班级号，即可快速筛选出你的期末考试安排。不仅支持**模糊搜索**，还支持**自主勾选**需要参加的考试（完美解决重修/免修的个性化需求），并一键导出 `.ics` 日历文件。
 
@@ -116,7 +116,7 @@ npm run lint
 ## 📂 项目结构 (Project Structure)
 
 ```text
-NJUPT-Exam/
+njupt-exam/
 ├── .github/workflows/         # 🔄 CI/CD 工作流
 │   ├── auto-update.yml        # 自动爬取教务数据 (每6小时)
 │   └── deploy.yml             # 自动构建部署 GitHub Pages
