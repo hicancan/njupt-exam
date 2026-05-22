@@ -81,11 +81,9 @@ function SearchResultCard({ document, onOpenClass }: SearchResultCardProps) {
             <h3 className="text-[20px] leading-snug font-medium text-[#1a0dab] dark:text-[#8ab4f8] group-hover:underline break-words">
                 {document.title}
             </h3>
-            <div className="mt-1 text-[14px] text-[#4d5156] dark:text-[#bdc1c6]">
+            <div className="mt-1 text-[14px] text-[#4d5156] dark:text-[#bdc1c6] line-clamp-2 break-words">
                 <span className="text-[#70757a] dark:text-[#9aa0a6] font-medium mr-2">{formatSearchDate(document.published_at)}</span>
-                <span className="line-clamp-2 inline">
-                    {document.summary || document.content}
-                </span>
+                {document.summary || document.content}
             </div>
         </Wrapper>
     );
