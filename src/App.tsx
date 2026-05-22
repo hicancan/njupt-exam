@@ -9,9 +9,11 @@ import { APP_CONFIG } from '@/constants';
 import { useExamData } from '@/hooks/useExamData';
 import { useClassSearch } from '@/hooks/useClassSearch';
 import { useSelectedExamIds } from '@/hooks/useSelectedExamIds';
+import { usePwaInstall } from '@/hooks/usePwaInstall';
 
 function App() {
     const { exams: allExams, loading, error, sourceUrl, sourceTitle, generatedAt, totalRecords } = useExamData();
+    const { canInstall, install } = usePwaInstall();
 
     // UI State
     const [inputValue, setInputValue] = useState<string>(() => {
@@ -117,6 +119,30 @@ function App() {
                         <Logo size="large" />
                         <div className="w-full">
                             <SearchInput value={inputValue} onChange={handleInput} />
+                        </div>
+                        <div className="mt-8 flex flex-row justify-center gap-3 w-full">
+                            {canInstall ? (
+                                <button 
+                                    onClick={install}
+                                    className="bg-[#f8f9fa] dark:bg-[#303134] text-[#3c4043] dark:text-[#e8eaed] border border-[#f8f9fa] dark:border-[#303134] hover:border-[#dadce0] dark:hover:border-[#5f6368] hover:shadow-sm px-4 py-2 rounded text-sm transition-all focus:outline-none focus:ring-2 focus:ring-[var(--color-google-blue)] whitespace-nowrap"
+                                >
+                                    添加到主屏幕 (PWA)
+                                </button>
+                            ) : (
+                                <button 
+                                    disabled
+                                    className="bg-[#f8f9fa] dark:bg-[#303134] text-[#3c4043] dark:text-[#e8eaed] border border-[#f8f9fa] dark:border-[#303134] opacity-50 cursor-not-allowed px-4 py-2 rounded text-sm whitespace-nowrap"
+                                    title="当前环境不支持或已安装"
+                                >
+                                    添加到主屏幕 (PWA)
+                                </button>
+                            )}
+                            <a 
+                                href="https://github.com/hicancan/njupt-exam/releases/latest/download/app-release.apk"
+                                className="bg-[#f8f9fa] dark:bg-[#303134] text-[#3c4043] dark:text-[#e8eaed] border border-[#f8f9fa] dark:border-[#303134] hover:border-[#dadce0] dark:hover:border-[#5f6368] hover:shadow-sm px-4 py-2 rounded text-sm transition-all focus:outline-none focus:ring-2 focus:ring-[var(--color-google-blue)] whitespace-nowrap"
+                            >
+                                下载 Android APK
+                            </a>
                         </div>
                     </div>
                 )}
