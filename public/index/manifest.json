@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-22T22:33:05.878398+08:00",
+  "generated_at": "2026-05-22T22:36:06.246122+08:00",
   "total_documents": 18,
   "strategy": "phase1-public-campus-sources-generic-adapter",
   "sources": [
@@ -9,7 +9,7 @@
       "domain": "jwc.njupt.edu.cn",
       "status": "error",
       "documents": 0,
-      "last_fetch_at": "2026-05-22T22:33:05.878398+08:00",
+      "last_fetch_at": "2026-05-22T22:36:06.246122+08:00",
       "error": "name 'NAV_TITLES' is not defined"
     },
     {
@@ -18,7 +18,7 @@
       "domain": "xsc.njupt.edu.cn",
       "status": "error",
       "documents": 0,
-      "last_fetch_at": "2026-05-22T22:33:05.878398+08:00",
+      "last_fetch_at": "2026-05-22T22:36:06.246122+08:00",
       "error": "name 'NAV_TITLES' is not defined"
     },
     {
@@ -27,7 +27,7 @@
       "domain": "pg.njupt.edu.cn",
       "status": "error",
       "documents": 0,
-      "last_fetch_at": "2026-05-22T22:33:05.878398+08:00",
+      "last_fetch_at": "2026-05-22T22:36:06.246122+08:00",
       "error": "name 'NAV_TITLES' is not defined"
     },
     {
@@ -36,7 +36,7 @@
       "domain": "ygb.njupt.edu.cn",
       "status": "error",
       "documents": 0,
-      "last_fetch_at": "2026-05-22T22:33:05.878398+08:00",
+      "last_fetch_at": "2026-05-22T22:36:06.246122+08:00",
       "error": "name 'NAV_TITLES' is not defined"
     },
     {
@@ -45,7 +45,7 @@
       "domain": "youth.njupt.edu.cn",
       "status": "error",
       "documents": 0,
-      "last_fetch_at": "2026-05-22T22:33:05.878398+08:00",
+      "last_fetch_at": "2026-05-22T22:36:06.246122+08:00",
       "error": "name 'NAV_TITLES' is not defined"
     },
     {
@@ -54,7 +54,7 @@
       "domain": "cxcy.njupt.edu.cn",
       "status": "error",
       "documents": 0,
-      "last_fetch_at": "2026-05-22T22:33:05.878398+08:00",
+      "last_fetch_at": "2026-05-22T22:36:06.246122+08:00",
       "error": "name 'NAV_TITLES' is not defined"
     },
     {
@@ -63,7 +63,7 @@
       "domain": "njupt.91job.org.cn",
       "status": "ok",
       "documents": 18,
-      "last_fetch_at": "2026-05-22T22:33:05.878398+08:00"
+      "last_fetch_at": "2026-05-22T22:36:06.246122+08:00"
     },
     {
       "id": "lib",
@@ -71,7 +71,7 @@
       "domain": "lib.njupt.edu.cn",
       "status": "error",
       "documents": 0,
-      "last_fetch_at": "2026-05-22T22:33:05.878398+08:00",
+      "last_fetch_at": "2026-05-22T22:36:06.246122+08:00",
       "error": "name 'NAV_TITLES' is not defined"
     },
     {
@@ -80,7 +80,7 @@
       "domain": "bwc.njupt.edu.cn",
       "status": "error",
       "documents": 0,
-      "last_fetch_at": "2026-05-22T22:33:05.878398+08:00",
+      "last_fetch_at": "2026-05-22T22:36:06.246122+08:00",
       "error": "name 'NAV_TITLES' is not defined"
     },
     {
@@ -89,7 +89,7 @@
       "domain": "hqc.njupt.edu.cn",
       "status": "error",
       "documents": 0,
-      "last_fetch_at": "2026-05-22T22:33:05.878398+08:00",
+      "last_fetch_at": "2026-05-22T22:36:06.246122+08:00",
       "error": "name 'NAV_TITLES' is not defined"
     },
     {
@@ -98,7 +98,7 @@
       "domain": "github.com",
       "status": "error",
       "documents": 0,
-      "last_fetch_at": "2026-05-22T22:33:05.878398+08:00",
+      "last_fetch_at": "2026-05-22T22:36:06.246122+08:00",
       "error": "name 'CATEGORY_KEYWORDS' is not defined"
     },
     {
@@ -107,17 +107,17 @@
       "domain": "github.com",
       "status": "error",
       "documents": 0,
-      "last_fetch_at": "2026-05-22T22:33:05.878398+08:00",
+      "last_fetch_at": "2026-05-22T22:36:06.246122+08:00",
       "error": "name 'CATEGORY_KEYWORDS' is not defined"
     },
     {
       "id": "github:ZsgsDesign/NOJ",
       "name": "⚡ The most advanced open-sourc...",
       "domain": "github.com",
-      "status": "error",
+      "status": "ok",
       "documents": 0,
-      "last_fetch_at": "2026-05-22T22:33:05.878398+08:00",
-      "error": "name 'CATEGORY_KEYWORDS' is not defined"
+      "last_fetch_at": "2026-05-22T22:36:06.246122+08:00",
+      "candidates": 5
     },
     {
       "id": "github:NJUPTFreeExams/NJUPT-General-Free-Exams",
@@ -125,17 +125,17 @@
       "domain": "github.com",
       "status": "error",
       "documents": 0,
-      "last_fetch_at": "2026-05-22T22:33:05.878398+08:00",
+      "last_fetch_at": "2026-05-22T22:36:06.246122+08:00",
       "error": "name 'CATEGORY_KEYWORDS' is not defined"
     },
     {
       "id": "github:NJUPTFreeExams/NJUPT-CST-Free-Exams",
       "name": "【Deprecated】南京邮电大学计算机科学与技术专业历年...",
       "domain": "github.com",
-      "status": "error",
+      "status": "ok",
       "documents": 0,
-      "last_fetch_at": "2026-05-22T22:33:05.878398+08:00",
-      "error": "name 'CATEGORY_KEYWORDS' is not defined"
+      "last_fetch_at": "2026-05-22T22:36:06.246122+08:00",
+      "candidates": 1
     },
     {
       "id": "github:NJUPTFreeExams/NJUPT-CS-FREE",
@@ -143,116 +143,116 @@
       "domain": "github.com",
       "status": "error",
       "documents": 0,
-      "last_fetch_at": "2026-05-22T22:33:05.878398+08:00",
+      "last_fetch_at": "2026-05-22T22:36:06.246122+08:00",
       "error": "name 'CATEGORY_KEYWORDS' is not defined"
     },
     {
       "id": "github:bmxbmx3/cn_sort",
       "name": "中文排序：按拼音/笔顺快速排序简体中文词组（百万数量级，可含...",
       "domain": "github.com",
-      "status": "error",
+      "status": "ok",
       "documents": 0,
-      "last_fetch_at": "2026-05-22T22:33:05.878398+08:00",
-      "error": "name 'CATEGORY_KEYWORDS' is not defined"
+      "last_fetch_at": "2026-05-22T22:36:06.246122+08:00",
+      "candidates": 1
     },
     {
       "id": "github:leftjs/StudentGradesManageSystem",
       "name": "student grades manage system, ...",
       "domain": "github.com",
-      "status": "error",
+      "status": "ok",
       "documents": 0,
-      "last_fetch_at": "2026-05-22T22:33:05.878398+08:00",
-      "error": "name 'CATEGORY_KEYWORDS' is not defined"
+      "last_fetch_at": "2026-05-22T22:36:06.246122+08:00",
+      "candidates": 1
     },
     {
       "id": "github:renyuanzhe/NJUPT-CS-Courses",
       "name": "NJUPT南京邮电大学,计算机相关课程的实验报告，大作业以及...",
       "domain": "github.com",
-      "status": "error",
+      "status": "ok",
       "documents": 0,
-      "last_fetch_at": "2026-05-22T22:33:05.878398+08:00",
-      "error": "name 'CATEGORY_KEYWORDS' is not defined"
+      "last_fetch_at": "2026-05-22T22:36:06.246122+08:00",
+      "candidates": 1
     },
     {
       "id": "github:Wonz5130/NJUPT-Yellow-Page",
       "name": ":yum:南京邮电大学黄页",
       "domain": "github.com",
-      "status": "error",
+      "status": "ok",
       "documents": 0,
-      "last_fetch_at": "2026-05-22T22:33:05.878398+08:00",
-      "error": "name 'CATEGORY_KEYWORDS' is not defined"
+      "last_fetch_at": "2026-05-22T22:36:06.246122+08:00",
+      "candidates": 1
     },
     {
       "id": "github:GreenPomelo/Undergraduate",
       "name": "🔧mini program of NJUPT | 南京邮电大...",
       "domain": "github.com",
-      "status": "error",
+      "status": "ok",
       "documents": 0,
-      "last_fetch_at": "2026-05-22T22:33:05.878398+08:00",
-      "error": "name 'CATEGORY_KEYWORDS' is not defined"
+      "last_fetch_at": "2026-05-22T22:36:06.246122+08:00",
+      "candidates": 3
     },
     {
       "id": "github:NJUPTFreeExams/NJUPT-AUTO-Free-Exams",
       "name": "南京邮电大学自动化专业历年考试资料",
       "domain": "github.com",
-      "status": "error",
+      "status": "ok",
       "documents": 0,
-      "last_fetch_at": "2026-05-22T22:33:05.878398+08:00",
-      "error": "name 'CATEGORY_KEYWORDS' is not defined"
+      "last_fetch_at": "2026-05-22T22:36:06.246122+08:00",
+      "candidates": 1
     },
     {
       "id": "github:NJUPT-CG/NCTF2018",
       "name": "Official repository of NJUPT C...",
       "domain": "github.com",
-      "status": "error",
+      "status": "ok",
       "documents": 0,
-      "last_fetch_at": "2026-05-22T22:33:05.878398+08:00",
-      "error": "name 'CATEGORY_KEYWORDS' is not defined"
+      "last_fetch_at": "2026-05-22T22:36:06.246122+08:00",
+      "candidates": 1
     },
     {
       "id": "github:gzr-lgtm/NJUPThesis-Bachelor",
       "name": "LaTeX template for NJUPT Under...",
       "domain": "github.com",
-      "status": "error",
+      "status": "ok",
       "documents": 0,
-      "last_fetch_at": "2026-05-22T22:33:05.878398+08:00",
-      "error": "name 'CATEGORY_KEYWORDS' is not defined"
+      "last_fetch_at": "2026-05-22T22:36:06.246122+08:00",
+      "candidates": 1
     },
     {
       "id": "github:gaoliang/NJUPT-API",
       "name": "Python API Wrappers for NJUPT....",
       "domain": "github.com",
-      "status": "error",
+      "status": "ok",
       "documents": 0,
-      "last_fetch_at": "2026-05-22T22:33:05.878398+08:00",
-      "error": "name 'CATEGORY_KEYWORDS' is not defined"
+      "last_fetch_at": "2026-05-22T22:36:06.246122+08:00",
+      "candidates": 1
     },
     {
       "id": "github:xiafanglongfei/NJUPT-auto-evaluate",
       "name": "🐶 南邮本科生学生评教活动的一键自动评价脚本 #南邮# #一...",
       "domain": "github.com",
-      "status": "error",
+      "status": "ok",
       "documents": 0,
-      "last_fetch_at": "2026-05-22T22:33:05.878398+08:00",
-      "error": "name 'CATEGORY_KEYWORDS' is not defined"
+      "last_fetch_at": "2026-05-22T22:36:06.246122+08:00",
+      "candidates": 1
     },
     {
       "id": "github:NJUPTFreeExams/NJUPT-TE-Free-Exams",
       "name": "南京邮电大学通信工程专业历年考试资料",
       "domain": "github.com",
-      "status": "error",
+      "status": "ok",
       "documents": 0,
-      "last_fetch_at": "2026-05-22T22:33:05.878398+08:00",
-      "error": "name 'CATEGORY_KEYWORDS' is not defined"
+      "last_fetch_at": "2026-05-22T22:36:06.246122+08:00",
+      "candidates": 1
     },
     {
       "id": "github:kaijy91/NJUPT_NET",
       "name": "南京邮电大学_校园网/电信宽带/移动宽带_路由器共享WiFi...",
       "domain": "github.com",
-      "status": "error",
+      "status": "ok",
       "documents": 0,
-      "last_fetch_at": "2026-05-22T22:33:05.878398+08:00",
-      "error": "name 'CATEGORY_KEYWORDS' is not defined"
+      "last_fetch_at": "2026-05-22T22:36:06.246122+08:00",
+      "candidates": 1
     },
     {
       "id": "github:s235784/NJUPT_AutoLogin",
@@ -260,26 +260,26 @@
       "domain": "github.com",
       "status": "error",
       "documents": 0,
-      "last_fetch_at": "2026-05-22T22:33:05.878398+08:00",
+      "last_fetch_at": "2026-05-22T22:36:06.246122+08:00",
       "error": "name 'CATEGORY_KEYWORDS' is not defined"
     },
     {
       "id": "github:Freedomisgood/NjuptCmcc",
       "name": "校园网一键上网脚本",
       "domain": "github.com",
-      "status": "error",
+      "status": "ok",
       "documents": 0,
-      "last_fetch_at": "2026-05-22T22:33:05.878398+08:00",
-      "error": "name 'CATEGORY_KEYWORDS' is not defined"
+      "last_fetch_at": "2026-05-22T22:36:06.246122+08:00",
+      "candidates": 1
     },
     {
       "id": "github:love98ooo/ZhengFangJiaoWuSystemTampermonkeyScript",
       "name": "南京邮电大学正方教务系统油猴脚本，主要用于查询平时分和卷面分",
       "domain": "github.com",
-      "status": "error",
+      "status": "ok",
       "documents": 0,
-      "last_fetch_at": "2026-05-22T22:33:05.878398+08:00",
-      "error": "name 'CATEGORY_KEYWORDS' is not defined"
+      "last_fetch_at": "2026-05-22T22:36:06.246122+08:00",
+      "candidates": 1
     },
     {
       "id": "github:NJUPT-NAVI/NJUPT-Survival-Guide",
@@ -287,17 +287,17 @@
       "domain": "github.com",
       "status": "error",
       "documents": 0,
-      "last_fetch_at": "2026-05-22T22:33:05.878398+08:00",
+      "last_fetch_at": "2026-05-22T22:36:06.246122+08:00",
       "error": "name 'CATEGORY_KEYWORDS' is not defined"
     },
     {
       "id": "github:bmxbmx3/finger_vein_recognition",
       "name": "A python software used to reco...",
       "domain": "github.com",
-      "status": "error",
+      "status": "ok",
       "documents": 0,
-      "last_fetch_at": "2026-05-22T22:33:05.878398+08:00",
-      "error": "name 'CATEGORY_KEYWORDS' is not defined"
+      "last_fetch_at": "2026-05-22T22:36:06.246122+08:00",
+      "candidates": 1
     },
     {
       "id": "github:lux-QAQ/NJUPT_Fastlogin",
@@ -305,62 +305,62 @@
       "domain": "github.com",
       "status": "error",
       "documents": 0,
-      "last_fetch_at": "2026-05-22T22:33:05.878398+08:00",
+      "last_fetch_at": "2026-05-22T22:36:06.246122+08:00",
       "error": "name 'CATEGORY_KEYWORDS' is not defined"
     },
     {
       "id": "github:NJUPTFreeExams/njuptfreeexams.github.io",
       "name": "NJUPTFreeExams 官方文档，现已迁移至 Netl...",
       "domain": "github.com",
-      "status": "error",
+      "status": "ok",
       "documents": 0,
-      "last_fetch_at": "2026-05-22T22:33:05.878398+08:00",
-      "error": "name 'CATEGORY_KEYWORDS' is not defined"
+      "last_fetch_at": "2026-05-22T22:36:06.246122+08:00",
+      "candidates": 1
     },
     {
       "id": "github:dhiyu/NJUPT-Bachelor",
       "name": "南京邮电大学本科生毕业设计Latex模板",
       "domain": "github.com",
-      "status": "error",
+      "status": "ok",
       "documents": 0,
-      "last_fetch_at": "2026-05-22T22:33:05.878398+08:00",
-      "error": "name 'CATEGORY_KEYWORDS' is not defined"
+      "last_fetch_at": "2026-05-22T22:36:06.246122+08:00",
+      "candidates": 1
     },
     {
       "id": "github:yosunpeng/postgraduate_test_njupt",
       "name": "南京邮电大学研究生期末考试复习资料",
       "domain": "github.com",
-      "status": "error",
+      "status": "ok",
       "documents": 0,
-      "last_fetch_at": "2026-05-22T22:33:05.878398+08:00",
-      "error": "name 'CATEGORY_KEYWORDS' is not defined"
+      "last_fetch_at": "2026-05-22T22:36:06.246122+08:00",
+      "candidates": 1
     },
     {
       "id": "github:NJUPTFreeExams/NJUPT-InfoSec-Free-Exams",
       "name": "【Deprecated】南京邮电大学信息安全专业历年考试资料...",
       "domain": "github.com",
-      "status": "error",
+      "status": "ok",
       "documents": 0,
-      "last_fetch_at": "2026-05-22T22:33:05.878398+08:00",
-      "error": "name 'CATEGORY_KEYWORDS' is not defined"
+      "last_fetch_at": "2026-05-22T22:36:06.246122+08:00",
+      "candidates": 1
     },
     {
       "id": "github:ace-trump-tech/NJUPT-Graduation-thesis",
       "name": "南京邮电大学毕业论文模板（能毕业就行，有时间多回去陪陪家人）",
       "domain": "github.com",
-      "status": "error",
+      "status": "ok",
       "documents": 0,
-      "last_fetch_at": "2026-05-22T22:33:05.878398+08:00",
-      "error": "name 'CATEGORY_KEYWORDS' is not defined"
+      "last_fetch_at": "2026-05-22T22:36:06.246122+08:00",
+      "candidates": 1
     },
     {
       "id": "github:Yolumia/NJUPT-NETWORK",
       "name": "南京邮电大学校园网登录脚本-windows&ios&安卓",
       "domain": "github.com",
-      "status": "error",
+      "status": "ok",
       "documents": 0,
-      "last_fetch_at": "2026-05-22T22:33:05.878398+08:00",
-      "error": "name 'CATEGORY_KEYWORDS' is not defined"
+      "last_fetch_at": "2026-05-22T22:36:06.246122+08:00",
+      "candidates": 1
     },
     {
       "id": "github:Moonike1217/NJUPTExamICSBuilder",
@@ -368,17 +368,17 @@
       "domain": "github.com",
       "status": "error",
       "documents": 0,
-      "last_fetch_at": "2026-05-22T22:33:05.878398+08:00",
+      "last_fetch_at": "2026-05-22T22:36:06.246122+08:00",
       "error": "name 'CATEGORY_KEYWORDS' is not defined"
     },
     {
       "id": "github:musnows/Njupt-Wifi-Login",
       "name": "路由器(刷机) 实现自动连接南京邮电大学校园网",
       "domain": "github.com",
-      "status": "error",
+      "status": "ok",
       "documents": 0,
-      "last_fetch_at": "2026-05-22T22:33:05.878398+08:00",
-      "error": "name 'CATEGORY_KEYWORDS' is not defined"
+      "last_fetch_at": "2026-05-22T22:36:06.246122+08:00",
+      "candidates": 1
     }
   ]
 }
