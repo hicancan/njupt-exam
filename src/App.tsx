@@ -138,7 +138,7 @@ function App() {
                                 </button>
                             )}
                             <a 
-                                href="https://github.com/hicancan/njupt-exam/releases/latest/download/app-release.apk"
+                                href="https://github.com/hicancan/njupt-exam/releases/latest/download/njupt-exam-latest.apk"
                                 className="bg-[#f8f9fa] dark:bg-[#303134] text-[#3c4043] dark:text-[#e8eaed] border border-[#f8f9fa] dark:border-[#303134] hover:border-[#dadce0] dark:hover:border-[#5f6368] hover:shadow-sm px-4 py-2 rounded text-sm transition-all focus:outline-none focus:ring-2 focus:ring-[var(--color-google-blue)] whitespace-nowrap"
                             >
                                 下载 Android APK

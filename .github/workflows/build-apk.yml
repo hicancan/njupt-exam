@@ -30,13 +30,29 @@ jobs:
         working-directory: android
         run: ./gradlew assembleRelease bundleRelease
 
+      - name: Extract Version and Rename Artifacts
+        id: version
+        run: |
+          VERSION=$(jq -r .version package.json)
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+          
+          # Rename generated APK
+          cd android/app/build/outputs/apk/release
+          mv app-release.apk njupt-exam-v${VERSION}.apk
+          cp njupt-exam-v${VERSION}.apk njupt-exam-latest.apk
+          
+          # Rename generated AAB
+          cd ../../../bundle/release
+          mv app-release.aab njupt-exam-v${VERSION}.aab
+
       - name: Upload Artifacts
         uses: actions/upload-artifact@v4
         with:
           name: njupt-exam-apk
           path: |
-            android/app/build/outputs/apk/release/app-release.apk
-            android/app/build/outputs/bundle/release/app-release.aab
+            android/app/build/outputs/apk/release/njupt-exam-v*.apk
+            android/app/build/outputs/apk/release/njupt-exam-latest.apk
+            android/app/build/outputs/bundle/release/njupt-exam-v*.aab
           if-no-files-found: warn
 
       - name: Create GitHub Release
@@ -44,7 +60,9 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           files: |
-            android/app/build/outputs/apk/release/app-release.apk
-            android/app/build/outputs/bundle/release/app-release.aab
-          tag_name: ${{ github.ref_type == 'tag' && github.ref_name || 'latest' }}
+            android/app/build/outputs/apk/release/njupt-exam-v*.apk
+            android/app/build/outputs/apk/release/njupt-exam-latest.apk
+            android/app/build/outputs/bundle/release/njupt-exam-v*.aab
+          tag_name: v${{ env.VERSION }}
+          name: Release v${{ env.VERSION }}
           generate_release_notes: true
