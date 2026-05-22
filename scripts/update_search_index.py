@@ -22,6 +22,22 @@ from indexer_config import (
     NEGATIVE_KEYWORDS, SourceConfig, GitHubSourceConfig, SOURCES,
     JOB_API_BASE, JOB_STATION_CODE
 )
+from llm_scorer import analyze_document_with_llm
+
+_DOC_CACHE: dict[str, dict[str, Any]] = {}
+
+def load_document_cache() -> None:
+    global _DOC_CACHE
+    if os.path.exists(DOCUMENTS_PATH):
+        try:
+            with open(DOCUMENTS_PATH, "r", encoding="utf-8") as f:
+                docs = json.load(f)
+                for doc in docs:
+                    if "hash" in doc:
+                        _DOC_CACHE[doc["hash"]] = doc
+        except Exception:
+            pass
+
 
 
 def get_beijing_time() -> datetime:
@@ -238,12 +254,29 @@ def enrich_candidate(source: SourceConfig, candidate: dict[str, str | None], now
     except Exception:
         content = title
 
-    scoring_text = f"{title} {content}"
-    category = infer_category(scoring_text)
-    student_score = calculate_student_score(scoring_text, source.source_weight)
-    freshness_score = calculate_freshness(published_at, now)
-    importance_score = calculate_importance_score(scoring_text, category, len(attachments), source.source_weight)
     digest = hashlib.sha256(f"{title}|{url}|{content[:500]}".encode("utf-8")).hexdigest()[:20]
+
+    cached = _DOC_CACHE.get(digest)
+    if cached:
+        return {**cached, "freshness_score": calculate_freshness(cached.get("published_at"), now)}
+
+    scoring_text = f"{title} {content}"
+    llm_result = analyze_document_with_llm(title, content, urlparse(source.base_url).netloc)
+
+    if llm_result:
+        category = llm_result.get("category", "公告")
+        student_score = 1.0 if llm_result.get("is_student_facing", True) else 0.0
+        importance_score = float(llm_result.get("importance_score", 0.5))
+        tags = llm_result.get("tags", [])
+        summary = llm_result.get("summary", content[:180])
+    else:
+        category = infer_category(scoring_text)
+        student_score = calculate_student_score(scoring_text, source.source_weight)
+        importance_score = calculate_importance_score(scoring_text, category, len(attachments), source.source_weight)
+        tags = infer_tags(scoring_text, category)
+        summary = content[:180]
+
+    freshness_score = calculate_freshness(published_at, now)
 
     return {
         "id": f"{source.id}-{digest}",
@@ -256,13 +289,13 @@ def enrich_candidate(source: SourceConfig, candidate: dict[str, str | None], now
         "audience": list(source.audience),
         "published_at": published_at,
         "content": content,
-        "summary": content[:180],
+        "summary": summary,
         "attachments": attachments,
         "student_score": student_score,
         "freshness_score": freshness_score,
         "importance_score": importance_score,
         "source_weight": source.source_weight,
-        "tags": infer_tags(scoring_text, category),
+        "tags": tags,
         "hash": digest,
     }
 
@@ -277,11 +310,29 @@ def build_job_document(
     category: str,
     now: datetime,
 ) -> dict[str, Any]:
-    scoring_text = f"{title} {content}"
-    student_score = max(0.74, calculate_student_score(scoring_text, source.source_weight))
-    freshness_score = calculate_freshness(published_at, now)
-    importance_score = calculate_importance_score(scoring_text, category, 0, source.source_weight)
     digest = hashlib.sha256(f"{external_id}|{title}|{url}".encode("utf-8")).hexdigest()[:20]
+
+    cached = _DOC_CACHE.get(digest)
+    if cached:
+        return {**cached, "freshness_score": calculate_freshness(cached.get("published_at"), now)}
+
+    scoring_text = f"{title} {content}"
+    llm_result = analyze_document_with_llm(title, content, urlparse(source.base_url).netloc)
+
+    if llm_result:
+        cat = llm_result.get("category", category)
+        student_score = 1.0 if llm_result.get("is_student_facing", True) else 0.0
+        importance_score = float(llm_result.get("importance_score", 0.5))
+        tags = llm_result.get("tags", [])
+        summary = llm_result.get("summary", (content or title)[:180])
+    else:
+        cat = category
+        student_score = max(0.74, calculate_student_score(scoring_text, source.source_weight))
+        importance_score = calculate_importance_score(scoring_text, cat, 0, source.source_weight)
+        tags = infer_tags(scoring_text, cat)
+        summary = (content or title)[:180]
+
+    freshness_score = calculate_freshness(published_at, now)
 
     return {
         "id": f"{source.id}-{digest}",
@@ -290,17 +341,17 @@ def build_job_document(
         "url": url,
         "source": source.name,
         "source_domain": urlparse(source.base_url).netloc,
-        "category": category,
+        "category": cat,
         "audience": list(source.audience),
         "published_at": published_at,
         "content": content or title,
-        "summary": (content or title)[:180],
+        "summary": summary,
         "attachments": [],
         "student_score": student_score,
         "freshness_score": freshness_score,
         "importance_score": importance_score,
         "source_weight": source.source_weight,
-        "tags": infer_tags(scoring_text, category),
+        "tags": tags,
         "hash": digest,
     }
 
@@ -493,11 +544,28 @@ def build_github_document(
 ) -> dict[str, Any]:
     title = f"{source.label} · {extract_markdown_title(path, text)}"
     content = normalize_markdown_text(text) or title
-    category = source.category if source.category in CATEGORY_KEYWORDS else infer_category(f"{title} {content}")
-    scoring_text = f"{title} {content}"
-    student_score = max(0.62, calculate_student_score(scoring_text, source.source_weight))
-    published_at = repo_updated_at[:10] if repo_updated_at else None
     digest = hashlib.sha256(f"github|{source.repo}|{branch}|{path}|{content[:500]}".encode("utf-8")).hexdigest()[:20]
+    published_at = repo_updated_at[:10] if repo_updated_at else None
+
+    cached = _DOC_CACHE.get(digest)
+    if cached:
+        return {**cached, "freshness_score": calculate_freshness(published_at, get_beijing_time())}
+
+    scoring_text = f"{title} {content}"
+    llm_result = analyze_document_with_llm(title, content, "github.com")
+
+    if llm_result:
+        category = llm_result.get("category", source.category)
+        student_score = 1.0 if llm_result.get("is_student_facing", True) else 0.0
+        importance_score = float(llm_result.get("importance_score", 0.5))
+        tags = llm_result.get("tags", []) + ["GitHub资料"]
+        summary = llm_result.get("summary", content[:180])
+    else:
+        category = source.category if source.category in CATEGORY_KEYWORDS else infer_category(scoring_text)
+        student_score = max(0.62, calculate_student_score(scoring_text, source.source_weight))
+        importance_score = calculate_importance_score(scoring_text, category, 0, source.source_weight)
+        tags = infer_tags(scoring_text, category) + ["GitHub资料"]
+        summary = content[:180]
 
     return {
         "id": f"github-{source.repo.replace('/', '-')}-{digest}",
@@ -510,13 +578,13 @@ def build_github_document(
         "audience": list(source.audience),
         "published_at": published_at,
         "content": content,
-        "summary": content[:180],
+        "summary": summary,
         "attachments": [],
         "student_score": student_score,
         "freshness_score": calculate_freshness(published_at, get_beijing_time()),
-        "importance_score": calculate_importance_score(scoring_text, category, 0, source.source_weight),
+        "importance_score": importance_score,
         "source_weight": source.source_weight,
-        "tags": infer_tags(scoring_text, category) + ["GitHub资料"],
+        "tags": tags,
         "hash": digest,
     }
 
@@ -639,6 +707,7 @@ def write_json_if_changed(path: str, payload: Any) -> bool:
 
 
 def main() -> None:
+    load_document_cache()
     os.makedirs(INDEX_DIR, exist_ok=True)
     now = get_beijing_time()
     all_documents: list[dict[str, Any]] = []
