@@ -53,7 +53,7 @@ jobs:
           cp njupt-exam-v${VERSION}.apk njupt-exam-latest.apk
           
           # Rename generated AAB
-          cd ../../../bundle/release
+          cd ../../bundle/release
           mv app-release.aab njupt-exam-v${VERSION}.aab
 
       - name: Upload Artifacts
