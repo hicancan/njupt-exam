@@ -1,0 +1,12 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "top.hicancan.njupt.twa",
+      "sha256_cert_fingerprints": [
+        "94:93:AB:04:9B:D2:53:A5:32:63:63:C1:C5:10:EF:A4:CB:2A:41:3B:B2:06:20:8F:36:F1:17:D7:41:AF:FE:F8"
+      ]
+    }
+  }
+]
