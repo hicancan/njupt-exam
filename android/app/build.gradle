@@ -145,9 +145,9 @@ android {
     signingConfigs {
         release {
             storeFile file('../android.keystore')
-            storePassword 'bubblewrap'
-            keyAlias 'android'
-            keyPassword 'bubblewrap'
+            storePassword System.getenv("KEYSTORE_PASSWORD") ?: 'bubblewrap'
+            keyAlias System.getenv("KEY_ALIAS") ?: 'android'
+            keyPassword System.getenv("KEY_PASSWORD") ?: 'bubblewrap'
         }
     }
     buildTypes {

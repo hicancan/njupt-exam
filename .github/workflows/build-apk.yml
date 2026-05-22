@@ -26,8 +26,19 @@ jobs:
         working-directory: android
         run: chmod +x ./gradlew
 
+      - name: Decode Keystore
+        working-directory: android
+        env:
+          KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
+        run: |
+          echo "$KEYSTORE_BASE64" | base64 -d > android.keystore
+
       - name: Build APK and AAB with Gradle
         working-directory: android
+        env:
+          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
         run: ./gradlew assembleRelease bundleRelease
 
       - name: Extract Version and Rename Artifacts
