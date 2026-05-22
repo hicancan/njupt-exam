@@ -45,3 +45,10 @@ project_files_list.txt
 .env
 .env.local
 .env*.local
+
+# Android & Gradle
+.gradle/
+build/
+app/build/
+local.properties
+android.keystore
