@@ -130,6 +130,17 @@ def parse_date(text: str, now: datetime) -> str | None:
     return None
 
 
+def is_expired(published_at: str | None, now: datetime) -> bool:
+    if not published_at:
+        return False
+    try:
+        pub_date = datetime.fromisoformat(published_at).date()
+        return (now.date() - pub_date).days > 365
+    except Exception:
+        return False
+
+
+
 from indexer_scoring import (
     calculate_freshness, infer_category, infer_tags, calculate_student_score,
     is_student_facing_document, calculate_importance_score
@@ -220,16 +231,21 @@ def collect_candidates(source: SourceConfig, now: datetime) -> list[dict[str, st
 
             seen.add(absolute_url)
             date_text = " ".join([title, parent_text, absolute_url])
+            published_at = parse_date(date_text, now)
+            
+            if is_expired(published_at, now):
+                continue
+
             candidates.append({
                 "title": title,
                 "url": absolute_url,
-                "published_at": parse_date(date_text, now),
+                "published_at": published_at,
             })
 
     return candidates[:MAX_DOCS_PER_SOURCE * 2]
 
 
-def enrich_candidate(source: SourceConfig, candidate: dict[str, str | None], now: datetime) -> dict[str, Any]:
+def enrich_candidate(source: SourceConfig, candidate: dict[str, str | None], now: datetime) -> dict[str, Any] | None:
     title = candidate["title"] or ""
     url = candidate["url"] or source.base_url
     published_at = candidate.get("published_at")
@@ -253,6 +269,9 @@ def enrich_candidate(source: SourceConfig, candidate: dict[str, str | None], now
         published_at = published_at or parse_date(content, now)
     except Exception:
         content = title
+
+    if is_expired(published_at, now):
+        return None
 
     digest = hashlib.sha256(f"{title}|{url}|{content[:500]}".encode("utf-8")).hexdigest()[:20]
 
@@ -309,7 +328,9 @@ def build_job_document(
     content: str,
     category: str,
     now: datetime,
-) -> dict[str, Any]:
+) -> dict[str, Any] | None:
+    if is_expired(published_at, now):
+        return None
     digest = hashlib.sha256(f"{external_id}|{title}|{url}".encode("utf-8")).hexdigest()[:20]
 
     cached = _DOC_CACHE.get(digest)
@@ -385,7 +406,9 @@ def crawl_job_source(source: SourceConfig, now: datetime) -> list[dict[str, Any]
         ]))
         external_id = str(item.get("zphid", ""))
         url = f"https://njupt.91job.org.cn/sub-station/recruitmentDetail?zphid={external_id}&xxdm={JOB_STATION_CODE}"
-        documents.append(build_job_document(source, external_id, title, url, start_time[:10] or None, content, "就业", now))
+        doc = build_job_document(source, external_id, title, url, start_time[:10] or None, content, "就业", now)
+        if doc:
+            documents.append(doc)
 
     lecture_body = {
         "current": 1,
@@ -415,7 +438,9 @@ def crawl_job_source(source: SourceConfig, now: datetime) -> list[dict[str, Any]
         ]))
         external_id = str(item.get("xjhid", ""))
         url = f"https://njupt.91job.org.cn/sub-station/lectureDetail?xjhid={external_id}&xxdm={JOB_STATION_CODE}"
-        documents.append(build_job_document(source, external_id, title, url, date or None, content, "就业", now))
+        doc = build_job_document(source, external_id, title, url, date or None, content, "就业", now)
+        if doc:
+            documents.append(doc)
 
     return documents[:MAX_DOCS_PER_SOURCE]
 
@@ -541,11 +566,14 @@ def build_github_document(
     path: str,
     text: str,
     repo_updated_at: str | None,
-) -> dict[str, Any]:
+) -> dict[str, Any] | None:
     title = f"{source.label} · {extract_markdown_title(path, text)}"
     content = normalize_markdown_text(text) or title
     digest = hashlib.sha256(f"github|{source.repo}|{branch}|{path}|{content[:500]}".encode("utf-8")).hexdigest()[:20]
     published_at = repo_updated_at[:10] if repo_updated_at else None
+
+    if is_expired(published_at, get_beijing_time()):
+        return None
 
     cached = _DOC_CACHE.get(digest)
     if cached:
@@ -615,7 +643,9 @@ def crawl_github_resource_source(source: GitHubSourceConfig, now: datetime) -> t
             path = str(file_entry["path"])
             text = fetch_github_file_text(source.repo, branch, path, token)
             if clean_text(text):
-                documents.append(build_github_document(source, branch, path, text, updated_at))
+                doc = build_github_document(source, branch, path, text, updated_at)
+                if doc:
+                    documents.append(doc)
 
         manifest_entry["candidates"] = len(selected_files)
         manifest_entry["documents"] = len(documents)
@@ -646,7 +676,9 @@ def crawl_source(source: SourceConfig, now: datetime) -> tuple[list[dict[str, An
         candidates = collect_candidates(source, now)
         enriched: list[dict[str, Any]] = []
         for candidate in candidates[:DETAIL_FETCH_LIMIT_PER_SOURCE]:
-            enriched.append(enrich_candidate(source, candidate, now))
+            doc = enrich_candidate(source, candidate, now)
+            if doc:
+                enriched.append(doc)
 
         filtered = [document for document in enriched if is_student_facing_document(document)]
         enriched.sort(
