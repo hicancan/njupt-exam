@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-05-22T22:43:48.928953+08:00",
-  "total_documents": 123,
+  "generated_at": "2026-05-22T23:10:24.657731+08:00",
+  "total_documents": 137,
   "strategy": "phase1-public-campus-sources-generic-adapter",
   "sources": [
     {
@@ -8,20 +8,20 @@
       "name": "本科生院 / 教务处",
       "domain": "jwc.njupt.edu.cn",
       "status": "ok",
-      "documents": 13,
-      "last_fetch_at": "2026-05-22T22:43:48.928953+08:00",
+      "documents": 14,
+      "last_fetch_at": "2026-05-22T23:10:24.657731+08:00",
       "candidates": 14,
-      "filtered_out": 1
+      "filtered_out": 0
     },
     {
       "id": "xsc",
       "name": "学生工作处",
       "domain": "xsc.njupt.edu.cn",
       "status": "ok",
-      "documents": 12,
-      "last_fetch_at": "2026-05-22T22:43:48.928953+08:00",
+      "documents": 13,
+      "last_fetch_at": "2026-05-22T23:10:24.657731+08:00",
       "candidates": 14,
-      "filtered_out": 2
+      "filtered_out": 1
     },
     {
       "id": "pg",
@@ -29,7 +29,7 @@
       "domain": "pg.njupt.edu.cn",
       "status": "ok",
       "documents": 14,
-      "last_fetch_at": "2026-05-22T22:43:48.928953+08:00",
+      "last_fetch_at": "2026-05-22T23:10:24.657731+08:00",
       "candidates": 14,
       "filtered_out": 0
     },
@@ -38,20 +38,20 @@
       "name": "研究生工作部",
       "domain": "ygb.njupt.edu.cn",
       "status": "ok",
-      "documents": 13,
-      "last_fetch_at": "2026-05-22T22:43:48.928953+08:00",
+      "documents": 14,
+      "last_fetch_at": "2026-05-22T23:10:24.657731+08:00",
       "candidates": 14,
-      "filtered_out": 1
+      "filtered_out": 0
     },
     {
       "id": "youth",
       "name": "团委 / 青春南邮",
       "domain": "youth.njupt.edu.cn",
       "status": "ok",
-      "documents": 9,
-      "last_fetch_at": "2026-05-22T22:43:48.928953+08:00",
+      "documents": 13,
+      "last_fetch_at": "2026-05-22T23:10:24.657731+08:00",
       "candidates": 14,
-      "filtered_out": 5
+      "filtered_out": 1
     },
     {
       "id": "cxcy",
@@ -59,7 +59,7 @@
       "domain": "cxcy.njupt.edu.cn",
       "status": "ok",
       "documents": 13,
-      "last_fetch_at": "2026-05-22T22:43:48.928953+08:00",
+      "last_fetch_at": "2026-05-22T23:10:24.657731+08:00",
       "candidates": 13,
       "filtered_out": 0
     },
@@ -69,37 +69,37 @@
       "domain": "njupt.91job.org.cn",
       "status": "ok",
       "documents": 18,
-      "last_fetch_at": "2026-05-22T22:43:48.928953+08:00"
+      "last_fetch_at": "2026-05-22T23:10:24.657731+08:00"
     },
     {
       "id": "lib",
       "name": "图书馆",
       "domain": "lib.njupt.edu.cn",
       "status": "ok",
-      "documents": 11,
-      "last_fetch_at": "2026-05-22T22:43:48.928953+08:00",
+      "documents": 14,
+      "last_fetch_at": "2026-05-22T23:10:24.657731+08:00",
       "candidates": 14,
-      "filtered_out": 3
+      "filtered_out": 0
     },
     {
       "id": "bwc",
       "name": "保卫处",
       "domain": "bwc.njupt.edu.cn",
       "status": "ok",
-      "documents": 4,
-      "last_fetch_at": "2026-05-22T22:43:48.928953+08:00",
+      "documents": 6,
+      "last_fetch_at": "2026-05-22T23:10:24.657731+08:00",
       "candidates": 11,
-      "filtered_out": 7
+      "filtered_out": 5
     },
     {
       "id": "hqc",
       "name": "后勤管理处",
       "domain": "hqc.njupt.edu.cn",
       "status": "ok",
-      "documents": 6,
-      "last_fetch_at": "2026-05-22T22:43:48.928953+08:00",
+      "documents": 8,
+      "last_fetch_at": "2026-05-22T23:10:24.657731+08:00",
       "candidates": 12,
-      "filtered_out": 6
+      "filtered_out": 4
     },
     {
       "id": "github:hicancan/njupt-net",
@@ -107,7 +107,7 @@
       "domain": "github.com",
       "status": "ok",
       "documents": 2,
-      "last_fetch_at": "2026-05-22T22:43:48.928953+08:00",
+      "last_fetch_at": "2026-05-22T23:10:24.657731+08:00",
       "candidates": 2
     },
     {
@@ -116,7 +116,7 @@
       "domain": "github.com",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-22T22:43:48.928953+08:00",
+      "last_fetch_at": "2026-05-22T23:10:24.657731+08:00",
       "candidates": 1
     },
     {
@@ -125,7 +125,7 @@
       "domain": "github.com",
       "status": "ok",
       "documents": 0,
-      "last_fetch_at": "2026-05-22T22:43:48.928953+08:00",
+      "last_fetch_at": "2026-05-22T23:10:24.657731+08:00",
       "candidates": 5
     },
     {
@@ -134,7 +134,7 @@
       "domain": "github.com",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-22T22:43:48.928953+08:00",
+      "last_fetch_at": "2026-05-22T23:10:24.657731+08:00",
       "candidates": 1
     },
     {
@@ -143,7 +143,7 @@
       "domain": "github.com",
       "status": "ok",
       "documents": 0,
-      "last_fetch_at": "2026-05-22T22:43:48.928953+08:00",
+      "last_fetch_at": "2026-05-22T23:10:24.657731+08:00",
       "candidates": 1
     },
     {
@@ -152,7 +152,7 @@
       "domain": "github.com",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-22T22:43:48.928953+08:00",
+      "last_fetch_at": "2026-05-22T23:10:24.657731+08:00",
       "candidates": 1
     },
     {
@@ -161,7 +161,7 @@
       "domain": "github.com",
       "status": "ok",
       "documents": 0,
-      "last_fetch_at": "2026-05-22T22:43:48.928953+08:00",
+      "last_fetch_at": "2026-05-22T23:10:24.657731+08:00",
       "candidates": 1
     },
     {
@@ -170,7 +170,7 @@
       "domain": "github.com",
       "status": "ok",
       "documents": 0,
-      "last_fetch_at": "2026-05-22T22:43:48.928953+08:00",
+      "last_fetch_at": "2026-05-22T23:10:24.657731+08:00",
       "candidates": 1
     },
     {
@@ -179,7 +179,7 @@
       "domain": "github.com",
       "status": "ok",
       "documents": 0,
-      "last_fetch_at": "2026-05-22T22:43:48.928953+08:00",
+      "last_fetch_at": "2026-05-22T23:10:24.657731+08:00",
       "candidates": 1
     },
     {
@@ -188,7 +188,7 @@
       "domain": "github.com",
       "status": "ok",
       "documents": 0,
-      "last_fetch_at": "2026-05-22T22:43:48.928953+08:00",
+      "last_fetch_at": "2026-05-22T23:10:24.657731+08:00",
       "candidates": 1
     },
     {
@@ -197,7 +197,7 @@
       "domain": "github.com",
       "status": "ok",
       "documents": 0,
-      "last_fetch_at": "2026-05-22T22:43:48.928953+08:00",
+      "last_fetch_at": "2026-05-22T23:10:24.657731+08:00",
       "candidates": 3
     },
     {
@@ -206,7 +206,7 @@
       "domain": "github.com",
       "status": "ok",
       "documents": 0,
-      "last_fetch_at": "2026-05-22T22:43:48.928953+08:00",
+      "last_fetch_at": "2026-05-22T23:10:24.657731+08:00",
       "candidates": 1
     },
     {
@@ -215,7 +215,7 @@
       "domain": "github.com",
       "status": "ok",
       "documents": 0,
-      "last_fetch_at": "2026-05-22T22:43:48.928953+08:00",
+      "last_fetch_at": "2026-05-22T23:10:24.657731+08:00",
       "candidates": 1
     },
     {
@@ -224,7 +224,7 @@
       "domain": "github.com",
       "status": "ok",
       "documents": 0,
-      "last_fetch_at": "2026-05-22T22:43:48.928953+08:00",
+      "last_fetch_at": "2026-05-22T23:10:24.657731+08:00",
       "candidates": 1
     },
     {
@@ -233,7 +233,7 @@
       "domain": "github.com",
       "status": "ok",
       "documents": 0,
-      "last_fetch_at": "2026-05-22T22:43:48.928953+08:00",
+      "last_fetch_at": "2026-05-22T23:10:24.657731+08:00",
       "candidates": 1
     },
     {
@@ -242,7 +242,7 @@
       "domain": "github.com",
       "status": "ok",
       "documents": 0,
-      "last_fetch_at": "2026-05-22T22:43:48.928953+08:00",
+      "last_fetch_at": "2026-05-22T23:10:24.657731+08:00",
       "candidates": 1
     },
     {
@@ -251,7 +251,7 @@
       "domain": "github.com",
       "status": "ok",
       "documents": 0,
-      "last_fetch_at": "2026-05-22T22:43:48.928953+08:00",
+      "last_fetch_at": "2026-05-22T23:10:24.657731+08:00",
       "candidates": 1
     },
     {
@@ -260,7 +260,7 @@
       "domain": "github.com",
       "status": "ok",
       "documents": 0,
-      "last_fetch_at": "2026-05-22T22:43:48.928953+08:00",
+      "last_fetch_at": "2026-05-22T23:10:24.657731+08:00",
       "candidates": 1
     },
     {
@@ -269,7 +269,7 @@
       "domain": "github.com",
       "status": "ok",
       "documents": 2,
-      "last_fetch_at": "2026-05-22T22:43:48.928953+08:00",
+      "last_fetch_at": "2026-05-22T23:10:24.657731+08:00",
       "candidates": 2
     },
     {
@@ -278,7 +278,7 @@
       "domain": "github.com",
       "status": "ok",
       "documents": 0,
-      "last_fetch_at": "2026-05-22T22:43:48.928953+08:00",
+      "last_fetch_at": "2026-05-22T23:10:24.657731+08:00",
       "candidates": 1
     },
     {
@@ -287,7 +287,7 @@
       "domain": "github.com",
       "status": "ok",
       "documents": 0,
-      "last_fetch_at": "2026-05-22T22:43:48.928953+08:00",
+      "last_fetch_at": "2026-05-22T23:10:24.657731+08:00",
       "candidates": 1
     },
     {
@@ -296,7 +296,7 @@
       "domain": "github.com",
       "status": "ok",
       "documents": 2,
-      "last_fetch_at": "2026-05-22T22:43:48.928953+08:00",
+      "last_fetch_at": "2026-05-22T23:10:24.657731+08:00",
       "candidates": 2
     },
     {
@@ -305,7 +305,7 @@
       "domain": "github.com",
       "status": "ok",
       "documents": 0,
-      "last_fetch_at": "2026-05-22T22:43:48.928953+08:00",
+      "last_fetch_at": "2026-05-22T23:10:24.657731+08:00",
       "candidates": 1
     },
     {
@@ -314,7 +314,7 @@
       "domain": "github.com",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-22T22:43:48.928953+08:00",
+      "last_fetch_at": "2026-05-22T23:10:24.657731+08:00",
       "candidates": 1
     },
     {
@@ -323,7 +323,7 @@
       "domain": "github.com",
       "status": "ok",
       "documents": 0,
-      "last_fetch_at": "2026-05-22T22:43:48.928953+08:00",
+      "last_fetch_at": "2026-05-22T23:10:24.657731+08:00",
       "candidates": 1
     },
     {
@@ -332,7 +332,7 @@
       "domain": "github.com",
       "status": "ok",
       "documents": 0,
-      "last_fetch_at": "2026-05-22T22:43:48.928953+08:00",
+      "last_fetch_at": "2026-05-22T23:10:24.657731+08:00",
       "candidates": 1
     },
     {
@@ -341,7 +341,7 @@
       "domain": "github.com",
       "status": "ok",
       "documents": 0,
-      "last_fetch_at": "2026-05-22T22:43:48.928953+08:00",
+      "last_fetch_at": "2026-05-22T23:10:24.657731+08:00",
       "candidates": 1
     },
     {
@@ -350,7 +350,7 @@
       "domain": "github.com",
       "status": "ok",
       "documents": 0,
-      "last_fetch_at": "2026-05-22T22:43:48.928953+08:00",
+      "last_fetch_at": "2026-05-22T23:10:24.657731+08:00",
       "candidates": 1
     },
     {
@@ -359,7 +359,7 @@
       "domain": "github.com",
       "status": "ok",
       "documents": 0,
-      "last_fetch_at": "2026-05-22T22:43:48.928953+08:00",
+      "last_fetch_at": "2026-05-22T23:10:24.657731+08:00",
       "candidates": 1
     },
     {
@@ -368,7 +368,7 @@
       "domain": "github.com",
       "status": "ok",
       "documents": 0,
-      "last_fetch_at": "2026-05-22T22:43:48.928953+08:00",
+      "last_fetch_at": "2026-05-22T23:10:24.657731+08:00",
       "candidates": 1
     },
     {
@@ -377,7 +377,7 @@
       "domain": "github.com",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-22T22:43:48.928953+08:00",
+      "last_fetch_at": "2026-05-22T23:10:24.657731+08:00",
       "candidates": 1
     },
     {
@@ -386,7 +386,7 @@
       "domain": "github.com",
       "status": "ok",
       "documents": 0,
-      "last_fetch_at": "2026-05-22T22:43:48.928953+08:00",
+      "last_fetch_at": "2026-05-22T23:10:24.657731+08:00",
       "candidates": 1
     }
   ]
