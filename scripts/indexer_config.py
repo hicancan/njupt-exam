@@ -23,6 +23,12 @@ DETAIL_FETCH_LIMIT_PER_SOURCE = 14
 REQUEST_TIMEOUT = 16
 MIN_STUDENT_SCORE = 0.55
 GITHUB_TOKEN_ENV = "NJUPT_SEARCH_GITHUB_TOKEN"
+try:
+    from dotenv import load_dotenv
+    load_dotenv()
+except ImportError:
+    pass
+
 GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY")
 GITHUB_API_BASE = "https://api.github.com"
 GITHUB_FILE_SIZE_LIMIT_BYTES = 250_000

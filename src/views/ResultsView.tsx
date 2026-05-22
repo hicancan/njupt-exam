@@ -67,20 +67,44 @@ function SearchResultCard({ document, onOpenClass }: SearchResultCardProps) {
         };
 
     return (
-        <Wrapper {...wrapperProps} className="block w-full text-left py-4 group">
+        <Wrapper {...wrapperProps} className={`block w-full text-left py-4 group ${document.action_required ? 'border-l-[3px] border-[#f29900] pl-4 bg-[#fef7e0]/30 dark:bg-[#f29900]/10 rounded-r-md mb-2' : ''}`}>
             <div className="flex items-center gap-2 text-[14px] text-[#202124] dark:text-[#bdc1c6] mb-1">
                 <span className="font-medium">{document.source}</span>
                 <span className="text-[#70757a] dark:text-[#9aa0a6]">›</span>
-                <span className="text-[#70757a] dark:text-[#9aa0a6] truncate">{document.category}</span>
+                <span className="text-[#70757a] dark:text-[#9aa0a6] truncate">{document.category}{document.sub_category ? ` / ${document.sub_category}` : ''}</span>
                 {isExam ? (
                     <span className="ml-2 inline-flex items-center justify-center h-5 px-2 rounded text-[11px] bg-[#e8f0fe] text-[#1967d2] dark:bg-[#263850] dark:text-[#8ab4f8] shrink-0">
                         考试频道
                     </span>
                 ) : null}
+                {document.sensitive && (
+                    <span className="ml-auto inline-flex items-center justify-center h-5 px-2 rounded text-[11px] bg-[#fce8e6] text-[#c5221f] dark:bg-[#5c1e19] dark:text-[#f28b82] shrink-0">
+                        含敏感信息
+                    </span>
+                )}
             </div>
             <h3 className="text-[20px] leading-snug font-medium text-[#1a0dab] dark:text-[#8ab4f8] group-hover:underline break-words">
                 {document.title}
             </h3>
+
+            {document.action_required && (
+                <div className="mt-2.5 mb-1.5 p-3 bg-[#fef7e0] dark:bg-[#42341c] rounded border border-[#fad270]/40 dark:border-[#f29900]/20">
+                    <div className="flex items-center gap-2 text-[#b06000] dark:text-[#fde293] font-medium mb-1 text-[14px]">
+                        <span className="flex-shrink-0">🚀 {document.action_type || '需采取行动'}</span>
+                        {document.deadline && (
+                            <span className="ml-auto text-[13px] bg-[#fce8e6] dark:bg-[#5c1e19] px-2 py-0.5 rounded text-[#c5221f] dark:text-[#f28b82]">
+                                截止: {document.deadline.substring(0, 16).replace('T', ' ')}
+                            </span>
+                        )}
+                    </div>
+                    {document.action_summary && (
+                        <div className="text-[13px] text-[#8c4d00] dark:text-[#f6c65b]">
+                            {document.action_summary}
+                        </div>
+                    )}
+                </div>
+            )}
+
             <div className="mt-1 text-[14px] text-[#4d5156] dark:text-[#bdc1c6] line-clamp-2 break-words">
                 <span className="text-[#70757a] dark:text-[#9aa0a6] font-medium mr-2">{formatSearchDate(document.published_at)}</span>
                 {document.summary || document.content}

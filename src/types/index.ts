@@ -65,6 +65,12 @@ export interface SearchDocument {
     source: string;
     source_domain: string;
     category: SearchCategory;
+    sub_category?: string | null;
+    deadline?: string | null;
+    action_required?: boolean;
+    action_type?: string | null;
+    action_summary?: string | null;
+    sensitive?: boolean;
     audience: string[];
     published_at: string | null;
     content: string;

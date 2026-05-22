@@ -22,20 +22,32 @@ def analyze_document_with_llm(title: str, content: str, source_domain: str) -> O
     url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-3.1-flash-lite:generateContent?key={GEMINI_API_KEY}"
     
     prompt = f"""
-你是一个南邮校园助手系统的数据处理 AI。
-请阅读以下校园通知/文档，提取关键信息并按照严格的 JSON 格式返回结果。
+你是一个南邮校园信息理解专家系统。
+请根据以下给定网页标题、来源和正文片段，判断该信息是否对学生有用，并提取结构化字段。
+要求：
+1. 不要编造原文没有的信息。
+2. 所有日期、截止时间、地点、对象必须严格来自原文。
+3. 如果不确定，字段填 null。
+4. 输出必须是合法的 JSON。
 
 文档标题: {title}
 来源域名: {source_domain}
-正文片段: {content[:1500]}
+正文片段: {content[:2000]}
 
-请输出纯 JSON 格式：
+请严格输出如下 JSON 格式：
 {{
-  "category": "只能从以下选项中选择一个: 考试|选课|竞赛|奖助|就业|讲座|生活|研究生|学院|项目|资料|公告",
-  "tags": ["核心标签1", "核心标签2"], // 提取 2-5 个高度相关的简短关键词
-  "importance_score": 0.85, // 0.0 到 1.0 之间的浮点数。与学生日常学习生活（停水停电、放假、选课、考试）越相关紧急，分数越高(0.8-1.0)；小众学术会议、不相关的教职工通知分数越低(0.1-0.4)。
-  "summary": "...", // 用一句不超过 35 个字的大白话概括核心信息，对学生有用
-  "is_student_facing": true // boolean, 如果是纯教职工文件（如党委巡视、工会发福利、采购招标），填 false；其他有用的填 true
+  "is_student_facing": true, // boolean, 若纯教职工文件（如党委巡视、招标）填 false
+  "student_relevance": 0.95, // float 0-1, 对普通学生的价值
+  "category": "只能选一个: 考试|选课|竞赛|奖助|就业|讲座|生活|研究生|学院|项目|资料|公告",
+  "sub_category": "具体的二级分类，如 海外交流、慕课考试 等",
+  "tags": ["标签1", "标签2"], // 提取 2-5 个相关关键词
+  "importance_score": 0.85, // float 0-1, 紧急或必须处理的分数高
+  "deadline": "2026-04-23T12:00:00+08:00", // ISO格式。如果没有明确截止日期，填 null
+  "action_required": true, // boolean, 学生是否需要报名、填表、交费等动作
+  "action_type": "报名", // string, 若无动作填 null
+  "action_summary": "符合条件的学生需填写申请表，并在截止日前交至所在学院。", // 动作说明。若无填 null
+  "student_summary": "一两句话概括核心信息，纯学生视角",
+  "sensitive": false // boolean, 是否含有姓名、学号、手机号等个人隐私
 }}
 """
     

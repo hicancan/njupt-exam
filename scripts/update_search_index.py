@@ -288,13 +288,25 @@ def enrich_candidate(source: SourceConfig, candidate: dict[str, str | None], now
         student_score = 1.0 if llm_result.get("is_student_facing", True) else 0.0
         importance_score = float(llm_result.get("importance_score", 0.5))
         tags = llm_result.get("tags", [])
-        summary = llm_result.get("summary", content[:180])
+        summary = llm_result.get("student_summary", content[:180])
+        sub_category = llm_result.get("sub_category")
+        deadline = llm_result.get("deadline")
+        action_required = llm_result.get("action_required", False)
+        action_type = llm_result.get("action_type")
+        action_summary = llm_result.get("action_summary")
+        sensitive = llm_result.get("sensitive", False)
     else:
         category = infer_category(scoring_text)
         student_score = calculate_student_score(scoring_text, source.source_weight)
         importance_score = calculate_importance_score(scoring_text, category, len(attachments), source.source_weight)
         tags = infer_tags(scoring_text, category)
         summary = content[:180]
+        sub_category = None
+        deadline = None
+        action_required = False
+        action_type = None
+        action_summary = None
+        sensitive = False
 
     freshness_score = calculate_freshness(published_at, now)
 
@@ -306,6 +318,12 @@ def enrich_candidate(source: SourceConfig, candidate: dict[str, str | None], now
         "source": source.name,
         "source_domain": urlparse(source.base_url).netloc,
         "category": category,
+        "sub_category": sub_category,
+        "deadline": deadline,
+        "action_required": action_required,
+        "action_type": action_type,
+        "action_summary": action_summary,
+        "sensitive": sensitive,
         "audience": list(source.audience),
         "published_at": published_at,
         "content": content,
@@ -346,13 +364,25 @@ def build_job_document(
         student_score = 1.0 if llm_result.get("is_student_facing", True) else 0.0
         importance_score = float(llm_result.get("importance_score", 0.5))
         tags = llm_result.get("tags", [])
-        summary = llm_result.get("summary", (content or title)[:180])
+        summary = llm_result.get("student_summary", (content or title)[:180])
+        sub_category = llm_result.get("sub_category")
+        deadline = llm_result.get("deadline")
+        action_required = llm_result.get("action_required", False)
+        action_type = llm_result.get("action_type")
+        action_summary = llm_result.get("action_summary")
+        sensitive = llm_result.get("sensitive", False)
     else:
         cat = category
         student_score = max(0.74, calculate_student_score(scoring_text, source.source_weight))
         importance_score = calculate_importance_score(scoring_text, cat, 0, source.source_weight)
         tags = infer_tags(scoring_text, cat)
         summary = (content or title)[:180]
+        sub_category = None
+        deadline = None
+        action_required = False
+        action_type = None
+        action_summary = None
+        sensitive = False
 
     freshness_score = calculate_freshness(published_at, now)
 
@@ -364,6 +394,12 @@ def build_job_document(
         "source": source.name,
         "source_domain": urlparse(source.base_url).netloc,
         "category": cat,
+        "sub_category": sub_category,
+        "deadline": deadline,
+        "action_required": action_required,
+        "action_type": action_type,
+        "action_summary": action_summary,
+        "sensitive": sensitive,
         "audience": list(source.audience),
         "published_at": published_at,
         "content": content or title,
@@ -588,13 +624,25 @@ def build_github_document(
         student_score = 1.0 if llm_result.get("is_student_facing", True) else 0.0
         importance_score = float(llm_result.get("importance_score", 0.5))
         tags = llm_result.get("tags", []) + ["GitHub资料"]
-        summary = llm_result.get("summary", content[:180])
+        summary = llm_result.get("student_summary", content[:180])
+        sub_category = llm_result.get("sub_category")
+        deadline = llm_result.get("deadline")
+        action_required = llm_result.get("action_required", False)
+        action_type = llm_result.get("action_type")
+        action_summary = llm_result.get("action_summary")
+        sensitive = llm_result.get("sensitive", False)
     else:
         category = source.category if source.category in CATEGORY_KEYWORDS else infer_category(scoring_text)
         student_score = max(0.62, calculate_student_score(scoring_text, source.source_weight))
         importance_score = calculate_importance_score(scoring_text, category, 0, source.source_weight)
         tags = infer_tags(scoring_text, category) + ["GitHub资料"]
         summary = content[:180]
+        sub_category = None
+        deadline = None
+        action_required = False
+        action_type = None
+        action_summary = None
+        sensitive = False
 
     return {
         "id": f"github-{source.repo.replace('/', '-')}-{digest}",
@@ -604,6 +652,12 @@ def build_github_document(
         "source": source.label,
         "source_domain": "github.com",
         "category": category,
+        "sub_category": sub_category,
+        "deadline": deadline,
+        "action_required": action_required,
+        "action_type": action_type,
+        "action_summary": action_summary,
+        "sensitive": sensitive,
         "audience": list(source.audience),
         "published_at": published_at,
         "content": content,
