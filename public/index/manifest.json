@@ -1,89 +1,67 @@
 {
-<<<<<<< Updated upstream
-  "generated_at": "2026-05-22T22:36:06.246122+08:00",
-=======
-  "generated_at": "2026-05-22T22:37:26.177995+08:00",
->>>>>>> Stashed changes
-  "total_documents": 18,
+  "generated_at": "2026-05-22T22:43:48.928953+08:00",
+  "total_documents": 123,
   "strategy": "phase1-public-campus-sources-generic-adapter",
   "sources": [
     {
       "id": "jwc",
       "name": "本科生院 / 教务处",
       "domain": "jwc.njupt.edu.cn",
-      "status": "error",
-      "documents": 0,
-<<<<<<< Updated upstream
-      "last_fetch_at": "2026-05-22T22:36:06.246122+08:00",
-=======
-      "last_fetch_at": "2026-05-22T22:37:26.177995+08:00",
->>>>>>> Stashed changes
-      "error": "name 'NAV_TITLES' is not defined"
+      "status": "ok",
+      "documents": 13,
+      "last_fetch_at": "2026-05-22T22:43:48.928953+08:00",
+      "candidates": 14,
+      "filtered_out": 1
     },
     {
       "id": "xsc",
       "name": "学生工作处",
       "domain": "xsc.njupt.edu.cn",
-      "status": "error",
-      "documents": 0,
-<<<<<<< Updated upstream
-      "last_fetch_at": "2026-05-22T22:36:06.246122+08:00",
-=======
-      "last_fetch_at": "2026-05-22T22:37:26.177995+08:00",
->>>>>>> Stashed changes
-      "error": "name 'NAV_TITLES' is not defined"
+      "status": "ok",
+      "documents": 12,
+      "last_fetch_at": "2026-05-22T22:43:48.928953+08:00",
+      "candidates": 14,
+      "filtered_out": 2
     },
     {
       "id": "pg",
       "name": "研究生院",
       "domain": "pg.njupt.edu.cn",
-      "status": "error",
-      "documents": 0,
-<<<<<<< Updated upstream
-      "last_fetch_at": "2026-05-22T22:36:06.246122+08:00",
-=======
-      "last_fetch_at": "2026-05-22T22:37:26.177995+08:00",
->>>>>>> Stashed changes
-      "error": "name 'NAV_TITLES' is not defined"
+      "status": "ok",
+      "documents": 14,
+      "last_fetch_at": "2026-05-22T22:43:48.928953+08:00",
+      "candidates": 14,
+      "filtered_out": 0
     },
     {
       "id": "ygb",
       "name": "研究生工作部",
       "domain": "ygb.njupt.edu.cn",
-      "status": "error",
-      "documents": 0,
-<<<<<<< Updated upstream
-      "last_fetch_at": "2026-05-22T22:36:06.246122+08:00",
-=======
-      "last_fetch_at": "2026-05-22T22:37:26.177995+08:00",
->>>>>>> Stashed changes
-      "error": "name 'NAV_TITLES' is not defined"
+      "status": "ok",
+      "documents": 13,
+      "last_fetch_at": "2026-05-22T22:43:48.928953+08:00",
+      "candidates": 14,
+      "filtered_out": 1
     },
     {
       "id": "youth",
       "name": "团委 / 青春南邮",
       "domain": "youth.njupt.edu.cn",
-      "status": "error",
-      "documents": 0,
-<<<<<<< Updated upstream
-      "last_fetch_at": "2026-05-22T22:36:06.246122+08:00",
-=======
-      "last_fetch_at": "2026-05-22T22:37:26.177995+08:00",
->>>>>>> Stashed changes
-      "error": "name 'NAV_TITLES' is not defined"
+      "status": "ok",
+      "documents": 9,
+      "last_fetch_at": "2026-05-22T22:43:48.928953+08:00",
+      "candidates": 14,
+      "filtered_out": 5
     },
     {
       "id": "cxcy",
       "name": "创新创业教育学院",
       "domain": "cxcy.njupt.edu.cn",
-      "status": "error",
-      "documents": 0,
-<<<<<<< Updated upstream
-      "last_fetch_at": "2026-05-22T22:36:06.246122+08:00",
-=======
-      "last_fetch_at": "2026-05-22T22:37:26.177995+08:00",
->>>>>>> Stashed changes
-      "error": "name 'NAV_TITLES' is not defined"
+      "status": "ok",
+      "documents": 13,
+      "last_fetch_at": "2026-05-22T22:43:48.928953+08:00",
+      "candidates": 13,
+      "filtered_out": 0
     },
     {
       "id": "job",
@@ -91,78 +69,55 @@
       "domain": "njupt.91job.org.cn",
       "status": "ok",
       "documents": 18,
-<<<<<<< Updated upstream
-      "last_fetch_at": "2026-05-22T22:36:06.246122+08:00"
-=======
-      "last_fetch_at": "2026-05-22T22:37:26.177995+08:00"
->>>>>>> Stashed changes
+      "last_fetch_at": "2026-05-22T22:43:48.928953+08:00"
     },
     {
       "id": "lib",
       "name": "图书馆",
       "domain": "lib.njupt.edu.cn",
-      "status": "error",
-      "documents": 0,
-<<<<<<< Updated upstream
-      "last_fetch_at": "2026-05-22T22:36:06.246122+08:00",
-=======
-      "last_fetch_at": "2026-05-22T22:37:26.177995+08:00",
->>>>>>> Stashed changes
-      "error": "name 'NAV_TITLES' is not defined"
+      "status": "ok",
+      "documents": 11,
+      "last_fetch_at": "2026-05-22T22:43:48.928953+08:00",
+      "candidates": 14,
+      "filtered_out": 3
     },
     {
       "id": "bwc",
       "name": "保卫处",
       "domain": "bwc.njupt.edu.cn",
-      "status": "error",
-      "documents": 0,
-<<<<<<< Updated upstream
-      "last_fetch_at": "2026-05-22T22:36:06.246122+08:00",
-=======
-      "last_fetch_at": "2026-05-22T22:37:26.177995+08:00",
->>>>>>> Stashed changes
-      "error": "name 'NAV_TITLES' is not defined"
+      "status": "ok",
+      "documents": 4,
+      "last_fetch_at": "2026-05-22T22:43:48.928953+08:00",
+      "candidates": 11,
+      "filtered_out": 7
     },
     {
       "id": "hqc",
       "name": "后勤管理处",
       "domain": "hqc.njupt.edu.cn",
-      "status": "error",
-      "documents": 0,
-<<<<<<< Updated upstream
-      "last_fetch_at": "2026-05-22T22:36:06.246122+08:00",
-=======
-      "last_fetch_at": "2026-05-22T22:37:26.177995+08:00",
->>>>>>> Stashed changes
-      "error": "name 'NAV_TITLES' is not defined"
+      "status": "ok",
+      "documents": 6,
+      "last_fetch_at": "2026-05-22T22:43:48.928953+08:00",
+      "candidates": 12,
+      "filtered_out": 6
     },
     {
       "id": "github:hicancan/njupt-net",
       "name": "njupt-net 校园网络工具",
       "domain": "github.com",
-      "status": "error",
-      "documents": 0,
-<<<<<<< Updated upstream
-      "last_fetch_at": "2026-05-22T22:36:06.246122+08:00",
-      "error": "name 'CATEGORY_KEYWORDS' is not defined"
-=======
-      "last_fetch_at": "2026-05-22T22:37:26.177995+08:00",
-      "error": "401 Client Error: Unauthorized for url: https://api.github.com/repos/hicancan/njupt-net"
->>>>>>> Stashed changes
+      "status": "ok",
+      "documents": 2,
+      "last_fetch_at": "2026-05-22T22:43:48.928953+08:00",
+      "candidates": 2
     },
     {
       "id": "github:hicancan/njupt-jwxt-assistant",
       "name": "教务助手资料",
       "domain": "github.com",
-      "status": "error",
-      "documents": 0,
-<<<<<<< Updated upstream
-      "last_fetch_at": "2026-05-22T22:36:06.246122+08:00",
-      "error": "name 'CATEGORY_KEYWORDS' is not defined"
-=======
-      "last_fetch_at": "2026-05-22T22:37:26.177995+08:00",
-      "error": "401 Client Error: Unauthorized for url: https://api.github.com/repos/hicancan/njupt-jwxt-assistant"
->>>>>>> Stashed changes
+      "status": "ok",
+      "documents": 1,
+      "last_fetch_at": "2026-05-22T22:43:48.928953+08:00",
+      "candidates": 1
     },
     {
       "id": "github:ZsgsDesign/NOJ",
@@ -170,27 +125,17 @@
       "domain": "github.com",
       "status": "ok",
       "documents": 0,
-<<<<<<< Updated upstream
-      "last_fetch_at": "2026-05-22T22:36:06.246122+08:00",
+      "last_fetch_at": "2026-05-22T22:43:48.928953+08:00",
       "candidates": 5
-=======
-      "last_fetch_at": "2026-05-22T22:37:26.177995+08:00",
-      "error": "401 Client Error: Unauthorized for url: https://api.github.com/repos/ZsgsDesign/NOJ"
->>>>>>> Stashed changes
     },
     {
       "id": "github:NJUPTFreeExams/NJUPT-General-Free-Exams",
       "name": "南京邮电大学课程资源共享平台，此仓库包括门户网站和通识类课程...",
       "domain": "github.com",
-      "status": "error",
-      "documents": 0,
-<<<<<<< Updated upstream
-      "last_fetch_at": "2026-05-22T22:36:06.246122+08:00",
-      "error": "name 'CATEGORY_KEYWORDS' is not defined"
-=======
-      "last_fetch_at": "2026-05-22T22:37:26.177995+08:00",
-      "error": "401 Client Error: Unauthorized for url: https://api.github.com/repos/NJUPTFreeExams/NJUPT-General-Free-Exams"
->>>>>>> Stashed changes
+      "status": "ok",
+      "documents": 1,
+      "last_fetch_at": "2026-05-22T22:43:48.928953+08:00",
+      "candidates": 1
     },
     {
       "id": "github:NJUPTFreeExams/NJUPT-CST-Free-Exams",
@@ -198,27 +143,17 @@
       "domain": "github.com",
       "status": "ok",
       "documents": 0,
-<<<<<<< Updated upstream
-      "last_fetch_at": "2026-05-22T22:36:06.246122+08:00",
+      "last_fetch_at": "2026-05-22T22:43:48.928953+08:00",
       "candidates": 1
-=======
-      "last_fetch_at": "2026-05-22T22:37:26.177995+08:00",
-      "error": "401 Client Error: Unauthorized for url: https://api.github.com/repos/NJUPTFreeExams/NJUPT-CST-Free-Exams"
->>>>>>> Stashed changes
     },
     {
       "id": "github:NJUPTFreeExams/NJUPT-CS-FREE",
       "name": "南京邮电大学计算机相关专业历年考试资料",
       "domain": "github.com",
-      "status": "error",
-      "documents": 0,
-<<<<<<< Updated upstream
-      "last_fetch_at": "2026-05-22T22:36:06.246122+08:00",
-      "error": "name 'CATEGORY_KEYWORDS' is not defined"
-=======
-      "last_fetch_at": "2026-05-22T22:37:26.177995+08:00",
-      "error": "401 Client Error: Unauthorized for url: https://api.github.com/repos/NJUPTFreeExams/NJUPT-CS-FREE"
->>>>>>> Stashed changes
+      "status": "ok",
+      "documents": 1,
+      "last_fetch_at": "2026-05-22T22:43:48.928953+08:00",
+      "candidates": 1
     },
     {
       "id": "github:bmxbmx3/cn_sort",
@@ -226,13 +161,8 @@
       "domain": "github.com",
       "status": "ok",
       "documents": 0,
-<<<<<<< Updated upstream
-      "last_fetch_at": "2026-05-22T22:36:06.246122+08:00",
+      "last_fetch_at": "2026-05-22T22:43:48.928953+08:00",
       "candidates": 1
-=======
-      "last_fetch_at": "2026-05-22T22:37:26.177995+08:00",
-      "error": "401 Client Error: Unauthorized for url: https://api.github.com/repos/bmxbmx3/cn_sort"
->>>>>>> Stashed changes
     },
     {
       "id": "github:leftjs/StudentGradesManageSystem",
@@ -240,13 +170,8 @@
       "domain": "github.com",
       "status": "ok",
       "documents": 0,
-<<<<<<< Updated upstream
-      "last_fetch_at": "2026-05-22T22:36:06.246122+08:00",
+      "last_fetch_at": "2026-05-22T22:43:48.928953+08:00",
       "candidates": 1
-=======
-      "last_fetch_at": "2026-05-22T22:37:26.177995+08:00",
-      "error": "401 Client Error: Unauthorized for url: https://api.github.com/repos/leftjs/StudentGradesManageSystem"
->>>>>>> Stashed changes
     },
     {
       "id": "github:renyuanzhe/NJUPT-CS-Courses",
@@ -254,13 +179,8 @@
       "domain": "github.com",
       "status": "ok",
       "documents": 0,
-<<<<<<< Updated upstream
-      "last_fetch_at": "2026-05-22T22:36:06.246122+08:00",
+      "last_fetch_at": "2026-05-22T22:43:48.928953+08:00",
       "candidates": 1
-=======
-      "last_fetch_at": "2026-05-22T22:37:26.177995+08:00",
-      "error": "401 Client Error: Unauthorized for url: https://api.github.com/repos/renyuanzhe/NJUPT-CS-Courses"
->>>>>>> Stashed changes
     },
     {
       "id": "github:Wonz5130/NJUPT-Yellow-Page",
@@ -268,13 +188,8 @@
       "domain": "github.com",
       "status": "ok",
       "documents": 0,
-<<<<<<< Updated upstream
-      "last_fetch_at": "2026-05-22T22:36:06.246122+08:00",
+      "last_fetch_at": "2026-05-22T22:43:48.928953+08:00",
       "candidates": 1
-=======
-      "last_fetch_at": "2026-05-22T22:37:26.177995+08:00",
-      "error": "401 Client Error: Unauthorized for url: https://api.github.com/repos/Wonz5130/NJUPT-Yellow-Page"
->>>>>>> Stashed changes
     },
     {
       "id": "github:GreenPomelo/Undergraduate",
@@ -282,13 +197,8 @@
       "domain": "github.com",
       "status": "ok",
       "documents": 0,
-<<<<<<< Updated upstream
-      "last_fetch_at": "2026-05-22T22:36:06.246122+08:00",
+      "last_fetch_at": "2026-05-22T22:43:48.928953+08:00",
       "candidates": 3
-=======
-      "last_fetch_at": "2026-05-22T22:37:26.177995+08:00",
-      "error": "401 Client Error: Unauthorized for url: https://api.github.com/repos/GreenPomelo/Undergraduate"
->>>>>>> Stashed changes
     },
     {
       "id": "github:NJUPTFreeExams/NJUPT-AUTO-Free-Exams",
@@ -296,13 +206,8 @@
       "domain": "github.com",
       "status": "ok",
       "documents": 0,
-<<<<<<< Updated upstream
-      "last_fetch_at": "2026-05-22T22:36:06.246122+08:00",
+      "last_fetch_at": "2026-05-22T22:43:48.928953+08:00",
       "candidates": 1
-=======
-      "last_fetch_at": "2026-05-22T22:37:26.177995+08:00",
-      "error": "401 Client Error: Unauthorized for url: https://api.github.com/repos/NJUPTFreeExams/NJUPT-AUTO-Free-Exams"
->>>>>>> Stashed changes
     },
     {
       "id": "github:NJUPT-CG/NCTF2018",
@@ -310,13 +215,8 @@
       "domain": "github.com",
       "status": "ok",
       "documents": 0,
-<<<<<<< Updated upstream
-      "last_fetch_at": "2026-05-22T22:36:06.246122+08:00",
+      "last_fetch_at": "2026-05-22T22:43:48.928953+08:00",
       "candidates": 1
-=======
-      "last_fetch_at": "2026-05-22T22:37:26.177995+08:00",
-      "error": "401 Client Error: Unauthorized for url: https://api.github.com/repos/NJUPT-CG/NCTF2018"
->>>>>>> Stashed changes
     },
     {
       "id": "github:gzr-lgtm/NJUPThesis-Bachelor",
@@ -324,13 +224,8 @@
       "domain": "github.com",
       "status": "ok",
       "documents": 0,
-<<<<<<< Updated upstream
-      "last_fetch_at": "2026-05-22T22:36:06.246122+08:00",
+      "last_fetch_at": "2026-05-22T22:43:48.928953+08:00",
       "candidates": 1
-=======
-      "last_fetch_at": "2026-05-22T22:37:26.177995+08:00",
-      "error": "401 Client Error: Unauthorized for url: https://api.github.com/repos/gzr-lgtm/NJUPThesis-Bachelor"
->>>>>>> Stashed changes
     },
     {
       "id": "github:gaoliang/NJUPT-API",
@@ -338,13 +233,8 @@
       "domain": "github.com",
       "status": "ok",
       "documents": 0,
-<<<<<<< Updated upstream
-      "last_fetch_at": "2026-05-22T22:36:06.246122+08:00",
+      "last_fetch_at": "2026-05-22T22:43:48.928953+08:00",
       "candidates": 1
-=======
-      "last_fetch_at": "2026-05-22T22:37:26.177995+08:00",
-      "error": "401 Client Error: Unauthorized for url: https://api.github.com/repos/gaoliang/NJUPT-API"
->>>>>>> Stashed changes
     },
     {
       "id": "github:xiafanglongfei/NJUPT-auto-evaluate",
@@ -352,13 +242,8 @@
       "domain": "github.com",
       "status": "ok",
       "documents": 0,
-<<<<<<< Updated upstream
-      "last_fetch_at": "2026-05-22T22:36:06.246122+08:00",
+      "last_fetch_at": "2026-05-22T22:43:48.928953+08:00",
       "candidates": 1
-=======
-      "last_fetch_at": "2026-05-22T22:37:26.177995+08:00",
-      "error": "401 Client Error: Unauthorized for url: https://api.github.com/repos/xiafanglongfei/NJUPT-auto-evaluate"
->>>>>>> Stashed changes
     },
     {
       "id": "github:NJUPTFreeExams/NJUPT-TE-Free-Exams",
@@ -366,13 +251,8 @@
       "domain": "github.com",
       "status": "ok",
       "documents": 0,
-<<<<<<< Updated upstream
-      "last_fetch_at": "2026-05-22T22:36:06.246122+08:00",
+      "last_fetch_at": "2026-05-22T22:43:48.928953+08:00",
       "candidates": 1
-=======
-      "last_fetch_at": "2026-05-22T22:37:26.177995+08:00",
-      "error": "401 Client Error: Unauthorized for url: https://api.github.com/repos/NJUPTFreeExams/NJUPT-TE-Free-Exams"
->>>>>>> Stashed changes
     },
     {
       "id": "github:kaijy91/NJUPT_NET",
@@ -380,27 +260,17 @@
       "domain": "github.com",
       "status": "ok",
       "documents": 0,
-<<<<<<< Updated upstream
-      "last_fetch_at": "2026-05-22T22:36:06.246122+08:00",
+      "last_fetch_at": "2026-05-22T22:43:48.928953+08:00",
       "candidates": 1
-=======
-      "last_fetch_at": "2026-05-22T22:37:26.177995+08:00",
-      "error": "401 Client Error: Unauthorized for url: https://api.github.com/repos/kaijy91/NJUPT_NET"
->>>>>>> Stashed changes
     },
     {
       "id": "github:s235784/NJUPT_AutoLogin",
       "name": "南京邮电大学校园网自动登录脚本，支持Linux（OpenWR...",
       "domain": "github.com",
-      "status": "error",
-      "documents": 0,
-<<<<<<< Updated upstream
-      "last_fetch_at": "2026-05-22T22:36:06.246122+08:00",
-      "error": "name 'CATEGORY_KEYWORDS' is not defined"
-=======
-      "last_fetch_at": "2026-05-22T22:37:26.177995+08:00",
-      "error": "401 Client Error: Unauthorized for url: https://api.github.com/repos/s235784/NJUPT_AutoLogin"
->>>>>>> Stashed changes
+      "status": "ok",
+      "documents": 2,
+      "last_fetch_at": "2026-05-22T22:43:48.928953+08:00",
+      "candidates": 2
     },
     {
       "id": "github:Freedomisgood/NjuptCmcc",
@@ -408,13 +278,8 @@
       "domain": "github.com",
       "status": "ok",
       "documents": 0,
-<<<<<<< Updated upstream
-      "last_fetch_at": "2026-05-22T22:36:06.246122+08:00",
+      "last_fetch_at": "2026-05-22T22:43:48.928953+08:00",
       "candidates": 1
-=======
-      "last_fetch_at": "2026-05-22T22:37:26.177995+08:00",
-      "error": "401 Client Error: Unauthorized for url: https://api.github.com/repos/Freedomisgood/NjuptCmcc"
->>>>>>> Stashed changes
     },
     {
       "id": "github:love98ooo/ZhengFangJiaoWuSystemTampermonkeyScript",
@@ -422,27 +287,17 @@
       "domain": "github.com",
       "status": "ok",
       "documents": 0,
-<<<<<<< Updated upstream
-      "last_fetch_at": "2026-05-22T22:36:06.246122+08:00",
+      "last_fetch_at": "2026-05-22T22:43:48.928953+08:00",
       "candidates": 1
-=======
-      "last_fetch_at": "2026-05-22T22:37:26.177995+08:00",
-      "error": "401 Client Error: Unauthorized for url: https://api.github.com/repos/love98ooo/ZhengFangJiaoWuSystemTampermonkeyScript"
->>>>>>> Stashed changes
     },
     {
       "id": "github:NJUPT-NAVI/NJUPT-Survival-Guide",
       "name": "南京邮电大学生存指南，用于导航和整合各种公开的资源和信息，减...",
       "domain": "github.com",
-      "status": "error",
-      "documents": 0,
-<<<<<<< Updated upstream
-      "last_fetch_at": "2026-05-22T22:36:06.246122+08:00",
-      "error": "name 'CATEGORY_KEYWORDS' is not defined"
-=======
-      "last_fetch_at": "2026-05-22T22:37:26.177995+08:00",
-      "error": "401 Client Error: Unauthorized for url: https://api.github.com/repos/NJUPT-NAVI/NJUPT-Survival-Guide"
->>>>>>> Stashed changes
+      "status": "ok",
+      "documents": 2,
+      "last_fetch_at": "2026-05-22T22:43:48.928953+08:00",
+      "candidates": 2
     },
     {
       "id": "github:bmxbmx3/finger_vein_recognition",
@@ -450,27 +305,17 @@
       "domain": "github.com",
       "status": "ok",
       "documents": 0,
-<<<<<<< Updated upstream
-      "last_fetch_at": "2026-05-22T22:36:06.246122+08:00",
+      "last_fetch_at": "2026-05-22T22:43:48.928953+08:00",
       "candidates": 1
-=======
-      "last_fetch_at": "2026-05-22T22:37:26.177995+08:00",
-      "error": "401 Client Error: Unauthorized for url: https://api.github.com/repos/bmxbmx3/finger_vein_recognition"
->>>>>>> Stashed changes
     },
     {
       "id": "github:lux-QAQ/NJUPT_Fastlogin",
       "name": "南京邮电大学校园网最快登录脚本 for Android Wi...",
       "domain": "github.com",
-      "status": "error",
-      "documents": 0,
-<<<<<<< Updated upstream
-      "last_fetch_at": "2026-05-22T22:36:06.246122+08:00",
-      "error": "name 'CATEGORY_KEYWORDS' is not defined"
-=======
-      "last_fetch_at": "2026-05-22T22:37:26.177995+08:00",
-      "error": "401 Client Error: Unauthorized for url: https://api.github.com/repos/lux-QAQ/NJUPT_Fastlogin"
->>>>>>> Stashed changes
+      "status": "ok",
+      "documents": 1,
+      "last_fetch_at": "2026-05-22T22:43:48.928953+08:00",
+      "candidates": 1
     },
     {
       "id": "github:NJUPTFreeExams/njuptfreeexams.github.io",
@@ -478,13 +323,8 @@
       "domain": "github.com",
       "status": "ok",
       "documents": 0,
-<<<<<<< Updated upstream
-      "last_fetch_at": "2026-05-22T22:36:06.246122+08:00",
+      "last_fetch_at": "2026-05-22T22:43:48.928953+08:00",
       "candidates": 1
-=======
-      "last_fetch_at": "2026-05-22T22:37:26.177995+08:00",
-      "error": "401 Client Error: Unauthorized for url: https://api.github.com/repos/NJUPTFreeExams/njuptfreeexams.github.io"
->>>>>>> Stashed changes
     },
     {
       "id": "github:dhiyu/NJUPT-Bachelor",
@@ -492,13 +332,8 @@
       "domain": "github.com",
       "status": "ok",
       "documents": 0,
-<<<<<<< Updated upstream
-      "last_fetch_at": "2026-05-22T22:36:06.246122+08:00",
+      "last_fetch_at": "2026-05-22T22:43:48.928953+08:00",
       "candidates": 1
-=======
-      "last_fetch_at": "2026-05-22T22:37:26.177995+08:00",
-      "error": "401 Client Error: Unauthorized for url: https://api.github.com/repos/dhiyu/NJUPT-Bachelor"
->>>>>>> Stashed changes
     },
     {
       "id": "github:yosunpeng/postgraduate_test_njupt",
@@ -506,13 +341,8 @@
       "domain": "github.com",
       "status": "ok",
       "documents": 0,
-<<<<<<< Updated upstream
-      "last_fetch_at": "2026-05-22T22:36:06.246122+08:00",
+      "last_fetch_at": "2026-05-22T22:43:48.928953+08:00",
       "candidates": 1
-=======
-      "last_fetch_at": "2026-05-22T22:37:26.177995+08:00",
-      "error": "401 Client Error: Unauthorized for url: https://api.github.com/repos/yosunpeng/postgraduate_test_njupt"
->>>>>>> Stashed changes
     },
     {
       "id": "github:NJUPTFreeExams/NJUPT-InfoSec-Free-Exams",
@@ -520,13 +350,8 @@
       "domain": "github.com",
       "status": "ok",
       "documents": 0,
-<<<<<<< Updated upstream
-      "last_fetch_at": "2026-05-22T22:36:06.246122+08:00",
+      "last_fetch_at": "2026-05-22T22:43:48.928953+08:00",
       "candidates": 1
-=======
-      "last_fetch_at": "2026-05-22T22:37:26.177995+08:00",
-      "error": "401 Client Error: Unauthorized for url: https://api.github.com/repos/NJUPTFreeExams/NJUPT-InfoSec-Free-Exams"
->>>>>>> Stashed changes
     },
     {
       "id": "github:ace-trump-tech/NJUPT-Graduation-thesis",
@@ -534,13 +359,8 @@
       "domain": "github.com",
       "status": "ok",
       "documents": 0,
-<<<<<<< Updated upstream
-      "last_fetch_at": "2026-05-22T22:36:06.246122+08:00",
+      "last_fetch_at": "2026-05-22T22:43:48.928953+08:00",
       "candidates": 1
-=======
-      "last_fetch_at": "2026-05-22T22:37:26.177995+08:00",
-      "error": "401 Client Error: Unauthorized for url: https://api.github.com/repos/ace-trump-tech/NJUPT-Graduation-thesis"
->>>>>>> Stashed changes
     },
     {
       "id": "github:Yolumia/NJUPT-NETWORK",
@@ -548,27 +368,17 @@
       "domain": "github.com",
       "status": "ok",
       "documents": 0,
-<<<<<<< Updated upstream
-      "last_fetch_at": "2026-05-22T22:36:06.246122+08:00",
+      "last_fetch_at": "2026-05-22T22:43:48.928953+08:00",
       "candidates": 1
-=======
-      "last_fetch_at": "2026-05-22T22:37:26.177995+08:00",
-      "error": "401 Client Error: Unauthorized for url: https://api.github.com/repos/Yolumia/NJUPT-NETWORK"
->>>>>>> Stashed changes
     },
     {
       "id": "github:Moonike1217/NJUPTExamICSBuilder",
       "name": "一个将南京邮电大学考试时间文件转换为ics文件的工具",
       "domain": "github.com",
-      "status": "error",
-      "documents": 0,
-<<<<<<< Updated upstream
-      "last_fetch_at": "2026-05-22T22:36:06.246122+08:00",
-      "error": "name 'CATEGORY_KEYWORDS' is not defined"
-=======
-      "last_fetch_at": "2026-05-22T22:37:26.177995+08:00",
-      "error": "401 Client Error: Unauthorized for url: https://api.github.com/repos/Moonike1217/NJUPTExamICSBuilder"
->>>>>>> Stashed changes
+      "status": "ok",
+      "documents": 1,
+      "last_fetch_at": "2026-05-22T22:43:48.928953+08:00",
+      "candidates": 1
     },
     {
       "id": "github:musnows/Njupt-Wifi-Login",
@@ -576,13 +386,8 @@
       "domain": "github.com",
       "status": "ok",
       "documents": 0,
-<<<<<<< Updated upstream
-      "last_fetch_at": "2026-05-22T22:36:06.246122+08:00",
+      "last_fetch_at": "2026-05-22T22:43:48.928953+08:00",
       "candidates": 1
-=======
-      "last_fetch_at": "2026-05-22T22:37:26.177995+08:00",
-      "error": "401 Client Error: Unauthorized for url: https://api.github.com/repos/musnows/Njupt-Wifi-Login"
->>>>>>> Stashed changes
     }
   ]
 }
