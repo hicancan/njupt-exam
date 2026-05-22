@@ -1,0 +1,97 @@
+njupt-exam
+├── .github
+│   └── workflows
+│       ├── auto-update.yml
+│       ├── build-apk.yml
+│       └── deploy.yml
+├── config
+│   └── github_search_sources.json
+├── docs
+│   └── njupt-search-product-roadmap.md
+├── public
+│   ├── .well-known
+│   │   └── assetlinks.json
+│   ├── assets
+│   │   ├── desktop_demo_v2.png
+│   │   ├── icon-192x192.png
+│   │   ├── icon-512x512.png
+│   │   ├── logo.png
+│   │   └── mobile_demo_v2.png
+│   ├── data
+│   │   ├── 2025-2026学年第二学期考试安排表（学校组织17-18周）-学生用表.xlsx
+│   │   ├── 2025-2026学年第二学期考试安排表（学院组织）-学生用表.xlsx
+│   │   ├── 2025-2026学年第二学期集中考试周1安排表（学校组织）-学生用表.xlsx
+│   │   ├── DATA_INVENTORY.md
+│   │   ├── all_exams.json
+│   │   ├── data_summary.json
+│   │   └── source_metadata.json
+│   ├── index
+│   │   ├── documents.json
+│   │   └── manifest.json
+│   └── CNAME
+├── scripts
+│   ├── analyze_and_update.py
+│   ├── auto_update_exam_data.py
+│   ├── fetch_github_repos.py
+│   ├── generate_screenshots.py
+│   ├── indexer_config.py
+│   ├── indexer_scoring.py
+│   ├── run_locally.bat
+│   └── update_search_index.py
+├── src
+│   ├── components
+│   │   ├── ExamCard.tsx
+│   │   ├── ExamDetail.tsx
+│   │   ├── ExamList.tsx
+│   │   ├── Header.tsx
+│   │   ├── LoadingScreen.tsx
+│   │   ├── Logo.tsx
+│   │   ├── ReminderSettings.tsx
+│   │   ├── SearchInput.tsx
+│   │   ├── ThemeToggle.tsx
+│   │   └── UptimeDisplay.tsx
+│   ├── hooks
+│   │   ├── useClassSearch.test.ts
+│   │   ├── useClassSearch.ts
+│   │   ├── useDataUpdateNotifier.ts
+│   │   ├── useExamData.ts
+│   │   ├── usePwaInstall.ts
+│   │   ├── useSearchIndex.ts
+│   │   └── useSelectedExamIds.ts
+│   ├── types
+│   │   └── index.ts
+│   ├── utils
+│   │   ├── downloadFilename.test.ts
+│   │   ├── downloadFilename.ts
+│   │   ├── examDataContract.test.ts
+│   │   ├── examDataContract.ts
+│   │   ├── fetch.ts
+│   │   ├── icsGenerator.test.ts
+│   │   ├── icsGenerator.ts
+│   │   ├── searchIndex.test.ts
+│   │   └── searchIndex.ts
+│   ├── views
+│   │   ├── HomeView.tsx
+│   │   └── ResultsView.tsx
+│   ├── App.tsx
+│   ├── constants.ts
+│   ├── index.css
+│   ├── main.tsx
+│   └── vite-env.d.ts
+├── .gitignore
+├── LICENSE
+├── README.md
+├── dev-server.log
+├── eslint.config.js
+├── index.html
+├── package-lock.json
+├── package.json
+├── project_files.txt
+├── project_structure.txt
+├── project_structure_utf8.txt
+├── project_structure_v2.txt
+├── requirements.txt
+├── tsconfig.app.json
+├── tsconfig.json
+├── tsconfig.node.json
+└── vite.config.ts
