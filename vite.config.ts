@@ -19,7 +19,7 @@ export default defineConfig({
     tailwindcss(),
     VitePWA({
       registerType: 'autoUpdate',
-      includeAssets: ['assets/logo.png'],
+      includeAssets: ['assets/logo.png', 'assets/icon-192x192.png', 'assets/icon-512x512.png'],
       manifest: {
         name: 'njupt-exam',
         short_name: 'njupt-exam',
@@ -30,8 +30,13 @@ export default defineConfig({
         display: 'standalone',
         icons: [
           {
-            src: 'assets/logo.png',
-            sizes: '192x192 512x512',
+            src: 'assets/icon-192x192.png',
+            sizes: '192x192',
+            type: 'image/png'
+          },
+          {
+            src: 'assets/icon-512x512.png',
+            sizes: '512x512',
             type: 'image/png'
           }
         ]
