@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useMemo, useState, useEffect } from 'react';
 import { AlertTriangle, CalendarDays, Clock, FileText, GraduationCap, LockKeyhole } from 'lucide-react';
 import { ExamList } from '@/components/ExamList';
 import { ExamDetail } from '@/components/ExamDetail';
@@ -219,7 +219,12 @@ export function ResultsView({
             return true;
         });
     }, [domainFilter, intentFilter, results]);
-    const visibleResults = filteredResults.slice(0, 30);
+    const [visibleCount, setVisibleCount] = useState(20);
+    useEffect(() => {
+        setVisibleCount(20);
+    }, [query, selectedCategory, domainFilter, intentFilter]);
+
+    const visibleResults = filteredResults.slice(0, visibleCount);
 
     return (
         <main className="max-w-6xl w-full mx-auto px-4 py-6">
@@ -263,7 +268,7 @@ export function ResultsView({
                     </section>
                 ) : null}
 
-                {selectedCategory === '考试' && classMode.mode === 'NOT_FOUND' && (trimmedQuery === '考试安排' || trimmedQuery === '') ? (
+                {(trimmedQuery === '考试安排' && classMode.mode === 'NOT_FOUND') || (selectedCategory === '考试' && classMode.mode === 'NOT_FOUND' && trimmedQuery === '') ? (
                     <section className="mt-8">
                         <div className="border border-[#dadce0] dark:border-[#3c4043] rounded-xl bg-[#f8fafc] dark:bg-[#2d2e30] p-8 text-center max-w-[692px] mx-auto shadow-sm">
                             <div className="mx-auto w-16 h-16 bg-[#e8f0fe] dark:bg-[#3b4043] rounded-full flex items-center justify-center mb-4">
@@ -320,6 +325,16 @@ export function ResultsView({
                                 {visibleResults.map(document => (
                                     <SearchResultCard key={document.id} document={document} onOpenClass={onOpenClass} />
                                 ))}
+                                {visibleCount < filteredResults.length && (
+                                    <div className="pt-4 pb-2 text-center">
+                                        <button 
+                                            onClick={() => setVisibleCount(v => v + 20)}
+                                            className="px-6 py-2 rounded-full border border-[#dadce0] dark:border-[#3c4043] bg-white dark:bg-[#202124] text-sm font-medium text-[#1a73e8] hover:bg-[#f8f9fa] dark:hover:bg-[#303134] transition-colors"
+                                        >
+                                            加载更多
+                                        </button>
+                                    </div>
+                                )}
                             </div>
                         ) : (
                             <div className="border border-[#dadce0] dark:border-[#3c4043] rounded-md bg-white dark:bg-[#202124] p-6 text-[#4d5156] dark:text-[#bdc1c6] max-w-[692px]">

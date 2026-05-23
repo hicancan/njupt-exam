@@ -1,4 +1,3 @@
-import { z } from 'zod';
 import {
     Exam,
     RankedSearchDocument,
@@ -8,8 +7,11 @@ import {
     SearchIntent,
     SearchLifecycle,
     SearchManifest,
-    SearchSourceType
+    SearchSourceType,
+    SearchDocumentSchema,
+    SearchManifestSchema
 } from '@/types';
+import { z } from 'zod';
 
 class SearchContractError extends Error {
     constructor(message: string) {
@@ -110,10 +112,7 @@ const RESOURCE_INTENT_KEYWORDS = [
 
 
 
-const clamp01 = (value: number): number => {
-    if (!Number.isFinite(value)) return 0;
-    return Math.min(1, Math.max(0, value));
-};
+
 
 const normalize = (value: string): string => {
     return value.toLowerCase().replace(/\s+/g, '');
@@ -131,118 +130,16 @@ const tokenize = (query: string): string[] => {
     return parts.length > 0 ? parts : [normalized];
 };
 
-const SearchAttachmentSchema = z.object({
-    name: z.string(),
-    url: z.string(),
-    type: z.string().optional(),
-    role: z.string().nullable().optional(),
-    description: z.string().nullable().optional(),
-    sensitive: z.boolean().optional().default(false)
-});
 
-const SearchDocumentLLMSchema = z.object({
-    used: z.boolean().optional(),
-    provider: z.string().nullable().optional(),
-    model: z.string().nullable().optional(),
-    prompt_version: z.string().optional(),
-    confidence: z.number().nullable().optional(),
-    review_required: z.boolean().optional()
-}).passthrough();
 
-const SearchDocumentSchema = z.object({
-    id: z.string().min(1),
-    kind: z.enum(['notice', 'exam', 'resource']).catch('notice'),
-    status: z.string().optional(),
-    title: z.string().min(1),
-    url: z.string().min(1),
-    source: z.string().min(1),
-    source_domain: z.string().min(1),
-    source_type: z.enum([
-        'central_admin', 'central_notice', 'central_news', 'college', 'service_unit',
-        'job_platform', 'github_resource', 'research_admin', 'policy', 'exam_vertical'
-    ]).catch('central_admin'),
-    category: z.enum([
-        '考试', '选课', '竞赛', '奖助', '就业', '讲座', '生活', '学院', '研究生', '项目', '资料', '公告'
-    ]).catch('公告'),
-    domain: z.enum([
-        'academic', 'exam', 'course', 'degree', 'scholarship', 'employment', 'competition',
-        'project', 'international', 'life', 'library', 'security', 'logistics', 'lecture',
-        'research', 'resource', 'news', 'policy'
-    ]).catch('news'),
-    intent: z.enum([
-        'apply', 'register', 'submit', 'attend', 'check_result', 'publicity', 'download',
-        'read', 'schedule', 'alert'
-    ]).catch('read'),
-    lifecycle: z.enum(['active', 'upcoming', 'expired', 'evergreen', 'unknown']).catch('unknown'),
-    evidence: z.array(z.string()).optional().default([]),
-    confidence: z.number().nullable().optional(),
-    sub_category: z.string().nullable().optional(),
-    deadline: z.string().nullable().optional(),
-    action_required: z.boolean().optional().default(false),
-    action_type: z.string().nullable().optional(),
-    action_summary: z.string().nullable().optional(),
-    required_materials: z.array(z.string()).optional().default([]),
-    sensitive: z.boolean().optional().default(false),
-    sensitive_types: z.array(z.string()).optional().default([]),
-    review_required: z.boolean().optional().default(false),
-    risk_flags: z.array(z.string()).optional().default([]),
-    audience: z.array(z.string()),
-    published_at: z.string().nullable().optional(),
-    content: z.string().min(1),
-    summary: z.string().optional(),
-    attachments: z.array(SearchAttachmentSchema).default([]),
-    student_score: z.number().transform(clamp01),
-    freshness_score: z.number().transform(clamp01),
-    importance_score: z.number().transform(clamp01),
-    source_weight: z.number().transform(clamp01).optional(),
-    tags: z.array(z.string()),
-    hash: z.string().min(1),
-    cache_key: z.string().optional(),
-    llm_schema_version: z.string().optional(),
-    llm: SearchDocumentLLMSchema.optional(),
-    class_name: z.string().optional(),
-    exam_id: z.string().optional()
-}).passthrough();
-
-const SearchManifestSourceSchema = z.object({
-    id: z.string().min(1),
-    name: z.string().min(1),
-    domain: z.string().min(1),
-    source_type: z.enum([
-        'central_admin', 'central_notice', 'central_news', 'college', 'service_unit',
-        'job_platform', 'github_resource', 'research_admin', 'policy', 'exam_vertical'
-    ]).optional(),
-    priority: z.number().optional(),
-    candidates: z.number().optional(),
-    filtered_out: z.number().optional(),
-    status: z.enum(['ok', 'error']).catch('error'),
-    documents: z.number(),
-    last_fetch_at: z.string().nullable().optional(),
-    error: z.string().optional()
-}).passthrough();
-
-const SearchManifestSchema = z.object({
-    generated_at: z.string().min(1),
-    total_documents: z.number(),
-    strategy: z.string().min(1),
-    llm_schema_version: z.string().optional(),
-    llm_enabled: z.boolean().optional(),
-    llm_provider: z.string().optional(),
-    llm_model: z.string().nullable().optional(),
-    llm_batch_size: z.number().optional(),
-    llm_batch_max_chars: z.number().optional(),
-    llm_batch_max_output_tokens: z.number().optional(),
-    sources: z.array(SearchManifestSourceSchema)
-}).passthrough();
-
-const daysFromNow = (dateLike: string | null): number | null => {
+const daysFromNow = (dateLike: string | null | undefined): number | null => {
     if (!dateLike) return null;
     const date = new Date(dateLike);
     if (Number.isNaN(date.getTime())) return null;
     return (Date.now() - date.getTime()) / 86_400_000;
 };
 
-const calculateFreshness = (dateLike: string | null): number => {
+const calculateFreshness = (dateLike: string | null | undefined): number => {
     const days = daysFromNow(dateLike);
     if (days === null) return 0.45;
     if (days < -120) return 0.66;
@@ -254,7 +151,7 @@ const calculateFreshness = (dateLike: string | null): number => {
     return 0.42;
 };
 
-const dateSortValue = (dateLike: string | null): number => {
+const dateSortValue = (dateLike: string | null | undefined): number => {
     if (!dateLike) return 0;
     const date = new Date(dateLike);
     return Number.isNaN(date.getTime()) ? 0 : date.getTime();
@@ -422,6 +319,16 @@ export const buildExamDocuments = (exams: Exam[]): SearchDocument[] => {
             lifecycle: 'active',
             evidence: [exam.raw_time || exam.location || title],
             confidence: exam.parse_error ? 0.6 : 0.98,
+            sub_category: null,
+            deadline: null,
+            action_required: false,
+            action_type: null,
+            action_summary: null,
+            required_materials: [],
+            sensitive: false,
+            sensitive_types: [],
+            review_required: false,
+            risk_flags: [],
             audience: ['本科生'],
             published_at: exam.date || exam.start_timestamp,
             content: content || title,
@@ -492,8 +399,7 @@ export const rankSearchDocuments = (
         .sort((a, b) => {
             if (b.score !== a.score) return b.score - a.score;
             return dateSortValue(b.published_at) - dateSortValue(a.published_at);
-        })
-        .slice(0, 80);
+        });
 };
 
 export const getCategoryOrder = (): SearchCategory[] => [...CATEGORY_ORDER];
@@ -533,7 +439,7 @@ export const getUpdateStats = (documents: SearchDocument[]) => {
     return { today, sevenDays };
 };
 
-export const formatSearchDate = (dateLike: string | null): string => {
+export const formatSearchDate = (dateLike: string | null | undefined): string => {
     if (!dateLike) return '日期待确认';
     const date = new Date(dateLike);
     if (Number.isNaN(date.getTime())) return dateLike;
@@ -574,6 +480,16 @@ export const getLearningResources = (query: string): SearchDocument[] => {
             lifecycle: 'evergreen',
             evidence: ['高数 C语言 数据结构 电路 物理 期末 复习 习题 讲解 视频'],
             confidence: 0.72,
+            sub_category: null,
+            deadline: null,
+            action_required: false,
+            action_type: null,
+            action_summary: null,
+            required_materials: [],
+            sensitive: false,
+            sensitive_types: [],
+            review_required: false,
+            risk_flags: [],
             audience: ['本科生'],
             published_at: null,
             content: '高数 C语言 数据结构 电路 物理 期末 复习 习题 讲解 视频',

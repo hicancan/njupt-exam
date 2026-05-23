@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { AlertCircle, Code, Download } from 'lucide-react';
 import { UptimeDisplay } from '@/components/UptimeDisplay';
 import { APP_CONFIG } from '@/constants';
@@ -8,8 +8,8 @@ import { useSelectedExamIds } from '@/hooks/useSelectedExamIds';
 import { useDataUpdateNotifier } from '@/hooks/useDataUpdateNotifier';
 import { useSearchIndex } from '@/hooks/useSearchIndex';
 import { useUrlState } from '@/hooks/useUrlState';
+import { useSearchEngine } from '@/hooks/useSearchEngine';
 import { SearchCategory } from '@/types';
-import { buildExamDocuments, getLearningResources, rankSearchDocuments } from '@/utils/searchIndex';
 
 import { Header } from '@/components/Header';
 import { LoadingScreen } from '@/components/LoadingScreen';
@@ -34,13 +34,7 @@ function App() {
     const searchQuery = initialQuery;
     const manualSelection = classParam;
 
-    const examDocuments = useMemo(() => buildExamDocuments(allExams), [allExams]);
-    const allDocuments = useMemo(() => [...noticeDocuments, ...examDocuments], [noticeDocuments, examDocuments]);
-    const rankedResults = useMemo(
-        () => rankSearchDocuments(allDocuments, searchQuery, selectedCategory),
-        [allDocuments, searchQuery, selectedCategory]
-    );
-    const learningResources = useMemo(() => getLearningResources(searchQuery), [searchQuery]);
+    const { rankedResults, learningResources } = useSearchEngine(noticeDocuments, allExams, searchQuery, selectedCategory);
     const classSearchResult = useClassSearch(allExams, searchQuery, manualSelection);
     const currentClass = classSearchResult.mode === 'DETAIL' ? classSearchResult.classes[0] || null : null;
     const { selectedIds, toggleExamSelection } = useSelectedExamIds(currentClass, classSearchResult.exams);
@@ -50,7 +44,9 @@ function App() {
         // URL navigation is the external source of truth here; keep the controlled search box in sync.
         // eslint-disable-next-line react-hooks/set-state-in-effect
         setInputValue(classParam || qParam || '');
-        setSelectedCategory(classParam ? '考试' : '全部');
+        if (classParam) {
+            setSelectedCategory('考试');
+        }
     }, [classParam, qParam]);
 
     // Handle initial redirect for class saving
