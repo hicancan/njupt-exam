@@ -7,14 +7,14 @@ from typing import Any, Dict, List, Literal, Optional
 import requests
 from pydantic import BaseModel, Field, ValidationError, field_validator
 
-from indexer_config import (
+from config.indexer_config import (
     DEEPSEEK_API_BASE,
     DEEPSEEK_API_KEY,
     DEEPSEEK_MODEL,
     GEMINI_API_KEYS,
     REQUEST_TIMEOUT,
 )
-from semantic_model import SEARCH_DOMAINS, SEARCH_INTENTS, normalize_domain, normalize_intent
+from models.semantic_model import SEARCH_DOMAINS, SEARCH_INTENTS, normalize_domain, normalize_intent
 
 LLM_SCHEMA_VERSION = "llm-v5"
 GEMINI_MODEL_NAME = os.environ.get("GEMINI_MODEL", "gemini-3.1-flash-lite")

@@ -74,7 +74,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NJUPT_SEARCH_GITHUB_TOKEN: ${{ secrets.NJUPT_SEARCH_GITHUB_TOKEN }}
         run: |
-          python scripts/fetch_github_repos.py
+          python scripts/crawlers/fetch_github_repos.py
 
       - name: Build Campus Search Index
         env:
@@ -103,12 +103,12 @@ jobs:
 
       - name: Python integrity checks
         run: |
-          python -m py_compile scripts/update_search_index.py scripts/llm_scorer.py scripts/validate_search_index.py scripts/semantic_model.py
+          python -m py_compile scripts/update_search_index.py scripts/core/llm_scorer.py scripts/utils/validate_search_index.py scripts/models/semantic_model.py
           python scripts/test_llm_batching.py
 
       - name: Validate Campus Search Index
         run: |
-          python scripts/validate_search_index.py
+          python scripts/utils/validate_search_index.py
           
       - name: Check for changes
         id: git-check

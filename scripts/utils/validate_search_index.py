@@ -4,9 +4,9 @@ import sys
 from datetime import datetime
 from urllib.parse import urlparse
 
-from indexer_config import BASE_DIR, CAMPUS_SOURCE_CONFIG_PATH, DOCUMENTS_PATH, MANIFEST_PATH
-from llm_scorer import BatchLLMResult, LLMResult
-from semantic_model import SEARCH_DOMAINS, SEARCH_INTENTS, SEARCH_LIFECYCLES, SEARCH_SOURCE_TYPES
+from config.indexer_config import BASE_DIR, CAMPUS_SOURCE_CONFIG_PATH, DOCUMENTS_PATH, MANIFEST_PATH
+from core.llm_scorer import BatchLLMResult, LLMResult
+from models.semantic_model import SEARCH_DOMAINS, SEARCH_INTENTS, SEARCH_LIFECYCLES, SEARCH_SOURCE_TYPES
 
 
 REQUIRED_DOCUMENT_FIELDS = {

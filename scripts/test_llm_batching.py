@@ -1,7 +1,7 @@
 import json
 import unittest
 
-from llm_scorer import BatchLLMResult, redact_for_log, split_llm_batches
+from core.llm_scorer import BatchLLMResult, redact_for_log, split_llm_batches
 
 
 class LLMBatchingTests(unittest.TestCase):

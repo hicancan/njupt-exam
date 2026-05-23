@@ -15,7 +15,7 @@ from bs4 import BeautifulSoup
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
-from indexer_config import (
+from config.indexer_config import (
     BASE_DIR, PUBLIC_DIR, INDEX_DIR, DOCUMENTS_PATH, MANIFEST_PATH, GITHUB_SOURCE_CONFIG_PATH,
     LLM_CACHE_PATH,
     BEIJING_TZ, HEADERS, MAX_DOCS_PER_SOURCE, DETAIL_FETCH_LIMIT_PER_SOURCE, REQUEST_TIMEOUT,
@@ -24,7 +24,7 @@ from indexer_config import (
     JOB_API_BASE, JOB_STATION_CODE, CATEGORY_KEYWORDS,
     NAV_TITLES, STATIC_EXTENSIONS, ATTACHMENT_EXTENSIONS, POSITIVE_KEYWORDS
 )
-from llm_scorer import (
+from core.llm_scorer import (
     LLM_BATCH_MAX_CHARS, LLM_BATCH_MAX_DOCS, LLM_BATCH_MAX_OUTPUT_TOKENS,
     LLM_SCHEMA_VERSION, active_model_name, active_provider_name,
     analyze_documents_batch_with_llm, llm_enabled, public_llm_result, split_llm_batches,
@@ -59,13 +59,13 @@ _RUN_STATS: dict[str, int] = {
     "candidate_llm_cache_reused": 0,
     "restricted": 0,
 }
-from heuristics import (
+from core.heuristics import (
     RESTRICTED_TEXT_PATTERNS, ACTION_KEYWORDS, SENSITIVE_PATTERNS, SENSITIVE_MATERIAL_PATTERNS,
     clean_text, parse_date, is_expired, is_restricted_content, parse_deadline_candidate,
     infer_deadline, infer_action, infer_attachment_role, enrich_attachment_metadata,
     detect_sensitive_info, is_low_evidence_content, metadata_only_summary
 )
-from semantic_model import (
+from models.semantic_model import (
     derive_legacy_category, extract_evidence, infer_domain, infer_intent, infer_lifecycle,
     normalize_domain, normalize_intent, normalize_source_type
 )
@@ -563,7 +563,7 @@ def build_restricted_document(
     }
 
 
-from indexer_scoring import (
+from core.indexer_scoring import (
     calculate_freshness, infer_category, infer_tags, calculate_student_score,
     is_student_facing_document, calculate_importance_score
 )

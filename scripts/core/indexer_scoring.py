@@ -1,6 +1,6 @@
 import re
 from datetime import datetime
-from indexer_config import CATEGORY_KEYWORDS, POSITIVE_KEYWORDS, NEGATIVE_KEYWORDS, MIN_STUDENT_SCORE, BEIJING_TZ
+from config.indexer_config import CATEGORY_KEYWORDS, POSITIVE_KEYWORDS, NEGATIVE_KEYWORDS, MIN_STUDENT_SCORE, BEIJING_TZ
 
 def calculate_freshness(published_at: str | None, now: datetime) -> float:
     if not published_at:

@@ -1,7 +1,7 @@
 import os
 import json
 import requests
-from indexer_scoring import infer_category
+from core.indexer_scoring import infer_category
 
 # This script fetches high star njupt repos and appends them to config/github_search_sources.json
 CONFIG_PATH = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "config", "github_search_sources.json")

@@ -6,7 +6,7 @@ import requests
 import urllib3
 from bs4 import BeautifulSoup
 
-from indexer_config import CAMPUS_SOURCE_CONFIG_PATH, HEADERS, REQUEST_TIMEOUT
+from config.indexer_config import CAMPUS_SOURCE_CONFIG_PATH, HEADERS, REQUEST_TIMEOUT
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
