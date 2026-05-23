@@ -51,26 +51,94 @@ export type SearchCategory =
     | '资料'
     | '公告';
 
+export type SearchDomain =
+    | 'academic'
+    | 'exam'
+    | 'course'
+    | 'degree'
+    | 'scholarship'
+    | 'employment'
+    | 'competition'
+    | 'project'
+    | 'international'
+    | 'life'
+    | 'library'
+    | 'security'
+    | 'logistics'
+    | 'lecture'
+    | 'research'
+    | 'resource'
+    | 'news'
+    | 'policy';
+
+export type SearchIntent =
+    | 'apply'
+    | 'register'
+    | 'submit'
+    | 'attend'
+    | 'check_result'
+    | 'publicity'
+    | 'download'
+    | 'read'
+    | 'schedule'
+    | 'alert';
+
+export type SearchSourceType =
+    | 'central_admin'
+    | 'central_notice'
+    | 'central_news'
+    | 'college'
+    | 'service_unit'
+    | 'job_platform'
+    | 'github_resource'
+    | 'research_admin'
+    | 'policy'
+    | 'exam_vertical';
+
+export type SearchLifecycle = 'active' | 'upcoming' | 'expired' | 'evergreen' | 'unknown';
+
 export interface SearchAttachment {
     name: string;
     url: string;
     type?: string;
+    role?: string | null;
+    description?: string | null;
+    sensitive?: boolean;
+}
+
+export interface SearchDocumentLLMMetadata {
+    used?: boolean;
+    model?: string | null;
+    prompt_version?: string;
+    confidence?: number | null;
+    review_required?: boolean;
 }
 
 export interface SearchDocument {
     id: string;
     kind: SearchDocumentKind;
+    status?: 'restricted' | string;
     title: string;
     url: string;
     source: string;
     source_domain: string;
+    source_type: SearchSourceType;
     category: SearchCategory;
+    domain: SearchDomain;
+    intent: SearchIntent;
+    lifecycle: SearchLifecycle;
+    evidence?: string[];
+    confidence?: number | null;
     sub_category?: string | null;
     deadline?: string | null;
     action_required?: boolean;
     action_type?: string | null;
     action_summary?: string | null;
+    required_materials?: string[];
     sensitive?: boolean;
+    sensitive_types?: string[];
+    review_required?: boolean;
+    risk_flags?: string[];
     audience: string[];
     published_at: string | null;
     content: string;
@@ -82,6 +150,8 @@ export interface SearchDocument {
     source_weight?: number;
     tags: string[];
     hash: string;
+    llm_schema_version?: string;
+    llm?: SearchDocumentLLMMetadata;
     class_name?: string;
     exam_id?: string;
 }
@@ -99,6 +169,10 @@ export interface SearchManifestSource {
     documents: number;
     last_fetch_at: string | null;
     error?: string;
+    source_type?: SearchSourceType;
+    priority?: number;
+    candidates?: number;
+    filtered_out?: number;
 }
 
 export interface SearchManifest {
@@ -106,6 +180,8 @@ export interface SearchManifest {
     total_documents: number;
     sources: SearchManifestSource[];
     strategy: string;
+    llm_schema_version?: string;
+    llm_enabled?: boolean;
 }
 
 export type SearchMode = 'EMPTY' | 'NOT_FOUND' | 'LIST' | 'DETAIL';

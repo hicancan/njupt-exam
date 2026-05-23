@@ -1,10 +1,20 @@
-import { GraduationCap, CalendarDays } from 'lucide-react';
+import { useMemo, useState } from 'react';
+import { AlertTriangle, CalendarDays, Clock, FileText, GraduationCap, LockKeyhole } from 'lucide-react';
 import { ExamList } from '@/components/ExamList';
 import { ExamDetail } from '@/components/ExamDetail';
-import { SearchCategory, RankedSearchDocument, SearchDocument, SearchResult } from '@/types';
-import { getCategoryOrder, formatSearchDate } from '@/utils/searchIndex';
+import { SearchCategory, RankedSearchDocument, SearchDocument, SearchDomain, SearchIntent, SearchResult } from '@/types';
+import {
+    getCategoryOrder,
+    formatSearchDate,
+    getDomainLabel,
+    getIntentLabel,
+    getLifecycleLabel,
+    getSourceTypeLabel
+} from '@/utils/searchIndex';
 
 type CategoryFilter = SearchCategory | '全部';
+type DomainFilter = SearchDomain | '全部';
+type IntentFilter = SearchIntent | '全部';
 
 const isExternalUrl = (url: string): boolean => /^https?:\/\//.test(url);
 
@@ -54,6 +64,10 @@ interface SearchResultCardProps {
 
 function SearchResultCard({ document, onOpenClass }: SearchResultCardProps) {
     const isExam = document.kind === 'exam' && document.class_name;
+    const isRestricted = document.status === 'restricted';
+    const attachmentChips = document.attachments
+        .filter(attachment => attachment.role || attachment.sensitive)
+        .slice(0, 3);
     const Wrapper = isExam ? 'button' : 'a';
     const wrapperProps = isExam
         ? {
@@ -72,6 +86,9 @@ function SearchResultCard({ document, onOpenClass }: SearchResultCardProps) {
                 <span className="font-medium">{document.source}</span>
                 <span className="text-[#70757a] dark:text-[#9aa0a6]">›</span>
                 <span className="text-[#70757a] dark:text-[#9aa0a6] truncate">{document.category}{document.sub_category ? ` / ${document.sub_category}` : ''}</span>
+                <span className="hidden sm:inline-flex items-center h-5 px-2 rounded bg-[#f1f3f4] text-[#5f6368] dark:bg-[#303134] dark:text-[#bdc1c6] text-[11px] shrink-0">
+                    {getSourceTypeLabel(document.source_type)}
+                </span>
                 {isExam ? (
                     <span className="ml-2 inline-flex items-center justify-center h-5 px-2 rounded text-[11px] bg-[#e8f0fe] text-[#1967d2] dark:bg-[#263850] dark:text-[#8ab4f8] shrink-0">
                         考试频道
@@ -82,17 +99,37 @@ function SearchResultCard({ document, onOpenClass }: SearchResultCardProps) {
                         含敏感信息
                     </span>
                 )}
+                {isRestricted && (
+                    <span className="ml-auto inline-flex items-center gap-1 h-5 px-2 rounded text-[11px] bg-[#fce8e6] text-[#c5221f] dark:bg-[#5c1e19] dark:text-[#f28b82] shrink-0">
+                        <LockKeyhole size={12} />
+                        校内访问
+                    </span>
+                )}
             </div>
             <h3 className="text-[20px] leading-snug font-medium text-[#1a0dab] dark:text-[#8ab4f8] group-hover:underline break-words">
                 {document.title}
             </h3>
 
+            <div className="mt-2 flex flex-wrap gap-1.5 text-[12px]">
+                <span className="inline-flex items-center h-6 px-2 rounded bg-[#e8f0fe] text-[#1967d2] dark:bg-[#263850] dark:text-[#8ab4f8]">
+                    {getDomainLabel(document.domain)}
+                </span>
+                <span className="inline-flex items-center h-6 px-2 rounded bg-[#e6f4ea] text-[#137333] dark:bg-[#1f3b28] dark:text-[#81c995]">
+                    {getIntentLabel(document.intent)}
+                </span>
+                <span className="inline-flex items-center h-6 px-2 rounded bg-[#f1f3f4] text-[#5f6368] dark:bg-[#303134] dark:text-[#bdc1c6]">
+                    {getLifecycleLabel(document.lifecycle)}
+                </span>
+            </div>
+
             {document.action_required && (
                 <div className="mt-2.5 mb-1.5 p-3 bg-[#fef7e0] dark:bg-[#42341c] rounded border border-[#fad270]/40 dark:border-[#f29900]/20">
                     <div className="flex items-center gap-2 text-[#b06000] dark:text-[#fde293] font-medium mb-1 text-[14px]">
-                        <span className="flex-shrink-0">🚀 {document.action_type || '需采取行动'}</span>
+                        <AlertTriangle size={15} className="shrink-0" />
+                        <span className="flex-shrink-0">{document.action_type || '需采取行动'}</span>
                         {document.deadline && (
-                            <span className="ml-auto text-[13px] bg-[#fce8e6] dark:bg-[#5c1e19] px-2 py-0.5 rounded text-[#c5221f] dark:text-[#f28b82]">
+                            <span className="ml-auto inline-flex items-center gap-1 text-[13px] bg-[#fce8e6] dark:bg-[#5c1e19] px-2 py-0.5 rounded text-[#c5221f] dark:text-[#f28b82]">
+                                <Clock size={12} />
                                 截止: {document.deadline.substring(0, 16).replace('T', ' ')}
                             </span>
                         )}
@@ -102,6 +139,24 @@ function SearchResultCard({ document, onOpenClass }: SearchResultCardProps) {
                             {document.action_summary}
                         </div>
                     )}
+                </div>
+            )}
+
+            {attachmentChips.length > 0 && (
+                <div className="mt-2 flex flex-wrap gap-1.5">
+                    {attachmentChips.map(attachment => (
+                        <span
+                            key={`${attachment.url}-${attachment.role || attachment.name}`}
+                            className={`inline-flex items-center gap-1 max-w-full h-6 px-2 rounded text-[12px] ${
+                                attachment.sensitive
+                                    ? 'bg-[#fce8e6] text-[#c5221f] dark:bg-[#5c1e19] dark:text-[#f28b82]'
+                                    : 'bg-[#e8f0fe] text-[#1967d2] dark:bg-[#263850] dark:text-[#8ab4f8]'
+                            }`}
+                        >
+                            <FileText size={12} className="shrink-0" />
+                            <span className="truncate">{attachment.role || '附件'}</span>
+                        </span>
+                    ))}
                 </div>
             )}
 
@@ -149,7 +204,22 @@ export function ResultsView({
     totalRecords
 }: ResultsViewProps) {
     const trimmedQuery = query.trim();
-    const visibleResults = results.slice(0, 30);
+    const [domainFilter, setDomainFilter] = useState<DomainFilter>('全部');
+    const [intentFilter, setIntentFilter] = useState<IntentFilter>('全部');
+    const domainOptions = useMemo(() => {
+        return Array.from(new Set(results.map(document => document.domain))).sort((a, b) => getDomainLabel(a).localeCompare(getDomainLabel(b), 'zh-CN'));
+    }, [results]);
+    const intentOptions = useMemo(() => {
+        return Array.from(new Set(results.map(document => document.intent))).sort((a, b) => getIntentLabel(a).localeCompare(getIntentLabel(b), 'zh-CN'));
+    }, [results]);
+    const filteredResults = useMemo(() => {
+        return results.filter(document => {
+            if (domainFilter !== '全部' && document.domain !== domainFilter) return false;
+            if (intentFilter !== '全部' && document.intent !== intentFilter) return false;
+            return true;
+        });
+    }, [domainFilter, intentFilter, results]);
+    const visibleResults = filteredResults.slice(0, 30);
 
     return (
         <main className="max-w-6xl w-full mx-auto px-4 py-6">
@@ -215,9 +285,33 @@ export function ResultsView({
                                 <h2 className="text-xl font-semibold text-[#202124] dark:text-[#e8eaed]">搜索结果</h2>
                                 <p className="mt-1 text-sm text-[#70757a] dark:text-[#9aa0a6]">
                                     {trimmedQuery.length >= 2
-                                        ? `“${trimmedQuery}” 找到 ${results.length} 条结果，按相关度和时间排序。`
+                                        ? `“${trimmedQuery}” 找到 ${filteredResults.length} 条结果，按相关度、任务动作和时效排序。`
                                         : '未输入关键词时展示当前频道的最新高价值内容。'}
                                 </p>
+                            </div>
+                            <div className="flex flex-wrap gap-2">
+                                <select
+                                    value={domainFilter}
+                                    onChange={event => setDomainFilter(event.target.value as DomainFilter)}
+                                    className="h-9 rounded border border-[#dadce0] dark:border-[#3c4043] bg-white dark:bg-[#202124] px-3 text-sm text-[#202124] dark:text-[#e8eaed]"
+                                    aria-label="按事务领域筛选"
+                                >
+                                    <option value="全部">全部领域</option>
+                                    {domainOptions.map(domain => (
+                                        <option key={domain} value={domain}>{getDomainLabel(domain)}</option>
+                                    ))}
+                                </select>
+                                <select
+                                    value={intentFilter}
+                                    onChange={event => setIntentFilter(event.target.value as IntentFilter)}
+                                    className="h-9 rounded border border-[#dadce0] dark:border-[#3c4043] bg-white dark:bg-[#202124] px-3 text-sm text-[#202124] dark:text-[#e8eaed]"
+                                    aria-label="按动作类型筛选"
+                                >
+                                    <option value="全部">全部动作</option>
+                                    {intentOptions.map(intent => (
+                                        <option key={intent} value={intent}>{getIntentLabel(intent)}</option>
+                                    ))}
+                                </select>
                             </div>
                         </div>
 

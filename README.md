@@ -22,24 +22,24 @@
 
 `njupt-search` 致力于将分散在南邮各个公开站点里的学生相关信息，整合为一个可搜索、可过滤、可持续更新的极速校园信息入口。
 
-当前版本内置了独立的考试垂直频道：输入班级号即可查看期末考试安排、手动勾选课程并导出 `.ics` 日历。除此之外，全局搜索结果深度接入了全校公开公告、就业宣讲会、图书馆/后勤/保卫处通知以及开源 GitHub 资料仓库。
+当前版本内置了独立的考试垂直频道：输入班级号即可查看期末考试安排、手动勾选课程并导出 `.ics` 日历。除此之外，全局搜索结果接入了源注册表、离线 LLM 清洗、多轴分类、行动事项、截止时间、学院站和开源 GitHub 资料仓库。
 
 ## 已接入数据
 
-当前收录 10 个校园公开源：
+校园公开源配置位于：
 
-| 源 | 域名 | 主要内容 |
+```text
+config/campus_sources.json
+```
+
+当前源注册表按 Tier 接入：
+
+| 层级 | 源 | 主要内容 |
 | --- | --- | --- |
-| 本科生院 / 教务处 | `jwc.njupt.edu.cn` | 考试、选课、转专业、推免、课程通知 |
-| 学生工作处 | `xsc.njupt.edu.cn` | 奖助、公示、宿舍、学生手册、心理健康 |
-| 研究生院 | `pg.njupt.edu.cn` | 培养、学位、答辩、研究生竞赛 |
-| 研究生工作部 | `ygb.njupt.edu.cn` | 研究生奖助、评优、实践、学术活动 |
-| 团委 / 青春南邮 | `youth.njupt.edu.cn` | 社团、挑战杯、志愿服务、活动 |
-| 创新创业教育学院 | `cxcy.njupt.edu.cn` | 科创竞赛、大创项目、创业基金 |
-| 就业信息网 | `njupt.91job.org.cn` | 招聘会、宣讲会 |
-| 图书馆 | `lib.njupt.edu.cn` | 开放安排、数据库、阅读活动 |
-| 保卫处 | `bwc.njupt.edu.cn` | 交通、安全、消防、车贴、户籍 |
-| 后勤管理处 | `hqc.njupt.edu.cn` | 停水停电、维修、医保、班车 |
+| Tier 0 | 教务、学工、研究生、研工、团委、创新创业、就业、图书馆、保卫、后勤 | 学生刚需事务 |
+| Tier 1 | 学校官网通知、官网首页、新闻网、信息公开、国际合作交流处 | 校级公开信息流 |
+| Tier 2 | 计算机、通信、电光、集成电路、自动化、人工智能、物联网、理学院、现代邮政、管理、经济等学院 | 学院通知、答辩、竞赛、实习、项目 |
+| Tier 3 | 科学技术处、社会科学处、学科建设办公室、产业合作处等 | 项目、科研机会、讲座，默认强过滤 |
 
 索引产物位于：
 
@@ -48,7 +48,7 @@ public/index/documents.json
 public/index/manifest.json
 ```
 
-GitHub 资料源配置位于：
+GitHub 资料源配置仍位于：
 
 ```text
 config/github_search_sources.json
@@ -63,11 +63,12 @@ public/data/data_summary.json
 
 ## 核心能力
 
-- 统一搜索：公告、考试记录、就业宣讲、项目文档和学习资源进入同一排序模型。
-- 分类频道：考试 / 竞赛 / 奖助 / 就业 / 讲座 / 生活 / 学院 / 研究生 / 项目 / 资料。
+- 统一搜索：公告、考试记录、就业宣讲、项目文档、学院通知和学习资源进入同一排序模型。
+- 多轴分类：保留考试 / 竞赛 / 奖助等兼容频道，同时新增 `domain`、`intent`、`source_type`、`lifecycle`、`evidence`。
 - 默认过滤：入库时过滤低学生相关内容，结果页按相关度和发布时间展示。
+- 任务卡片：结果页展示事务领域、动作类型、生命周期、截止时间、行动说明、附件角色和敏感标记。
 - 考试垂直频道：班级号搜索、模糊班级选择、手动勾选考试、导出标准 iCalendar。
-- 自动更新：GitHub Actions 每 6 小时更新考试数据、校园搜索索引和已配置 GitHub 资料源。
+- 自动更新：GitHub Actions 每 6 小时更新考试数据、校园搜索索引和已配置 GitHub 资料源，并执行索引契约校验。
 - PWA / Android TWA：支持添加到主屏幕，缓存 `/data/` 和 `/index/` 数据并监听后台更新。
 
 ## 本地开发
@@ -114,6 +115,38 @@ uv run python scripts\analyze_and_update.py
 uv run python scripts\update_search_index.py
 ```
 
+常用参数：
+
+```powershell
+uv run python scripts\update_search_index.py --dry-run --no-llm
+uv run python scripts\update_search_index.py --source jwc --force-llm --limit 20
+uv run python scripts\update_search_index.py --no-github
+```
+
+索引契约校验：
+
+```powershell
+uv run python scripts\validate_search_index.py
+```
+
+官方公开源审计：
+
+```powershell
+uv run python scripts\audit_njupt_sources.py
+```
+
+### LLM 增强清洗
+
+校园搜索索引支持可选的离线 LLM 清洗。未配置 Key 时会自动回退到规则分类；配置后只在索引构建阶段调用，不会在用户搜索时实时调用模型。
+
+可选环境变量：
+
+```powershell
+$env:GEMINI_API_KEYS="key1,key2,key3"
+```
+
+LLM 清洗会写入二级分类、学生相关性、行动事项、截止时间、材料清单、学生视角摘要、附件角色、敏感信息标记、复核标记和 evidence。索引脚本同时包含 `llm_schema_version`、受限页面识别、Python 侧 Pydantic 校验、可重跑参数和规则兜底，避免旧缓存或格式漂移污染线上 `documents.json`。
+
 CI 中如需读取 GitHub 资料仓库，请配置仓库级 Actions secret：
 
 ```powershell
@@ -124,7 +157,8 @@ gh auth token | gh secret set NJUPT_SEARCH_GITHUB_TOKEN --repo hicancan/njupt-se
 
 ```mermaid
 graph LR
-    A["南邮公开站点"] --> B["update_search_index.py"]
+    A["config/campus_sources.json"] --> B["update_search_index.py"]
+    C1["南邮公开站点"] --> B
     X["GitHub 资料仓库"] --> B
     C["教务处 Excel"] --> D["analyze_and_update.py"]
     B --> E["public/index/documents.json"]
@@ -140,7 +174,9 @@ graph LR
 njupt-search/
 ├── docs/
 │   └── njupt-search-product-roadmap.md
+│   └── source-audit.md
 ├── config/
+│   ├── campus_sources.json
 │   └── github_search_sources.json
 ├── public/
 │   ├── data/                  # 考试垂直频道数据
@@ -149,6 +185,12 @@ njupt-search/
 ├── scripts/
 │   ├── auto_update_exam_data.py
 │   ├── analyze_and_update.py
+│   ├── indexer_config.py
+│   ├── indexer_scoring.py
+│   ├── semantic_model.py
+│   ├── validate_search_index.py
+│   ├── audit_njupt_sources.py
+│   ├── llm_scorer.py
 │   └── update_search_index.py
 ├── src/
 │   ├── components/

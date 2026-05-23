@@ -7,6 +7,7 @@ import { useClassSearch } from '@/hooks/useClassSearch';
 import { useSelectedExamIds } from '@/hooks/useSelectedExamIds';
 import { useDataUpdateNotifier } from '@/hooks/useDataUpdateNotifier';
 import { useSearchIndex } from '@/hooks/useSearchIndex';
+import { useUrlState } from '@/hooks/useUrlState';
 import { SearchCategory } from '@/types';
 import { buildExamDocuments, getLearningResources, rankSearchDocuments } from '@/utils/searchIndex';
 
@@ -22,27 +23,16 @@ function App() {
     const { documents: noticeDocuments, loading: searchLoading, error: searchError } = useSearchIndex();
     const { newDataAvailable, reloadToUpdate } = useDataUpdateNotifier();
 
-    const [inputValue, setInputValue] = useState<string>(() => {
-        const urlParams = new URLSearchParams(window.location.search);
-        return urlParams.get('class')?.toUpperCase() || urlParams.get('q') || '';
-    });
-    const [isHomeState, setIsHomeState] = useState<boolean>(() => {
-        const urlParams = new URLSearchParams(window.location.search);
-        return !urlParams.has('class') && !urlParams.has('q');
-    });
-    const [searchQuery, setSearchQuery] = useState<string>(() => {
-        const urlParams = new URLSearchParams(window.location.search);
-        return urlParams.get('class')?.toUpperCase() || urlParams.get('q') || '';
-    });
-    const [manualSelection, setManualSelection] = useState<string | null>(() => {
-        const urlParams = new URLSearchParams(window.location.search);
-        return urlParams.get('class')?.toUpperCase() || null;
-    });
-    const [selectedCategory, setSelectedCategory] = useState<CategoryFilter>(() => {
-        const urlParams = new URLSearchParams(window.location.search);
-        return urlParams.has('class') ? '考试' : '全部';
-    });
+    const { classParam, qParam, navigate } = useUrlState();
+
+    const initialQuery = classParam || qParam || '';
+    const [inputValue, setInputValue] = useState<string>(initialQuery);
+    const [selectedCategory, setSelectedCategory] = useState<CategoryFilter>(classParam ? '考试' : '全部');
     const [reminders, setReminders] = useState<number[]>([30, 60]);
+
+    const isHome = !classParam && !qParam;
+    const searchQuery = initialQuery;
+    const manualSelection = classParam;
 
     const examDocuments = useMemo(() => buildExamDocuments(allExams), [allExams]);
     const allDocuments = useMemo(() => [...noticeDocuments, ...examDocuments], [noticeDocuments, examDocuments]);
@@ -55,36 +45,23 @@ function App() {
     const currentClass = classSearchResult.mode === 'DETAIL' ? classSearchResult.classes[0] || null : null;
     const { selectedIds, toggleExamSelection } = useSelectedExamIds(currentClass, classSearchResult.exams);
 
+    // Sync input value when URL changes (e.g. back button)
     useEffect(() => {
-        const trimmed = searchQuery.trim();
+        // URL navigation is the external source of truth here; keep the controlled search box in sync.
+        // eslint-disable-next-line react-hooks/set-state-in-effect
+        setInputValue(classParam || qParam || '');
+        setSelectedCategory(classParam ? '考试' : '全部');
+    }, [classParam, qParam]);
+
+    // Handle initial redirect for class saving
+    useEffect(() => {
         if (classSearchResult.mode === 'DETAIL' && currentClass && classSearchResult.exams.length > 0) {
             localStorage.setItem('SAVED_CLASS', currentClass);
-            const nextUrl = `${window.location.pathname}?${new URLSearchParams({ class: currentClass }).toString()}`;
-            window.history.replaceState(null, '', nextUrl);
-        } else if (trimmed.length >= 2) {
-            const nextUrl = `${window.location.pathname}?${new URLSearchParams({ q: trimmed }).toString()}`;
-            window.history.replaceState(null, '', nextUrl);
-        } else {
-            window.history.replaceState(null, '', window.location.pathname);
+            if (classParam !== currentClass) {
+                navigate({ class: currentClass, q: null }, true);
+            }
         }
-    }, [classSearchResult.exams.length, classSearchResult.mode, currentClass, searchQuery]);
-
-    useEffect(() => {
-        const handlePopState = () => {
-            const urlParams = new URLSearchParams(window.location.search);
-            const classParam = urlParams.get('class')?.toUpperCase();
-            const qParam = urlParams.get('q');
-            
-            setInputValue(classParam || qParam || '');
-            setSearchQuery(classParam || qParam || '');
-            setManualSelection(classParam || null);
-            setSelectedCategory(classParam ? '考试' : '全部');
-            setIsHomeState(!classParam && !qParam);
-        };
-
-        window.addEventListener('popstate', handlePopState);
-        return () => window.removeEventListener('popstate', handlePopState);
-    }, []);
+    }, [classSearchResult.exams.length, classSearchResult.mode, currentClass, navigate, classParam]);
 
     const handleInputChange = (value: string) => {
         setInputValue(value);
@@ -92,14 +69,10 @@ function App() {
 
     const handleSearchSubmit = (value: string) => {
         const trimmed = value.trim();
-        const nextUrl = trimmed.length >= 2 ? `${window.location.pathname}?${new URLSearchParams({ q: trimmed }).toString()}` : window.location.pathname;
-        if (window.location.search !== new URLSearchParams(nextUrl.split('?')[1] || '').toString()) {
-            window.history.pushState(null, '', nextUrl);
-        }
-        setSearchQuery(value);
-        setIsHomeState(false);
-        if (manualSelection && value.toUpperCase() !== manualSelection) {
-            setManualSelection(null);
+        if (trimmed.length >= 2) {
+            navigate({ q: trimmed, class: null });
+        } else {
+            navigate({ q: null, class: null });
         }
     };
 
@@ -111,37 +84,23 @@ function App() {
                 return;
             }
         }
-        const nextUrl = `${window.location.pathname}?${new URLSearchParams({ q: nextQuery }).toString()}`;
-        window.history.pushState(null, '', nextUrl);
-        setInputValue(nextQuery);
-        setSearchQuery(nextQuery);
+        navigate({ q: nextQuery, class: null });
         setSelectedCategory(category);
-        setManualSelection(null);
-        setIsHomeState(false);
     };
 
     const handleOpenClass = (className: string) => {
         if (!className) return;
         localStorage.setItem('SAVED_CLASS', className.toUpperCase());
-        const nextUrl = `${window.location.pathname}?${new URLSearchParams({ class: className.toUpperCase() }).toString()}`;
-        window.history.pushState(null, '', nextUrl);
-        setInputValue(className.toUpperCase());
-        setSearchQuery(className.toUpperCase());
+        navigate({ class: className.toUpperCase(), q: null });
         setSelectedCategory('考试');
-        setManualSelection(className.toUpperCase());
-        setIsHomeState(false);
     };
 
     const handleGoHome = () => {
-        window.history.pushState(null, '', window.location.pathname);
-        setInputValue('');
-        setSearchQuery('');
+        navigate({ class: null, q: null });
         setSelectedCategory('全部');
-        setIsHomeState(true);
     };
 
     const isLoading = examLoading || searchLoading;
-    const isHome = isHomeState;
 
     if (isLoading) {
         return <LoadingScreen />;

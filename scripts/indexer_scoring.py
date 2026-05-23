@@ -61,16 +61,34 @@ def calculate_student_score(text: str, source_weight: float) -> float:
 def is_student_facing_document(document: dict) -> bool:
     text = f"{document['title']} {document.get('content', '')}"
     category = document.get("category", "公告")
+    domain = str(document.get("domain", "news"))
+    intent = str(document.get("intent", "read"))
+    source_type = str(document.get("source_type", "central_admin"))
+    lifecycle = str(document.get("lifecycle", "unknown"))
     negative_hits = sum(1 for keyword in NEGATIVE_KEYWORDS if keyword.lower() in text.lower())
     threshold_by_category = {
         "公告": 0.68, "资料": 0.62, "学院": 0.58,
         "讲座": 0.56, "生活": 0.54, "项目": 0.56,
     }
+    threshold_by_domain = {
+        "exam": 0.5, "course": 0.52, "scholarship": 0.52, "employment": 0.5,
+        "competition": 0.52, "project": 0.56, "international": 0.54,
+        "library": 0.54, "security": 0.54, "logistics": 0.54,
+        "lecture": 0.56, "academic": 0.58, "resource": 0.52,
+        "news": 0.78, "policy": 0.74, "research": 0.68,
+    }
 
     if negative_hits > 0 and document["student_score"] < 0.74:
         return False
+    if source_type in {"central_news", "research_admin", "policy"} and intent == "read" and document["student_score"] < 0.82:
+        return False
+    if lifecycle == "expired" and domain not in {"resource", "policy"} and document["student_score"] < 0.86:
+        return False
 
-    threshold = threshold_by_category.get(str(category), MIN_STUDENT_SCORE)
+    threshold = max(
+        threshold_by_category.get(str(category), MIN_STUDENT_SCORE),
+        threshold_by_domain.get(domain, MIN_STUDENT_SCORE),
+    )
     return document["student_score"] >= threshold
 
 def calculate_importance_score(text: str, category: str, attachments_count: int, source_weight: float) -> float:

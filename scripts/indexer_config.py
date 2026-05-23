@@ -1,4 +1,5 @@
 import os
+import json
 from dataclasses import dataclass
 from datetime import timezone, timedelta
 
@@ -13,6 +14,7 @@ PUBLIC_DIR = os.path.join(BASE_DIR, "public")
 INDEX_DIR = os.path.join(PUBLIC_DIR, "index")
 DOCUMENTS_PATH = os.path.join(INDEX_DIR, "documents.json")
 MANIFEST_PATH = os.path.join(INDEX_DIR, "manifest.json")
+CAMPUS_SOURCE_CONFIG_PATH = os.path.join(BASE_DIR, "config", "campus_sources.json")
 GITHUB_SOURCE_CONFIG_PATH = os.path.join(BASE_DIR, "config", "github_search_sources.json")
 
 BEIJING_TZ = timezone(timedelta(hours=8))
@@ -89,6 +91,14 @@ class SourceConfig:
     list_urls: tuple[str, ...]
     audience: tuple[str, ...]
     source_weight: float
+    source_type: str = "central_admin"
+    adapter_kind: str = "njupt_wp"
+    include_patterns: tuple[str, ...] = ()
+    exclude_patterns: tuple[str, ...] = ()
+    enabled: bool = True
+    requires_devtools_audit: bool = False
+    max_pages: int = 1
+    notes: str = ""
 
 @dataclass(frozen=True)
 class GitHubSourceConfig:
@@ -102,15 +112,81 @@ class GitHubSourceConfig:
     source_weight: float
     enabled: bool
 
-SOURCES: tuple[SourceConfig, ...] = (
+DEFAULT_SOURCES: tuple[SourceConfig, ...] = (
     SourceConfig("jwc", "本科生院 / 教务处", "https://jwc.njupt.edu.cn/", ("https://jwc.njupt.edu.cn/1594/list.htm",), ("本科生",), 1.0),
     SourceConfig("xsc", "学生工作处", "https://xsc.njupt.edu.cn/", ("https://xsc.njupt.edu.cn/",), ("本科生",), 0.96),
     SourceConfig("pg", "研究生院", "https://pg.njupt.edu.cn/", ("https://pg.njupt.edu.cn/",), ("研究生",), 0.96),
     SourceConfig("ygb", "研究生工作部", "https://ygb.njupt.edu.cn/", ("https://ygb.njupt.edu.cn/",), ("研究生",), 0.92),
     SourceConfig("youth", "团委 / 青春南邮", "https://youth.njupt.edu.cn/", ("https://youth.njupt.edu.cn/",), ("本科生", "研究生"), 0.9),
     SourceConfig("cxcy", "创新创业教育学院", "https://cxcy.njupt.edu.cn/", ("https://cxcy.njupt.edu.cn/",), ("本科生", "研究生"), 0.9),
-    SourceConfig("job", "就业信息网", "https://njupt.91job.org.cn/", ("https://njupt.91job.org.cn/",), ("本科生", "研究生"), 0.88),
-    SourceConfig("lib", "图书馆", "https://lib.njupt.edu.cn/", ("https://lib.njupt.edu.cn/",), ("本科生", "研究生", "教职工"), 0.82),
-    SourceConfig("bwc", "保卫处", "https://bwc.njupt.edu.cn/", ("https://bwc.njupt.edu.cn/",), ("本科生", "研究生", "教职工"), 0.8),
-    SourceConfig("hqc", "后勤管理处", "https://hqc.njupt.edu.cn/", ("https://hqc.njupt.edu.cn/",), ("本科生", "研究生", "教职工"), 0.8),
+    SourceConfig("job", "就业信息网", "https://njupt.91job.org.cn/", ("https://njupt.91job.org.cn/",), ("本科生", "研究生"), 0.88, "job_platform", "job_api"),
+    SourceConfig("lib", "图书馆", "https://lib.njupt.edu.cn/", ("https://lib.njupt.edu.cn/",), ("本科生", "研究生", "教职工"), 0.82, "service_unit"),
+    SourceConfig("bwc", "保卫处", "https://bwc.njupt.edu.cn/", ("https://bwc.njupt.edu.cn/",), ("本科生", "研究生", "教职工"), 0.8, "service_unit"),
+    SourceConfig("hqc", "后勤管理处", "https://hqc.njupt.edu.cn/", ("https://hqc.njupt.edu.cn/",), ("本科生", "研究生", "教职工"), 0.8, "service_unit"),
 )
+
+
+def _coerce_string_tuple(value: object) -> tuple[str, ...]:
+    if value is None:
+        return ()
+    if isinstance(value, str):
+        return (value,)
+    if isinstance(value, list):
+        return tuple(str(item).strip() for item in value if str(item).strip())
+    return ()
+
+
+def read_campus_source_configs(path: str = CAMPUS_SOURCE_CONFIG_PATH) -> tuple[SourceConfig, ...]:
+    if not os.path.exists(path):
+        return DEFAULT_SOURCES
+
+    with open(path, "r", encoding="utf-8") as config_file:
+        payload = json.load(config_file)
+
+    raw_sources = payload.get("sources", []) if isinstance(payload, dict) else []
+    sources: list[SourceConfig] = []
+    for item in raw_sources:
+        if not isinstance(item, dict) or not bool(item.get("enabled", True)):
+            continue
+
+        source_id = str(item.get("id", "")).strip()
+        name = str(item.get("name", "")).strip()
+        base_url = str(item.get("base_url", "")).strip()
+        list_urls = _coerce_string_tuple(item.get("list_urls"))
+        audience = _coerce_string_tuple(item.get("audience_hint") or item.get("audience"))
+        if not source_id or not name or not base_url or not list_urls:
+            continue
+
+        try:
+            priority = float(item.get("priority", item.get("source_weight", 0.72)))
+        except (TypeError, ValueError):
+            priority = 0.72
+
+        try:
+            max_pages = max(1, min(int(item.get("max_pages", 1)), 3))
+        except (TypeError, ValueError):
+            max_pages = 1
+
+        sources.append(
+            SourceConfig(
+                id=source_id,
+                name=name,
+                base_url=base_url,
+                list_urls=list_urls,
+                audience=audience or ("本科生", "研究生"),
+                source_weight=max(0.05, min(1.0, priority)),
+                source_type=str(item.get("source_type") or "central_admin").strip(),
+                adapter_kind=str(item.get("adapter_kind") or "njupt_wp").strip(),
+                include_patterns=_coerce_string_tuple(item.get("include_patterns")),
+                exclude_patterns=_coerce_string_tuple(item.get("exclude_patterns")),
+                enabled=True,
+                requires_devtools_audit=bool(item.get("requires_devtools_audit", False)),
+                max_pages=max_pages,
+                notes=str(item.get("notes") or "").strip(),
+            )
+        )
+
+    return tuple(sources) or DEFAULT_SOURCES
+
+
+SOURCES: tuple[SourceConfig, ...] = read_campus_source_configs()

@@ -7,7 +7,23 @@ on:
   push:
     branches:
       - main
-  workflow_dispatch: # Allow manual trigger
+  workflow_dispatch:
+    inputs:
+      force_llm:
+        description: 'Force re-run LLM enrichment cache'
+        required: false
+        type: boolean
+        default: false
+      source_id:
+        description: 'Optional single source id, for example jwc or github:owner/repo'
+        required: false
+        type: string
+        default: ''
+      limit:
+        description: 'Optional maximum number of LLM calls'
+        required: false
+        type: string
+        default: ''
 
 permissions:
   contents: write
@@ -51,7 +67,21 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GEMINI_API_KEYS: ${{ secrets.GEMINI_API_KEYS }}
         run: |
-          python scripts/update_search_index.py
+          ARGS=""
+          if [ "${{ github.event.inputs.force_llm }}" = "true" ]; then
+            ARGS="$ARGS --force-llm"
+          fi
+          if [ -n "${{ github.event.inputs.source_id }}" ]; then
+            ARGS="$ARGS --source ${{ github.event.inputs.source_id }}"
+          fi
+          if [ -n "${{ github.event.inputs.limit }}" ]; then
+            ARGS="$ARGS --limit ${{ github.event.inputs.limit }}"
+          fi
+          python scripts/update_search_index.py $ARGS
+
+      - name: Validate Campus Search Index
+        run: |
+          python scripts/validate_search_index.py
           
       - name: Check for changes
         id: git-check
