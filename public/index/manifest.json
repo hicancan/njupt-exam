@@ -1,17 +1,25 @@
 {
-  "generated_at": "2026-05-23T09:43:08.581131+08:00",
-  "total_documents": 210,
+  "generated_at": "2026-05-23T21:26:01.557686+08:00",
+  "total_documents": 40,
   "strategy": "phase3-source-registry-multiaxis-student-radar",
-  "llm_schema_version": "llm-v4",
+  "llm_schema_version": "llm-v5",
   "llm_enabled": true,
+  "llm_provider": "deepseek",
+  "llm_model": "deepseek-v4-flash",
+  "llm_batch_size": 32,
+  "llm_batch_max_chars": 250000,
+  "llm_batch_max_output_tokens": 60000,
   "llm_stats": {
-    "cache_reused": 198,
-    "llm_reused": 198,
-    "llm_attempted": 193,
-    "llm_reprocessed": 192,
-    "llm_failed": 1,
-    "llm_fallback": 1,
+    "cache_reused": 0,
+    "llm_reused": 0,
+    "llm_attempted": 379,
+    "llm_reprocessed": 0,
+    "llm_failed": 0,
+    "llm_fallback": 12,
     "llm_skipped_by_limit": 0,
+    "llm_batches_attempted": 61,
+    "llm_batch_docs_attempted": 379,
+    "candidate_llm_cache_reused": 0,
     "restricted": 26
   },
   "source_count": 62,
@@ -24,11 +32,10 @@
       "adapter_kind": "njupt_wp",
       "priority": 1.0,
       "requires_devtools_audit": true,
-      "status": "ok",
-      "documents": 12,
-      "last_fetch_at": "2026-05-23T09:43:08.581131+08:00",
-      "candidates": 14,
-      "filtered_out": 2
+      "status": "error",
+      "documents": 0,
+      "last_fetch_at": "2026-05-23T21:26:01.557686+08:00",
+      "error": "'latin-1' codec can't encode character '\\ufeff' in position 7: ordinal not in range(256)"
     },
     {
       "id": "xsc",
@@ -38,11 +45,10 @@
       "adapter_kind": "njupt_wp",
       "priority": 0.96,
       "requires_devtools_audit": true,
-      "status": "ok",
-      "documents": 4,
-      "last_fetch_at": "2026-05-23T09:43:08.581131+08:00",
-      "candidates": 14,
-      "filtered_out": 10
+      "status": "error",
+      "documents": 0,
+      "last_fetch_at": "2026-05-23T21:26:01.557686+08:00",
+      "error": "'latin-1' codec can't encode character '\\ufeff' in position 7: ordinal not in range(256)"
     },
     {
       "id": "pg",
@@ -52,11 +58,10 @@
       "adapter_kind": "njupt_wp",
       "priority": 0.96,
       "requires_devtools_audit": true,
-      "status": "ok",
-      "documents": 10,
-      "last_fetch_at": "2026-05-23T09:43:08.581131+08:00",
-      "candidates": 14,
-      "filtered_out": 4
+      "status": "error",
+      "documents": 0,
+      "last_fetch_at": "2026-05-23T21:26:01.557686+08:00",
+      "error": "'latin-1' codec can't encode character '\\ufeff' in position 7: ordinal not in range(256)"
     },
     {
       "id": "ygb",
@@ -66,11 +71,10 @@
       "adapter_kind": "njupt_wp",
       "priority": 0.92,
       "requires_devtools_audit": true,
-      "status": "ok",
-      "documents": 6,
-      "last_fetch_at": "2026-05-23T09:43:08.581131+08:00",
-      "candidates": 14,
-      "filtered_out": 8
+      "status": "error",
+      "documents": 0,
+      "last_fetch_at": "2026-05-23T21:26:01.557686+08:00",
+      "error": "'latin-1' codec can't encode character '\\ufeff' in position 7: ordinal not in range(256)"
     },
     {
       "id": "youth",
@@ -80,11 +84,10 @@
       "adapter_kind": "njupt_wp",
       "priority": 0.9,
       "requires_devtools_audit": true,
-      "status": "ok",
-      "documents": 7,
-      "last_fetch_at": "2026-05-23T09:43:08.581131+08:00",
-      "candidates": 14,
-      "filtered_out": 7
+      "status": "error",
+      "documents": 0,
+      "last_fetch_at": "2026-05-23T21:26:01.557686+08:00",
+      "error": "'latin-1' codec can't encode character '\\ufeff' in position 7: ordinal not in range(256)"
     },
     {
       "id": "cxcy",
@@ -94,11 +97,10 @@
       "adapter_kind": "njupt_wp",
       "priority": 0.9,
       "requires_devtools_audit": true,
-      "status": "ok",
-      "documents": 10,
-      "last_fetch_at": "2026-05-23T09:43:08.581131+08:00",
-      "candidates": 13,
-      "filtered_out": 3
+      "status": "error",
+      "documents": 0,
+      "last_fetch_at": "2026-05-23T21:26:01.557686+08:00",
+      "error": "'latin-1' codec can't encode character '\\ufeff' in position 7: ordinal not in range(256)"
     },
     {
       "id": "job",
@@ -108,9 +110,10 @@
       "adapter_kind": "job_api",
       "priority": 0.88,
       "requires_devtools_audit": false,
-      "status": "ok",
-      "documents": 18,
-      "last_fetch_at": "2026-05-23T09:43:08.581131+08:00"
+      "status": "error",
+      "documents": 0,
+      "last_fetch_at": "2026-05-23T21:26:01.557686+08:00",
+      "error": "'latin-1' codec can't encode character '\\ufeff' in position 7: ordinal not in range(256)"
     },
     {
       "id": "lib",
@@ -120,11 +123,10 @@
       "adapter_kind": "njupt_wp",
       "priority": 0.82,
       "requires_devtools_audit": true,
-      "status": "ok",
-      "documents": 11,
-      "last_fetch_at": "2026-05-23T09:43:08.581131+08:00",
-      "candidates": 14,
-      "filtered_out": 3
+      "status": "error",
+      "documents": 0,
+      "last_fetch_at": "2026-05-23T21:26:01.557686+08:00",
+      "error": "'latin-1' codec can't encode character '\\ufeff' in position 7: ordinal not in range(256)"
     },
     {
       "id": "bwc",
@@ -134,11 +136,10 @@
       "adapter_kind": "njupt_wp",
       "priority": 0.8,
       "requires_devtools_audit": true,
-      "status": "ok",
-      "documents": 2,
-      "last_fetch_at": "2026-05-23T09:43:08.581131+08:00",
-      "candidates": 11,
-      "filtered_out": 9
+      "status": "error",
+      "documents": 0,
+      "last_fetch_at": "2026-05-23T21:26:01.557686+08:00",
+      "error": "'latin-1' codec can't encode character '\\ufeff' in position 7: ordinal not in range(256)"
     },
     {
       "id": "hqc",
@@ -148,11 +149,10 @@
       "adapter_kind": "njupt_wp",
       "priority": 0.8,
       "requires_devtools_audit": true,
-      "status": "ok",
-      "documents": 5,
-      "last_fetch_at": "2026-05-23T09:43:08.581131+08:00",
-      "candidates": 12,
-      "filtered_out": 7
+      "status": "error",
+      "documents": 0,
+      "last_fetch_at": "2026-05-23T21:26:01.557686+08:00",
+      "error": "'latin-1' codec can't encode character '\\ufeff' in position 7: ordinal not in range(256)"
     },
     {
       "id": "njupt_notice",
@@ -162,11 +162,10 @@
       "adapter_kind": "njupt_wp",
       "priority": 0.86,
       "requires_devtools_audit": true,
-      "status": "ok",
-      "documents": 7,
-      "last_fetch_at": "2026-05-23T09:43:08.581131+08:00",
-      "candidates": 14,
-      "filtered_out": 7
+      "status": "error",
+      "documents": 0,
+      "last_fetch_at": "2026-05-23T21:26:01.557686+08:00",
+      "error": "'latin-1' codec can't encode character '\\ufeff' in position 7: ordinal not in range(256)"
     },
     {
       "id": "njupt_home",
@@ -176,11 +175,10 @@
       "adapter_kind": "njupt_wp",
       "priority": 0.68,
       "requires_devtools_audit": true,
-      "status": "ok",
-      "documents": 2,
-      "last_fetch_at": "2026-05-23T09:43:08.581131+08:00",
-      "candidates": 14,
-      "filtered_out": 12
+      "status": "error",
+      "documents": 0,
+      "last_fetch_at": "2026-05-23T21:26:01.557686+08:00",
+      "error": "'latin-1' codec can't encode character '\\ufeff' in position 7: ordinal not in range(256)"
     },
     {
       "id": "news",
@@ -190,11 +188,10 @@
       "adapter_kind": "njupt_wp",
       "priority": 0.62,
       "requires_devtools_audit": true,
-      "status": "ok",
-      "documents": 4,
-      "last_fetch_at": "2026-05-23T09:43:08.581131+08:00",
-      "candidates": 14,
-      "filtered_out": 10
+      "status": "error",
+      "documents": 0,
+      "last_fetch_at": "2026-05-23T21:26:01.557686+08:00",
+      "error": "'latin-1' codec can't encode character '\\ufeff' in position 7: ordinal not in range(256)"
     },
     {
       "id": "xxgk",
@@ -204,11 +201,10 @@
       "adapter_kind": "njupt_wp",
       "priority": 0.58,
       "requires_devtools_audit": true,
-      "status": "ok",
+      "status": "error",
       "documents": 0,
-      "last_fetch_at": "2026-05-23T09:43:08.581131+08:00",
-      "candidates": 2,
-      "filtered_out": 2
+      "last_fetch_at": "2026-05-23T21:26:01.557686+08:00",
+      "error": "'latin-1' codec can't encode character '\\ufeff' in position 7: ordinal not in range(256)"
     },
     {
       "id": "exchange",
@@ -218,11 +214,10 @@
       "adapter_kind": "njupt_wp",
       "priority": 0.78,
       "requires_devtools_audit": true,
-      "status": "ok",
-      "documents": 7,
-      "last_fetch_at": "2026-05-23T09:43:08.581131+08:00",
-      "candidates": 14,
-      "filtered_out": 7
+      "status": "error",
+      "documents": 0,
+      "last_fetch_at": "2026-05-23T21:26:01.557686+08:00",
+      "error": "'latin-1' codec can't encode character '\\ufeff' in position 7: ordinal not in range(256)"
     },
     {
       "id": "cs",
@@ -232,11 +227,10 @@
       "adapter_kind": "njupt_wp",
       "priority": 0.78,
       "requires_devtools_audit": true,
-      "status": "ok",
-      "documents": 3,
-      "last_fetch_at": "2026-05-23T09:43:08.581131+08:00",
-      "candidates": 4,
-      "filtered_out": 1
+      "status": "error",
+      "documents": 0,
+      "last_fetch_at": "2026-05-23T21:26:01.557686+08:00",
+      "error": "'latin-1' codec can't encode character '\\ufeff' in position 7: ordinal not in range(256)"
     },
     {
       "id": "scie",
@@ -246,11 +240,10 @@
       "adapter_kind": "njupt_wp",
       "priority": 0.76,
       "requires_devtools_audit": true,
-      "status": "ok",
-      "documents": 3,
-      "last_fetch_at": "2026-05-23T09:43:08.581131+08:00",
-      "candidates": 14,
-      "filtered_out": 11
+      "status": "error",
+      "documents": 0,
+      "last_fetch_at": "2026-05-23T21:26:01.557686+08:00",
+      "error": "'latin-1' codec can't encode character '\\ufeff' in position 7: ordinal not in range(256)"
     },
     {
       "id": "eoe",
@@ -260,11 +253,10 @@
       "adapter_kind": "njupt_wp",
       "priority": 0.74,
       "requires_devtools_audit": true,
-      "status": "ok",
-      "documents": 5,
-      "last_fetch_at": "2026-05-23T09:43:08.581131+08:00",
-      "candidates": 14,
-      "filtered_out": 9
+      "status": "error",
+      "documents": 0,
+      "last_fetch_at": "2026-05-23T21:26:01.557686+08:00",
+      "error": "'latin-1' codec can't encode character '\\ufeff' in position 7: ordinal not in range(256)"
     },
     {
       "id": "ic",
@@ -274,11 +266,10 @@
       "adapter_kind": "njupt_wp",
       "priority": 0.74,
       "requires_devtools_audit": true,
-      "status": "ok",
-      "documents": 5,
-      "last_fetch_at": "2026-05-23T09:43:08.581131+08:00",
-      "candidates": 14,
-      "filtered_out": 9
+      "status": "error",
+      "documents": 0,
+      "last_fetch_at": "2026-05-23T21:26:01.557686+08:00",
+      "error": "'latin-1' codec can't encode character '\\ufeff' in position 7: ordinal not in range(256)"
     },
     {
       "id": "coa",
@@ -288,11 +279,10 @@
       "adapter_kind": "njupt_wp",
       "priority": 0.72,
       "requires_devtools_audit": true,
-      "status": "ok",
-      "documents": 5,
-      "last_fetch_at": "2026-05-23T09:43:08.581131+08:00",
-      "candidates": 14,
-      "filtered_out": 9
+      "status": "error",
+      "documents": 0,
+      "last_fetch_at": "2026-05-23T21:26:01.557686+08:00",
+      "error": "'latin-1' codec can't encode character '\\ufeff' in position 7: ordinal not in range(256)"
     },
     {
       "id": "ai",
@@ -302,11 +292,10 @@
       "adapter_kind": "njupt_wp",
       "priority": 0.72,
       "requires_devtools_audit": true,
-      "status": "ok",
-      "documents": 10,
-      "last_fetch_at": "2026-05-23T09:43:08.581131+08:00",
-      "candidates": 14,
-      "filtered_out": 4
+      "status": "error",
+      "documents": 0,
+      "last_fetch_at": "2026-05-23T21:26:01.557686+08:00",
+      "error": "'latin-1' codec can't encode character '\\ufeff' in position 7: ordinal not in range(256)"
     },
     {
       "id": "ciot",
@@ -316,11 +305,10 @@
       "adapter_kind": "njupt_wp",
       "priority": 0.72,
       "requires_devtools_audit": true,
-      "status": "ok",
-      "documents": 4,
-      "last_fetch_at": "2026-05-23T09:43:08.581131+08:00",
-      "candidates": 14,
-      "filtered_out": 10
+      "status": "error",
+      "documents": 0,
+      "last_fetch_at": "2026-05-23T21:26:01.557686+08:00",
+      "error": "'latin-1' codec can't encode character '\\ufeff' in position 7: ordinal not in range(256)"
     },
     {
       "id": "lxy",
@@ -332,7 +320,7 @@
       "requires_devtools_audit": true,
       "status": "ok",
       "documents": 0,
-      "last_fetch_at": "2026-05-23T09:43:08.581131+08:00",
+      "last_fetch_at": "2026-05-23T21:26:01.557686+08:00",
       "candidates": 0,
       "filtered_out": 0
     },
@@ -344,11 +332,10 @@
       "adapter_kind": "njupt_wp",
       "priority": 0.68,
       "requires_devtools_audit": true,
-      "status": "ok",
-      "documents": 12,
-      "last_fetch_at": "2026-05-23T09:43:08.581131+08:00",
-      "candidates": 13,
-      "filtered_out": 1
+      "status": "error",
+      "documents": 0,
+      "last_fetch_at": "2026-05-23T21:26:01.557686+08:00",
+      "error": "'latin-1' codec can't encode character '\\ufeff' in position 7: ordinal not in range(256)"
     },
     {
       "id": "bc",
@@ -358,11 +345,10 @@
       "adapter_kind": "njupt_wp",
       "priority": 0.66,
       "requires_devtools_audit": true,
-      "status": "ok",
-      "documents": 9,
-      "last_fetch_at": "2026-05-23T09:43:08.581131+08:00",
-      "candidates": 14,
-      "filtered_out": 5
+      "status": "error",
+      "documents": 0,
+      "last_fetch_at": "2026-05-23T21:26:01.557686+08:00",
+      "error": "'latin-1' codec can't encode character '\\ufeff' in position 7: ordinal not in range(256)"
     },
     {
       "id": "jjxy",
@@ -372,11 +358,10 @@
       "adapter_kind": "njupt_wp",
       "priority": 0.66,
       "requires_devtools_audit": true,
-      "status": "ok",
-      "documents": 6,
-      "last_fetch_at": "2026-05-23T09:43:08.581131+08:00",
-      "candidates": 14,
-      "filtered_out": 8
+      "status": "error",
+      "documents": 0,
+      "last_fetch_at": "2026-05-23T21:26:01.557686+08:00",
+      "error": "'latin-1' codec can't encode character '\\ufeff' in position 7: ordinal not in range(256)"
     },
     {
       "id": "kxjsc",
@@ -386,11 +371,10 @@
       "adapter_kind": "njupt_wp",
       "priority": 0.54,
       "requires_devtools_audit": true,
-      "status": "ok",
-      "documents": 3,
-      "last_fetch_at": "2026-05-23T09:43:08.581131+08:00",
-      "candidates": 14,
-      "filtered_out": 11
+      "status": "error",
+      "documents": 0,
+      "last_fetch_at": "2026-05-23T21:26:01.557686+08:00",
+      "error": "'latin-1' codec can't encode character '\\ufeff' in position 7: ordinal not in range(256)"
     },
     {
       "id": "skc",
@@ -400,11 +384,10 @@
       "adapter_kind": "njupt_wp",
       "priority": 0.52,
       "requires_devtools_audit": true,
-      "status": "ok",
-      "documents": 2,
-      "last_fetch_at": "2026-05-23T09:43:08.581131+08:00",
-      "candidates": 13,
-      "filtered_out": 11
+      "status": "error",
+      "documents": 0,
+      "last_fetch_at": "2026-05-23T21:26:01.557686+08:00",
+      "error": "'latin-1' codec can't encode character '\\ufeff' in position 7: ordinal not in range(256)"
     },
     {
       "id": "xkb",
@@ -414,11 +397,10 @@
       "adapter_kind": "njupt_wp",
       "priority": 0.5,
       "requires_devtools_audit": true,
-      "status": "ok",
+      "status": "error",
       "documents": 0,
-      "last_fetch_at": "2026-05-23T09:43:08.581131+08:00",
-      "candidates": 10,
-      "filtered_out": 10
+      "last_fetch_at": "2026-05-23T21:26:01.557686+08:00",
+      "error": "'latin-1' codec can't encode character '\\ufeff' in position 7: ordinal not in range(256)"
     },
     {
       "id": "cxy",
@@ -428,11 +410,10 @@
       "adapter_kind": "njupt_wp",
       "priority": 0.52,
       "requires_devtools_audit": true,
-      "status": "ok",
+      "status": "error",
       "documents": 0,
-      "last_fetch_at": "2026-05-23T09:43:08.581131+08:00",
-      "candidates": 14,
-      "filtered_out": 14
+      "last_fetch_at": "2026-05-23T21:26:01.557686+08:00",
+      "error": "'latin-1' codec can't encode character '\\ufeff' in position 7: ordinal not in range(256)"
     },
     {
       "id": "github:hicancan/njupt-net",
@@ -440,9 +421,9 @@
       "domain": "github.com",
       "source_type": "github_resource",
       "status": "ok",
-      "documents": 2,
-      "last_fetch_at": "2026-05-23T09:43:08.581131+08:00",
-      "candidates": 2
+      "documents": 1,
+      "last_fetch_at": "2026-05-23T21:26:01.557686+08:00",
+      "warning": "GitHub fetch failed; reused stale cached documents: 'latin-1' codec can't encode character '\\ufeff' in position 7: ordinal not in range(256)"
     },
     {
       "id": "github:hicancan/njupt-jwxt-assistant",
@@ -451,8 +432,8 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-23T09:43:08.581131+08:00",
-      "candidates": 1
+      "last_fetch_at": "2026-05-23T21:26:01.557686+08:00",
+      "warning": "GitHub fetch failed; reused stale cached documents: 'latin-1' codec can't encode character '\\ufeff' in position 7: ordinal not in range(256)"
     },
     {
       "id": "github:ZsgsDesign/NOJ",
@@ -461,8 +442,8 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 5,
-      "last_fetch_at": "2026-05-23T09:43:08.581131+08:00",
-      "candidates": 5
+      "last_fetch_at": "2026-05-23T21:26:01.557686+08:00",
+      "warning": "GitHub fetch failed; reused stale cached documents: 'latin-1' codec can't encode character '\\ufeff' in position 7: ordinal not in range(256)"
     },
     {
       "id": "github:NJUPTFreeExams/NJUPT-General-Free-Exams",
@@ -471,8 +452,8 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-23T09:43:08.581131+08:00",
-      "candidates": 1
+      "last_fetch_at": "2026-05-23T21:26:01.557686+08:00",
+      "warning": "GitHub fetch failed; reused stale cached documents: 'latin-1' codec can't encode character '\\ufeff' in position 7: ordinal not in range(256)"
     },
     {
       "id": "github:NJUPTFreeExams/NJUPT-CST-Free-Exams",
@@ -481,8 +462,8 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-23T09:43:08.581131+08:00",
-      "candidates": 1
+      "last_fetch_at": "2026-05-23T21:26:01.557686+08:00",
+      "warning": "GitHub fetch failed; reused stale cached documents: 'latin-1' codec can't encode character '\\ufeff' in position 7: ordinal not in range(256)"
     },
     {
       "id": "github:NJUPTFreeExams/NJUPT-CS-FREE",
@@ -491,8 +472,8 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-23T09:43:08.581131+08:00",
-      "candidates": 1
+      "last_fetch_at": "2026-05-23T21:26:01.557686+08:00",
+      "warning": "GitHub fetch failed; reused stale cached documents: 'latin-1' codec can't encode character '\\ufeff' in position 7: ordinal not in range(256)"
     },
     {
       "id": "github:bmxbmx3/cn_sort",
@@ -501,8 +482,8 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-23T09:43:08.581131+08:00",
-      "candidates": 1
+      "last_fetch_at": "2026-05-23T21:26:01.557686+08:00",
+      "warning": "GitHub fetch failed; reused stale cached documents: 'latin-1' codec can't encode character '\\ufeff' in position 7: ordinal not in range(256)"
     },
     {
       "id": "github:leftjs/StudentGradesManageSystem",
@@ -511,8 +492,8 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-23T09:43:08.581131+08:00",
-      "candidates": 1
+      "last_fetch_at": "2026-05-23T21:26:01.557686+08:00",
+      "warning": "GitHub fetch failed; reused stale cached documents: 'latin-1' codec can't encode character '\\ufeff' in position 7: ordinal not in range(256)"
     },
     {
       "id": "github:renyuanzhe/NJUPT-CS-Courses",
@@ -521,8 +502,8 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-23T09:43:08.581131+08:00",
-      "candidates": 1
+      "last_fetch_at": "2026-05-23T21:26:01.557686+08:00",
+      "warning": "GitHub fetch failed; reused stale cached documents: 'latin-1' codec can't encode character '\\ufeff' in position 7: ordinal not in range(256)"
     },
     {
       "id": "github:Wonz5130/NJUPT-Yellow-Page",
@@ -531,8 +512,8 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-23T09:43:08.581131+08:00",
-      "candidates": 1
+      "last_fetch_at": "2026-05-23T21:26:01.557686+08:00",
+      "warning": "GitHub fetch failed; reused stale cached documents: 'latin-1' codec can't encode character '\\ufeff' in position 7: ordinal not in range(256)"
     },
     {
       "id": "github:GreenPomelo/Undergraduate",
@@ -541,8 +522,8 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 3,
-      "last_fetch_at": "2026-05-23T09:43:08.581131+08:00",
-      "candidates": 3
+      "last_fetch_at": "2026-05-23T21:26:01.557686+08:00",
+      "warning": "GitHub fetch failed; reused stale cached documents: 'latin-1' codec can't encode character '\\ufeff' in position 7: ordinal not in range(256)"
     },
     {
       "id": "github:NJUPTFreeExams/NJUPT-AUTO-Free-Exams",
@@ -551,8 +532,8 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-23T09:43:08.581131+08:00",
-      "candidates": 1
+      "last_fetch_at": "2026-05-23T21:26:01.557686+08:00",
+      "warning": "GitHub fetch failed; reused stale cached documents: 'latin-1' codec can't encode character '\\ufeff' in position 7: ordinal not in range(256)"
     },
     {
       "id": "github:NJUPT-CG/NCTF2018",
@@ -561,8 +542,8 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-23T09:43:08.581131+08:00",
-      "candidates": 1
+      "last_fetch_at": "2026-05-23T21:26:01.557686+08:00",
+      "warning": "GitHub fetch failed; reused stale cached documents: 'latin-1' codec can't encode character '\\ufeff' in position 7: ordinal not in range(256)"
     },
     {
       "id": "github:gzr-lgtm/NJUPThesis-Bachelor",
@@ -571,8 +552,8 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-23T09:43:08.581131+08:00",
-      "candidates": 1
+      "last_fetch_at": "2026-05-23T21:26:01.557686+08:00",
+      "warning": "GitHub fetch failed; reused stale cached documents: 'latin-1' codec can't encode character '\\ufeff' in position 7: ordinal not in range(256)"
     },
     {
       "id": "github:gaoliang/NJUPT-API",
@@ -581,8 +562,8 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-23T09:43:08.581131+08:00",
-      "candidates": 1
+      "last_fetch_at": "2026-05-23T21:26:01.557686+08:00",
+      "warning": "GitHub fetch failed; reused stale cached documents: 'latin-1' codec can't encode character '\\ufeff' in position 7: ordinal not in range(256)"
     },
     {
       "id": "github:xiafanglongfei/NJUPT-auto-evaluate",
@@ -591,8 +572,8 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-23T09:43:08.581131+08:00",
-      "candidates": 1
+      "last_fetch_at": "2026-05-23T21:26:01.557686+08:00",
+      "warning": "GitHub fetch failed; reused stale cached documents: 'latin-1' codec can't encode character '\\ufeff' in position 7: ordinal not in range(256)"
     },
     {
       "id": "github:NJUPTFreeExams/NJUPT-TE-Free-Exams",
@@ -601,8 +582,8 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-23T09:43:08.581131+08:00",
-      "candidates": 1
+      "last_fetch_at": "2026-05-23T21:26:01.557686+08:00",
+      "warning": "GitHub fetch failed; reused stale cached documents: 'latin-1' codec can't encode character '\\ufeff' in position 7: ordinal not in range(256)"
     },
     {
       "id": "github:kaijy91/NJUPT_NET",
@@ -611,8 +592,8 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-23T09:43:08.581131+08:00",
-      "candidates": 1
+      "last_fetch_at": "2026-05-23T21:26:01.557686+08:00",
+      "warning": "GitHub fetch failed; reused stale cached documents: 'latin-1' codec can't encode character '\\ufeff' in position 7: ordinal not in range(256)"
     },
     {
       "id": "github:s235784/NJUPT_AutoLogin",
@@ -621,8 +602,8 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 2,
-      "last_fetch_at": "2026-05-23T09:43:08.581131+08:00",
-      "candidates": 2
+      "last_fetch_at": "2026-05-23T21:26:01.557686+08:00",
+      "warning": "GitHub fetch failed; reused stale cached documents: 'latin-1' codec can't encode character '\\ufeff' in position 7: ordinal not in range(256)"
     },
     {
       "id": "github:Freedomisgood/NjuptCmcc",
@@ -631,8 +612,8 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-23T09:43:08.581131+08:00",
-      "candidates": 1
+      "last_fetch_at": "2026-05-23T21:26:01.557686+08:00",
+      "warning": "GitHub fetch failed; reused stale cached documents: 'latin-1' codec can't encode character '\\ufeff' in position 7: ordinal not in range(256)"
     },
     {
       "id": "github:love98ooo/ZhengFangJiaoWuSystemTampermonkeyScript",
@@ -641,8 +622,8 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-23T09:43:08.581131+08:00",
-      "candidates": 1
+      "last_fetch_at": "2026-05-23T21:26:01.557686+08:00",
+      "warning": "GitHub fetch failed; reused stale cached documents: 'latin-1' codec can't encode character '\\ufeff' in position 7: ordinal not in range(256)"
     },
     {
       "id": "github:NJUPT-NAVI/NJUPT-Survival-Guide",
@@ -651,8 +632,8 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 2,
-      "last_fetch_at": "2026-05-23T09:43:08.581131+08:00",
-      "candidates": 2
+      "last_fetch_at": "2026-05-23T21:26:01.557686+08:00",
+      "warning": "GitHub fetch failed; reused stale cached documents: 'latin-1' codec can't encode character '\\ufeff' in position 7: ordinal not in range(256)"
     },
     {
       "id": "github:bmxbmx3/finger_vein_recognition",
@@ -661,8 +642,8 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-23T09:43:08.581131+08:00",
-      "candidates": 1
+      "last_fetch_at": "2026-05-23T21:26:01.557686+08:00",
+      "warning": "GitHub fetch failed; reused stale cached documents: 'latin-1' codec can't encode character '\\ufeff' in position 7: ordinal not in range(256)"
     },
     {
       "id": "github:lux-QAQ/NJUPT_Fastlogin",
@@ -671,8 +652,8 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-23T09:43:08.581131+08:00",
-      "candidates": 1
+      "last_fetch_at": "2026-05-23T21:26:01.557686+08:00",
+      "warning": "GitHub fetch failed; reused stale cached documents: 'latin-1' codec can't encode character '\\ufeff' in position 7: ordinal not in range(256)"
     },
     {
       "id": "github:NJUPTFreeExams/njuptfreeexams.github.io",
@@ -681,8 +662,8 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-23T09:43:08.581131+08:00",
-      "candidates": 1
+      "last_fetch_at": "2026-05-23T21:26:01.557686+08:00",
+      "warning": "GitHub fetch failed; reused stale cached documents: 'latin-1' codec can't encode character '\\ufeff' in position 7: ordinal not in range(256)"
     },
     {
       "id": "github:dhiyu/NJUPT-Bachelor",
@@ -691,8 +672,8 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-23T09:43:08.581131+08:00",
-      "candidates": 1
+      "last_fetch_at": "2026-05-23T21:26:01.557686+08:00",
+      "warning": "GitHub fetch failed; reused stale cached documents: 'latin-1' codec can't encode character '\\ufeff' in position 7: ordinal not in range(256)"
     },
     {
       "id": "github:yosunpeng/postgraduate_test_njupt",
@@ -701,8 +682,8 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-23T09:43:08.581131+08:00",
-      "candidates": 1
+      "last_fetch_at": "2026-05-23T21:26:01.557686+08:00",
+      "warning": "GitHub fetch failed; reused stale cached documents: 'latin-1' codec can't encode character '\\ufeff' in position 7: ordinal not in range(256)"
     },
     {
       "id": "github:NJUPTFreeExams/NJUPT-InfoSec-Free-Exams",
@@ -711,8 +692,8 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-23T09:43:08.581131+08:00",
-      "candidates": 1
+      "last_fetch_at": "2026-05-23T21:26:01.557686+08:00",
+      "warning": "GitHub fetch failed; reused stale cached documents: 'latin-1' codec can't encode character '\\ufeff' in position 7: ordinal not in range(256)"
     },
     {
       "id": "github:ace-trump-tech/NJUPT-Graduation-thesis",
@@ -721,8 +702,8 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-23T09:43:08.581131+08:00",
-      "candidates": 1
+      "last_fetch_at": "2026-05-23T21:26:01.557686+08:00",
+      "warning": "GitHub fetch failed; reused stale cached documents: 'latin-1' codec can't encode character '\\ufeff' in position 7: ordinal not in range(256)"
     },
     {
       "id": "github:Yolumia/NJUPT-NETWORK",
@@ -731,8 +712,8 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-23T09:43:08.581131+08:00",
-      "candidates": 1
+      "last_fetch_at": "2026-05-23T21:26:01.557686+08:00",
+      "warning": "GitHub fetch failed; reused stale cached documents: 'latin-1' codec can't encode character '\\ufeff' in position 7: ordinal not in range(256)"
     },
     {
       "id": "github:Moonike1217/NJUPTExamICSBuilder",
@@ -741,8 +722,8 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-23T09:43:08.581131+08:00",
-      "candidates": 1
+      "last_fetch_at": "2026-05-23T21:26:01.557686+08:00",
+      "warning": "GitHub fetch failed; reused stale cached documents: 'latin-1' codec can't encode character '\\ufeff' in position 7: ordinal not in range(256)"
     },
     {
       "id": "github:musnows/Njupt-Wifi-Login",
@@ -751,8 +732,8 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-23T09:43:08.581131+08:00",
-      "candidates": 1
+      "last_fetch_at": "2026-05-23T21:26:01.557686+08:00",
+      "warning": "GitHub fetch failed; reused stale cached documents: 'latin-1' codec can't encode character '\\ufeff' in position 7: ordinal not in range(256)"
     }
   ]
 }
