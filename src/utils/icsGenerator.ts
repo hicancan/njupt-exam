@@ -20,15 +20,9 @@ const formatICSDate = (isoString?: string): string | null => {
  * RFC 5545 建议 UID 使用 ASCII 字符以确保兼容性
  */
 const generateUID = (examId: string): string => {
-    // 将中文文件名转换为 hash
-    let hash = 0;
-    for (let i = 0; i < examId.length; i++) {
-        const char = examId.charCodeAt(i);
-        hash = ((hash << 5) - hash) + char;
-        hash = hash & hash; // Convert to 32bit integer
-    }
-    const hashStr = Math.abs(hash).toString(36);
-    return `exam-${hashStr}@${APP_CONFIG.DOMAIN}`;
+    // 使用 encodeURIComponent 确保 UID 无碰撞且对 ICS 兼容
+    const safeId = encodeURIComponent(examId).replace(/%/g, '_');
+    return `exam-${safeId}@${APP_CONFIG.DOMAIN}`;
 };
 
 // RFC 5545 标准要求转义特殊字符

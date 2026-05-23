@@ -11,7 +11,11 @@ export function useSearchEngine(
     const allDocuments = useMemo(() => [...noticeDocuments, ...examDocuments], [noticeDocuments, examDocuments]);
     
     const rankedResults = useMemo(
-        () => rankSearchDocuments(allDocuments, searchQuery),
+        () => {
+            const trimmed = searchQuery.trim();
+            if (trimmed.length < 2) return [];
+            return rankSearchDocuments(allDocuments, searchQuery);
+        },
         [allDocuments, searchQuery]
     );
     

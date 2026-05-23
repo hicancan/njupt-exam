@@ -116,6 +116,20 @@ def save_llm_cache(now: datetime) -> bool:
     if not _LLM_CACHE_CHANGED or _RUN_CONFIG["dry_run"]:
         return False
     os.makedirs(os.path.dirname(LLM_CACHE_PATH), exist_ok=True)
+    
+    # Merge with existing cache to prevent overwriting concurrent updates
+    try:
+        if os.path.exists(LLM_CACHE_PATH):
+            with open(LLM_CACHE_PATH, "r", encoding="utf-8") as f:
+                existing_payload = json.load(f)
+            existing_entries = existing_payload.get("entries", {})
+            if isinstance(existing_entries, dict):
+                existing_entries.update(_LLM_CACHE)
+                _LLM_CACHE.clear()
+                _LLM_CACHE.update(existing_entries)
+    except Exception:
+        pass
+
     payload = {
         "schema_version": active_llm_schema_version(),
         "updated_at": now.isoformat(),

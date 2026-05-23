@@ -4,16 +4,7 @@ import { registerSW } from 'virtual:pwa-register'
 import './index.css'
 import App from './App'
 
-if ('serviceWorker' in navigator) {
-  const hadController = Boolean(navigator.serviceWorker.controller)
-  let refreshing = false
 
-  navigator.serviceWorker.addEventListener('controllerchange', () => {
-    if (!hadController || refreshing) return
-    refreshing = true
-    window.location.reload()
-  })
-}
 
 const rootElement = document.getElementById('root')
 if (!rootElement) {

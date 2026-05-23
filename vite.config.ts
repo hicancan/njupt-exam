@@ -45,7 +45,7 @@ export default defineConfig({
         runtimeCaching: [
           {
             urlPattern: ({ url }) => url.pathname.includes('/data/') || url.pathname.includes('/index/'),
-            handler: 'StaleWhileRevalidate',
+            handler: 'NetworkFirst',
             options: {
               cacheName: 'njupt-search-data-cache',
               expiration: {
