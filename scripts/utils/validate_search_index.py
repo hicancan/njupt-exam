@@ -36,6 +36,11 @@ REQUIRED_DOCUMENT_FIELDS = {
     "hash",
 }
 
+MIN_EXPECTED_DOCUMENTS = 120
+MAX_ERROR_SOURCE_RATIO = 0.1
+MAX_ERROR_SOURCES = 3
+CORE_SOURCE_IDS = {"jwc", "xsc", "pg", "ygb", "youth", "cxcy", "job", "lib"}
+
 
 def read_json(path: str):
     with open(path, "r", encoding="utf-8") as handle:
@@ -154,13 +159,27 @@ def validate_manifest() -> None:
     manifest = read_json(MANIFEST_PATH)
     if not isinstance(manifest, dict):
         fail("manifest.json must be an object")
-    if manifest.get("total_documents") is None or int(manifest.get("total_documents", 0)) <= 0:
+    total_documents = int(manifest.get("total_documents", 0) or 0)
+    if total_documents <= 0:
         fail("manifest has no documents")
+    if total_documents < MIN_EXPECTED_DOCUMENTS:
+        fail(f"manifest has suspiciously few documents: {total_documents} < {MIN_EXPECTED_DOCUMENTS}")
     if not manifest.get("llm_schema_version"):
         fail("manifest missing llm_schema_version")
     sources = manifest.get("sources")
     if not isinstance(sources, list) or not sources:
         fail("manifest has no sources")
+    error_sources = [source for source in sources if isinstance(source, dict) and source.get("status") == "error"]
+    error_limit = max(MAX_ERROR_SOURCES, int(len(sources) * MAX_ERROR_SOURCE_RATIO))
+    if len(error_sources) > error_limit:
+        fail(f"too many source errors: {len(error_sources)} > {error_limit}")
+    broken_core_sources = [
+        str(source.get("id"))
+        for source in error_sources
+        if str(source.get("id")) in CORE_SOURCE_IDS
+    ]
+    if broken_core_sources:
+        fail(f"core sources failed: {', '.join(sorted(broken_core_sources))}")
 
 
 def main() -> None:

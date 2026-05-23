@@ -386,7 +386,7 @@ def analyze_documents_batch_with_llm(
             else:
                 continue
             return _parse_batch_response(text_result, expected_ids, used_provider, used_model)
-        except (ValidationError, json.JSONDecodeError, KeyError, IndexError, requests.RequestException, RuntimeError) as exc:
+        except (ValidationError, json.JSONDecodeError, KeyError, IndexError, requests.RequestException, RuntimeError, UnicodeError) as exc:
             errors.append(f"{candidate_provider}: {redact_for_log(exc)}")
             continue
 

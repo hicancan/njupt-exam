@@ -33,10 +33,14 @@ REQUEST_TIMEOUT = 16
 MIN_STUDENT_SCORE = 0.55
 GITHUB_TOKEN_ENV = "NJUPT_SEARCH_GITHUB_TOKEN"
 
-GEMINI_API_KEYS = os.environ.get("GEMINI_API_KEYS") or os.environ.get("GEMINI_API_KEY", "")
-DEEPSEEK_API_KEY = os.environ.get("DEEPSEEK_API_KEY", "")
-DEEPSEEK_MODEL = os.environ.get("DEEPSEEK_MODEL", "deepseek-v4-flash")
-DEEPSEEK_API_BASE = os.environ.get("DEEPSEEK_API_BASE", "https://api.deepseek.com").rstrip("/")
+def _clean_env_value(name: str, default: str = "") -> str:
+    return str(os.environ.get(name, default)).strip().lstrip("\ufeff").strip()
+
+
+GEMINI_API_KEYS = _clean_env_value("GEMINI_API_KEYS") or _clean_env_value("GEMINI_API_KEY")
+DEEPSEEK_API_KEY = _clean_env_value("DEEPSEEK_API_KEY")
+DEEPSEEK_MODEL = _clean_env_value("DEEPSEEK_MODEL", "deepseek-v4-flash")
+DEEPSEEK_API_BASE = _clean_env_value("DEEPSEEK_API_BASE", "https://api.deepseek.com").rstrip("/")
 GITHUB_API_BASE = "https://api.github.com"
 GITHUB_FILE_SIZE_LIMIT_BYTES = 250_000
 JOB_API_BASE = "https://njupt.91job.org.cn/web/wsjysc/lbxq"
