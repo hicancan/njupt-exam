@@ -8,7 +8,7 @@
 
 [在线使用](https://njupt.hicancan.top) · [报告 Bug](https://github.com/hicancan/njupt-search/issues) · [路线图](docs/njupt-search-product-roadmap.md)
 
-![License](https://img.shields.io/badge/license-MIT-green.svg?style=flat-square)
+![License](https://img.shields.io/badge/license-AGPL--3.0-blue.svg?style=flat-square)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.9-blue.svg?style=flat-square)
 ![React Version](https://img.shields.io/badge/react-19.x-61dafb.svg?style=flat-square)
 ![TailwindCSS Version](https://img.shields.io/badge/tailwindcss-v4.1-38bdf8.svg?style=flat-square)
@@ -224,4 +224,4 @@ njupt-search/
 
 ## License
 
-[MIT](LICENSE)
+[AGPL-3.0](LICENSE)
