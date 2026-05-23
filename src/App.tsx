@@ -9,14 +9,11 @@ import { useDataUpdateNotifier } from '@/hooks/useDataUpdateNotifier';
 import { useSearchIndex } from '@/hooks/useSearchIndex';
 import { useUrlState } from '@/hooks/useUrlState';
 import { useSearchEngine } from '@/hooks/useSearchEngine';
-import { SearchCategory } from '@/types';
 
 import { Header } from '@/components/Header';
 import { LoadingScreen } from '@/components/LoadingScreen';
 import { HomeView } from '@/views/HomeView';
 import { ResultsView } from '@/views/ResultsView';
-
-type CategoryFilter = SearchCategory | '全部';
 
 function App() {
     const { exams: allExams, loading: examLoading, error: examError, sourceUrl, sourceTitle, generatedAt, totalRecords } = useExamData();
@@ -27,14 +24,13 @@ function App() {
 
     const initialQuery = classParam || qParam || '';
     const [inputValue, setInputValue] = useState<string>(initialQuery);
-    const [selectedCategory, setSelectedCategory] = useState<CategoryFilter>(classParam ? '考试' : '全部');
     const [reminders, setReminders] = useState<number[]>([30, 60]);
 
     const isHome = !classParam && !qParam;
     const searchQuery = initialQuery;
     const manualSelection = classParam;
 
-    const { rankedResults, learningResources } = useSearchEngine(noticeDocuments, allExams, searchQuery, selectedCategory);
+    const { rankedResults, learningResources } = useSearchEngine(noticeDocuments, allExams, searchQuery);
     const classSearchResult = useClassSearch(allExams, searchQuery, manualSelection);
     const currentClass = classSearchResult.mode === 'DETAIL' ? classSearchResult.classes[0] || null : null;
     const { selectedIds, toggleExamSelection } = useSelectedExamIds(currentClass, classSearchResult.exams);
@@ -44,9 +40,6 @@ function App() {
         // URL navigation is the external source of truth here; keep the controlled search box in sync.
         // eslint-disable-next-line react-hooks/set-state-in-effect
         setInputValue(classParam || qParam || '');
-        if (classParam) {
-            setSelectedCategory('考试');
-        }
     }, [classParam, qParam]);
 
     // Handle initial redirect for class saving
@@ -72,7 +65,7 @@ function App() {
         }
     };
 
-    const handleQuickSearch = (nextQuery: string, category: CategoryFilter) => {
+    const handleQuickSearch = (nextQuery: string) => {
         if (nextQuery === '考试安排') {
             const savedClass = localStorage.getItem('SAVED_CLASS');
             if (savedClass) {
@@ -81,19 +74,16 @@ function App() {
             }
         }
         navigate({ q: nextQuery, class: null });
-        setSelectedCategory(category);
     };
 
     const handleOpenClass = (className: string) => {
         if (!className) return;
         localStorage.setItem('SAVED_CLASS', className.toUpperCase());
         navigate({ class: className.toUpperCase(), q: null });
-        setSelectedCategory('考试');
     };
 
     const handleGoHome = () => {
         navigate({ class: null, q: null });
-        setSelectedCategory('全部');
     };
 
     const isLoading = examLoading || searchLoading;
@@ -138,13 +128,11 @@ function App() {
             ) : (
                 <ResultsView
                     query={searchQuery}
-                    selectedCategory={selectedCategory}
                     results={rankedResults}
                     resources={learningResources}
                     classMode={classSearchResult}
                     selectedIds={selectedIds}
                     reminders={reminders}
-                    onCategoryChange={setSelectedCategory}
                     onOpenClass={handleOpenClass}
                     onToggleSelection={toggleExamSelection}
                     onRemindersChange={setReminders}

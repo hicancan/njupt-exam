@@ -52,7 +52,7 @@ describe('rankSearchDocuments', () => {
             hash: 'notice-2',
         };
 
-        const results = rankSearchDocuments([lowPriority, baseNotice], '奖学金 公示', '全部');
+        const results = rankSearchDocuments([lowPriority, baseNotice], '奖学金 公示');
 
         expect(results[0]?.id).toBe('notice-1');
         expect(results[0]?.score).toBeGreaterThan(results[1]?.score || 0);
@@ -75,7 +75,23 @@ describe('rankSearchDocuments', () => {
         expect(document?.kind).toBe('exam');
         expect(document?.category).toBe('考试');
         expect(document?.class_name).toBe('B250403');
-        expect(rankSearchDocuments([document as SearchDocument], 'B250403', '考试')[0]?.id).toBe('exam-sheet-2');
+        expect(rankSearchDocuments([document as SearchDocument], 'B250403')[0]?.id).toBe('exam-sheet-2');
+    });
+
+    it('does not use legacy category filtering for result inclusion', () => {
+        const document: SearchDocument = {
+            ...baseNotice,
+            id: 'notice-misaligned-category',
+            category: '公告',
+            domain: 'scholarship',
+            intent: 'publicity',
+            title: '2026年奖学金名单公示',
+            content: '奖学金 公示 名单',
+            tags: ['奖学金', '公示'],
+            hash: 'notice-misaligned-category',
+        };
+
+        expect(rankSearchDocuments([document], '奖学金 公示')[0]?.id).toBe('notice-misaligned-category');
     });
 
     it('only shows learning resources for course or exam intent', () => {

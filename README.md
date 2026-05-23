@@ -4,7 +4,7 @@
 
 <img src="public/assets/logo.png" height="80" alt="njupt-search logo" />
 
-**南邮学生的信息入口：搜公告、搜考试、搜竞赛、搜讲座、搜项目、搜资料。**
+**南邮学生的信息入口：搜任务、搜截止、搜名单、搜讲座、搜服务、搜资料。**
 
 [在线使用](https://njupt.hicancan.top) · [报告 Bug](https://github.com/hicancan/njupt-search/issues) · [路线图](docs/njupt-search-product-roadmap.md)
 
@@ -64,7 +64,7 @@ public/data/data_summary.json
 ## 核心能力
 
 - 统一搜索：公告、考试记录、就业宣讲、项目文档、学院通知和学习资源进入同一排序模型。
-- 多轴分类：保留考试 / 竞赛 / 奖助等兼容频道，同时新增 `domain`、`intent`、`source_type`、`lifecycle`、`evidence`。
+- 多轴理解：搜索和筛选不再依赖旧一级分类频道，主体验使用 `domain`、`intent`、`source_type`、`lifecycle`、`deadline`、`evidence`。
 - 默认过滤：入库时过滤低学生相关内容，结果页按相关度和发布时间展示。
 - 任务卡片：结果页展示事务领域、动作类型、生命周期、截止时间、行动说明、附件角色和敏感标记。
 - 考试垂直频道：班级号搜索、模糊班级选择、手动勾选考试、导出标准 iCalendar。

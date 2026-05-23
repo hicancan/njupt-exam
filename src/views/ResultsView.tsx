@@ -2,9 +2,8 @@ import { useMemo, useState, useEffect } from 'react';
 import { AlertTriangle, CalendarDays, Clock, FileText, GraduationCap, LockKeyhole } from 'lucide-react';
 import { ExamList } from '@/components/ExamList';
 import { ExamDetail } from '@/components/ExamDetail';
-import { SearchCategory, RankedSearchDocument, SearchDocument, SearchDomain, SearchIntent, SearchResult } from '@/types';
+import { RankedSearchDocument, SearchDocument, SearchDomain, SearchIntent, SearchResult } from '@/types';
 import {
-    getCategoryOrder,
     formatSearchDate,
     getDomainLabel,
     getIntentLabel,
@@ -12,50 +11,10 @@ import {
     getSourceTypeLabel
 } from '@/utils/searchIndex';
 
-type CategoryFilter = SearchCategory | '全部';
 type DomainFilter = SearchDomain | '全部';
 type IntentFilter = SearchIntent | '全部';
 
 const isExternalUrl = (url: string): boolean => /^https?:\/\//.test(url);
-
-interface CategoryTabsProps {
-    active: CategoryFilter;
-    onChange: (category: CategoryFilter) => void;
-}
-
-function CategoryTabs({ active, onChange }: CategoryTabsProps) {
-    const categories = getCategoryOrder();
-
-    return (
-        <div className="flex gap-6 overflow-x-auto pb-0 border-b border-[#dadce0] dark:border-[#3c4043] mb-4">
-            <button
-                type="button"
-                onClick={() => onChange('全部')}
-                className={`pb-3 text-sm font-medium whitespace-nowrap border-b-[3px] transition-colors ${
-                    active === '全部'
-                        ? 'border-[#1a73e8] text-[#1a73e8] dark:border-[#8ab4f8] dark:text-[#8ab4f8]'
-                        : 'border-transparent text-[#5f6368] dark:text-[#9aa0a6] hover:text-[#202124] dark:hover:text-[#e8eaed]'
-                }`}
-            >
-                全部
-            </button>
-            {categories.map(category => (
-                <button
-                    key={category}
-                    type="button"
-                    onClick={() => onChange(category)}
-                    className={`pb-3 text-sm font-medium whitespace-nowrap border-b-[3px] transition-colors ${
-                        active === category
-                            ? 'border-[#1a73e8] text-[#1a73e8] dark:border-[#8ab4f8] dark:text-[#8ab4f8]'
-                            : 'border-transparent text-[#5f6368] dark:text-[#9aa0a6] hover:text-[#202124] dark:hover:text-[#e8eaed]'
-                    }`}
-                >
-                    {category}
-                </button>
-            ))}
-        </div>
-    );
-}
 
 interface SearchResultCardProps {
     document: RankedSearchDocument | SearchDocument;
@@ -85,7 +44,9 @@ function SearchResultCard({ document, onOpenClass }: SearchResultCardProps) {
             <div className="flex items-center gap-2 text-[14px] text-[#202124] dark:text-[#bdc1c6] mb-1">
                 <span className="font-medium">{document.source}</span>
                 <span className="text-[#70757a] dark:text-[#9aa0a6]">›</span>
-                <span className="text-[#70757a] dark:text-[#9aa0a6] truncate">{document.category}{document.sub_category ? ` / ${document.sub_category}` : ''}</span>
+                <span className="text-[#70757a] dark:text-[#9aa0a6] truncate">
+                    {getDomainLabel(document.domain)} · {getIntentLabel(document.intent)}{document.sub_category ? ` · ${document.sub_category}` : ''}
+                </span>
                 <span className="hidden sm:inline-flex items-center h-5 px-2 rounded bg-[#f1f3f4] text-[#5f6368] dark:bg-[#303134] dark:text-[#bdc1c6] text-[11px] shrink-0">
                     {getSourceTypeLabel(document.source_type)}
                 </span>
@@ -170,13 +131,11 @@ function SearchResultCard({ document, onOpenClass }: SearchResultCardProps) {
 
 interface ResultsViewProps {
     query: string;
-    selectedCategory: CategoryFilter;
     results: RankedSearchDocument[];
     resources: SearchDocument[];
     classMode: SearchResult;
     selectedIds: Set<string>;
     reminders: number[];
-    onCategoryChange: (category: CategoryFilter) => void;
     onOpenClass: (className: string) => void;
     onToggleSelection: (id: string) => void;
     onRemindersChange: (reminders: number[]) => void;
@@ -188,13 +147,11 @@ interface ResultsViewProps {
 
 export function ResultsView({
     query,
-    selectedCategory,
     results,
     resources,
     classMode,
     selectedIds,
     reminders,
-    onCategoryChange,
     onOpenClass,
     onToggleSelection,
     onRemindersChange,
@@ -223,15 +180,13 @@ export function ResultsView({
     useEffect(() => {
         // eslint-disable-next-line react-hooks/set-state-in-effect
         setVisibleCount(20);
-    }, [query, selectedCategory, domainFilter, intentFilter]);
+    }, [query, domainFilter, intentFilter]);
 
     const visibleResults = filteredResults.slice(0, visibleCount);
 
     return (
         <main className="max-w-6xl w-full mx-auto px-4 py-6">
             <div className="w-full">
-                <CategoryTabs active={selectedCategory} onChange={onCategoryChange} />
-
                 {classMode.mode === 'LIST' ? (
                     <section className="mt-6">
                         <ExamList classes={classMode.classes} onClassClick={onOpenClass} />
@@ -269,7 +224,7 @@ export function ResultsView({
                     </section>
                 ) : null}
 
-                {(trimmedQuery === '考试安排' && classMode.mode === 'NOT_FOUND') || (selectedCategory === '考试' && classMode.mode === 'NOT_FOUND' && trimmedQuery === '') ? (
+                {trimmedQuery === '考试安排' && classMode.mode === 'NOT_FOUND' ? (
                     <section className="mt-8">
                         <div className="border border-[#dadce0] dark:border-[#3c4043] rounded-xl bg-[#f8fafc] dark:bg-[#2d2e30] p-8 text-center max-w-[692px] mx-auto shadow-sm">
                             <div className="mx-auto w-16 h-16 bg-[#e8f0fe] dark:bg-[#3b4043] rounded-full flex items-center justify-center mb-4">
@@ -292,7 +247,7 @@ export function ResultsView({
                                 <p className="mt-1 text-sm text-[#70757a] dark:text-[#9aa0a6]">
                                     {trimmedQuery.length >= 2
                                         ? `“${trimmedQuery}” 找到 ${filteredResults.length} 条结果，按相关度、任务动作和时效排序。`
-                                        : '未输入关键词时展示当前频道的最新高价值内容。'}
+                                        : '未输入关键词时展示近期高价值校园信息。'}
                                 </p>
                             </div>
                             <div className="flex flex-wrap gap-2">

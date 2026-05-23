@@ -1,7 +1,6 @@
 import {
     Exam,
     RankedSearchDocument,
-    SearchCategory,
     SearchDocument,
     SearchDomain,
     SearchIntent,
@@ -20,29 +19,14 @@ class SearchContractError extends Error {
     }
 }
 
-const CATEGORY_ORDER: SearchCategory[] = [
-    '考试',
-    '竞赛',
-    '奖助',
-    '就业',
-    '讲座',
-    '生活',
-    '研究生',
-    '选课',
-    '学院',
-    '项目',
-    '资料',
-    '公告'
-];
-
 const DOMAIN_LABELS: Record<SearchDomain, string> = {
     academic: '学业事务',
     exam: '考试',
     course: '课程选课',
     degree: '学位培养',
-    scholarship: '奖助评优',
+    scholarship: '资助评优',
     employment: '就业实习',
-    competition: '竞赛',
+    competition: '竞赛活动',
     project: '项目机会',
     international: '国际交流',
     life: '校园生活',
@@ -197,7 +181,7 @@ const scoreTextMatch = (document: SearchDocument, query: string): number => {
 
 const buildScoreReason = (document: SearchDocument): string => {
     const parts = [
-        DOMAIN_LABELS[document.domain] || document.category,
+        DOMAIN_LABELS[document.domain] || document.domain,
         INTENT_LABELS[document.intent] || document.intent
     ];
 
@@ -348,16 +332,12 @@ export const buildExamDocuments = (exams: Exam[]): SearchDocument[] => {
 
 export const rankSearchDocuments = (
     documents: SearchDocument[],
-    query: string,
-    category: SearchCategory | '全部'
+    query: string
 ): RankedSearchDocument[] => {
     const trimmed = query.trim();
-    const categoryFiltered = category === '全部'
-        ? documents
-        : documents.filter(document => document.category === category);
 
     if (trimmed.length < 2) {
-        return [...categoryFiltered]
+        return [...documents]
             .sort((a, b) => {
                 const aPriority = a.importance_score * intentWeight(a.intent) * lifecycleWeight(a.lifecycle) * sourceTypeWeight(a.source_type) * deadlineUrgencyWeight(a.deadline);
                 const bPriority = b.importance_score * intentWeight(b.intent) * lifecycleWeight(b.lifecycle) * sourceTypeWeight(b.source_type) * deadlineUrgencyWeight(b.deadline);
@@ -374,7 +354,7 @@ export const rankSearchDocuments = (
             }));
     }
 
-    return categoryFiltered
+    return documents
         .map(document => {
             const textScore = scoreTextMatch(document, trimmed);
             const sourceWeight = document.source_weight ?? 0.8;
@@ -402,8 +382,6 @@ export const rankSearchDocuments = (
         });
 };
 
-export const getCategoryOrder = (): SearchCategory[] => [...CATEGORY_ORDER];
-
 export const getDomainLabel = (domain: SearchDomain): string => DOMAIN_LABELS[domain] || domain;
 
 export const getIntentLabel = (intent: SearchIntent): string => INTENT_LABELS[intent] || intent;
@@ -411,13 +389,6 @@ export const getIntentLabel = (intent: SearchIntent): string => INTENT_LABELS[in
 export const getSourceTypeLabel = (sourceType: SearchSourceType): string => SOURCE_TYPE_LABELS[sourceType] || sourceType;
 
 export const getLifecycleLabel = (lifecycle: SearchLifecycle): string => LIFECYCLE_LABELS[lifecycle] || lifecycle;
-
-export const getCategoryCounts = (documents: SearchDocument[]): Record<SearchCategory, number> => {
-    return CATEGORY_ORDER.reduce((accumulator, category) => {
-        accumulator[category] = documents.filter(document => document.category === category).length;
-        return accumulator;
-    }, {} as Record<SearchCategory, number>);
-};
 
 export const getRecentDocuments = (documents: SearchDocument[], limit: number): SearchDocument[] => {
     return [...documents]
@@ -504,5 +475,5 @@ export const getLearningResources = (query: string): SearchDocument[] => {
         }
     ];
 
-    return rankSearchDocuments(resources, query, '全部');
+    return rankSearchDocuments(resources, query);
 };
