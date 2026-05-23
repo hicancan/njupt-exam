@@ -17,15 +17,22 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 from indexer_config import (
     BASE_DIR, PUBLIC_DIR, INDEX_DIR, DOCUMENTS_PATH, MANIFEST_PATH, GITHUB_SOURCE_CONFIG_PATH,
+    LLM_CACHE_PATH,
     BEIJING_TZ, HEADERS, MAX_DOCS_PER_SOURCE, DETAIL_FETCH_LIMIT_PER_SOURCE, REQUEST_TIMEOUT,
     MIN_STUDENT_SCORE, GITHUB_TOKEN_ENV, GITHUB_API_BASE, GITHUB_FILE_SIZE_LIMIT_BYTES,
     NEGATIVE_KEYWORDS, SourceConfig, GitHubSourceConfig, SOURCES,
     JOB_API_BASE, JOB_STATION_CODE, CATEGORY_KEYWORDS,
     NAV_TITLES, STATIC_EXTENSIONS, ATTACHMENT_EXTENSIONS, POSITIVE_KEYWORDS
 )
-from llm_scorer import LLM_MODEL_NAME, LLM_SCHEMA_VERSION, analyze_document_with_llm, llm_enabled
+from llm_scorer import (
+    LLM_BATCH_MAX_CHARS, LLM_BATCH_MAX_DOCS, LLM_BATCH_MAX_OUTPUT_TOKENS,
+    LLM_SCHEMA_VERSION, active_model_name, active_provider_name,
+    analyze_documents_batch_with_llm, llm_enabled, public_llm_result, split_llm_batches,
+)
 
 _DOC_CACHE: dict[str, dict[str, Any]] = {}
+_LLM_CACHE: dict[str, dict[str, Any]] = {}
+_LLM_CACHE_CHANGED = False
 _RUN_CONFIG: dict[str, Any] = {
     "force_llm": False,
     "no_llm": False,
@@ -34,6 +41,10 @@ _RUN_CONFIG: dict[str, Any] = {
     "llm_limit": None,
     "dry_run": False,
     "no_github": False,
+    "llm_provider": "auto",
+    "llm_batch_size": LLM_BATCH_MAX_DOCS,
+    "llm_batch_max_chars": LLM_BATCH_MAX_CHARS,
+    "llm_batch_max_output_tokens": LLM_BATCH_MAX_OUTPUT_TOKENS,
 }
 _RUN_STATS: dict[str, int] = {
     "cache_reused": 0,
@@ -43,6 +54,9 @@ _RUN_STATS: dict[str, int] = {
     "llm_failed": 0,
     "llm_fallback": 0,
     "llm_skipped_by_limit": 0,
+    "llm_batches_attempted": 0,
+    "llm_batch_docs_attempted": 0,
+    "candidate_llm_cache_reused": 0,
     "restricted": 0,
 }
 from heuristics import (
@@ -84,6 +98,32 @@ def load_document_cache() -> None:
             pass
 
 
+def load_llm_cache() -> None:
+    global _LLM_CACHE
+    if not os.path.exists(LLM_CACHE_PATH):
+        return
+    try:
+        with open(LLM_CACHE_PATH, "r", encoding="utf-8") as f:
+            payload = json.load(f)
+        entries = payload.get("entries", {}) if isinstance(payload, dict) else {}
+        if isinstance(entries, dict):
+            _LLM_CACHE = {str(key): value for key, value in entries.items() if isinstance(value, dict)}
+    except Exception:
+        _LLM_CACHE = {}
+
+
+def save_llm_cache(now: datetime) -> bool:
+    if not _LLM_CACHE_CHANGED or _RUN_CONFIG["dry_run"]:
+        return False
+    os.makedirs(os.path.dirname(LLM_CACHE_PATH), exist_ok=True)
+    payload = {
+        "schema_version": active_llm_schema_version(),
+        "updated_at": now.isoformat(),
+        "entries": _LLM_CACHE,
+    }
+    return write_json_if_changed(LLM_CACHE_PATH, payload)
+
+
 
 def get_beijing_time() -> datetime:
     return datetime.now(timezone.utc).astimezone(BEIJING_TZ)
@@ -112,6 +152,13 @@ def cache_is_current(cached: dict[str, Any] | None) -> bool:
         return False
     if runtime_llm_enabled() and not llm_meta.get("used"):
         return False
+    if runtime_llm_enabled() and llm_meta.get("used"):
+        cached_provider = llm_meta.get("provider")
+        cached_model = llm_meta.get("model")
+        if cached_provider and cached_provider != runtime_llm_provider_name():
+            return False
+        if cached_model and cached_model != runtime_llm_model_name():
+            return False
     return True
 
 
@@ -145,7 +192,19 @@ def active_llm_schema_version() -> str:
 
 
 def runtime_llm_enabled() -> bool:
-    return bool(not _RUN_CONFIG["no_llm"] and llm_enabled())
+    return bool(not _RUN_CONFIG["no_llm"] and llm_enabled(runtime_llm_provider()))
+
+
+def runtime_llm_provider() -> str:
+    return str(_RUN_CONFIG.get("llm_provider") or "auto")
+
+
+def runtime_llm_provider_name() -> str:
+    return active_provider_name(runtime_llm_provider()) if runtime_llm_enabled() else "none"
+
+
+def runtime_llm_model_name() -> str | None:
+    return active_model_name(runtime_llm_provider()) if runtime_llm_enabled() else None
 
 
 def source_selected(source_id: str) -> bool:
@@ -155,34 +214,18 @@ def source_selected(source_id: str) -> bool:
 
 def llm_cache_key(source_id: str, url: str, content: str, attachments: list[dict[str, Any]]) -> str:
     attachment_digest = document_hash(attachments)
-    return document_hash(source_id, normalize_url(url), content, attachment_digest, active_llm_schema_version())
-
-
-def analyze_with_runtime_llm(title: str, content: str, source_domain: str) -> dict[str, Any] | None:
-    if _RUN_CONFIG["no_llm"] or not llm_enabled():
-        _RUN_STATS["llm_fallback"] += 1
-        return None
-
-    llm_limit = _RUN_CONFIG.get("llm_limit")
-    if llm_limit is not None and _RUN_STATS["llm_attempted"] >= int(llm_limit):
-        _RUN_STATS["llm_skipped_by_limit"] += 1
-        _RUN_STATS["llm_fallback"] += 1
-        return None
-
-    _RUN_STATS["llm_attempted"] += 1
-    result = analyze_document_with_llm(
-        title,
-        content,
-        source_domain,
-        enabled=True,
-        schema_version=active_llm_schema_version(),
+    content_digest = document_hash(content)
+    provider_name = runtime_llm_provider_name()
+    model_name = runtime_llm_model_name() or "rule"
+    return document_hash(
+        source_id,
+        normalize_url(url),
+        content_digest,
+        attachment_digest,
+        active_llm_schema_version(),
+        provider_name,
+        model_name,
     )
-    if result:
-        _RUN_STATS["llm_reprocessed"] += 1
-    else:
-        _RUN_STATS["llm_failed"] += 1
-        _RUN_STATS["llm_fallback"] += 1
-    return result
 
 
 def normalize_url(url: str) -> str:
@@ -296,10 +339,17 @@ def normalize_title_for_dedupe(title: str) -> str:
     return normalized.lower()
 
 
-def llm_metadata(used: bool, confidence: float | None = None, review_required: bool = False) -> dict[str, Any]:
+def llm_metadata(
+    used: bool,
+    confidence: float | None = None,
+    review_required: bool = False,
+    provider: str | None = None,
+    model: str | None = None,
+) -> dict[str, Any]:
     return {
         "used": used,
-        "model": LLM_MODEL_NAME if used else None,
+        "provider": provider if used else None,
+        "model": model or (runtime_llm_model_name() if used else None),
         "prompt_version": active_llm_schema_version(),
         "confidence": confidence,
         "review_required": review_required,
@@ -355,7 +405,13 @@ def derive_semantic_fields(
         evidence = [clean_text(str(item))[:180] for item in llm_result.get("evidence", []) if clean_text(str(item))] or fallback_evidence
         review_required = bool(llm_result.get("review_required", False))
         confidence = float(llm_result.get("confidence", 0.5))
-        metadata = llm_metadata(True, confidence, review_required)
+        metadata = llm_metadata(
+            True,
+            confidence,
+            review_required,
+            str(llm_result.get("__llm_provider") or runtime_llm_provider_name()),
+            str(llm_result.get("__llm_model") or runtime_llm_model_name() or ""),
+        )
     else:
         domain = fallback_domain
         intent = fallback_intent
@@ -548,6 +604,278 @@ def strip_html(value: str | None) -> str:
     return clean_text(BeautifulSoup(value, "html.parser").get_text(" ", strip=True))
 
 
+def llm_cache_result_for_entry(entry: dict[str, Any]) -> dict[str, Any] | None:
+    if _RUN_CONFIG["no_llm"]:
+        return None
+    if _RUN_CONFIG["force_llm"] and runtime_llm_enabled():
+        return None
+    cached = _LLM_CACHE.get(str(entry["cache_key"]))
+    if not isinstance(cached, dict):
+        return None
+    if cached.get("schema_version") != active_llm_schema_version():
+        return None
+    result = cached.get("result")
+    if not isinstance(result, dict):
+        return None
+    cached_provider = str(cached.get("provider") or "")
+    cached_model = str(cached.get("model") or "")
+    if runtime_llm_enabled():
+        if cached_provider and cached_provider != runtime_llm_provider_name():
+            return None
+        if cached_model and cached_model != runtime_llm_model_name():
+            return None
+    restored = dict(result)
+    restored["__llm_provider"] = cached_provider or runtime_llm_provider_name()
+    restored["__llm_model"] = cached_model or str(runtime_llm_model_name() or "")
+    return restored
+
+
+def store_llm_cache_result(entry: dict[str, Any], result: dict[str, Any], now: datetime) -> None:
+    global _LLM_CACHE_CHANGED
+    cache_key = str(entry["cache_key"])
+    _LLM_CACHE[cache_key] = {
+        "schema_version": active_llm_schema_version(),
+        "provider": str(result.get("__llm_provider") or runtime_llm_provider_name()),
+        "model": str(result.get("__llm_model") or runtime_llm_model_name() or ""),
+        "source_id": str(entry.get("source_id", "")),
+        "url": str(entry.get("url", "")),
+        "normalized_url": normalize_url(str(entry.get("url", ""))),
+        "title": str(entry.get("title", "")),
+        "content_hash": document_hash(str(entry.get("content", ""))),
+        "attachment_hash": document_hash(entry.get("attachments", [])),
+        "updated_at": now.isoformat(),
+        "result": public_llm_result(result),
+    }
+    _LLM_CACHE_CHANGED = True
+
+
+def llm_payload_from_entry(entry: dict[str, Any]) -> dict[str, Any]:
+    return {
+        "id": str(entry["cache_key"]),
+        "title": entry.get("title", ""),
+        "source": entry.get("source", ""),
+        "source_domain": entry.get("source_domain", ""),
+        "published_at": entry.get("published_at"),
+        "content": entry.get("content", ""),
+        "attachments": entry.get("attachments", []),
+    }
+
+
+def should_skip_llm_entry(entry: dict[str, Any]) -> bool:
+    if str(entry.get("source_type")) in {"github_resource", "job_platform"}:
+        return False
+    content = str(entry.get("content", ""))
+    attachments = list(entry.get("attachments", []))
+    if is_low_evidence_content(content, attachments):
+        return True
+    text = f"{entry.get('title', '')} {content}"
+    obvious_admin_terms = ("采购", "招标", "比选", "中标", "成交", "验收", "资产处置", "巡察", "审计")
+    return any(term in text for term in obvious_admin_terms) and not contains_relevant_keyword(text)
+
+
+def analyze_prepared_documents(prepared: list[dict[str, Any]], now: datetime) -> dict[str, dict[str, Any]]:
+    results: dict[str, dict[str, Any]] = {}
+    pending: list[dict[str, Any]] = []
+
+    for entry in prepared:
+        if should_skip_llm_entry(entry):
+            _RUN_STATS["llm_fallback"] += 1
+            continue
+        cached_result = llm_cache_result_for_entry(entry)
+        if cached_result:
+            _RUN_STATS["candidate_llm_cache_reused"] += 1
+            _RUN_STATS["llm_reused"] += 1
+            results[str(entry["cache_key"])] = cached_result
+        else:
+            pending.append(entry)
+
+    if not pending:
+        return results
+
+    if _RUN_CONFIG["no_llm"] or not llm_enabled(runtime_llm_provider()):
+        _RUN_STATS["llm_fallback"] += len(pending)
+        return results
+
+    llm_limit = _RUN_CONFIG.get("llm_limit")
+    if llm_limit is not None:
+        remaining = max(0, int(llm_limit) - _RUN_STATS["llm_attempted"])
+        if remaining <= 0:
+            _RUN_STATS["llm_skipped_by_limit"] += len(pending)
+            _RUN_STATS["llm_fallback"] += len(pending)
+            return results
+        if remaining < len(pending):
+            skipped = pending[remaining:]
+            _RUN_STATS["llm_skipped_by_limit"] += len(skipped)
+            _RUN_STATS["llm_fallback"] += len(skipped)
+            pending = pending[:remaining]
+
+    payloads = [llm_payload_from_entry(entry) for entry in pending]
+    entry_by_cache_key = {str(entry["cache_key"]): entry for entry in pending}
+    batches = split_llm_batches(
+        payloads,
+        max_docs=int(_RUN_CONFIG["llm_batch_size"]),
+        max_chars=int(_RUN_CONFIG["llm_batch_max_chars"]),
+    )
+
+    for batch in batches:
+        batch_ids = {str(item["id"]) for item in batch}
+        _RUN_STATS["llm_batches_attempted"] += 1
+        _RUN_STATS["llm_batch_docs_attempted"] += len(batch)
+        _RUN_STATS["llm_attempted"] += len(batch)
+        batch_results = analyze_documents_batch_with_llm(
+            batch,
+            provider=runtime_llm_provider(),
+            enabled=True,
+            schema_version=active_llm_schema_version(),
+            max_output_tokens=int(_RUN_CONFIG["llm_batch_max_output_tokens"]),
+        )
+        for cache_key, result in batch_results.items():
+            if cache_key not in entry_by_cache_key:
+                continue
+            results[cache_key] = result
+            store_llm_cache_result(entry_by_cache_key[cache_key], result, now)
+            _RUN_STATS["llm_reprocessed"] += 1
+
+        missing_count = len(batch_ids - set(batch_results))
+        if missing_count:
+            _RUN_STATS["llm_failed"] += missing_count
+            _RUN_STATS["llm_fallback"] += missing_count
+
+    return results
+
+
+def build_search_document_from_prepared(
+    entry: dict[str, Any],
+    llm_result: dict[str, Any] | None,
+    now: datetime,
+) -> dict[str, Any]:
+    semantic = derive_semantic_fields(
+        str(entry["title"]),
+        str(entry.get("content") or entry["title"]),
+        str(entry.get("default_category") or "公告"),
+        float(entry.get("source_weight", 0.7)),
+        str(entry.get("source_type") or "central_admin"),
+        list(entry.get("attachments", [])),
+        entry.get("published_at"),
+        now,
+        llm_result,
+    )
+
+    min_student_score = entry.get("min_student_score")
+    if min_student_score is not None:
+        semantic["student_score"] = max(float(min_student_score), float(semantic["student_score"]))
+
+    for tag in entry.get("extra_tags", []):
+        if tag and tag not in semantic["tags"]:
+            semantic["tags"].append(tag)
+
+    lifecycle = semantic["lifecycle"]
+    if entry.get("lifecycle_kind") == "resource":
+        lifecycle = infer_lifecycle(entry.get("published_at"), semantic["deadline"], now, "resource")
+
+    return {
+        "id": entry["id"],
+        "kind": entry["kind"],
+        "title": entry["title"],
+        "url": entry["url"],
+        "source": entry["source"],
+        "source_domain": entry["source_domain"],
+        "source_type": normalize_source_type(entry["source_type"]),
+        "category": semantic["category"],
+        "domain": semantic["domain"],
+        "intent": semantic["intent"],
+        "lifecycle": lifecycle,
+        "evidence": semantic["evidence"],
+        "confidence": semantic["confidence"],
+        "sub_category": semantic["sub_category"],
+        "deadline": semantic["deadline"],
+        "action_required": semantic["action_required"],
+        "action_type": semantic["action_type"],
+        "action_summary": semantic["action_summary"],
+        "required_materials": semantic["required_materials"],
+        "sensitive": semantic["sensitive"],
+        "sensitive_types": semantic["sensitive_types"],
+        "review_required": semantic["review_required"],
+        "risk_flags": semantic["risk_flags"],
+        "audience": list(entry.get("audience", [])),
+        "published_at": entry.get("published_at"),
+        "content": semantic["content"],
+        "summary": semantic["summary"],
+        "attachments": semantic["attachments"],
+        "student_score": semantic["student_score"],
+        "freshness_score": calculate_freshness(entry.get("published_at"), now),
+        "importance_score": semantic["importance_score"],
+        "source_weight": entry["source_weight"],
+        "tags": semantic["tags"][:10],
+        "hash": entry["hash"],
+        "cache_key": entry["cache_key"],
+        "llm_schema_version": active_llm_schema_version(),
+        "llm": semantic["llm"],
+    }
+
+
+def prepare_notice_candidate(
+    source: SourceConfig,
+    candidate: dict[str, str | None],
+    now: datetime,
+) -> dict[str, Any] | None:
+    title = candidate["title"] or ""
+    url = candidate["url"] or source.base_url
+    published_at = candidate.get("published_at")
+    content = title
+    attachments: list[dict[str, str]] = []
+
+    try:
+        html = fetch_html(url)
+        soup = BeautifulSoup(html, "html.parser")
+        title_node = (
+            soup.select_one(".arti_title")
+            or soup.select_one(".articleTitle")
+            or soup.select_one(".news_title")
+            or soup.find("h1")
+        )
+        page_title = clean_text(title_node.get_text(" ", strip=True)) if title_node else ""
+        if page_title and len(page_title) >= 4 and page_title not in NAV_TITLES:
+            title = page_title
+        content = extract_article_text(soup) or title
+        attachments = extract_attachments(soup, url)
+        published_at = published_at or parse_date(content, now)
+    except Exception:
+        content = title
+
+    if is_expired(published_at, now):
+        return None
+
+    if is_restricted_content(content):
+        return {"ready_document": build_restricted_document(source, title, url, published_at, content, now)}
+
+    digest = document_hash(title, url, content, attachments)
+    cache_key = llm_cache_key(source.id, url, content, attachments)
+    cached = _DOC_CACHE.get(cache_key) or _DOC_CACHE.get(digest)
+    if cache_is_current(cached):
+        return {"ready_document": cached_with_freshness(cached, published_at, now)}
+
+    return {
+        "id": f"{source.id}-{digest}",
+        "kind": "notice",
+        "source_id": source.id,
+        "title": title,
+        "url": url,
+        "source": source.name,
+        "source_domain": urlparse(source.base_url).netloc,
+        "source_type": normalize_source_type(source.source_type),
+        "audience": list(source.audience),
+        "published_at": published_at,
+        "content": content,
+        "attachments": attachments,
+        "default_category": infer_category(f"{title} {content}"),
+        "source_weight": source.source_weight,
+        "hash": digest,
+        "cache_key": cache_key,
+        "lifecycle_kind": "notice",
+    }
+
+
 def collect_candidates(source: SourceConfig, now: datetime) -> tuple[list[dict[str, str | None]], list[str]]:
     candidates: list[dict[str, str | None]] = []
     seen: set[str] = set()
@@ -616,93 +944,7 @@ def collect_candidates(source: SourceConfig, now: datetime) -> tuple[list[dict[s
     return candidates[:MAX_DOCS_PER_SOURCE * 2], list_errors[:8]
 
 
-def enrich_candidate(source: SourceConfig, candidate: dict[str, str | None], now: datetime) -> dict[str, Any] | None:
-    title = candidate["title"] or ""
-    url = candidate["url"] or source.base_url
-    published_at = candidate.get("published_at")
-    content = title
-    attachments: list[dict[str, str]] = []
-
-    try:
-        html = fetch_html(url)
-        soup = BeautifulSoup(html, "html.parser")
-        title_node = (
-            soup.select_one(".arti_title")
-            or soup.select_one(".articleTitle")
-            or soup.select_one(".news_title")
-            or soup.find("h1")
-        )
-        page_title = clean_text(title_node.get_text(" ", strip=True)) if title_node else ""
-        if page_title and len(page_title) >= 4 and page_title not in NAV_TITLES:
-            title = page_title
-        content = extract_article_text(soup) or title
-        attachments = extract_attachments(soup, url)
-        published_at = published_at or parse_date(content, now)
-    except Exception:
-        content = title
-
-    if is_expired(published_at, now):
-        return None
-
-    if is_restricted_content(content):
-        return build_restricted_document(source, title, url, published_at, content, now)
-
-    digest = document_hash(title, url, content, attachments)
-    cache_key = llm_cache_key(source.id, url, content, attachments)
-    cached = _DOC_CACHE.get(cache_key) or _DOC_CACHE.get(digest)
-    if cache_is_current(cached):
-        return cached_with_freshness(cached, published_at, now)
-
-    llm_result = analyze_with_runtime_llm(title, content, urlparse(source.base_url).netloc)
-    semantic = derive_semantic_fields(
-        title, content, infer_category(f"{title} {content}"), source.source_weight, source.source_type,
-        attachments, published_at, now, llm_result
-    )
-
-    freshness_score = calculate_freshness(published_at, now)
-
-    return {
-        "id": f"{source.id}-{digest}",
-        "kind": "notice",
-        "title": title,
-        "url": url,
-        "source": source.name,
-        "source_domain": urlparse(source.base_url).netloc,
-        "source_type": normalize_source_type(source.source_type),
-        "category": semantic["category"],
-        "domain": semantic["domain"],
-        "intent": semantic["intent"],
-        "lifecycle": semantic["lifecycle"],
-        "evidence": semantic["evidence"],
-        "confidence": semantic["confidence"],
-        "sub_category": semantic["sub_category"],
-        "deadline": semantic["deadline"],
-        "action_required": semantic["action_required"],
-        "action_type": semantic["action_type"],
-        "action_summary": semantic["action_summary"],
-        "required_materials": semantic["required_materials"],
-        "sensitive": semantic["sensitive"],
-        "sensitive_types": semantic["sensitive_types"],
-        "review_required": semantic["review_required"],
-        "risk_flags": semantic["risk_flags"],
-        "audience": list(source.audience),
-        "published_at": published_at,
-        "content": semantic["content"],
-        "summary": semantic["summary"],
-        "attachments": semantic["attachments"],
-        "student_score": semantic["student_score"],
-        "freshness_score": freshness_score,
-        "importance_score": semantic["importance_score"],
-        "source_weight": source.source_weight,
-        "tags": semantic["tags"],
-        "hash": digest,
-        "cache_key": cache_key,
-        "llm_schema_version": active_llm_schema_version(),
-        "llm": semantic["llm"],
-    }
-
-
-def build_job_document(
+def prepare_job_entry(
     source: SourceConfig,
     external_id: str,
     title: str,
@@ -715,64 +957,36 @@ def build_job_document(
     if is_expired(published_at, now):
         return None
     digest = document_hash("job", external_id, title, url, content)
-
     cache_key = llm_cache_key(source.id, url, content, [])
     cached = _DOC_CACHE.get(cache_key) or _DOC_CACHE.get(digest)
     if cache_is_current(cached):
-        return cached_with_freshness(cached, published_at, now)
-
-    llm_result = analyze_with_runtime_llm(title, content, urlparse(source.base_url).netloc)
-    semantic = derive_semantic_fields(
-        title, content or title, category, source.source_weight, source.source_type,
-        [], published_at, now, llm_result
-    )
-    semantic["student_score"] = max(0.68, semantic["student_score"])
-
-    freshness_score = calculate_freshness(published_at, now)
+        return {"ready_document": cached_with_freshness(cached, published_at, now)}
 
     return {
         "id": f"{source.id}-{digest}",
         "kind": "notice",
+        "source_id": source.id,
         "title": title,
         "url": url,
         "source": source.name,
         "source_domain": urlparse(source.base_url).netloc,
         "source_type": normalize_source_type(source.source_type),
-        "category": semantic["category"],
-        "domain": semantic["domain"],
-        "intent": semantic["intent"],
-        "lifecycle": semantic["lifecycle"],
-        "evidence": semantic["evidence"],
-        "confidence": semantic["confidence"],
-        "sub_category": semantic["sub_category"],
-        "deadline": semantic["deadline"],
-        "action_required": semantic["action_required"],
-        "action_type": semantic["action_type"],
-        "action_summary": semantic["action_summary"],
-        "required_materials": semantic["required_materials"],
-        "sensitive": semantic["sensitive"],
-        "sensitive_types": semantic["sensitive_types"],
-        "review_required": semantic["review_required"],
-        "risk_flags": semantic["risk_flags"],
         "audience": list(source.audience),
         "published_at": published_at,
-        "content": semantic["content"],
-        "summary": semantic["summary"],
-        "attachments": semantic["attachments"],
-        "student_score": semantic["student_score"],
-        "freshness_score": freshness_score,
-        "importance_score": semantic["importance_score"],
+        "content": content or title,
+        "attachments": [],
+        "default_category": category,
         "source_weight": source.source_weight,
-        "tags": semantic["tags"],
         "hash": digest,
         "cache_key": cache_key,
-        "llm_schema_version": active_llm_schema_version(),
-        "llm": semantic["llm"],
+        "lifecycle_kind": "notice",
+        "min_student_score": 0.68,
     }
 
 
 def crawl_job_source(source: SourceConfig, now: datetime) -> list[dict[str, Any]]:
     documents: list[dict[str, Any]] = []
+    prepared: list[dict[str, Any]] = []
 
     meeting_body = {
         "current": 1,
@@ -800,9 +1014,12 @@ def crawl_job_source(source: SourceConfig, now: datetime) -> list[dict[str, Any]
         ]))
         external_id = str(item.get("zphid", ""))
         url = f"https://njupt.91job.org.cn/sub-station/recruitmentDetail?zphid={external_id}&xxdm={JOB_STATION_CODE}"
-        doc = build_job_document(source, external_id, title, url, start_time[:10] or None, content, "就业", now)
-        if doc:
-            documents.append(doc)
+        entry = prepare_job_entry(source, external_id, title, url, start_time[:10] or None, content, "就业", now)
+        if entry:
+            if entry.get("ready_document"):
+                documents.append(entry["ready_document"])
+            else:
+                prepared.append(entry)
 
     lecture_body = {
         "current": 1,
@@ -832,10 +1049,16 @@ def crawl_job_source(source: SourceConfig, now: datetime) -> list[dict[str, Any]
         ]))
         external_id = str(item.get("xjhid", ""))
         url = f"https://njupt.91job.org.cn/sub-station/lectureDetail?xjhid={external_id}&xxdm={JOB_STATION_CODE}"
-        doc = build_job_document(source, external_id, title, url, date or None, content, "就业", now)
-        if doc:
-            documents.append(doc)
+        entry = prepare_job_entry(source, external_id, title, url, date or None, content, "就业", now)
+        if entry:
+            if entry.get("ready_document"):
+                documents.append(entry["ready_document"])
+            else:
+                prepared.append(entry)
 
+    llm_results = analyze_prepared_documents(prepared, now)
+    for entry in prepared:
+        documents.append(build_search_document_from_prepared(entry, llm_results.get(str(entry["cache_key"])), now))
     return documents[:MAX_DOCS_PER_SOURCE]
 
 
@@ -954,71 +1177,44 @@ def normalize_markdown_text(text: str) -> str:
     return clean_text(without_markup)[:4000]
 
 
-def build_github_document(
+def prepare_github_entry(
     source: GitHubSourceConfig,
     branch: str,
     path: str,
     text: str,
     repo_updated_at: str | None,
+    now: datetime,
 ) -> dict[str, Any] | None:
     title = f"{source.label} · {extract_markdown_title(path, text)}"
     content = normalize_markdown_text(text) or title
     digest = document_hash("github", source.repo, branch, path, content)
     published_at = repo_updated_at[:10] if repo_updated_at else None
-    now = get_beijing_time()
-
-    cache_key = llm_cache_key(f"github:{source.repo}", f"https://github.com/{source.repo}/{path}", content, [])
+    url = f"https://github.com/{source.repo}/{path}"
+    cache_key = llm_cache_key(f"github:{source.repo}", url, content, [])
     cached = _DOC_CACHE.get(cache_key) or _DOC_CACHE.get(digest)
     if cache_is_current(cached):
-        return cached_with_freshness(cached, published_at, now)
-
-    llm_result = analyze_with_runtime_llm(title, content, "github.com")
-    semantic = derive_semantic_fields(
-        title, content, source.category, source.source_weight, "github_resource",
-        [], published_at, now, llm_result
-    )
-    semantic["student_score"] = max(0.55, semantic["student_score"])
-    if "GitHub资料" not in semantic["tags"]:
-        semantic["tags"].append("GitHub资料")
+        return {"ready_document": cached_with_freshness(cached, published_at, now)}
 
     return {
         "id": f"github-{source.repo.replace('/', '-')}-{digest}",
         "kind": "resource",
+        "source_id": f"github:{source.repo}",
         "title": title,
         "url": f"https://github.com/{source.repo}/blob/{quote(branch, safe='')}/{quote(path, safe='/')}",
         "source": source.label,
         "source_domain": "github.com",
         "source_type": "github_resource",
-        "category": semantic["category"],
-        "domain": semantic["domain"],
-        "intent": semantic["intent"],
-        "lifecycle": infer_lifecycle(published_at, semantic["deadline"], now, "resource"),
-        "evidence": semantic["evidence"],
-        "confidence": semantic["confidence"],
-        "sub_category": semantic["sub_category"],
-        "deadline": semantic["deadline"],
-        "action_required": semantic["action_required"],
-        "action_type": semantic["action_type"],
-        "action_summary": semantic["action_summary"],
-        "required_materials": semantic["required_materials"],
-        "sensitive": semantic["sensitive"],
-        "sensitive_types": semantic["sensitive_types"],
-        "review_required": semantic["review_required"],
-        "risk_flags": semantic["risk_flags"],
         "audience": list(source.audience),
         "published_at": published_at,
-        "content": semantic["content"],
-        "summary": semantic["summary"],
-        "attachments": semantic["attachments"],
-        "student_score": semantic["student_score"],
-        "freshness_score": calculate_freshness(published_at, now),
-        "importance_score": semantic["importance_score"],
+        "content": content,
+        "attachments": [],
+        "default_category": source.category,
         "source_weight": source.source_weight,
-        "tags": semantic["tags"],
         "hash": digest,
         "cache_key": cache_key,
-        "llm_schema_version": active_llm_schema_version(),
-        "llm": semantic["llm"],
+        "lifecycle_kind": "resource",
+        "min_student_score": 0.55,
+        "extra_tags": ["GitHub资料"],
     }
 
 
@@ -1045,13 +1241,21 @@ def crawl_github_resource_source(source: GitHubSourceConfig, now: datetime) -> t
         selected_files = select_github_files(source, branch, token)
 
         documents: list[dict[str, Any]] = []
+        prepared: list[dict[str, Any]] = []
         for file_entry in selected_files:
             path = str(file_entry["path"])
             text = fetch_github_file_text(source.repo, branch, path, token)
             if clean_text(text):
-                doc = build_github_document(source, branch, path, text, updated_at)
-                if doc:
-                    documents.append(doc)
+                entry = prepare_github_entry(source, branch, path, text, updated_at, now)
+                if entry:
+                    if entry.get("ready_document"):
+                        documents.append(entry["ready_document"])
+                    else:
+                        prepared.append(entry)
+
+        llm_results = analyze_prepared_documents(prepared, now)
+        for entry in prepared:
+            documents.append(build_search_document_from_prepared(entry, llm_results.get(str(entry["cache_key"])), now))
 
         manifest_entry["candidates"] = len(selected_files)
         manifest_entry["documents"] = len(documents)
@@ -1093,8 +1297,19 @@ def crawl_source(source: SourceConfig, now: datetime) -> tuple[list[dict[str, An
         if list_errors:
             manifest_entry["list_errors"] = list_errors
         enriched: list[dict[str, Any]] = []
+        prepared: list[dict[str, Any]] = []
         for candidate in candidates[:DETAIL_FETCH_LIMIT_PER_SOURCE]:
-            doc = enrich_candidate(source, candidate, now)
+            entry = prepare_notice_candidate(source, candidate, now)
+            if not entry:
+                continue
+            if entry.get("ready_document"):
+                enriched.append(entry["ready_document"])
+            else:
+                prepared.append(entry)
+
+        llm_results = analyze_prepared_documents(prepared, now)
+        for entry in prepared:
+            doc = build_search_document_from_prepared(entry, llm_results.get(str(entry["cache_key"])), now)
             if doc:
                 enriched.append(doc)
 
@@ -1178,8 +1393,12 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Build the njupt-search campus search index.")
     parser.add_argument("--force-llm", action="store_true", help="Ignore cached LLM enrichments and reprocess documents.")
     parser.add_argument("--llm-schema-version", default=LLM_SCHEMA_VERSION, help="Override the LLM schema/cache version.")
+    parser.add_argument("--llm-provider", choices=["auto", "deepseek", "gemini"], default="auto", help="LLM provider preference. auto prefers DeepSeek, then Gemini.")
+    parser.add_argument("--llm-batch-size", type=int, default=LLM_BATCH_MAX_DOCS, help="Maximum documents per LLM batch.")
+    parser.add_argument("--llm-batch-max-chars", type=int, default=LLM_BATCH_MAX_CHARS, help="Maximum approximate characters per LLM batch.")
+    parser.add_argument("--llm-batch-max-output-tokens", type=int, default=LLM_BATCH_MAX_OUTPUT_TOKENS, help="Maximum output tokens for one LLM batch.")
     parser.add_argument("--source", action="append", default=[], help="Only crawl the given source id. Can be repeated.")
-    parser.add_argument("--limit", type=int, default=None, help="Maximum number of LLM calls in this run.")
+    parser.add_argument("--limit", type=int, default=None, help="Maximum number of documents to send to LLM in this run.")
     parser.add_argument("--dry-run", action="store_true", help="Run crawling/enrichment without writing index files.")
     parser.add_argument("--no-github", action="store_true", help="Skip GitHub resource sources.")
     parser.add_argument("--no-llm", action="store_true", help="Disable LLM enrichment and use rule fallbacks only.")
@@ -1196,8 +1415,13 @@ def main() -> None:
         "llm_limit": args.limit,
         "dry_run": bool(args.dry_run),
         "no_github": bool(args.no_github),
+        "llm_provider": str(args.llm_provider or "auto"),
+        "llm_batch_size": max(1, int(args.llm_batch_size or LLM_BATCH_MAX_DOCS)),
+        "llm_batch_max_chars": max(2000, int(args.llm_batch_max_chars or LLM_BATCH_MAX_CHARS)),
+        "llm_batch_max_output_tokens": max(1024, int(args.llm_batch_max_output_tokens or LLM_BATCH_MAX_OUTPUT_TOKENS)),
     })
     load_document_cache()
+    load_llm_cache()
     os.makedirs(INDEX_DIR, exist_ok=True)
     now = get_beijing_time()
     all_documents: list[dict[str, Any]] = []
@@ -1236,6 +1460,10 @@ def main() -> None:
         "strategy": "phase3-source-registry-multiaxis-student-radar",
         "llm_schema_version": active_llm_schema_version(),
         "llm_enabled": runtime_llm_enabled(),
+        "llm_provider": runtime_llm_provider_name(),
+        "llm_model": runtime_llm_model_name(),
+        "llm_batch_size": int(_RUN_CONFIG["llm_batch_size"]),
+        "llm_batch_max_chars": int(_RUN_CONFIG["llm_batch_max_chars"]),
         "llm_stats": dict(_RUN_STATS),
         "source_count": len(source_entries),
         "sources": source_entries,
@@ -1245,6 +1473,8 @@ def main() -> None:
         print(json.dumps({
             "generated_documents": len(all_documents),
             "source_count": len(source_entries),
+            "llm_provider": runtime_llm_provider_name(),
+            "llm_model": runtime_llm_model_name(),
             "llm_stats": _RUN_STATS,
             "sources": source_entries,
         }, ensure_ascii=False, indent=2))
@@ -1252,8 +1482,9 @@ def main() -> None:
 
     docs_changed = write_json_if_changed(DOCUMENTS_PATH, all_documents)
     manifest_changed = write_json_if_changed(MANIFEST_PATH, manifest)
+    llm_cache_changed = save_llm_cache(now)
     print(f"Generated {len(all_documents)} search documents")
-    print(f"documents.json changed: {docs_changed}; manifest.json changed: {manifest_changed}")
+    print(f"documents.json changed: {docs_changed}; manifest.json changed: {manifest_changed}; LLM cache changed: {llm_cache_changed}")
 
 
 if __name__ == "__main__":

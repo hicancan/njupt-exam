@@ -142,6 +142,7 @@ const SearchAttachmentSchema = z.object({
 
 const SearchDocumentLLMSchema = z.object({
     used: z.boolean().optional(),
+    provider: z.string().nullable().optional(),
     model: z.string().nullable().optional(),
     prompt_version: z.string().optional(),
     confidence: z.number().nullable().optional(),
@@ -226,6 +227,10 @@ const SearchManifestSchema = z.object({
     strategy: z.string().min(1),
     llm_schema_version: z.string().optional(),
     llm_enabled: z.boolean().optional(),
+    llm_provider: z.string().optional(),
+    llm_model: z.string().nullable().optional(),
+    llm_batch_size: z.number().optional(),
+    llm_batch_max_chars: z.number().optional(),
     sources: z.array(SearchManifestSourceSchema)
 }).passthrough();
 

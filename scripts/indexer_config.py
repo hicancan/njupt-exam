@@ -16,6 +16,7 @@ DOCUMENTS_PATH = os.path.join(INDEX_DIR, "documents.json")
 MANIFEST_PATH = os.path.join(INDEX_DIR, "manifest.json")
 CAMPUS_SOURCE_CONFIG_PATH = os.path.join(BASE_DIR, "config", "campus_sources.json")
 GITHUB_SOURCE_CONFIG_PATH = os.path.join(BASE_DIR, "config", "github_search_sources.json")
+LLM_CACHE_PATH = os.path.join(BASE_DIR, "cache", "search_llm_cache.json")
 
 BEIJING_TZ = timezone(timedelta(hours=8))
 HEADERS = {
@@ -33,6 +34,9 @@ MIN_STUDENT_SCORE = 0.55
 GITHUB_TOKEN_ENV = "NJUPT_SEARCH_GITHUB_TOKEN"
 
 GEMINI_API_KEYS = os.environ.get("GEMINI_API_KEYS") or os.environ.get("GEMINI_API_KEY", "")
+DEEPSEEK_API_KEY = os.environ.get("DEEPSEEK_API_KEY", "")
+DEEPSEEK_MODEL = os.environ.get("DEEPSEEK_MODEL", "deepseek-v4-flash")
+DEEPSEEK_API_BASE = os.environ.get("DEEPSEEK_API_BASE", "https://api.deepseek.com").rstrip("/")
 GITHUB_API_BASE = "https://api.github.com"
 GITHUB_FILE_SIZE_LIMIT_BYTES = 250_000
 JOB_API_BASE = "https://njupt.91job.org.cn/web/wsjysc/lbxq"

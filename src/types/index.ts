@@ -108,6 +108,7 @@ export interface SearchAttachment {
 
 export interface SearchDocumentLLMMetadata {
     used?: boolean;
+    provider?: string | null;
     model?: string | null;
     prompt_version?: string;
     confidence?: number | null;
@@ -182,6 +183,10 @@ export interface SearchManifest {
     strategy: string;
     llm_schema_version?: string;
     llm_enabled?: boolean;
+    llm_provider?: string;
+    llm_model?: string | null;
+    llm_batch_size?: number;
+    llm_batch_max_chars?: number;
 }
 
 export type SearchMode = 'EMPTY' | 'NOT_FOUND' | 'LIST' | 'DETAIL';

@@ -5,7 +5,7 @@ from datetime import datetime
 from urllib.parse import urlparse
 
 from indexer_config import BASE_DIR, CAMPUS_SOURCE_CONFIG_PATH, DOCUMENTS_PATH, MANIFEST_PATH
-from llm_scorer import LLMResult
+from llm_scorer import BatchLLMResult, LLMResult
 from semantic_model import SEARCH_DOMAINS, SEARCH_INTENTS, SEARCH_LIFECYCLES, SEARCH_SOURCE_TYPES
 
 
@@ -76,7 +76,7 @@ def validate_campus_sources() -> None:
 
 
 def validate_llm_fixture() -> None:
-    LLMResult.model_validate({
+    fixture = {
         "is_student_facing": True,
         "student_relevance": 0.92,
         "audience": ["本科生"],
@@ -99,7 +99,9 @@ def validate_llm_fixture() -> None:
         "evidence": ["需在截止前提交申请材料。"],
         "confidence": 0.86,
         "review_required": False,
-    })
+    }
+    LLMResult.model_validate(fixture)
+    BatchLLMResult.model_validate({"results": [{"id": "fixture-1", **fixture}]})
 
 
 def validate_documents() -> None:

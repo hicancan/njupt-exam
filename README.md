@@ -120,6 +120,7 @@ uv run python scripts\update_search_index.py
 ```powershell
 uv run python scripts\update_search_index.py --dry-run --no-llm
 uv run python scripts\update_search_index.py --source jwc --force-llm --limit 20
+uv run python scripts\update_search_index.py --llm-provider deepseek --llm-batch-size 32
 uv run python scripts\update_search_index.py --no-github
 ```
 
@@ -137,15 +138,26 @@ uv run python scripts\audit_njupt_sources.py
 
 ### LLM 增强清洗
 
-校园搜索索引支持可选的离线 LLM 清洗。未配置 Key 时会自动回退到规则分类；配置后只在索引构建阶段调用，不会在用户搜索时实时调用模型。
+校园搜索索引支持可选的离线 LLM 清洗。未配置 Key 时会自动回退到规则分类；配置后只在索引构建阶段调用，不会在用户搜索时实时调用模型。默认 provider 为 `auto`：优先使用 DeepSeek V4 Flash，未配置时回退到 Gemini。
 
 可选环境变量：
 
 ```powershell
+$env:DEEPSEEK_API_KEY="..."
+$env:DEEPSEEK_MODEL="deepseek-v4-flash"
+$env:DEEPSEEK_API_BASE="https://api.deepseek.com"
 $env:GEMINI_API_KEYS="key1,key2,key3"
+$env:LLM_BATCH_MAX_DOCS="32"
+$env:LLM_BATCH_MAX_CHARS="250000"
 ```
 
-LLM 清洗会写入二级分类、学生相关性、行动事项、截止时间、材料清单、学生视角摘要、附件角色、敏感信息标记、复核标记和 evidence。索引脚本同时包含 `llm_schema_version`、受限页面识别、Python 侧 Pydantic 校验、可重跑参数和规则兜底，避免旧缓存或格式漂移污染线上 `documents.json`。
+LLM 清洗会写入二级分类、学生相关性、行动事项、截止时间、材料清单、学生视角摘要、附件角色、敏感信息标记、复核标记和 evidence。索引脚本同时包含 `llm_schema_version`、受限页面识别、Python 侧 Pydantic 校验、批量 JSON 输出校验、候选级持久缓存、可重跑参数和规则兜底，避免旧缓存或格式漂移污染线上 `documents.json`。
+
+候选级 LLM 缓存位于 `cache/search_llm_cache.json`，只保存 URL、hash、标题和结构化结果，不保存正文。常规更新复用缓存；需要全量重跑时使用：
+
+```powershell
+uv run python scripts\update_search_index.py --force-llm --llm-provider deepseek
+```
 
 CI 中如需读取 GitHub 资料仓库，请配置仓库级 Actions secret：
 
@@ -160,6 +172,7 @@ graph LR
     A["config/campus_sources.json"] --> B["update_search_index.py"]
     C1["南邮公开站点"] --> B
     X["GitHub 资料仓库"] --> B
+    L["DeepSeek/Gemini 离线批量理解"] --> B
     C["教务处 Excel"] --> D["analyze_and_update.py"]
     B --> E["public/index/documents.json"]
     D --> F["public/data/all_exams.json"]
