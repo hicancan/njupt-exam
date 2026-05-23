@@ -1,18 +1,18 @@
 {
-  "generated_at": "2026-05-23T01:38:02.224630+08:00",
-  "total_documents": 205,
+  "generated_at": "2026-05-23T09:43:08.581131+08:00",
+  "total_documents": 210,
   "strategy": "phase3-source-registry-multiaxis-student-radar",
   "llm_schema_version": "llm-v4",
   "llm_enabled": true,
   "llm_stats": {
-    "cache_reused": 170,
-    "llm_reused": 170,
-    "llm_attempted": 245,
-    "llm_reprocessed": 245,
-    "llm_failed": 0,
-    "llm_fallback": 0,
+    "cache_reused": 198,
+    "llm_reused": 198,
+    "llm_attempted": 193,
+    "llm_reprocessed": 192,
+    "llm_failed": 1,
+    "llm_fallback": 1,
     "llm_skipped_by_limit": 0,
-    "restricted": 0
+    "restricted": 26
   },
   "source_count": 62,
   "sources": [
@@ -25,10 +25,10 @@
       "priority": 1.0,
       "requires_devtools_audit": true,
       "status": "ok",
-      "documents": 13,
-      "last_fetch_at": "2026-05-23T01:38:02.224630+08:00",
+      "documents": 12,
+      "last_fetch_at": "2026-05-23T09:43:08.581131+08:00",
       "candidates": 14,
-      "filtered_out": 1
+      "filtered_out": 2
     },
     {
       "id": "xsc",
@@ -40,7 +40,7 @@
       "requires_devtools_audit": true,
       "status": "ok",
       "documents": 4,
-      "last_fetch_at": "2026-05-23T01:38:02.224630+08:00",
+      "last_fetch_at": "2026-05-23T09:43:08.581131+08:00",
       "candidates": 14,
       "filtered_out": 10
     },
@@ -54,7 +54,7 @@
       "requires_devtools_audit": true,
       "status": "ok",
       "documents": 10,
-      "last_fetch_at": "2026-05-23T01:38:02.224630+08:00",
+      "last_fetch_at": "2026-05-23T09:43:08.581131+08:00",
       "candidates": 14,
       "filtered_out": 4
     },
@@ -68,7 +68,7 @@
       "requires_devtools_audit": true,
       "status": "ok",
       "documents": 6,
-      "last_fetch_at": "2026-05-23T01:38:02.224630+08:00",
+      "last_fetch_at": "2026-05-23T09:43:08.581131+08:00",
       "candidates": 14,
       "filtered_out": 8
     },
@@ -82,7 +82,7 @@
       "requires_devtools_audit": true,
       "status": "ok",
       "documents": 7,
-      "last_fetch_at": "2026-05-23T01:38:02.224630+08:00",
+      "last_fetch_at": "2026-05-23T09:43:08.581131+08:00",
       "candidates": 14,
       "filtered_out": 7
     },
@@ -96,7 +96,7 @@
       "requires_devtools_audit": true,
       "status": "ok",
       "documents": 10,
-      "last_fetch_at": "2026-05-23T01:38:02.224630+08:00",
+      "last_fetch_at": "2026-05-23T09:43:08.581131+08:00",
       "candidates": 13,
       "filtered_out": 3
     },
@@ -110,7 +110,7 @@
       "requires_devtools_audit": false,
       "status": "ok",
       "documents": 18,
-      "last_fetch_at": "2026-05-23T01:38:02.224630+08:00"
+      "last_fetch_at": "2026-05-23T09:43:08.581131+08:00"
     },
     {
       "id": "lib",
@@ -122,7 +122,7 @@
       "requires_devtools_audit": true,
       "status": "ok",
       "documents": 11,
-      "last_fetch_at": "2026-05-23T01:38:02.224630+08:00",
+      "last_fetch_at": "2026-05-23T09:43:08.581131+08:00",
       "candidates": 14,
       "filtered_out": 3
     },
@@ -136,7 +136,7 @@
       "requires_devtools_audit": true,
       "status": "ok",
       "documents": 2,
-      "last_fetch_at": "2026-05-23T01:38:02.224630+08:00",
+      "last_fetch_at": "2026-05-23T09:43:08.581131+08:00",
       "candidates": 11,
       "filtered_out": 9
     },
@@ -150,7 +150,7 @@
       "requires_devtools_audit": true,
       "status": "ok",
       "documents": 5,
-      "last_fetch_at": "2026-05-23T01:38:02.224630+08:00",
+      "last_fetch_at": "2026-05-23T09:43:08.581131+08:00",
       "candidates": 12,
       "filtered_out": 7
     },
@@ -164,7 +164,7 @@
       "requires_devtools_audit": true,
       "status": "ok",
       "documents": 7,
-      "last_fetch_at": "2026-05-23T01:38:02.224630+08:00",
+      "last_fetch_at": "2026-05-23T09:43:08.581131+08:00",
       "candidates": 14,
       "filtered_out": 7
     },
@@ -178,7 +178,7 @@
       "requires_devtools_audit": true,
       "status": "ok",
       "documents": 2,
-      "last_fetch_at": "2026-05-23T01:38:02.224630+08:00",
+      "last_fetch_at": "2026-05-23T09:43:08.581131+08:00",
       "candidates": 14,
       "filtered_out": 12
     },
@@ -192,7 +192,7 @@
       "requires_devtools_audit": true,
       "status": "ok",
       "documents": 4,
-      "last_fetch_at": "2026-05-23T01:38:02.224630+08:00",
+      "last_fetch_at": "2026-05-23T09:43:08.581131+08:00",
       "candidates": 14,
       "filtered_out": 10
     },
@@ -206,7 +206,7 @@
       "requires_devtools_audit": true,
       "status": "ok",
       "documents": 0,
-      "last_fetch_at": "2026-05-23T01:38:02.224630+08:00",
+      "last_fetch_at": "2026-05-23T09:43:08.581131+08:00",
       "candidates": 2,
       "filtered_out": 2
     },
@@ -220,7 +220,7 @@
       "requires_devtools_audit": true,
       "status": "ok",
       "documents": 7,
-      "last_fetch_at": "2026-05-23T01:38:02.224630+08:00",
+      "last_fetch_at": "2026-05-23T09:43:08.581131+08:00",
       "candidates": 14,
       "filtered_out": 7
     },
@@ -234,7 +234,7 @@
       "requires_devtools_audit": true,
       "status": "ok",
       "documents": 3,
-      "last_fetch_at": "2026-05-23T01:38:02.224630+08:00",
+      "last_fetch_at": "2026-05-23T09:43:08.581131+08:00",
       "candidates": 4,
       "filtered_out": 1
     },
@@ -248,7 +248,7 @@
       "requires_devtools_audit": true,
       "status": "ok",
       "documents": 3,
-      "last_fetch_at": "2026-05-23T01:38:02.224630+08:00",
+      "last_fetch_at": "2026-05-23T09:43:08.581131+08:00",
       "candidates": 14,
       "filtered_out": 11
     },
@@ -262,7 +262,7 @@
       "requires_devtools_audit": true,
       "status": "ok",
       "documents": 5,
-      "last_fetch_at": "2026-05-23T01:38:02.224630+08:00",
+      "last_fetch_at": "2026-05-23T09:43:08.581131+08:00",
       "candidates": 14,
       "filtered_out": 9
     },
@@ -276,7 +276,7 @@
       "requires_devtools_audit": true,
       "status": "ok",
       "documents": 5,
-      "last_fetch_at": "2026-05-23T01:38:02.224630+08:00",
+      "last_fetch_at": "2026-05-23T09:43:08.581131+08:00",
       "candidates": 14,
       "filtered_out": 9
     },
@@ -289,10 +289,10 @@
       "priority": 0.72,
       "requires_devtools_audit": true,
       "status": "ok",
-      "documents": 4,
-      "last_fetch_at": "2026-05-23T01:38:02.224630+08:00",
+      "documents": 5,
+      "last_fetch_at": "2026-05-23T09:43:08.581131+08:00",
       "candidates": 14,
-      "filtered_out": 10
+      "filtered_out": 9
     },
     {
       "id": "ai",
@@ -303,10 +303,10 @@
       "priority": 0.72,
       "requires_devtools_audit": true,
       "status": "ok",
-      "documents": 4,
-      "last_fetch_at": "2026-05-23T01:38:02.224630+08:00",
+      "documents": 10,
+      "last_fetch_at": "2026-05-23T09:43:08.581131+08:00",
       "candidates": 14,
-      "filtered_out": 10
+      "filtered_out": 4
     },
     {
       "id": "ciot",
@@ -318,7 +318,7 @@
       "requires_devtools_audit": true,
       "status": "ok",
       "documents": 4,
-      "last_fetch_at": "2026-05-23T01:38:02.224630+08:00",
+      "last_fetch_at": "2026-05-23T09:43:08.581131+08:00",
       "candidates": 14,
       "filtered_out": 10
     },
@@ -332,7 +332,7 @@
       "requires_devtools_audit": true,
       "status": "ok",
       "documents": 0,
-      "last_fetch_at": "2026-05-23T01:38:02.224630+08:00",
+      "last_fetch_at": "2026-05-23T09:43:08.581131+08:00",
       "candidates": 0,
       "filtered_out": 0
     },
@@ -346,7 +346,7 @@
       "requires_devtools_audit": true,
       "status": "ok",
       "documents": 12,
-      "last_fetch_at": "2026-05-23T01:38:02.224630+08:00",
+      "last_fetch_at": "2026-05-23T09:43:08.581131+08:00",
       "candidates": 13,
       "filtered_out": 1
     },
@@ -360,7 +360,7 @@
       "requires_devtools_audit": true,
       "status": "ok",
       "documents": 9,
-      "last_fetch_at": "2026-05-23T01:38:02.224630+08:00",
+      "last_fetch_at": "2026-05-23T09:43:08.581131+08:00",
       "candidates": 14,
       "filtered_out": 5
     },
@@ -374,7 +374,7 @@
       "requires_devtools_audit": true,
       "status": "ok",
       "documents": 6,
-      "last_fetch_at": "2026-05-23T01:38:02.224630+08:00",
+      "last_fetch_at": "2026-05-23T09:43:08.581131+08:00",
       "candidates": 14,
       "filtered_out": 8
     },
@@ -387,10 +387,10 @@
       "priority": 0.54,
       "requires_devtools_audit": true,
       "status": "ok",
-      "documents": 4,
-      "last_fetch_at": "2026-05-23T01:38:02.224630+08:00",
+      "documents": 3,
+      "last_fetch_at": "2026-05-23T09:43:08.581131+08:00",
       "candidates": 14,
-      "filtered_out": 10
+      "filtered_out": 11
     },
     {
       "id": "skc",
@@ -402,7 +402,7 @@
       "requires_devtools_audit": true,
       "status": "ok",
       "documents": 2,
-      "last_fetch_at": "2026-05-23T01:38:02.224630+08:00",
+      "last_fetch_at": "2026-05-23T09:43:08.581131+08:00",
       "candidates": 13,
       "filtered_out": 11
     },
@@ -416,9 +416,9 @@
       "requires_devtools_audit": true,
       "status": "ok",
       "documents": 0,
-      "last_fetch_at": "2026-05-23T01:38:02.224630+08:00",
-      "candidates": 8,
-      "filtered_out": 8
+      "last_fetch_at": "2026-05-23T09:43:08.581131+08:00",
+      "candidates": 10,
+      "filtered_out": 10
     },
     {
       "id": "cxy",
@@ -430,7 +430,7 @@
       "requires_devtools_audit": true,
       "status": "ok",
       "documents": 0,
-      "last_fetch_at": "2026-05-23T01:38:02.224630+08:00",
+      "last_fetch_at": "2026-05-23T09:43:08.581131+08:00",
       "candidates": 14,
       "filtered_out": 14
     },
@@ -441,7 +441,7 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 2,
-      "last_fetch_at": "2026-05-23T01:38:02.224630+08:00",
+      "last_fetch_at": "2026-05-23T09:43:08.581131+08:00",
       "candidates": 2
     },
     {
@@ -451,7 +451,7 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-23T01:38:02.224630+08:00",
+      "last_fetch_at": "2026-05-23T09:43:08.581131+08:00",
       "candidates": 1
     },
     {
@@ -461,7 +461,7 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 5,
-      "last_fetch_at": "2026-05-23T01:38:02.224630+08:00",
+      "last_fetch_at": "2026-05-23T09:43:08.581131+08:00",
       "candidates": 5
     },
     {
@@ -471,7 +471,7 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-23T01:38:02.224630+08:00",
+      "last_fetch_at": "2026-05-23T09:43:08.581131+08:00",
       "candidates": 1
     },
     {
@@ -481,7 +481,7 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-23T01:38:02.224630+08:00",
+      "last_fetch_at": "2026-05-23T09:43:08.581131+08:00",
       "candidates": 1
     },
     {
@@ -491,7 +491,7 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-23T01:38:02.224630+08:00",
+      "last_fetch_at": "2026-05-23T09:43:08.581131+08:00",
       "candidates": 1
     },
     {
@@ -501,7 +501,7 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-23T01:38:02.224630+08:00",
+      "last_fetch_at": "2026-05-23T09:43:08.581131+08:00",
       "candidates": 1
     },
     {
@@ -511,7 +511,7 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-23T01:38:02.224630+08:00",
+      "last_fetch_at": "2026-05-23T09:43:08.581131+08:00",
       "candidates": 1
     },
     {
@@ -521,7 +521,7 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-23T01:38:02.224630+08:00",
+      "last_fetch_at": "2026-05-23T09:43:08.581131+08:00",
       "candidates": 1
     },
     {
@@ -531,7 +531,7 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-23T01:38:02.224630+08:00",
+      "last_fetch_at": "2026-05-23T09:43:08.581131+08:00",
       "candidates": 1
     },
     {
@@ -541,7 +541,7 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 3,
-      "last_fetch_at": "2026-05-23T01:38:02.224630+08:00",
+      "last_fetch_at": "2026-05-23T09:43:08.581131+08:00",
       "candidates": 3
     },
     {
@@ -551,7 +551,7 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-23T01:38:02.224630+08:00",
+      "last_fetch_at": "2026-05-23T09:43:08.581131+08:00",
       "candidates": 1
     },
     {
@@ -561,7 +561,7 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-23T01:38:02.224630+08:00",
+      "last_fetch_at": "2026-05-23T09:43:08.581131+08:00",
       "candidates": 1
     },
     {
@@ -571,7 +571,7 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-23T01:38:02.224630+08:00",
+      "last_fetch_at": "2026-05-23T09:43:08.581131+08:00",
       "candidates": 1
     },
     {
@@ -581,7 +581,7 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-23T01:38:02.224630+08:00",
+      "last_fetch_at": "2026-05-23T09:43:08.581131+08:00",
       "candidates": 1
     },
     {
@@ -591,7 +591,7 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-23T01:38:02.224630+08:00",
+      "last_fetch_at": "2026-05-23T09:43:08.581131+08:00",
       "candidates": 1
     },
     {
@@ -601,7 +601,7 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-23T01:38:02.224630+08:00",
+      "last_fetch_at": "2026-05-23T09:43:08.581131+08:00",
       "candidates": 1
     },
     {
@@ -611,7 +611,7 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-23T01:38:02.224630+08:00",
+      "last_fetch_at": "2026-05-23T09:43:08.581131+08:00",
       "candidates": 1
     },
     {
@@ -621,7 +621,7 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 2,
-      "last_fetch_at": "2026-05-23T01:38:02.224630+08:00",
+      "last_fetch_at": "2026-05-23T09:43:08.581131+08:00",
       "candidates": 2
     },
     {
@@ -631,7 +631,7 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-23T01:38:02.224630+08:00",
+      "last_fetch_at": "2026-05-23T09:43:08.581131+08:00",
       "candidates": 1
     },
     {
@@ -641,7 +641,7 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-23T01:38:02.224630+08:00",
+      "last_fetch_at": "2026-05-23T09:43:08.581131+08:00",
       "candidates": 1
     },
     {
@@ -651,7 +651,7 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 2,
-      "last_fetch_at": "2026-05-23T01:38:02.224630+08:00",
+      "last_fetch_at": "2026-05-23T09:43:08.581131+08:00",
       "candidates": 2
     },
     {
@@ -661,7 +661,7 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-23T01:38:02.224630+08:00",
+      "last_fetch_at": "2026-05-23T09:43:08.581131+08:00",
       "candidates": 1
     },
     {
@@ -671,7 +671,7 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-23T01:38:02.224630+08:00",
+      "last_fetch_at": "2026-05-23T09:43:08.581131+08:00",
       "candidates": 1
     },
     {
@@ -681,7 +681,7 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-23T01:38:02.224630+08:00",
+      "last_fetch_at": "2026-05-23T09:43:08.581131+08:00",
       "candidates": 1
     },
     {
@@ -691,7 +691,7 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-23T01:38:02.224630+08:00",
+      "last_fetch_at": "2026-05-23T09:43:08.581131+08:00",
       "candidates": 1
     },
     {
@@ -701,7 +701,7 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-23T01:38:02.224630+08:00",
+      "last_fetch_at": "2026-05-23T09:43:08.581131+08:00",
       "candidates": 1
     },
     {
@@ -711,7 +711,7 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-23T01:38:02.224630+08:00",
+      "last_fetch_at": "2026-05-23T09:43:08.581131+08:00",
       "candidates": 1
     },
     {
@@ -721,7 +721,7 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-23T01:38:02.224630+08:00",
+      "last_fetch_at": "2026-05-23T09:43:08.581131+08:00",
       "candidates": 1
     },
     {
@@ -731,7 +731,7 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-23T01:38:02.224630+08:00",
+      "last_fetch_at": "2026-05-23T09:43:08.581131+08:00",
       "candidates": 1
     },
     {
@@ -741,7 +741,7 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-23T01:38:02.224630+08:00",
+      "last_fetch_at": "2026-05-23T09:43:08.581131+08:00",
       "candidates": 1
     },
     {
@@ -751,7 +751,7 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-23T01:38:02.224630+08:00",
+      "last_fetch_at": "2026-05-23T09:43:08.581131+08:00",
       "candidates": 1
     }
   ]
