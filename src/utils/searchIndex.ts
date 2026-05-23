@@ -231,6 +231,7 @@ const SearchManifestSchema = z.object({
     llm_model: z.string().nullable().optional(),
     llm_batch_size: z.number().optional(),
     llm_batch_max_chars: z.number().optional(),
+    llm_batch_max_output_tokens: z.number().optional(),
     sources: z.array(SearchManifestSourceSchema)
 }).passthrough();
 

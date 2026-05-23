@@ -207,6 +207,20 @@ def runtime_llm_model_name() -> str | None:
     return active_model_name(runtime_llm_provider()) if runtime_llm_enabled() else None
 
 
+def effective_llm_batch_size() -> int:
+    configured = int(_RUN_CONFIG["llm_batch_size"])
+    if runtime_llm_provider_name() == "gemini":
+        return min(configured, int(os.environ.get("GEMINI_BATCH_MAX_DOCS", "6")))
+    return configured
+
+
+def effective_llm_batch_max_output_tokens() -> int:
+    configured = int(_RUN_CONFIG["llm_batch_max_output_tokens"])
+    if runtime_llm_provider_name() == "gemini":
+        return min(configured, int(os.environ.get("GEMINI_BATCH_MAX_OUTPUT_TOKENS", "8192")))
+    return configured
+
+
 def source_selected(source_id: str) -> bool:
     filters = _RUN_CONFIG.get("source_filter") or set()
     return not filters or source_id in filters
@@ -713,7 +727,7 @@ def analyze_prepared_documents(prepared: list[dict[str, Any]], now: datetime) ->
     entry_by_cache_key = {str(entry["cache_key"]): entry for entry in pending}
     batches = split_llm_batches(
         payloads,
-        max_docs=int(_RUN_CONFIG["llm_batch_size"]),
+        max_docs=effective_llm_batch_size(),
         max_chars=int(_RUN_CONFIG["llm_batch_max_chars"]),
     )
 
@@ -727,7 +741,7 @@ def analyze_prepared_documents(prepared: list[dict[str, Any]], now: datetime) ->
             provider=runtime_llm_provider(),
             enabled=True,
             schema_version=active_llm_schema_version(),
-            max_output_tokens=int(_RUN_CONFIG["llm_batch_max_output_tokens"]),
+            max_output_tokens=effective_llm_batch_max_output_tokens(),
         )
         for cache_key, result in batch_results.items():
             if cache_key not in entry_by_cache_key:
@@ -1462,8 +1476,9 @@ def main() -> None:
         "llm_enabled": runtime_llm_enabled(),
         "llm_provider": runtime_llm_provider_name(),
         "llm_model": runtime_llm_model_name(),
-        "llm_batch_size": int(_RUN_CONFIG["llm_batch_size"]),
+        "llm_batch_size": effective_llm_batch_size(),
         "llm_batch_max_chars": int(_RUN_CONFIG["llm_batch_max_chars"]),
+        "llm_batch_max_output_tokens": effective_llm_batch_max_output_tokens(),
         "llm_stats": dict(_RUN_STATS),
         "source_count": len(source_entries),
         "sources": source_entries,
@@ -1475,6 +1490,7 @@ def main() -> None:
             "source_count": len(source_entries),
             "llm_provider": runtime_llm_provider_name(),
             "llm_model": runtime_llm_model_name(),
+            "llm_batch_size": effective_llm_batch_size(),
             "llm_stats": _RUN_STATS,
             "sources": source_entries,
         }, ensure_ascii=False, indent=2))

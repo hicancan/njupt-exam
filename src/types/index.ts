@@ -187,6 +187,7 @@ export interface SearchManifest {
     llm_model?: string | null;
     llm_batch_size?: number;
     llm_batch_max_chars?: number;
+    llm_batch_max_output_tokens?: number;
 }
 
 export type SearchMode = 'EMPTY' | 'NOT_FOUND' | 'LIST' | 'DETAIL';
