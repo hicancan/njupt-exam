@@ -1,51 +1,51 @@
 {
-  "generated_at": "2026-05-24T15:55:34.626004+08:00",
-  "total_documents": 224,
+  "generated_at": "2026-05-24T16:55:15.338793+08:00",
+  "total_documents": 198,
   "strategy": "hytask-rag-source-channel-taskframe-hybrid-index-v1",
   "llm_schema_version": "hytask-taskframe-v1",
-  "llm_enabled": false,
-  "llm_provider": "none",
-  "llm_model": null,
+  "llm_enabled": true,
+  "llm_provider": "deepseek",
+  "llm_model": "deepseek-v4-flash",
   "llm_batch_size": 32,
   "llm_batch_max_chars": 250000,
   "llm_batch_max_output_tokens": 60000,
   "llm_stats": {
     "cache_reused": 0,
     "llm_reused": 0,
-    "llm_attempted": 0,
-    "llm_reprocessed": 0,
-    "llm_failed": 0,
-    "llm_fallback": 295,
+    "llm_attempted": 251,
+    "llm_reprocessed": 236,
+    "llm_failed": 15,
+    "llm_fallback": 66,
     "llm_skipped_by_limit": 0,
-    "llm_batches_attempted": 0,
-    "llm_batch_docs_attempted": 0,
+    "llm_batches_attempted": 47,
+    "llm_batch_docs_attempted": 251,
     "candidate_llm_cache_reused": 0,
-    "restricted": 0
+    "restricted": 10
   },
   "source_count": 30,
   "channel_count": 30,
   "audited_channel_count": 30,
   "production_channel_count": 30,
   "failed_channel_count": 0,
-  "task_frame_count": 89,
-  "documents_with_task_frame": 89,
+  "task_frame_count": 86,
+  "documents_with_task_frame": 82,
   "evidence_coverage": {
     "audience": 1.0,
-    "action": 0.4494,
-    "deadline": 0.0562,
+    "action": 0.8023,
+    "deadline": 0.186,
     "materials": 0.0,
-    "location": 0.0,
+    "location": 0.2558,
     "sensitive": 0.0,
-    "overall": 0.2509
+    "overall": 0.374
   },
-  "review_required_count": 35,
+  "review_required_count": 51,
   "low_evidence_count": 8,
-  "restricted_count": 0,
+  "restricted_count": 2,
   "sensitive_count": 36,
   "hybrid_index": {
-    "doc_count": 224,
-    "task_frame_count": 89,
-    "avg_doc_len": 681.308
+    "doc_count": 198,
+    "task_frame_count": 86,
+    "avg_doc_len": 553.1717
   },
   "sources": [
     {
@@ -72,7 +72,7 @@
       ],
       "status": "ok",
       "documents": 13,
-      "last_fetch_at": "2026-05-24T15:55:34.626004+08:00",
+      "last_fetch_at": "2026-05-24T16:55:15.338793+08:00",
       "candidates": 14,
       "filtered_out": 1
     },
@@ -99,10 +99,10 @@
         }
       ],
       "status": "ok",
-      "documents": 12,
-      "last_fetch_at": "2026-05-24T15:55:34.626004+08:00",
+      "documents": 7,
+      "last_fetch_at": "2026-05-24T16:55:15.338793+08:00",
       "candidates": 14,
-      "filtered_out": 2
+      "filtered_out": 7
     },
     {
       "id": "pg",
@@ -127,10 +127,10 @@
         }
       ],
       "status": "ok",
-      "documents": 13,
-      "last_fetch_at": "2026-05-24T15:55:34.626004+08:00",
+      "documents": 9,
+      "last_fetch_at": "2026-05-24T16:55:15.338793+08:00",
       "candidates": 14,
-      "filtered_out": 1
+      "filtered_out": 5
     },
     {
       "id": "ygb",
@@ -155,10 +155,10 @@
         }
       ],
       "status": "ok",
-      "documents": 13,
-      "last_fetch_at": "2026-05-24T15:55:34.626004+08:00",
+      "documents": 9,
+      "last_fetch_at": "2026-05-24T16:55:15.338793+08:00",
       "candidates": 14,
-      "filtered_out": 1
+      "filtered_out": 5
     },
     {
       "id": "youth",
@@ -183,10 +183,10 @@
         }
       ],
       "status": "ok",
-      "documents": 9,
-      "last_fetch_at": "2026-05-24T15:55:34.626004+08:00",
+      "documents": 7,
+      "last_fetch_at": "2026-05-24T16:55:15.338793+08:00",
       "candidates": 14,
-      "filtered_out": 5
+      "filtered_out": 7
     },
     {
       "id": "cxcy",
@@ -211,10 +211,10 @@
         }
       ],
       "status": "ok",
-      "documents": 13,
-      "last_fetch_at": "2026-05-24T15:55:34.626004+08:00",
+      "documents": 10,
+      "last_fetch_at": "2026-05-24T16:55:15.338793+08:00",
       "candidates": 13,
-      "filtered_out": 0
+      "filtered_out": 3
     },
     {
       "id": "job",
@@ -238,7 +238,7 @@
       ],
       "status": "ok",
       "documents": 18,
-      "last_fetch_at": "2026-05-24T15:55:34.626004+08:00"
+      "last_fetch_at": "2026-05-24T16:55:15.338793+08:00"
     },
     {
       "id": "lib",
@@ -263,10 +263,10 @@
         }
       ],
       "status": "ok",
-      "documents": 12,
-      "last_fetch_at": "2026-05-24T15:55:34.626004+08:00",
+      "documents": 11,
+      "last_fetch_at": "2026-05-24T16:55:15.338793+08:00",
       "candidates": 14,
-      "filtered_out": 2
+      "filtered_out": 3
     },
     {
       "id": "bwc",
@@ -291,10 +291,10 @@
         }
       ],
       "status": "ok",
-      "documents": 3,
-      "last_fetch_at": "2026-05-24T15:55:34.626004+08:00",
+      "documents": 2,
+      "last_fetch_at": "2026-05-24T16:55:15.338793+08:00",
       "candidates": 12,
-      "filtered_out": 9
+      "filtered_out": 10
     },
     {
       "id": "hqc",
@@ -319,10 +319,10 @@
         }
       ],
       "status": "ok",
-      "documents": 8,
-      "last_fetch_at": "2026-05-24T15:55:34.626004+08:00",
+      "documents": 7,
+      "last_fetch_at": "2026-05-24T16:55:15.338793+08:00",
       "candidates": 14,
-      "filtered_out": 6
+      "filtered_out": 7
     },
     {
       "id": "njupt_notice",
@@ -347,10 +347,10 @@
         }
       ],
       "status": "ok",
-      "documents": 5,
-      "last_fetch_at": "2026-05-24T15:55:34.626004+08:00",
+      "documents": 4,
+      "last_fetch_at": "2026-05-24T16:55:15.338793+08:00",
       "candidates": 14,
-      "filtered_out": 9
+      "filtered_out": 10
     },
     {
       "id": "news",
@@ -375,10 +375,10 @@
         }
       ],
       "status": "ok",
-      "documents": 10,
-      "last_fetch_at": "2026-05-24T15:55:34.626004+08:00",
+      "documents": 8,
+      "last_fetch_at": "2026-05-24T16:55:15.338793+08:00",
       "candidates": 14,
-      "filtered_out": 4
+      "filtered_out": 6
     },
     {
       "id": "xxgk",
@@ -404,7 +404,7 @@
       ],
       "status": "ok",
       "documents": 0,
-      "last_fetch_at": "2026-05-24T15:55:34.626004+08:00",
+      "last_fetch_at": "2026-05-24T16:55:15.338793+08:00",
       "candidates": 2,
       "filtered_out": 2
     },
@@ -432,7 +432,7 @@
       ],
       "status": "ok",
       "documents": 8,
-      "last_fetch_at": "2026-05-24T15:55:34.626004+08:00",
+      "last_fetch_at": "2026-05-24T16:55:15.338793+08:00",
       "candidates": 14,
       "filtered_out": 6
     },
@@ -460,7 +460,7 @@
       ],
       "status": "ok",
       "documents": 14,
-      "last_fetch_at": "2026-05-24T15:55:34.626004+08:00",
+      "last_fetch_at": "2026-05-24T16:55:15.338793+08:00",
       "candidates": 14,
       "filtered_out": 0
     },
@@ -484,15 +484,15 @@
           "documents": 0,
           "candidates": 0,
           "list_errors": [
-            "https://nic.njupt.edu.cn/: HTTPSConnectionPool(host='nic.njupt.edu.cn', port=443): Max retries exceeded with url: / (Caused by NameResolutionError(\"HTTPSConnection(host='nic.njupt.edu.cn', port=443): Failed to resolve 'nic.njupt.edu.cn' ([Errno 11001] getaddrinfo failed)\"))"
+            "https://nic.njupt.edu.cn/: HTTPSConnectionPool(host='nic.njupt.edu.cn', port=443): Max retries exceeded with url: / (Caused by NameResolutionError(\"HTTPSConnection(host='nic.njupt.edu.cn', port=443): Failed to resolve 'nic.njupt.edu.cn' ([Errno -2] Name or service not known)\"))"
           ]
         }
       ],
       "status": "ok",
       "documents": 0,
-      "last_fetch_at": "2026-05-24T15:55:34.626004+08:00",
+      "last_fetch_at": "2026-05-24T16:55:15.338793+08:00",
       "list_errors": [
-        "https://nic.njupt.edu.cn/: HTTPSConnectionPool(host='nic.njupt.edu.cn', port=443): Max retries exceeded with url: / (Caused by NameResolutionError(\"HTTPSConnection(host='nic.njupt.edu.cn', port=443): Failed to resolve 'nic.njupt.edu.cn' ([Errno 11001] getaddrinfo failed)\"))"
+        "https://nic.njupt.edu.cn/: HTTPSConnectionPool(host='nic.njupt.edu.cn', port=443): Max retries exceeded with url: / (Caused by NameResolutionError(\"HTTPSConnection(host='nic.njupt.edu.cn', port=443): Failed to resolve 'nic.njupt.edu.cn' ([Errno -2] Name or service not known)\"))"
       ],
       "candidates": 0,
       "filtered_out": 0
@@ -520,10 +520,10 @@
         }
       ],
       "status": "ok",
-      "documents": 0,
-      "last_fetch_at": "2026-05-24T15:55:34.626004+08:00",
+      "documents": 3,
+      "last_fetch_at": "2026-05-24T16:55:15.338793+08:00",
       "candidates": 13,
-      "filtered_out": 13
+      "filtered_out": 10
     },
     {
       "id": "archives",
@@ -548,10 +548,10 @@
         }
       ],
       "status": "ok",
-      "documents": 5,
-      "last_fetch_at": "2026-05-24T15:55:34.626004+08:00",
+      "documents": 3,
+      "last_fetch_at": "2026-05-24T16:55:15.338793+08:00",
       "candidates": 14,
-      "filtered_out": 9
+      "filtered_out": 11
     },
     {
       "id": "pe",
@@ -576,10 +576,10 @@
         }
       ],
       "status": "ok",
-      "documents": 4,
-      "last_fetch_at": "2026-05-24T15:55:34.626004+08:00",
+      "documents": 6,
+      "last_fetch_at": "2026-05-24T16:55:15.338793+08:00",
       "candidates": 14,
-      "filtered_out": 10
+      "filtered_out": 8
     },
     {
       "id": "cs",
@@ -604,10 +604,10 @@
         }
       ],
       "status": "ok",
-      "documents": 4,
-      "last_fetch_at": "2026-05-24T15:55:34.626004+08:00",
+      "documents": 3,
+      "last_fetch_at": "2026-05-24T16:55:15.338793+08:00",
       "candidates": 4,
-      "filtered_out": 0
+      "filtered_out": 1
     },
     {
       "id": "scie",
@@ -633,7 +633,7 @@
       ],
       "status": "ok",
       "documents": 0,
-      "last_fetch_at": "2026-05-24T15:55:34.626004+08:00",
+      "last_fetch_at": "2026-05-24T16:55:15.338793+08:00",
       "candidates": 0,
       "filtered_out": 0
     },
@@ -661,7 +661,7 @@
       ],
       "status": "ok",
       "documents": 0,
-      "last_fetch_at": "2026-05-24T15:55:34.626004+08:00",
+      "last_fetch_at": "2026-05-24T16:55:15.338793+08:00",
       "candidates": 0,
       "filtered_out": 0
     },
@@ -689,7 +689,7 @@
       ],
       "status": "ok",
       "documents": 0,
-      "last_fetch_at": "2026-05-24T15:55:34.626004+08:00",
+      "last_fetch_at": "2026-05-24T16:55:15.338793+08:00",
       "candidates": 0,
       "filtered_out": 0
     },
@@ -717,7 +717,7 @@
       ],
       "status": "ok",
       "documents": 0,
-      "last_fetch_at": "2026-05-24T15:55:34.626004+08:00",
+      "last_fetch_at": "2026-05-24T16:55:15.338793+08:00",
       "candidates": 0,
       "filtered_out": 0
     },
@@ -745,7 +745,7 @@
       ],
       "status": "ok",
       "documents": 0,
-      "last_fetch_at": "2026-05-24T15:55:34.626004+08:00",
+      "last_fetch_at": "2026-05-24T16:55:15.338793+08:00",
       "candidates": 0,
       "filtered_out": 0
     },
@@ -773,7 +773,7 @@
       ],
       "status": "ok",
       "documents": 0,
-      "last_fetch_at": "2026-05-24T15:55:34.626004+08:00",
+      "last_fetch_at": "2026-05-24T16:55:15.338793+08:00",
       "candidates": 0,
       "filtered_out": 0
     },
@@ -801,7 +801,7 @@
       ],
       "status": "ok",
       "documents": 0,
-      "last_fetch_at": "2026-05-24T15:55:34.626004+08:00",
+      "last_fetch_at": "2026-05-24T16:55:15.338793+08:00",
       "candidates": 0,
       "filtered_out": 0
     },
@@ -828,10 +828,10 @@
         }
       ],
       "status": "ok",
-      "documents": 11,
-      "last_fetch_at": "2026-05-24T15:55:34.626004+08:00",
+      "documents": 10,
+      "last_fetch_at": "2026-05-24T16:55:15.338793+08:00",
       "candidates": 13,
-      "filtered_out": 2
+      "filtered_out": 3
     },
     {
       "id": "bc",
@@ -856,10 +856,10 @@
         }
       ],
       "status": "ok",
-      "documents": 14,
-      "last_fetch_at": "2026-05-24T15:55:34.626004+08:00",
+      "documents": 8,
+      "last_fetch_at": "2026-05-24T16:55:15.338793+08:00",
       "candidates": 14,
-      "filtered_out": 0
+      "filtered_out": 6
     },
     {
       "id": "jjxy",
@@ -885,7 +885,7 @@
       ],
       "status": "ok",
       "documents": 0,
-      "last_fetch_at": "2026-05-24T15:55:34.626004+08:00",
+      "last_fetch_at": "2026-05-24T16:55:15.338793+08:00",
       "candidates": 0,
       "filtered_out": 0
     },
@@ -896,7 +896,7 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 2,
-      "last_fetch_at": "2026-05-24T15:55:34.626004+08:00",
+      "last_fetch_at": "2026-05-24T16:55:15.338793+08:00",
       "candidates": 2
     },
     {
@@ -906,7 +906,7 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-24T15:55:34.626004+08:00",
+      "last_fetch_at": "2026-05-24T16:55:15.338793+08:00",
       "candidates": 1
     },
     {
@@ -916,7 +916,7 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 5,
-      "last_fetch_at": "2026-05-24T15:55:34.626004+08:00",
+      "last_fetch_at": "2026-05-24T16:55:15.338793+08:00",
       "candidates": 5
     },
     {
@@ -926,7 +926,7 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-24T15:55:34.626004+08:00",
+      "last_fetch_at": "2026-05-24T16:55:15.338793+08:00",
       "candidates": 1
     },
     {
@@ -936,7 +936,7 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-24T15:55:34.626004+08:00",
+      "last_fetch_at": "2026-05-24T16:55:15.338793+08:00",
       "candidates": 1
     },
     {
@@ -946,7 +946,7 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-24T15:55:34.626004+08:00",
+      "last_fetch_at": "2026-05-24T16:55:15.338793+08:00",
       "candidates": 1
     },
     {
@@ -956,7 +956,7 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-24T15:55:34.626004+08:00",
+      "last_fetch_at": "2026-05-24T16:55:15.338793+08:00",
       "candidates": 1
     },
     {
@@ -966,7 +966,7 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-24T15:55:34.626004+08:00",
+      "last_fetch_at": "2026-05-24T16:55:15.338793+08:00",
       "candidates": 1
     },
     {
@@ -976,7 +976,7 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-24T15:55:34.626004+08:00",
+      "last_fetch_at": "2026-05-24T16:55:15.338793+08:00",
       "candidates": 1
     },
     {
@@ -986,7 +986,7 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-24T15:55:34.626004+08:00",
+      "last_fetch_at": "2026-05-24T16:55:15.338793+08:00",
       "candidates": 1
     },
     {
@@ -996,7 +996,7 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 3,
-      "last_fetch_at": "2026-05-24T15:55:34.626004+08:00",
+      "last_fetch_at": "2026-05-24T16:55:15.338793+08:00",
       "candidates": 3
     },
     {
@@ -1006,7 +1006,7 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-24T15:55:34.626004+08:00",
+      "last_fetch_at": "2026-05-24T16:55:15.338793+08:00",
       "candidates": 1
     },
     {
@@ -1016,7 +1016,7 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-24T15:55:34.626004+08:00",
+      "last_fetch_at": "2026-05-24T16:55:15.338793+08:00",
       "candidates": 1
     },
     {
@@ -1026,7 +1026,7 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-24T15:55:34.626004+08:00",
+      "last_fetch_at": "2026-05-24T16:55:15.338793+08:00",
       "candidates": 1
     },
     {
@@ -1036,7 +1036,7 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-24T15:55:34.626004+08:00",
+      "last_fetch_at": "2026-05-24T16:55:15.338793+08:00",
       "candidates": 1
     },
     {
@@ -1046,7 +1046,7 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-24T15:55:34.626004+08:00",
+      "last_fetch_at": "2026-05-24T16:55:15.338793+08:00",
       "candidates": 1
     },
     {
@@ -1056,7 +1056,7 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-24T15:55:34.626004+08:00",
+      "last_fetch_at": "2026-05-24T16:55:15.338793+08:00",
       "candidates": 1
     },
     {
@@ -1066,8 +1066,8 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-24T15:55:34.626004+08:00",
-      "warning": "GitHub fetch failed; reused stale cached documents: 403 Client Error: rate limit exceeded for url: https://api.github.com/repos/kaijy91/NJUPT_NET/contents/README.md?ref=master"
+      "last_fetch_at": "2026-05-24T16:55:15.338793+08:00",
+      "candidates": 1
     },
     {
       "id": "github:s235784/NJUPT_AutoLogin",
@@ -1076,8 +1076,8 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 2,
-      "last_fetch_at": "2026-05-24T15:55:34.626004+08:00",
-      "warning": "GitHub fetch failed; reused stale cached documents: 403 Client Error: rate limit exceeded for url: https://api.github.com/repos/s235784/NJUPT_AutoLogin"
+      "last_fetch_at": "2026-05-24T16:55:15.338793+08:00",
+      "candidates": 2
     },
     {
       "id": "github:Freedomisgood/NjuptCmcc",
@@ -1086,8 +1086,8 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-24T15:55:34.626004+08:00",
-      "warning": "GitHub fetch failed; reused stale cached documents: 403 Client Error: rate limit exceeded for url: https://api.github.com/repos/Freedomisgood/NjuptCmcc"
+      "last_fetch_at": "2026-05-24T16:55:15.338793+08:00",
+      "candidates": 1
     },
     {
       "id": "github:love98ooo/ZhengFangJiaoWuSystemTampermonkeyScript",
@@ -1096,8 +1096,8 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-24T15:55:34.626004+08:00",
-      "warning": "GitHub fetch failed; reused stale cached documents: 403 Client Error: rate limit exceeded for url: https://api.github.com/repos/love98ooo/ZhengFangJiaoWuSystemTampermonkeyScript"
+      "last_fetch_at": "2026-05-24T16:55:15.338793+08:00",
+      "candidates": 1
     },
     {
       "id": "github:NJUPT-NAVI/NJUPT-Survival-Guide",
@@ -1106,8 +1106,8 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 2,
-      "last_fetch_at": "2026-05-24T15:55:34.626004+08:00",
-      "warning": "GitHub fetch failed; reused stale cached documents: 403 Client Error: rate limit exceeded for url: https://api.github.com/repos/NJUPT-NAVI/NJUPT-Survival-Guide"
+      "last_fetch_at": "2026-05-24T16:55:15.338793+08:00",
+      "candidates": 2
     },
     {
       "id": "github:bmxbmx3/finger_vein_recognition",
@@ -1116,8 +1116,8 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-24T15:55:34.626004+08:00",
-      "warning": "GitHub fetch failed; reused stale cached documents: 403 Client Error: rate limit exceeded for url: https://api.github.com/repos/bmxbmx3/finger_vein_recognition"
+      "last_fetch_at": "2026-05-24T16:55:15.338793+08:00",
+      "candidates": 1
     },
     {
       "id": "github:lux-QAQ/NJUPT_Fastlogin",
@@ -1126,8 +1126,8 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-24T15:55:34.626004+08:00",
-      "warning": "GitHub fetch failed; reused stale cached documents: 403 Client Error: rate limit exceeded for url: https://api.github.com/repos/lux-QAQ/NJUPT_Fastlogin"
+      "last_fetch_at": "2026-05-24T16:55:15.338793+08:00",
+      "candidates": 1
     },
     {
       "id": "github:NJUPTFreeExams/njuptfreeexams.github.io",
@@ -1136,8 +1136,8 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-24T15:55:34.626004+08:00",
-      "warning": "GitHub fetch failed; reused stale cached documents: 403 Client Error: rate limit exceeded for url: https://api.github.com/repos/NJUPTFreeExams/njuptfreeexams.github.io"
+      "last_fetch_at": "2026-05-24T16:55:15.338793+08:00",
+      "candidates": 1
     },
     {
       "id": "github:dhiyu/NJUPT-Bachelor",
@@ -1146,8 +1146,8 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-24T15:55:34.626004+08:00",
-      "warning": "GitHub fetch failed; reused stale cached documents: 403 Client Error: rate limit exceeded for url: https://api.github.com/repos/dhiyu/NJUPT-Bachelor"
+      "last_fetch_at": "2026-05-24T16:55:15.338793+08:00",
+      "candidates": 1
     },
     {
       "id": "github:yosunpeng/postgraduate_test_njupt",
@@ -1156,8 +1156,8 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-24T15:55:34.626004+08:00",
-      "warning": "GitHub fetch failed; reused stale cached documents: 403 Client Error: rate limit exceeded for url: https://api.github.com/repos/yosunpeng/postgraduate_test_njupt"
+      "last_fetch_at": "2026-05-24T16:55:15.338793+08:00",
+      "candidates": 1
     },
     {
       "id": "github:NJUPTFreeExams/NJUPT-InfoSec-Free-Exams",
@@ -1166,8 +1166,8 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-24T15:55:34.626004+08:00",
-      "warning": "GitHub fetch failed; reused stale cached documents: 403 Client Error: rate limit exceeded for url: https://api.github.com/repos/NJUPTFreeExams/NJUPT-InfoSec-Free-Exams"
+      "last_fetch_at": "2026-05-24T16:55:15.338793+08:00",
+      "candidates": 1
     },
     {
       "id": "github:ace-trump-tech/NJUPT-Graduation-thesis",
@@ -1176,8 +1176,8 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-24T15:55:34.626004+08:00",
-      "warning": "GitHub fetch failed; reused stale cached documents: 403 Client Error: rate limit exceeded for url: https://api.github.com/repos/ace-trump-tech/NJUPT-Graduation-thesis"
+      "last_fetch_at": "2026-05-24T16:55:15.338793+08:00",
+      "candidates": 1
     },
     {
       "id": "github:Yolumia/NJUPT-NETWORK",
@@ -1186,8 +1186,8 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-24T15:55:34.626004+08:00",
-      "warning": "GitHub fetch failed; reused stale cached documents: 403 Client Error: rate limit exceeded for url: https://api.github.com/repos/Yolumia/NJUPT-NETWORK"
+      "last_fetch_at": "2026-05-24T16:55:15.338793+08:00",
+      "candidates": 1
     },
     {
       "id": "github:Moonike1217/NJUPTExamICSBuilder",
@@ -1196,8 +1196,8 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-24T15:55:34.626004+08:00",
-      "warning": "GitHub fetch failed; reused stale cached documents: 403 Client Error: rate limit exceeded for url: https://api.github.com/repos/Moonike1217/NJUPTExamICSBuilder"
+      "last_fetch_at": "2026-05-24T16:55:15.338793+08:00",
+      "candidates": 1
     },
     {
       "id": "github:musnows/Njupt-Wifi-Login",
@@ -1206,8 +1206,8 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-24T15:55:34.626004+08:00",
-      "warning": "GitHub fetch failed; reused stale cached documents: 403 Client Error: rate limit exceeded for url: https://api.github.com/repos/musnows/Njupt-Wifi-Login"
+      "last_fetch_at": "2026-05-24T16:55:15.338793+08:00",
+      "candidates": 1
     }
   ]
 }
