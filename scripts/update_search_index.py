@@ -439,10 +439,10 @@ def derive_semantic_fields(
         tags = [clean_text(str(tag)) for tag in llm_result.get("tags", []) if clean_text(str(tag))]
         summary = clean_text(str(llm_result.get("student_summary") or content[:180]))
         sub_category = llm_result.get("sub_category")
-        deadline = llm_result.get("deadline") or fallback_deadline
-        action_required = bool(llm_result.get("action_required", False)) or fallback_action_required
-        action_type = llm_result.get("action_type") or fallback_action_type
-        action_summary = llm_result.get("action_summary") or fallback_action_summary
+        deadline = llm_result["deadline"] if "deadline" in llm_result else fallback_deadline
+        action_required = bool(llm_result["action_required"]) if "action_required" in llm_result else fallback_action_required
+        action_type = llm_result["action_type"] if "action_type" in llm_result else fallback_action_type
+        action_summary = llm_result["action_summary"] if "action_summary" in llm_result else fallback_action_summary
         required_materials = [clean_text(str(item)) for item in llm_result.get("required_materials", []) if clean_text(str(item))]
         attachment_roles = llm_result.get("attachment_roles", [])
         sensitive = bool(llm_result.get("sensitive", False))

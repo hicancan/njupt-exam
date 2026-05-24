@@ -145,7 +145,7 @@
       "dedupe_key": "40c404d77dc666604255",
       "language": "zh",
       "status": "ok",
-      "fetched_at": "2026-05-24T19:44:23.183125+08:00",
+      "fetched_at": "2026-05-24T20:12:03.279901+08:00",
       "http_status": 200
     },
     "rule_guard": {
@@ -165,7 +165,7 @@
       "allow_llm": false,
       "allow_full_text_display": false,
       "review_required": true,
-      "evaluated_at": "2026-05-24T11:44:37.755995Z"
+      "evaluated_at": "2026-05-24T12:12:04.085681Z"
     },
     "task_frames": []
   },
@@ -317,7 +317,7 @@
       "dedupe_key": "d49538e92761155200e7",
       "language": "zh",
       "status": "ok",
-      "fetched_at": "2026-05-24T19:44:23.183125+08:00",
+      "fetched_at": "2026-05-24T20:12:03.279901+08:00",
       "http_status": 200
     },
     "rule_guard": {
@@ -339,7 +339,7 @@
       "allow_llm": false,
       "allow_full_text_display": false,
       "review_required": true,
-      "evaluated_at": "2026-05-24T11:45:37.263647Z"
+      "evaluated_at": "2026-05-24T12:12:09.721737Z"
     },
     "task_frames": []
   },
@@ -421,7 +421,7 @@
       "dedupe_key": "21cd3576e4672c9392bd",
       "language": "zh",
       "status": "ok",
-      "fetched_at": "2026-05-24T19:44:23.183125+08:00",
+      "fetched_at": "2026-05-24T20:12:03.279901+08:00",
       "http_status": 200
     },
     "rule_guard": {
@@ -442,7 +442,7 @@
       "allow_llm": false,
       "allow_full_text_display": false,
       "review_required": true,
-      "evaluated_at": "2026-05-24T11:45:33.126557Z"
+      "evaluated_at": "2026-05-24T12:12:09.466462Z"
     },
     "task_frames": []
   },
@@ -526,7 +526,7 @@
       "dedupe_key": "d030136cceedee9b74b3",
       "language": "zh",
       "status": "ok",
-      "fetched_at": "2026-05-24T19:44:23.183125+08:00",
+      "fetched_at": "2026-05-24T20:12:03.279901+08:00",
       "http_status": 200
     },
     "rule_guard": {
@@ -547,7 +547,7 @@
       "allow_llm": false,
       "allow_full_text_display": false,
       "review_required": true,
-      "evaluated_at": "2026-05-24T11:45:38.337599Z"
+      "evaluated_at": "2026-05-24T12:12:09.775643Z"
     },
     "task_frames": []
   },
@@ -631,7 +631,7 @@
       "dedupe_key": "743d992b050c0f6ad168",
       "language": "zh",
       "status": "ok",
-      "fetched_at": "2026-05-24T19:44:23.183125+08:00",
+      "fetched_at": "2026-05-24T20:12:03.279901+08:00",
       "http_status": 200
     },
     "rule_guard": {
@@ -652,7 +652,7 @@
       "allow_llm": false,
       "allow_full_text_display": false,
       "review_required": true,
-      "evaluated_at": "2026-05-24T11:46:51.076787Z"
+      "evaluated_at": "2026-05-24T12:12:15.738460Z"
     },
     "task_frames": []
   },
@@ -736,7 +736,7 @@
       "dedupe_key": "e7e55f93e1374e0f9f47",
       "language": "zh",
       "status": "ok",
-      "fetched_at": "2026-05-24T19:44:23.183125+08:00",
+      "fetched_at": "2026-05-24T20:12:03.279901+08:00",
       "http_status": 200
     },
     "rule_guard": {
@@ -757,7 +757,7 @@
       "allow_llm": false,
       "allow_full_text_display": false,
       "review_required": true,
-      "evaluated_at": "2026-05-24T11:45:35.192135Z"
+      "evaluated_at": "2026-05-24T12:12:09.597112Z"
     },
     "task_frames": []
   },
@@ -840,7 +840,7 @@
       "dedupe_key": "28d080d208cca72e681b",
       "language": "zh",
       "status": "ok",
-      "fetched_at": "2026-05-24T19:44:23.183125+08:00",
+      "fetched_at": "2026-05-24T20:12:03.279901+08:00",
       "http_status": 200
     },
     "rule_guard": {
@@ -861,7 +861,7 @@
       "allow_llm": false,
       "allow_full_text_display": false,
       "review_required": true,
-      "evaluated_at": "2026-05-24T11:45:36.227775Z"
+      "evaluated_at": "2026-05-24T12:12:09.664216Z"
     },
     "task_frames": []
   },
@@ -946,7 +946,7 @@
       "dedupe_key": "95db128ac8541481b53e",
       "language": "zh",
       "status": "ok",
-      "fetched_at": "2026-05-24T19:44:23.183125+08:00",
+      "fetched_at": "2026-05-24T20:12:03.279901+08:00",
       "http_status": 200
     },
     "rule_guard": {
@@ -966,7 +966,7 @@
       "allow_llm": false,
       "allow_full_text_display": false,
       "review_required": true,
-      "evaluated_at": "2026-05-24T11:51:24.282148Z"
+      "evaluated_at": "2026-05-24T12:13:17.857826Z"
     },
     "task_frames": []
   },
@@ -1053,7 +1053,7 @@
       "dedupe_key": "c769466f90ab0a6f0f1d",
       "language": "zh",
       "status": "ok",
-      "fetched_at": "2026-05-24T19:44:23.183125+08:00",
+      "fetched_at": "2026-05-24T20:12:03.279901+08:00",
       "http_status": 200
     },
     "rule_guard": {
@@ -1074,7 +1074,7 @@
       "allow_llm": false,
       "allow_full_text_display": false,
       "review_required": true,
-      "evaluated_at": "2026-05-24T11:51:32.636544Z"
+      "evaluated_at": "2026-05-24T12:13:18.297031Z"
     },
     "task_frames": []
   },
@@ -1269,7 +1269,7 @@
       "dedupe_key": "ee60a913479ef3537eca",
       "language": "zh",
       "status": "ok",
-      "fetched_at": "2026-05-24T19:44:23.183125+08:00",
+      "fetched_at": "2026-05-24T20:12:03.279901+08:00",
       "http_status": 200
     },
     "rule_guard": {
@@ -1290,7 +1290,7 @@
       "allow_llm": false,
       "allow_full_text_display": false,
       "review_required": true,
-      "evaluated_at": "2026-05-24T11:51:38.339489Z"
+      "evaluated_at": "2026-05-24T12:13:18.606662Z"
     },
     "task_frames": []
   },
@@ -2741,6 +2741,182 @@
     ]
   },
   {
+    "id": "exchange-176cb6ec00a0d59cab1e",
+    "kind": "notice",
+    "source_id": "exchange",
+    "channel_id": "exchange_notice",
+    "channel": "国际交流通知",
+    "title": "香港理工大学暑假“科技创新”访学项目",
+    "url": "https://exchange.njupt.edu.cn/2021/0511/c7467a192932/page.htm",
+    "source": "国际合作交流处",
+    "source_domain": "exchange.njupt.edu.cn",
+    "source_type": "central_admin",
+    "category": "项目",
+    "domain": "project",
+    "intent": "apply",
+    "lifecycle": "unknown",
+    "evidence": [
+      "每年5月报名，7月－8月派出",
+      "申请人应向所在学院提交以下材料：A. 《南京邮电大学本科生海外访学申请表》；B. 英语水平证明及复印件；C. 学术科研能力证明材料及复印件；D. 获奖证书及复印件。"
+    ],
+    "confidence": 0.9,
+    "sub_category": null,
+    "deadline": null,
+    "action_required": true,
+    "action_type": "submit",
+    "action_summary": "每年5月报名，7-8月派出。申请人需向学院提交《南京邮电大学本科生海外访学申请表》、英语水平证明、学术科研能力证明、获奖证书等材料。",
+    "required_materials": [
+      "《南京邮电大学本科生海外访学申请表》",
+      "英语水平证明及复印件",
+      "学术科研能力证明材料及复印件",
+      "获奖证书及复印件"
+    ],
+    "sensitive": false,
+    "sensitive_types": [],
+    "review_required": false,
+    "risk_flags": [],
+    "audience": [
+      "本科生",
+      "研究生",
+      "国际学生"
+    ],
+    "published_at": null,
+    "content": "1. 学校排名： USNEWS 234 ； QS 95 2. 合作模式：短期 8 天 3. 合作层次：不限 4. 合作专业：不限 5. 费用 （1） 大学课程费 + 企业实训费： 5200 元 （2） 住宿 2100 元，其他 600 元 （3） 共 7900 元，南邮学生减免 1300 元，合计 6600 元 6. 语言要求：具备良好的英语听说读写能力 7. 报名及派出时间：每年 5 月报名， 7 月－ 8 月派出 8. 报名程序： （ 1 ）采取“个人申请、学院推荐、专家评审、择优录取”的方式进行选拔。 （ 2 ）申请人应向所在学院提交以下材料： A. 《南京邮电大学本科生海外访学申请表》； B. 英语水平证明及复印件； C. 学术科研能力证明材料及复印件（包括论文发表、参与竞赛、项目等）； D. 获奖证书及复印件（校级以上奖励）。 （ 3 ）申请人将申请材料交至各学院，各学院根据申请资格与条件对申请人进行筛选、排序并填写《南京邮电大学本科生海外访学申请汇总表》，将申请材料及汇总表交至教务处实践教学科，申请材料电子版本发送到 jwc-sjjxk@njupt.edu.cn 。 （ 4 ）教务处审核通过后予以公示，公示期满无异议，通知申请人自行办理赴港手续。 9. 项目咨询 国际合作交流处 朱老师 85866716",
+    "summary": "香港理工大学暑假“科技创新”访学项目，8天，费用6600元（减免后），每年5月报名，7-8月派出，需向学院提交申请材料。",
+    "attachments": [],
+    "student_score": 0.9675,
+    "freshness_score": 0.45,
+    "importance_score": 0.851,
+    "source_weight": 0.8,
+    "tags": [
+      "项目",
+      "香港理工大学",
+      "暑假",
+      "访学"
+    ],
+    "hash": "176cb6ec00a0d59cab1e",
+    "cache_key": "c9c536c7631677481ac3",
+    "llm_schema_version": "hytask-taskframe-v1",
+    "llm": {
+      "used": true,
+      "provider": "deepseek",
+      "model": "deepseek-v4-flash",
+      "prompt_version": "hytask-taskframe-v1",
+      "confidence": 0.9,
+      "review_required": false
+    },
+    "canonical": {
+      "doc_id": "exchange-176cb6ec00a0d59cab1e",
+      "source_id": "exchange",
+      "channel_id": "exchange_notice",
+      "title": "香港理工大学暑假“科技创新”访学项目",
+      "canonical_url": "https://exchange.njupt.edu.cn/2021/0511/c7467a192932/page.htm",
+      "published_at": null,
+      "clean_text": "1. 学校排名： USNEWS 234 ； QS 95 2. 合作模式：短期 8 天 3. 合作层次：不限 4. 合作专业：不限 5. 费用 （1） 大学课程费 + 企业实训费： 5200 元 （2） 住宿 2100 元，其他 600 元 （3） 共 7900 元，南邮学生减免 1300 元，合计 6600 元 6. 语言要求：具备良好的英语听说读写能力 7. 报名及派出时间：每年 5 月报名， 7 月－ 8 月派出 8. 报名程序： （ 1 ）采取“个人申请、学院推荐、专家评审、择优录取”的方式进行选拔。 （ 2 ）申请人应向所在学院提交以下材料： A. 《南京邮电大学本科生海外访学申请表》； B. 英语水平证明及复印件； C. 学术科研能力证明材料及复印件（包括论文发表、参与竞赛、项目等）； D. 获奖证书及复印件（校级以上奖励）。 （ 3 ）申请人将申请材料交至各学院，各学院根据申请资格与条件对申请人进行筛选、排序并填写《南京邮电大学本科生海外访学申请汇总表》，将申请材料及汇总表交至教务处实践教学科，申请材料电子版本发送到 jwc-sjjxk@njupt.edu.cn 。 （ 4 ）教务处审核通过后予以公示，公示期满无异议，通知申请人自行办理赴港手续。 9. 项目咨询 国际合作交流处 朱老师 85866716",
+      "attachments": [],
+      "content_hash": "6049f7e71eba14d7d056",
+      "dedupe_key": "c25dd1eec35588d18a95",
+      "language": "zh",
+      "status": "ok",
+      "fetched_at": "2026-05-24T20:12:03.279901+08:00",
+      "http_status": 200
+    },
+    "rule_guard": {
+      "restricted": false,
+      "sensitive": false,
+      "sensitive_types": [],
+      "low_evidence": false,
+      "duplicate": false,
+      "expired": false,
+      "evergreen": false,
+      "administrative_noise": false,
+      "risk_flags": [],
+      "allow_llm": true,
+      "allow_full_text_display": true,
+      "review_required": false,
+      "evaluated_at": "2026-05-24T12:12:22.493466Z"
+    },
+    "task_frames": [
+      {
+        "task_id": "task_afe04ff20f7e02c3",
+        "doc_id": "exchange-176cb6ec00a0d59cab1e",
+        "task_type": "application",
+        "who": {
+          "audience": [
+            "本科生"
+          ],
+          "college": [],
+          "grade": [],
+          "major": [],
+          "class_name": []
+        },
+        "what": "申请香港理工大学暑假访学项目",
+        "action": {
+          "required": true,
+          "verb": "提交",
+          "object": "申请材料至学院",
+          "summary": "申请人将申请材料交至各学院，包括申请表、英语水平证明、学术科研能力证明、获奖证书等。"
+        },
+        "time": {
+          "published_at": null,
+          "deadline": null,
+          "lifecycle": "upcoming",
+          "urgency_days": null
+        },
+        "materials": [
+          {
+            "name": "《南京邮电大学本科生海外访学申请表》",
+            "role": "申请表",
+            "required": true,
+            "sensitive": false
+          },
+          {
+            "name": "英语水平证明及复印件",
+            "role": "证明材料",
+            "required": true,
+            "sensitive": false
+          },
+          {
+            "name": "学术科研能力证明材料及复印件",
+            "role": "证明材料",
+            "required": true,
+            "sensitive": false
+          },
+          {
+            "name": "获奖证书及复印件",
+            "role": "证明材料",
+            "required": true,
+            "sensitive": false
+          }
+        ],
+        "location": {
+          "place": "各学院",
+          "online": null,
+          "contact": "朱老师 85866716"
+        },
+        "source": {
+          "source_id": "exchange",
+          "channel_id": "exchange_notice",
+          "authority": 0.8,
+          "official": true
+        },
+        "evidence": [
+          {
+            "field": "action",
+            "text": "申请人应向所在学院提交以下材料：A. 《南京邮电大学本科生海外访学申请表》；B. 英语水平证明及复印件；C. 学术科研能力证明材料及复印件；D. 获奖证书及复印件。"
+          }
+        ],
+        "risk": {
+          "sensitive": false,
+          "restricted": false,
+          "low_evidence": false,
+          "review_required": false
+        },
+        "confidence": 0.9
+      }
+    ]
+  },
+  {
     "id": "news-09e1f939c948d0707786",
     "kind": "notice",
     "source_id": "news",
@@ -3497,6 +3673,359 @@
     "task_frames": []
   },
   {
+    "id": "exchange-8c940f9a9a38972abe4d",
+    "kind": "notice",
+    "source_id": "exchange",
+    "channel_id": "exchange_notice",
+    "channel": "国际交流通知",
+    "title": "南洋理工大学寒暑假交流项目",
+    "url": "https://exchange.njupt.edu.cn/2021/0511/c7467a192928/page.htm",
+    "source": "国际合作交流处",
+    "source_domain": "exchange.njupt.edu.cn",
+    "source_type": "central_admin",
+    "category": "项目",
+    "domain": "project",
+    "intent": "apply",
+    "lifecycle": "unknown",
+    "evidence": [
+      "每年11月报名，次年1月开课；每年4月报名，7月开课",
+      "申请人将申请材料交至各学院，申请人应向所在学院提交以下材料：（a）《南京邮电大学本科生海外访学申请表》；（b）英语水平证明复印件；（c）学术科研能力证明材料复印件；（d）获奖证书复印件。"
+    ],
+    "confidence": 0.9,
+    "sub_category": null,
+    "deadline": null,
+    "action_required": true,
+    "action_type": "submit",
+    "action_summary": "每年11月报名次年1月开课，或每年4月报名7月开课。申请人需向学院提交《南京邮电大学本科生海外访学申请表》、英语水平证明、学术科研能力证明、获奖证书等材料。",
+    "required_materials": [
+      "《南京邮电大学本科生海外访学申请表》",
+      "英语水平证明复印件",
+      "学术科研能力证明材料复印件",
+      "获奖证书复印件"
+    ],
+    "sensitive": false,
+    "sensitive_types": [],
+    "review_required": false,
+    "risk_flags": [],
+    "audience": [
+      "本科生",
+      "研究生",
+      "国际学生"
+    ],
+    "published_at": null,
+    "content": "1. 学校排名： QS No.13 2. 合作模式： 6 周 3. 合作层次：本科生和研究生 4. 合作专业：专业不限 5. 费用 项目费总计： 5580 （课程项目） /6980 （科研项目）含大学学费、管理费等。 6. 语言要求：英语听说读写有一定基础，能接受全英文授课 7. 报名及派出时间：每年 11 月报名，次年 1 月开课；每年 4 月报名， 7 月开课 8. 报名程序： 采取“个人申请、学院推荐、专家评审、择优录取”的方式进行选拔。 （ 1 ）申请人将申请材料交至各学院，申请人应向所在学院提交以下材料： （ a ）《南京邮电大学本科生海外访学申请表》； （ b ）英语水平证明复印件； （ c ）学术科研能力证明材料复印件（包括论文发表、参与竞赛、项目等）； （ d ）获奖证书复印件（校级以上奖励）。 （ 2 ）各学院根据申请资格与条件对申请人进行筛选、排序并填写《南京邮电大学本科生海外访学申请汇总表》，汇总表交至教务处实践教学科，申请材料电子版本发送到 jwc-sjjxk@njupt.edu.cn 。 （ 3 ）教务处会同相关职能部门，共同组织专家对学院推荐的候选人材料进行审核，确定选派学生名单并发布。 （ 4 ）开始课程。 9. 项目咨询 国际合作交流处 朱老师 85866716",
+    "summary": "南洋理工大学寒暑假交流项目，6周，费用5580/6980元，每年11月或4月报名，需向学院提交申请材料。",
+    "attachments": [],
+    "student_score": 0.9426,
+    "freshness_score": 0.45,
+    "importance_score": 0.851,
+    "source_weight": 0.8,
+    "tags": [
+      "项目",
+      "南洋理工大学",
+      "寒暑假",
+      "交流"
+    ],
+    "hash": "8c940f9a9a38972abe4d",
+    "cache_key": "7c16f44e909811431b04",
+    "llm_schema_version": "hytask-taskframe-v1",
+    "llm": {
+      "used": true,
+      "provider": "deepseek",
+      "model": "deepseek-v4-flash",
+      "prompt_version": "hytask-taskframe-v1",
+      "confidence": 0.9,
+      "review_required": false
+    },
+    "canonical": {
+      "doc_id": "exchange-8c940f9a9a38972abe4d",
+      "source_id": "exchange",
+      "channel_id": "exchange_notice",
+      "title": "南洋理工大学寒暑假交流项目",
+      "canonical_url": "https://exchange.njupt.edu.cn/2021/0511/c7467a192928/page.htm",
+      "published_at": null,
+      "clean_text": "1. 学校排名： QS No.13 2. 合作模式： 6 周 3. 合作层次：本科生和研究生 4. 合作专业：专业不限 5. 费用 项目费总计： 5580 （课程项目） /6980 （科研项目）含大学学费、管理费等。 6. 语言要求：英语听说读写有一定基础，能接受全英文授课 7. 报名及派出时间：每年 11 月报名，次年 1 月开课；每年 4 月报名， 7 月开课 8. 报名程序： 采取“个人申请、学院推荐、专家评审、择优录取”的方式进行选拔。 （ 1 ）申请人将申请材料交至各学院，申请人应向所在学院提交以下材料： （ a ）《南京邮电大学本科生海外访学申请表》； （ b ）英语水平证明复印件； （ c ）学术科研能力证明材料复印件（包括论文发表、参与竞赛、项目等）； （ d ）获奖证书复印件（校级以上奖励）。 （ 2 ）各学院根据申请资格与条件对申请人进行筛选、排序并填写《南京邮电大学本科生海外访学申请汇总表》，汇总表交至教务处实践教学科，申请材料电子版本发送到 jwc-sjjxk@njupt.edu.cn 。 （ 3 ）教务处会同相关职能部门，共同组织专家对学院推荐的候选人材料进行审核，确定选派学生名单并发布。 （ 4 ）开始课程。 9. 项目咨询 国际合作交流处 朱老师 85866716",
+      "attachments": [],
+      "content_hash": "d0848d7202571ce9191c",
+      "dedupe_key": "121d563974a807c1a63a",
+      "language": "zh",
+      "status": "ok",
+      "fetched_at": "2026-05-24T20:12:03.279901+08:00",
+      "http_status": 200
+    },
+    "rule_guard": {
+      "restricted": false,
+      "sensitive": false,
+      "sensitive_types": [],
+      "low_evidence": false,
+      "duplicate": false,
+      "expired": false,
+      "evergreen": false,
+      "administrative_noise": false,
+      "risk_flags": [],
+      "allow_llm": true,
+      "allow_full_text_display": true,
+      "review_required": false,
+      "evaluated_at": "2026-05-24T12:12:22.593036Z"
+    },
+    "task_frames": [
+      {
+        "task_id": "task_f09a916fe171af7e",
+        "doc_id": "exchange-8c940f9a9a38972abe4d",
+        "task_type": "application",
+        "who": {
+          "audience": [
+            "本科生",
+            "研究生"
+          ],
+          "college": [],
+          "grade": [],
+          "major": [],
+          "class_name": []
+        },
+        "what": "申请南洋理工大学寒暑假交流项目",
+        "action": {
+          "required": true,
+          "verb": "提交",
+          "object": "申请材料至学院",
+          "summary": "申请人将申请材料交至各学院，包括申请表、英语水平证明、学术科研能力证明、获奖证书等。"
+        },
+        "time": {
+          "published_at": null,
+          "deadline": null,
+          "lifecycle": "upcoming",
+          "urgency_days": null
+        },
+        "materials": [
+          {
+            "name": "《南京邮电大学本科生海外访学申请表》",
+            "role": "申请表",
+            "required": true,
+            "sensitive": false
+          },
+          {
+            "name": "英语水平证明复印件",
+            "role": "证明材料",
+            "required": true,
+            "sensitive": false
+          },
+          {
+            "name": "学术科研能力证明材料复印件",
+            "role": "证明材料",
+            "required": true,
+            "sensitive": false
+          },
+          {
+            "name": "获奖证书复印件",
+            "role": "证明材料",
+            "required": true,
+            "sensitive": false
+          }
+        ],
+        "location": {
+          "place": "各学院",
+          "online": null,
+          "contact": "朱老师 85866716"
+        },
+        "source": {
+          "source_id": "exchange",
+          "channel_id": "exchange_notice",
+          "authority": 0.8,
+          "official": true
+        },
+        "evidence": [
+          {
+            "field": "action",
+            "text": "申请人将申请材料交至各学院，申请人应向所在学院提交以下材料：（a）《南京邮电大学本科生海外访学申请表》；（b）英语水平证明复印件；（c）学术科研能力证明材料复印件；（d）获奖证书复印件。"
+          }
+        ],
+        "risk": {
+          "sensitive": false,
+          "restricted": false,
+          "low_evidence": false,
+          "review_required": false
+        },
+        "confidence": 0.9
+      }
+    ]
+  },
+  {
+    "id": "exchange-5b8b5d43475cad50110e",
+    "kind": "notice",
+    "source_id": "exchange",
+    "channel_id": "exchange_notice",
+    "channel": "国际交流通知",
+    "title": "香港大学 “创新创业”赴港交流项目",
+    "url": "https://exchange.njupt.edu.cn/2021/0511/c7467a192930/page.htm",
+    "source": "国际合作交流处",
+    "source_domain": "exchange.njupt.edu.cn",
+    "source_type": "central_admin",
+    "category": "项目",
+    "domain": "project",
+    "intent": "apply",
+    "lifecycle": "unknown",
+    "evidence": [
+      "每年5月报名，7月－8月派出",
+      "申请人应向所在学院提交以下材料：A. 《南京邮电大学本科生海外访学申请表》；B. 英语水平证明及复印件；C. 学术科研能力证明材料及复印件；D. 获奖证书及复印件。"
+    ],
+    "confidence": 0.9,
+    "sub_category": null,
+    "deadline": null,
+    "action_required": true,
+    "action_type": "submit",
+    "action_summary": "每年5月报名，7-8月派出。申请人需向学院提交《南京邮电大学本科生海外访学申请表》、英语水平证明、学术科研能力证明、获奖证书等材料。",
+    "required_materials": [
+      "《南京邮电大学本科生海外访学申请表》",
+      "英语水平证明及复印件",
+      "学术科研能力证明材料及复印件",
+      "获奖证书及复印件"
+    ],
+    "sensitive": false,
+    "sensitive_types": [],
+    "review_required": false,
+    "risk_flags": [],
+    "audience": [
+      "本科生",
+      "研究生",
+      "国际学生"
+    ],
+    "published_at": null,
+    "content": "1. 学校排名： USNEWS 103 ； QS 26 2. 合作模式：短期 8 天 3. 合作层次：不限 4. 合作专业：不限 5. 费用： 30 人以下，每人 6600 港币， 30 人以上，超出人数每人增加 2200 港币 6. 语言要求：具备良好的英语听说读写能力 7. 报名及派出时间：每年 5 月报名， 7 月－ 8 月派出 8. 报名程序： （ 1 ）采取“个人申请、学院推荐、专家评审、择优录取”的方式进行选拔。 （ 2 ）申请人应向所在学院提交以下材料： A. 《南京邮电大学本科生海外访学申请表》； B. 英语水平证明及复印件； C. 学术科研能力证明材料及复印件（包括论文发表、参与竞赛、项目等）； D. 获奖证书及复印件（校级以上奖励）。 （ 3 ）申请人将申请材料交至各学院，各学院根据申请资格与条件对申请人进行筛选、排序并填写《南京邮电大学本科生海外访学申请汇总表》，将申请材料及汇总表交至教务处实践教学科，申请材料电子版本发送到 jwc-sjjxk@njupt.edu.cn 。 （ 4 ）教务处审核通过后予以公示，公示期满无异议，通知申请人自行办理赴港手续。 9. 项目咨询 国际合作交流处 朱老师 85866716",
+    "summary": "香港大学“创新创业”赴港交流项目，8天，费用6600港币起，每年5月报名，7-8月派出，需向学院提交申请材料。",
+    "attachments": [],
+    "student_score": 0.9426,
+    "freshness_score": 0.45,
+    "importance_score": 0.851,
+    "source_weight": 0.8,
+    "tags": [
+      "项目",
+      "香港大学",
+      "创新创业",
+      "交流"
+    ],
+    "hash": "5b8b5d43475cad50110e",
+    "cache_key": "967c79d0086ae9320038",
+    "llm_schema_version": "hytask-taskframe-v1",
+    "llm": {
+      "used": true,
+      "provider": "deepseek",
+      "model": "deepseek-v4-flash",
+      "prompt_version": "hytask-taskframe-v1",
+      "confidence": 0.9,
+      "review_required": false
+    },
+    "canonical": {
+      "doc_id": "exchange-5b8b5d43475cad50110e",
+      "source_id": "exchange",
+      "channel_id": "exchange_notice",
+      "title": "香港大学 “创新创业”赴港交流项目",
+      "canonical_url": "https://exchange.njupt.edu.cn/2021/0511/c7467a192930/page.htm",
+      "published_at": null,
+      "clean_text": "1. 学校排名： USNEWS 103 ； QS 26 2. 合作模式：短期 8 天 3. 合作层次：不限 4. 合作专业：不限 5. 费用： 30 人以下，每人 6600 港币， 30 人以上，超出人数每人增加 2200 港币 6. 语言要求：具备良好的英语听说读写能力 7. 报名及派出时间：每年 5 月报名， 7 月－ 8 月派出 8. 报名程序： （ 1 ）采取“个人申请、学院推荐、专家评审、择优录取”的方式进行选拔。 （ 2 ）申请人应向所在学院提交以下材料： A. 《南京邮电大学本科生海外访学申请表》； B. 英语水平证明及复印件； C. 学术科研能力证明材料及复印件（包括论文发表、参与竞赛、项目等）； D. 获奖证书及复印件（校级以上奖励）。 （ 3 ）申请人将申请材料交至各学院，各学院根据申请资格与条件对申请人进行筛选、排序并填写《南京邮电大学本科生海外访学申请汇总表》，将申请材料及汇总表交至教务处实践教学科，申请材料电子版本发送到 jwc-sjjxk@njupt.edu.cn 。 （ 4 ）教务处审核通过后予以公示，公示期满无异议，通知申请人自行办理赴港手续。 9. 项目咨询 国际合作交流处 朱老师 85866716",
+      "attachments": [],
+      "content_hash": "12e5b62064de8e23a5d0",
+      "dedupe_key": "7262b4c4684ec36f1a61",
+      "language": "zh",
+      "status": "ok",
+      "fetched_at": "2026-05-24T20:12:03.279901+08:00",
+      "http_status": 200
+    },
+    "rule_guard": {
+      "restricted": false,
+      "sensitive": false,
+      "sensitive_types": [],
+      "low_evidence": false,
+      "duplicate": false,
+      "expired": false,
+      "evergreen": false,
+      "administrative_noise": false,
+      "risk_flags": [],
+      "allow_llm": true,
+      "allow_full_text_display": true,
+      "review_required": false,
+      "evaluated_at": "2026-05-24T12:12:22.530110Z"
+    },
+    "task_frames": [
+      {
+        "task_id": "task_effcb041c767319a",
+        "doc_id": "exchange-5b8b5d43475cad50110e",
+        "task_type": "application",
+        "who": {
+          "audience": [
+            "本科生"
+          ],
+          "college": [],
+          "grade": [],
+          "major": [],
+          "class_name": []
+        },
+        "what": "申请香港大学创新创业交流项目",
+        "action": {
+          "required": true,
+          "verb": "提交",
+          "object": "申请材料至学院",
+          "summary": "申请人将申请材料交至各学院，包括申请表、英语水平证明、学术科研能力证明、获奖证书等。"
+        },
+        "time": {
+          "published_at": null,
+          "deadline": null,
+          "lifecycle": "upcoming",
+          "urgency_days": null
+        },
+        "materials": [
+          {
+            "name": "《南京邮电大学本科生海外访学申请表》",
+            "role": "申请表",
+            "required": true,
+            "sensitive": false
+          },
+          {
+            "name": "英语水平证明及复印件",
+            "role": "证明材料",
+            "required": true,
+            "sensitive": false
+          },
+          {
+            "name": "学术科研能力证明材料及复印件",
+            "role": "证明材料",
+            "required": true,
+            "sensitive": false
+          },
+          {
+            "name": "获奖证书及复印件",
+            "role": "证明材料",
+            "required": true,
+            "sensitive": false
+          }
+        ],
+        "location": {
+          "place": "各学院",
+          "online": null,
+          "contact": "朱老师 85866716"
+        },
+        "source": {
+          "source_id": "exchange",
+          "channel_id": "exchange_notice",
+          "authority": 0.8,
+          "official": true
+        },
+        "evidence": [
+          {
+            "field": "action",
+            "text": "申请人应向所在学院提交以下材料：A. 《南京邮电大学本科生海外访学申请表》；B. 英语水平证明及复印件；C. 学术科研能力证明材料及复印件；D. 获奖证书及复印件。"
+          }
+        ],
+        "risk": {
+          "sensitive": false,
+          "restricted": false,
+          "low_evidence": false,
+          "review_required": false
+        },
+        "confidence": 0.9
+      }
+    ]
+  },
+  {
     "id": "yzb-1a7581956245099abf7b",
     "kind": "notice",
     "source_id": "yzb",
@@ -4049,162 +4578,6 @@
           "review_required": false
         },
         "confidence": 0.85
-      }
-    ]
-  },
-  {
-    "id": "exchange-176cb6ec00a0d59cab1e",
-    "kind": "notice",
-    "source_id": "exchange",
-    "channel_id": "exchange_notice",
-    "channel": "国际交流通知",
-    "title": "香港理工大学暑假“科技创新”访学项目",
-    "url": "https://exchange.njupt.edu.cn/2021/0511/c7467a192932/page.htm",
-    "source": "国际合作交流处",
-    "source_domain": "exchange.njupt.edu.cn",
-    "source_type": "central_admin",
-    "category": "项目",
-    "domain": "international",
-    "intent": "apply",
-    "lifecycle": "unknown",
-    "evidence": [
-      "每年 5 月报名， 7 月－ 8 月派出"
-    ],
-    "confidence": 0.9,
-    "sub_category": null,
-    "deadline": null,
-    "action_required": true,
-    "action_type": "submit",
-    "action_summary": "每年5月报名，向所在学院提交申请材料。",
-    "required_materials": [
-      "南京邮电大学本科生海外访学申请表",
-      "英语水平证明",
-      "学术科研能力证明",
-      "获奖证书"
-    ],
-    "sensitive": false,
-    "sensitive_types": [],
-    "review_required": false,
-    "risk_flags": [],
-    "audience": [
-      "本科生",
-      "研究生",
-      "国际学生"
-    ],
-    "published_at": null,
-    "content": "1. 学校排名： USNEWS 234 ； QS 95 2. 合作模式：短期 8 天 3. 合作层次：不限 4. 合作专业：不限 5. 费用 （1） 大学课程费 + 企业实训费： 5200 元 （2） 住宿 2100 元，其他 600 元 （3） 共 7900 元，南邮学生减免 1300 元，合计 6600 元 6. 语言要求：具备良好的英语听说读写能力 7. 报名及派出时间：每年 5 月报名， 7 月－ 8 月派出 8. 报名程序： （ 1 ）采取“个人申请、学院推荐、专家评审、择优录取”的方式进行选拔。 （ 2 ）申请人应向所在学院提交以下材料： A. 《南京邮电大学本科生海外访学申请表》； B. 英语水平证明及复印件； C. 学术科研能力证明材料及复印件（包括论文发表、参与竞赛、项目等）； D. 获奖证书及复印件（校级以上奖励）。 （ 3 ）申请人将申请材料交至各学院，各学院根据申请资格与条件对申请人进行筛选、排序并填写《南京邮电大学本科生海外访学申请汇总表》，将申请材料及汇总表交至教务处实践教学科，申请材料电子版本发送到 jwc-sjjxk@njupt.edu.cn 。 （ 4 ）教务处审核通过后予以公示，公示期满无异议，通知申请人自行办理赴港手续。 9. 项目咨询 国际合作交流处 朱老师 85866716",
-    "summary": "香港理工大学暑假“科技创新”访学项目，每年5月报名，7-8月派出，采取个人申请、学院推荐方式。",
-    "attachments": [],
-    "student_score": 0.935,
-    "freshness_score": 0.45,
-    "importance_score": 0.8135,
-    "source_weight": 0.8,
-    "tags": [
-      "项目",
-      "访学项目",
-      "香港理工大学"
-    ],
-    "hash": "176cb6ec00a0d59cab1e",
-    "cache_key": "c9c536c7631677481ac3",
-    "llm_schema_version": "hytask-taskframe-v1",
-    "llm": {
-      "used": true,
-      "provider": "gemini",
-      "model": "gemini-3.1-flash-lite",
-      "prompt_version": "hytask-taskframe-v1",
-      "confidence": 0.9,
-      "review_required": false
-    },
-    "canonical": {
-      "doc_id": "exchange-176cb6ec00a0d59cab1e",
-      "source_id": "exchange",
-      "channel_id": "exchange_notice",
-      "title": "香港理工大学暑假“科技创新”访学项目",
-      "canonical_url": "https://exchange.njupt.edu.cn/2021/0511/c7467a192932/page.htm",
-      "published_at": null,
-      "clean_text": "1. 学校排名： USNEWS 234 ； QS 95 2. 合作模式：短期 8 天 3. 合作层次：不限 4. 合作专业：不限 5. 费用 （1） 大学课程费 + 企业实训费： 5200 元 （2） 住宿 2100 元，其他 600 元 （3） 共 7900 元，南邮学生减免 1300 元，合计 6600 元 6. 语言要求：具备良好的英语听说读写能力 7. 报名及派出时间：每年 5 月报名， 7 月－ 8 月派出 8. 报名程序： （ 1 ）采取“个人申请、学院推荐、专家评审、择优录取”的方式进行选拔。 （ 2 ）申请人应向所在学院提交以下材料： A. 《南京邮电大学本科生海外访学申请表》； B. 英语水平证明及复印件； C. 学术科研能力证明材料及复印件（包括论文发表、参与竞赛、项目等）； D. 获奖证书及复印件（校级以上奖励）。 （ 3 ）申请人将申请材料交至各学院，各学院根据申请资格与条件对申请人进行筛选、排序并填写《南京邮电大学本科生海外访学申请汇总表》，将申请材料及汇总表交至教务处实践教学科，申请材料电子版本发送到 jwc-sjjxk@njupt.edu.cn 。 （ 4 ）教务处审核通过后予以公示，公示期满无异议，通知申请人自行办理赴港手续。 9. 项目咨询 国际合作交流处 朱老师 85866716",
-      "attachments": [],
-      "content_hash": "6049f7e71eba14d7d056",
-      "dedupe_key": "c25dd1eec35588d18a95",
-      "language": "zh",
-      "status": "ok",
-      "fetched_at": "2026-05-24T19:44:23.183125+08:00",
-      "http_status": 200
-    },
-    "rule_guard": {
-      "restricted": false,
-      "sensitive": false,
-      "sensitive_types": [],
-      "low_evidence": false,
-      "duplicate": false,
-      "expired": false,
-      "evergreen": false,
-      "administrative_noise": false,
-      "risk_flags": [],
-      "allow_llm": true,
-      "allow_full_text_display": true,
-      "review_required": false,
-      "evaluated_at": "2026-05-24T11:48:54.503944Z"
-    },
-    "task_frames": [
-      {
-        "task_id": "apply_hkpoly_summer",
-        "doc_id": "exchange-176cb6ec00a0d59cab1e",
-        "task_type": "application",
-        "who": {
-          "audience": [
-            "本科生"
-          ],
-          "college": [],
-          "grade": [],
-          "major": [],
-          "class_name": []
-        },
-        "what": "香港理工大学暑假“科技创新”访学项目申请",
-        "action": {
-          "required": true,
-          "verb": "提交",
-          "object": "申请材料",
-          "summary": "向所在学院提交申请表及相关证明材料"
-        },
-        "time": {
-          "published_at": null,
-          "deadline": null,
-          "lifecycle": "upcoming",
-          "urgency_days": null
-        },
-        "materials": [
-          {
-            "name": "南京邮电大学本科生海外访学申请表",
-            "role": "申请表",
-            "required": true,
-            "sensitive": false
-          }
-        ],
-        "location": {
-          "place": "所在学院",
-          "online": null,
-          "contact": "国际合作交流处 朱老师 85866716"
-        },
-        "source": {
-          "source_id": "exchange",
-          "channel_id": "exchange_notice",
-          "authority": 0.8,
-          "official": true
-        },
-        "evidence": [
-          {
-            "field": "deadline",
-            "text": "每年 5 月报名"
-          }
-        ],
-        "risk": {
-          "sensitive": false,
-          "restricted": false,
-          "low_evidence": false,
-          "review_required": false
-        },
-        "confidence": 0.9
       }
     ]
   },
@@ -5210,7 +5583,7 @@
       "dedupe_key": "25c78db5ee8a9ce3d568",
       "language": "zh",
       "status": "ok",
-      "fetched_at": "2026-05-24T19:44:23.183125+08:00",
+      "fetched_at": "2026-05-24T20:12:03.279901+08:00",
       "http_status": 200
     },
     "rule_guard": {
@@ -5231,7 +5604,7 @@
       "allow_llm": false,
       "allow_full_text_display": false,
       "review_required": true,
-      "evaluated_at": "2026-05-24T11:46:53.161882Z"
+      "evaluated_at": "2026-05-24T12:12:15.862496Z"
     },
     "task_frames": []
   },
@@ -5434,319 +5807,6 @@
           "review_required": false
         },
         "confidence": 0.95
-      }
-    ]
-  },
-  {
-    "id": "exchange-8c940f9a9a38972abe4d",
-    "kind": "notice",
-    "source_id": "exchange",
-    "channel_id": "exchange_notice",
-    "channel": "国际交流通知",
-    "title": "南洋理工大学寒暑假交流项目",
-    "url": "https://exchange.njupt.edu.cn/2021/0511/c7467a192928/page.htm",
-    "source": "国际合作交流处",
-    "source_domain": "exchange.njupt.edu.cn",
-    "source_type": "central_admin",
-    "category": "项目",
-    "domain": "international",
-    "intent": "apply",
-    "lifecycle": "unknown",
-    "evidence": [
-      "每年 11 月报名，次年 1 月开课；每年 4 月报名， 7 月开课"
-    ],
-    "confidence": 0.9,
-    "sub_category": null,
-    "deadline": null,
-    "action_required": true,
-    "action_type": "submit",
-    "action_summary": "每年11月或4月报名，向所在学院提交申请材料。",
-    "required_materials": [
-      "南京邮电大学本科生海外访学申请表",
-      "英语水平证明",
-      "学术科研能力证明",
-      "获奖证书"
-    ],
-    "sensitive": false,
-    "sensitive_types": [],
-    "review_required": false,
-    "risk_flags": [],
-    "audience": [
-      "本科生",
-      "研究生",
-      "国际学生"
-    ],
-    "published_at": null,
-    "content": "1. 学校排名： QS No.13 2. 合作模式： 6 周 3. 合作层次：本科生和研究生 4. 合作专业：专业不限 5. 费用 项目费总计： 5580 （课程项目） /6980 （科研项目）含大学学费、管理费等。 6. 语言要求：英语听说读写有一定基础，能接受全英文授课 7. 报名及派出时间：每年 11 月报名，次年 1 月开课；每年 4 月报名， 7 月开课 8. 报名程序： 采取“个人申请、学院推荐、专家评审、择优录取”的方式进行选拔。 （ 1 ）申请人将申请材料交至各学院，申请人应向所在学院提交以下材料： （ a ）《南京邮电大学本科生海外访学申请表》； （ b ）英语水平证明复印件； （ c ）学术科研能力证明材料复印件（包括论文发表、参与竞赛、项目等）； （ d ）获奖证书复印件（校级以上奖励）。 （ 2 ）各学院根据申请资格与条件对申请人进行筛选、排序并填写《南京邮电大学本科生海外访学申请汇总表》，汇总表交至教务处实践教学科，申请材料电子版本发送到 jwc-sjjxk@njupt.edu.cn 。 （ 3 ）教务处会同相关职能部门，共同组织专家对学院推荐的候选人材料进行审核，确定选派学生名单并发布。 （ 4 ）开始课程。 9. 项目咨询 国际合作交流处 朱老师 85866716",
-    "summary": "南洋理工大学寒暑假交流项目，每年11月报名次年1月开课，每年4月报名7月开课，采取个人申请、学院推荐方式。",
-    "attachments": [],
-    "student_score": 0.9102,
-    "freshness_score": 0.45,
-    "importance_score": 0.8135,
-    "source_weight": 0.8,
-    "tags": [
-      "项目",
-      "访学项目",
-      "南洋理工大学"
-    ],
-    "hash": "8c940f9a9a38972abe4d",
-    "cache_key": "7c16f44e909811431b04",
-    "llm_schema_version": "hytask-taskframe-v1",
-    "llm": {
-      "used": true,
-      "provider": "gemini",
-      "model": "gemini-3.1-flash-lite",
-      "prompt_version": "hytask-taskframe-v1",
-      "confidence": 0.9,
-      "review_required": false
-    },
-    "canonical": {
-      "doc_id": "exchange-8c940f9a9a38972abe4d",
-      "source_id": "exchange",
-      "channel_id": "exchange_notice",
-      "title": "南洋理工大学寒暑假交流项目",
-      "canonical_url": "https://exchange.njupt.edu.cn/2021/0511/c7467a192928/page.htm",
-      "published_at": null,
-      "clean_text": "1. 学校排名： QS No.13 2. 合作模式： 6 周 3. 合作层次：本科生和研究生 4. 合作专业：专业不限 5. 费用 项目费总计： 5580 （课程项目） /6980 （科研项目）含大学学费、管理费等。 6. 语言要求：英语听说读写有一定基础，能接受全英文授课 7. 报名及派出时间：每年 11 月报名，次年 1 月开课；每年 4 月报名， 7 月开课 8. 报名程序： 采取“个人申请、学院推荐、专家评审、择优录取”的方式进行选拔。 （ 1 ）申请人将申请材料交至各学院，申请人应向所在学院提交以下材料： （ a ）《南京邮电大学本科生海外访学申请表》； （ b ）英语水平证明复印件； （ c ）学术科研能力证明材料复印件（包括论文发表、参与竞赛、项目等）； （ d ）获奖证书复印件（校级以上奖励）。 （ 2 ）各学院根据申请资格与条件对申请人进行筛选、排序并填写《南京邮电大学本科生海外访学申请汇总表》，汇总表交至教务处实践教学科，申请材料电子版本发送到 jwc-sjjxk@njupt.edu.cn 。 （ 3 ）教务处会同相关职能部门，共同组织专家对学院推荐的候选人材料进行审核，确定选派学生名单并发布。 （ 4 ）开始课程。 9. 项目咨询 国际合作交流处 朱老师 85866716",
-      "attachments": [],
-      "content_hash": "d0848d7202571ce9191c",
-      "dedupe_key": "121d563974a807c1a63a",
-      "language": "zh",
-      "status": "ok",
-      "fetched_at": "2026-05-24T19:44:23.183125+08:00",
-      "http_status": 200
-    },
-    "rule_guard": {
-      "restricted": false,
-      "sensitive": false,
-      "sensitive_types": [],
-      "low_evidence": false,
-      "duplicate": false,
-      "expired": false,
-      "evergreen": false,
-      "administrative_noise": false,
-      "risk_flags": [],
-      "allow_llm": true,
-      "allow_full_text_display": true,
-      "review_required": false,
-      "evaluated_at": "2026-05-24T11:48:56.708309Z"
-    },
-    "task_frames": [
-      {
-        "task_id": "apply_ntu_exchange",
-        "doc_id": "exchange-8c940f9a9a38972abe4d",
-        "task_type": "application",
-        "who": {
-          "audience": [
-            "本科生",
-            "研究生"
-          ],
-          "college": [],
-          "grade": [],
-          "major": [],
-          "class_name": []
-        },
-        "what": "南洋理工大学寒暑假交流项目申请",
-        "action": {
-          "required": true,
-          "verb": "提交",
-          "object": "申请材料",
-          "summary": "向所在学院提交申请表及相关证明材料"
-        },
-        "time": {
-          "published_at": null,
-          "deadline": null,
-          "lifecycle": "upcoming",
-          "urgency_days": null
-        },
-        "materials": [
-          {
-            "name": "南京邮电大学本科生海外访学申请表",
-            "role": "申请表",
-            "required": true,
-            "sensitive": false
-          }
-        ],
-        "location": {
-          "place": "所在学院",
-          "online": null,
-          "contact": "国际合作交流处 朱老师 85866716"
-        },
-        "source": {
-          "source_id": "exchange",
-          "channel_id": "exchange_notice",
-          "authority": 0.8,
-          "official": true
-        },
-        "evidence": [
-          {
-            "field": "deadline",
-            "text": "每年 11 月报名，次年 1 月开课；每年 4 月报名， 7 月开课"
-          }
-        ],
-        "risk": {
-          "sensitive": false,
-          "restricted": false,
-          "low_evidence": false,
-          "review_required": false
-        },
-        "confidence": 0.9
-      }
-    ]
-  },
-  {
-    "id": "exchange-5b8b5d43475cad50110e",
-    "kind": "notice",
-    "source_id": "exchange",
-    "channel_id": "exchange_notice",
-    "channel": "国际交流通知",
-    "title": "香港大学 “创新创业”赴港交流项目",
-    "url": "https://exchange.njupt.edu.cn/2021/0511/c7467a192930/page.htm",
-    "source": "国际合作交流处",
-    "source_domain": "exchange.njupt.edu.cn",
-    "source_type": "central_admin",
-    "category": "项目",
-    "domain": "international",
-    "intent": "apply",
-    "lifecycle": "unknown",
-    "evidence": [
-      "每年 5 月报名， 7 月－ 8 月派出"
-    ],
-    "confidence": 0.9,
-    "sub_category": null,
-    "deadline": null,
-    "action_required": true,
-    "action_type": "submit",
-    "action_summary": "每年5月报名，向所在学院提交申请材料。",
-    "required_materials": [
-      "南京邮电大学本科生海外访学申请表",
-      "英语水平证明",
-      "学术科研能力证明",
-      "获奖证书"
-    ],
-    "sensitive": false,
-    "sensitive_types": [],
-    "review_required": false,
-    "risk_flags": [],
-    "audience": [
-      "本科生",
-      "研究生",
-      "国际学生"
-    ],
-    "published_at": null,
-    "content": "1. 学校排名： USNEWS 103 ； QS 26 2. 合作模式：短期 8 天 3. 合作层次：不限 4. 合作专业：不限 5. 费用： 30 人以下，每人 6600 港币， 30 人以上，超出人数每人增加 2200 港币 6. 语言要求：具备良好的英语听说读写能力 7. 报名及派出时间：每年 5 月报名， 7 月－ 8 月派出 8. 报名程序： （ 1 ）采取“个人申请、学院推荐、专家评审、择优录取”的方式进行选拔。 （ 2 ）申请人应向所在学院提交以下材料： A. 《南京邮电大学本科生海外访学申请表》； B. 英语水平证明及复印件； C. 学术科研能力证明材料及复印件（包括论文发表、参与竞赛、项目等）； D. 获奖证书及复印件（校级以上奖励）。 （ 3 ）申请人将申请材料交至各学院，各学院根据申请资格与条件对申请人进行筛选、排序并填写《南京邮电大学本科生海外访学申请汇总表》，将申请材料及汇总表交至教务处实践教学科，申请材料电子版本发送到 jwc-sjjxk@njupt.edu.cn 。 （ 4 ）教务处审核通过后予以公示，公示期满无异议，通知申请人自行办理赴港手续。 9. 项目咨询 国际合作交流处 朱老师 85866716",
-    "summary": "香港大学“创新创业”赴港交流项目，每年5月报名，7-8月派出，采取个人申请、学院推荐方式。",
-    "attachments": [],
-    "student_score": 0.9102,
-    "freshness_score": 0.45,
-    "importance_score": 0.8135,
-    "source_weight": 0.8,
-    "tags": [
-      "项目",
-      "访学项目",
-      "香港大学"
-    ],
-    "hash": "5b8b5d43475cad50110e",
-    "cache_key": "967c79d0086ae9320038",
-    "llm_schema_version": "hytask-taskframe-v1",
-    "llm": {
-      "used": true,
-      "provider": "gemini",
-      "model": "gemini-3.1-flash-lite",
-      "prompt_version": "hytask-taskframe-v1",
-      "confidence": 0.9,
-      "review_required": false
-    },
-    "canonical": {
-      "doc_id": "exchange-5b8b5d43475cad50110e",
-      "source_id": "exchange",
-      "channel_id": "exchange_notice",
-      "title": "香港大学 “创新创业”赴港交流项目",
-      "canonical_url": "https://exchange.njupt.edu.cn/2021/0511/c7467a192930/page.htm",
-      "published_at": null,
-      "clean_text": "1. 学校排名： USNEWS 103 ； QS 26 2. 合作模式：短期 8 天 3. 合作层次：不限 4. 合作专业：不限 5. 费用： 30 人以下，每人 6600 港币， 30 人以上，超出人数每人增加 2200 港币 6. 语言要求：具备良好的英语听说读写能力 7. 报名及派出时间：每年 5 月报名， 7 月－ 8 月派出 8. 报名程序： （ 1 ）采取“个人申请、学院推荐、专家评审、择优录取”的方式进行选拔。 （ 2 ）申请人应向所在学院提交以下材料： A. 《南京邮电大学本科生海外访学申请表》； B. 英语水平证明及复印件； C. 学术科研能力证明材料及复印件（包括论文发表、参与竞赛、项目等）； D. 获奖证书及复印件（校级以上奖励）。 （ 3 ）申请人将申请材料交至各学院，各学院根据申请资格与条件对申请人进行筛选、排序并填写《南京邮电大学本科生海外访学申请汇总表》，将申请材料及汇总表交至教务处实践教学科，申请材料电子版本发送到 jwc-sjjxk@njupt.edu.cn 。 （ 4 ）教务处审核通过后予以公示，公示期满无异议，通知申请人自行办理赴港手续。 9. 项目咨询 国际合作交流处 朱老师 85866716",
-      "attachments": [],
-      "content_hash": "12e5b62064de8e23a5d0",
-      "dedupe_key": "7262b4c4684ec36f1a61",
-      "language": "zh",
-      "status": "ok",
-      "fetched_at": "2026-05-24T19:44:23.183125+08:00",
-      "http_status": 200
-    },
-    "rule_guard": {
-      "restricted": false,
-      "sensitive": false,
-      "sensitive_types": [],
-      "low_evidence": false,
-      "duplicate": false,
-      "expired": false,
-      "evergreen": false,
-      "administrative_noise": false,
-      "risk_flags": [],
-      "allow_llm": true,
-      "allow_full_text_display": true,
-      "review_required": false,
-      "evaluated_at": "2026-05-24T11:48:55.516619Z"
-    },
-    "task_frames": [
-      {
-        "task_id": "apply_hku_summer",
-        "doc_id": "exchange-5b8b5d43475cad50110e",
-        "task_type": "application",
-        "who": {
-          "audience": [
-            "本科生"
-          ],
-          "college": [],
-          "grade": [],
-          "major": [],
-          "class_name": []
-        },
-        "what": "香港大学“创新创业”赴港交流项目申请",
-        "action": {
-          "required": true,
-          "verb": "提交",
-          "object": "申请材料",
-          "summary": "向所在学院提交申请表及相关证明材料"
-        },
-        "time": {
-          "published_at": null,
-          "deadline": null,
-          "lifecycle": "upcoming",
-          "urgency_days": null
-        },
-        "materials": [
-          {
-            "name": "南京邮电大学本科生海外访学申请表",
-            "role": "申请表",
-            "required": true,
-            "sensitive": false
-          }
-        ],
-        "location": {
-          "place": "所在学院",
-          "online": null,
-          "contact": "国际合作交流处 朱老师 85866716"
-        },
-        "source": {
-          "source_id": "exchange",
-          "channel_id": "exchange_notice",
-          "authority": 0.8,
-          "official": true
-        },
-        "evidence": [
-          {
-            "field": "deadline",
-            "text": "每年 5 月报名"
-          }
-        ],
-        "risk": {
-          "sensitive": false,
-          "restricted": false,
-          "low_evidence": false,
-          "review_required": false
-        },
-        "confidence": 0.9
       }
     ]
   },
@@ -7667,7 +7727,7 @@
       "dedupe_key": "5e01d70d08dcf466bcc0",
       "language": "zh",
       "status": "ok",
-      "fetched_at": "2026-05-24T19:44:23.183125+08:00",
+      "fetched_at": "2026-05-24T20:12:03.279901+08:00",
       "http_status": 200
     },
     "rule_guard": {
@@ -7687,7 +7747,7 @@
       "allow_llm": false,
       "allow_full_text_display": false,
       "review_required": true,
-      "evaluated_at": "2026-05-24T11:47:55.539905Z"
+      "evaluated_at": "2026-05-24T12:12:19.423054Z"
     },
     "task_frames": []
   },
@@ -7931,6 +7991,108 @@
     "task_frames": []
   },
   {
+    "id": "pg-8f50b326fd00a04a467f",
+    "kind": "notice",
+    "source_id": "pg",
+    "channel_id": "pg_notice",
+    "channel": "培养与学位通知",
+    "title": "南京邮电大学硕博连读研究生拟录取名单公示",
+    "url": "https://pg.njupt.edu.cn/2026/0430/c17489a301258/page.htm",
+    "source": "研究生院",
+    "source_domain": "pg.njupt.edu.cn",
+    "source_type": "central_admin",
+    "category": "学院",
+    "domain": "academic",
+    "intent": "apply",
+    "lifecycle": "active",
+    "evidence": [
+      "南京邮电大学硕博连读研究生拟录取名单公示 根据《南京邮电大学硕博连读研究生选拔工作规定（修订）》和《关于选拔 2025 年硕博连读研究生的通知 》 ，经本人申请、学院推荐、学科考核、校专家组评审，拟录取 俞久鹏 等 96 位硕士研究生为 硕博连读研究生，现予以公示。",
+      "凡对名单存有异议者，可于公示期内与研究生院研究生培养办联系。",
+      "研究生院 202 6 年 4 月 30 日 拟录取名单 序号 学号 姓名 申请博士一级学科 1 ******1915 俞久鹏 数学 2 ******1917 王一贤 数学 3 ******2332 赵子欣 物理学 4 ******1703 陈靖雯 光学工程 5 ******6634 李念书 光学工程 6 ******1"
+    ],
+    "confidence": null,
+    "sub_category": null,
+    "deadline": null,
+    "action_required": true,
+    "action_type": "申请",
+    "action_summary": "南京邮电大学硕博连读研究生拟录取名单公示 根据《南京邮电大学硕博连读研究生选拔工作规定（修订）》和《关于选拔 2025 年硕博连读研究生的通知 》 ，经本人申请、学院推荐、学科考核、校专家组评审，拟录取 俞久鹏 等 96 位硕士研究生为 硕博连读研究生，现予以公示",
+    "required_materials": [],
+    "sensitive": true,
+    "sensitive_types": [
+      "名单公示",
+      "学号"
+    ],
+    "review_required": true,
+    "risk_flags": [
+      "sensitive_personal_info"
+    ],
+    "audience": [
+      "研究生"
+    ],
+    "published_at": "2026-04-30",
+    "content": "南京邮电大学硕博连读研究生拟录取名单公示",
+    "summary": "该通知可能包含名单、学号或联系方式等个人信息，已按元数据索引；请查看原文确认详情。",
+    "attachments": [],
+    "student_score": 0.8778,
+    "freshness_score": 0.78,
+    "importance_score": 0.8528,
+    "source_weight": 0.96,
+    "tags": [
+      "学院",
+      "研究生",
+      "培养",
+      "公示"
+    ],
+    "hash": "8f50b326fd00a04a467f",
+    "cache_key": "efcf640fadc7a7af8e54",
+    "llm_schema_version": "hytask-taskframe-v1",
+    "llm": {
+      "used": false,
+      "provider": null,
+      "model": null,
+      "prompt_version": "hytask-taskframe-v1",
+      "confidence": null,
+      "review_required": false
+    },
+    "canonical": {
+      "doc_id": "pg-8f50b326fd00a04a467f",
+      "source_id": "pg",
+      "channel_id": "pg_notice",
+      "title": "南京邮电大学硕博连读研究生拟录取名单公示",
+      "canonical_url": "https://pg.njupt.edu.cn/2026/0430/c17489a301258/page.htm",
+      "published_at": "2026-04-30T00:00:00",
+      "clean_text": "根据《南京邮电大学硕博连读研究生选拔工作规定（修订）》和《关于选拔 2025 年硕博连读研究生的通知 》 ，经本人申请、学院推荐、学科考核、校专家组评审，拟录取 俞久鹏 等 96 位硕士研究生为 硕博连读研究生，现予以公示。 公示时间： 202 6 年 4 月 30 日 — 202 6 年 5 月 6 日。 凡对名单存有异议者，可于公示期内与研究生院研究生培养办联系。 联系电话： 025-83492257 ；电子邮箱： ypy@njupt.edu.cn 。 研究生院 202 6 年 4 月 30 日 拟录取名单 序号 学号 姓名 申请博士一级学科 1 ******1915 俞久鹏 数学 2 ******1917 王一贤 数学 3 ******2332 赵子欣 物理学 4 ******1703 陈靖雯 光学工程 5 ******6634 李念书 光学工程 6 ******1822 吴兴宇 光学工程 7 ******1614 杨少堃 光学工程 8 ******1932 俎宇豪 光学工程 9 ******0232 石浩志 光学工程 10 ******0513 孙士耀 光学工程 11 ******1905 杨维宇 光学工程 12 ******6208 刘茂杨 光学工程 13 ******1824 夏晨旭 光学工程 14 ******1702 蔡鑫龙 光学工程 15 ******3521 唐佳瑜 光学工程 16 ******1627 孙许鹏 光学工程 17 ******3505 段培钰 光学工程 18 ******6317 张芳婷 电子科学与技术 19 ******1335 张翀 电子科学与技术 20 ******3525 马玮仪 电子科学与技术 21 ******0441 王宁逸 电子科学与技术 22 ******6507 尤振 电子科学与技术 23 ******3337 朱文涛 电子科学与技术 24 ******3717 杨子骁 电子科学与技术 25 ******1623 张兴鹏 电子科学与技术 26 ******3705 刘镓瑞 电子科学与技术 27 ******3712 王储 电子科学与技术 28 ******3321 张馨怡 电子科学与技术 29 ******1616 尹陈 电子科学与技术 30 ******6216 钱爽 电子科学与技术 31 ******1928 朱威 电子科学与技术 32 ******1621 张恒 电子科学与技术 33 ******0620 陆天宇 电子科学与技术 34 ******0436 林照然 电子科学与技术 35 ******4807 陈冬阳 电子科学与技术 36 ******0437 钮烨栋 电子科学与技术 37 ******0730 郁钦浩 电子科学与技术 38 ******0722 苏赛强 电子科学与技术 39 ******4603 刘崇浩 电子科学与技术 40 ******3022 苏浩文 电子科学与技术 41 ******5325 赵衡 电子科学与技术 42 ******0615 李甜甜 电子科学与技术 43 ******8637 周铭鉴 电子科学与技术 44 ******0309 陈勇 信息与通信工程 45 ******3710 周江乐 信息与通信工程 46 ******7333 张炜荥 信息与通信工程 47 ******0311 吴思睿 信息与通信工程 48 ******0205 刘跟创 信息与通信工程 49 ******4011 胡前灵 信息与通信工程 50 ******0308 王志琬 信息与通信工程 51 ******0122 冯紫嵚 信息与通信工程 52 ******0416 胡耀龙 信息与通信工程 53 ******0204 刘畅 信息与通信工程 54 ******0347 朱倩倩 信息与通信工程 55 ******3132 黄晨 信息与通信工程 56 ******0208 刘芮希 信息与通信工程 57 ******0203 林馨玥 信息与通信工程 58 ******4538 杨文举 信息与通信工程 59 ******1729 张继越 信息与通信工程 60 ******0129 胡志翔 信息与通信工程 61 ******0142 冷雨轩 信息与通信工程 62 ******1704 高伟杰 信息与通信工程 63 ******3815 常国庆 信息与通信工程 64 ******0114 陈阳智 信息与通信工程 65 ******1419 任灵 控制科学与工程 66 ******6512 颜子钥 控制科学与工程 67 ******1204 石鑫月 控制科学与工程 68 ******1205 王春杨 控制科学与工程 69 ******1201 卢畅 控制科学与工程 70 ******1220 张晨斌 控制科学与工程 71 ******1119 姜宇森 控制科学与工程 72 ******5441 游嘉侃 网络空间安全 73 ******5602 解一鸣 网络空间安全 74 ******0812 肖阳 计算机科学与技术 75 ******0717 罗方喆 计算机科学与技术 76 ******0804 陈果 计算机科学与技术 77 ******1701 常昊宇 计算机科学与技术 78 ******5614 何家成 计算机科学与技术 79 ******0919 刘洋 计算机科学与技术 80 ******0701 曹志鹏 计算机科学与技术 81 ******0947 郑霄鹏 计算机科学与技术 82 ******7902 翁彤 管理科学与工程 83 ******3104 何苏苏 集成电路科学与工程 84 ******3405 侯昱丞 集成电路科学与工程 85 ******81",
+      "attachments": [],
+      "content_hash": "3df7bb44a1c18ce9a666",
+      "dedupe_key": "7acc4f7e93031b9d86d0",
+      "language": "zh",
+      "status": "ok",
+      "fetched_at": "2026-05-24T20:12:03.279901+08:00",
+      "http_status": 200
+    },
+    "rule_guard": {
+      "restricted": false,
+      "sensitive": true,
+      "sensitive_types": [
+        "名单公示",
+        "学号"
+      ],
+      "low_evidence": false,
+      "duplicate": false,
+      "expired": false,
+      "evergreen": false,
+      "administrative_noise": false,
+      "risk_flags": [
+        "sensitive_personal_info"
+      ],
+      "allow_llm": false,
+      "allow_full_text_display": false,
+      "review_required": true,
+      "evaluated_at": "2026-05-24T12:12:09.948892Z"
+    },
+    "task_frames": []
+  },
+  {
     "id": "cxcy-ec0d1833e2ad27927cdb",
     "kind": "notice",
     "source_id": "cxcy",
@@ -8008,7 +8170,7 @@
       "dedupe_key": "db1c80229a93ddfc6a2a",
       "language": "zh",
       "status": "ok",
-      "fetched_at": "2026-05-24T19:44:23.183125+08:00",
+      "fetched_at": "2026-05-24T20:12:03.279901+08:00",
       "http_status": 200
     },
     "rule_guard": {
@@ -8029,7 +8191,7 @@
       "allow_llm": false,
       "allow_full_text_display": false,
       "review_required": true,
-      "evaluated_at": "2026-05-24T11:46:54.156515Z"
+      "evaluated_at": "2026-05-24T12:12:15.925322Z"
     },
     "task_frames": []
   },
@@ -8175,7 +8337,7 @@
       "dedupe_key": "ee16689f9d3bcd1d3445",
       "language": "zh",
       "status": "ok",
-      "fetched_at": "2026-05-24T19:44:23.183125+08:00",
+      "fetched_at": "2026-05-24T20:12:03.279901+08:00",
       "http_status": 200
     },
     "rule_guard": {
@@ -8197,7 +8359,7 @@
       "allow_llm": false,
       "allow_full_text_display": false,
       "review_required": true,
-      "evaluated_at": "2026-05-24T11:44:42.971644Z"
+      "evaluated_at": "2026-05-24T12:12:04.366346Z"
     },
     "task_frames": []
   },
@@ -8465,7 +8627,7 @@
       "dedupe_key": "a92ae53189abb26300e1",
       "language": "zh",
       "status": "ok",
-      "fetched_at": "2026-05-24T19:44:23.183125+08:00",
+      "fetched_at": "2026-05-24T20:12:03.279901+08:00",
       "http_status": 200
     },
     "rule_guard": {
@@ -8485,7 +8647,7 @@
       "allow_llm": false,
       "allow_full_text_display": false,
       "review_required": true,
-      "evaluated_at": "2026-05-24T11:45:58.814367Z"
+      "evaluated_at": "2026-05-24T12:12:10.878060Z"
     },
     "task_frames": []
   },
@@ -8871,6 +9033,228 @@
         "confidence": 0.85
       }
     ]
+  },
+  {
+    "id": "jwc-e0a5cb4d5ca877acd7a0",
+    "kind": "notice",
+    "source_id": "jwc",
+    "channel_id": "jwc_notice",
+    "channel": "通知公告",
+    "title": "【教务管理办公室】2025-2026学年第二学期各学院转专业工作细则",
+    "url": "https://jwc.njupt.edu.cn/2026/0430/c1594a301207/page.htm",
+    "source": "本科生院 / 教务处",
+    "source_domain": "jwc.njupt.edu.cn",
+    "source_type": "central_admin",
+    "category": "学院",
+    "domain": "academic",
+    "intent": "read",
+    "lifecycle": "active",
+    "evidence": [
+      "2025-2026学年第二学期各学院转专业工作细则",
+      "咨询电话",
+      "PDF附件"
+    ],
+    "confidence": 0.86,
+    "sub_category": null,
+    "deadline": null,
+    "action_required": false,
+    "action_type": null,
+    "action_summary": null,
+    "required_materials": [],
+    "sensitive": false,
+    "sensitive_types": [],
+    "review_required": false,
+    "risk_flags": [],
+    "audience": [
+      "本科生"
+    ],
+    "published_at": "2026-04-30",
+    "content": "学院 转专业工作细则 咨询电话 通信与信息工程学院 01-通信与信息工程学院2026年转专业工作细则.pdf 025-83492789 电子与光学工程学院、柔性电子（未来技术）学院 02-电子与光学工程学院、柔性电子（未来技术）学院2026年转专业工作细则.pdf 025-85866951 集成电路科学与工程学院（产教融合学院） 03-集成电路科学与工程学院（产教融合学院）2026年转专业工作细则.pdf 025-85866164 计算机学院、软件学院、网络空间安全学院 04-计算机学院、软件学院、网络空间安全学院2026年转专业工作细则.pdf 025-85866434 自动化学院 05-自动化学院2026年转专业工作细则.pdf 025-85866500 人工智能学院 06-人工智能学院2026年转专业工作细则.pdf 025-85866412 材料科学与工程学院 07-材料科学与工程学院2026年转专业工作细则.pdf 025-85866332 化学与生命科学学院 08-化学与生命科学学院2026年转专业工作细则.pdf 025-83535682 物联网学院 09-物联网学院2026年转专业工作细则.pdf 025-83535107 理学院 10-理学院2026年转专业工作细则.pdf 025-85866171 现代邮政学院、智慧交通学院 11-现代邮政学院、智慧交通学院2026年转专业工作细则.pdf 025-83492207 数字媒体与设计艺术学院 12-数字媒体与设计艺术学院2026年转专业工作细则.pdf 025-85866750 管理学院 13-管理学院2026年转专业工作细则.pdf 025-83535862 经济学院 14-经济学院2026年转专业工作细则.pdf 025-85866833 社会与人口学院、社会工作学院 15-社会与人口学院、社会工作学院2026年转专业工作细则.pdf 025-85866902 外国语学院 16-外国语学院2026年转专业工作细则.pdf 025-85866805 教育科学与技术学院 17-教育科学与技术学院2026年转专业工作细则.pdf 025-85866373 波特兰学院 18-波特兰学院2026年转专业工作细则.pdf 025-85866787",
+    "summary": "教务处发布了2025-2026学年第二学期各学院转专业工作细则，包含各学院咨询电话和PDF附件，供学生查阅。",
+    "attachments": [
+      {
+        "name": "01-通信与信息工程学院2026年转专业工作细则.pdf",
+        "url": "https://jwc.njupt.edu.cn/_upload/article/files/0c/c6/fced94364eb1bc0867522c80f5b3/ad9abcf3-8ad7-40bd-af8e-5ad36f7b8273.pdf",
+        "type": "pdf",
+        "role": null,
+        "description": null,
+        "sensitive": false
+      },
+      {
+        "name": "02-电子与光学工程学院、柔性电子（未来技术）学院2026年转专业工作细则.pdf",
+        "url": "https://jwc.njupt.edu.cn/_upload/article/files/0c/c6/fced94364eb1bc0867522c80f5b3/827f67b2-aa6c-4b00-b5d6-92effc84760c.pdf",
+        "type": "pdf",
+        "role": null,
+        "description": null,
+        "sensitive": false
+      },
+      {
+        "name": "03-集成电路科学与工程学院（产教融合学院）2026年转专业工作细则.pdf",
+        "url": "https://jwc.njupt.edu.cn/_upload/article/files/0c/c6/fced94364eb1bc0867522c80f5b3/392e72ca-f820-4baf-bc13-c75661f2b594.pdf",
+        "type": "pdf",
+        "role": null,
+        "description": null,
+        "sensitive": false
+      },
+      {
+        "name": "04-计算机学院、软件学院、网络空间安全学院2026年转专业工作细则.pdf",
+        "url": "https://jwc.njupt.edu.cn/_upload/article/files/0c/c6/fced94364eb1bc0867522c80f5b3/39fd01d2-b862-41a7-92f0-f42edbd29f95.pdf",
+        "type": "pdf",
+        "role": null,
+        "description": null,
+        "sensitive": false
+      },
+      {
+        "name": "05-自动化学院2026年转专业工作细则.pdf",
+        "url": "https://jwc.njupt.edu.cn/_upload/article/files/0c/c6/fced94364eb1bc0867522c80f5b3/51940b68-a35f-4830-8c6c-178b134c0cb6.pdf",
+        "type": "pdf",
+        "role": null,
+        "description": null,
+        "sensitive": false
+      },
+      {
+        "name": "06-人工智能学院2026年转专业工作细则.pdf",
+        "url": "https://jwc.njupt.edu.cn/_upload/article/files/0c/c6/fced94364eb1bc0867522c80f5b3/795b2bc0-6fdf-42f6-a563-faee160d3f52.pdf",
+        "type": "pdf",
+        "role": null,
+        "description": null,
+        "sensitive": false
+      },
+      {
+        "name": "07-材料科学与工程学院2026年转专业工作细则.pdf",
+        "url": "https://jwc.njupt.edu.cn/_upload/article/files/0c/c6/fced94364eb1bc0867522c80f5b3/12a683e8-3856-401a-bb60-0c03b4c528b6.pdf",
+        "type": "pdf",
+        "role": null,
+        "description": null,
+        "sensitive": false
+      },
+      {
+        "name": "08-化学与生命科学学院2026年转专业工作细则.pdf",
+        "url": "https://jwc.njupt.edu.cn/_upload/article/files/0c/c6/fced94364eb1bc0867522c80f5b3/7bce1726-a03a-491d-ad00-99e470f21812.pdf",
+        "type": "pdf",
+        "role": null,
+        "description": null,
+        "sensitive": false
+      }
+    ],
+    "student_score": 0.8677,
+    "freshness_score": 0.78,
+    "importance_score": 0.8575,
+    "source_weight": 1.0,
+    "tags": [
+      "学院",
+      "转专业",
+      "工作细则",
+      "2025-2026学年第二学期"
+    ],
+    "hash": "e0a5cb4d5ca877acd7a0",
+    "cache_key": "978e597f0e96e6d8b70b",
+    "llm_schema_version": "hytask-taskframe-v1",
+    "llm": {
+      "used": true,
+      "provider": "deepseek",
+      "model": "deepseek-v4-flash",
+      "prompt_version": "hytask-taskframe-v1",
+      "confidence": 0.86,
+      "review_required": false
+    },
+    "canonical": {
+      "doc_id": "jwc-e0a5cb4d5ca877acd7a0",
+      "source_id": "jwc",
+      "channel_id": "jwc_notice",
+      "title": "【教务管理办公室】2025-2026学年第二学期各学院转专业工作细则",
+      "canonical_url": "https://jwc.njupt.edu.cn/2026/0430/c1594a301207/page.htm",
+      "published_at": "2026-04-30T00:00:00",
+      "clean_text": "学院 转专业工作细则 咨询电话 通信与信息工程学院 01-通信与信息工程学院2026年转专业工作细则.pdf 025-83492789 电子与光学工程学院、柔性电子（未来技术）学院 02-电子与光学工程学院、柔性电子（未来技术）学院2026年转专业工作细则.pdf 025-85866951 集成电路科学与工程学院（产教融合学院） 03-集成电路科学与工程学院（产教融合学院）2026年转专业工作细则.pdf 025-85866164 计算机学院、软件学院、网络空间安全学院 04-计算机学院、软件学院、网络空间安全学院2026年转专业工作细则.pdf 025-85866434 自动化学院 05-自动化学院2026年转专业工作细则.pdf 025-85866500 人工智能学院 06-人工智能学院2026年转专业工作细则.pdf 025-85866412 材料科学与工程学院 07-材料科学与工程学院2026年转专业工作细则.pdf 025-85866332 化学与生命科学学院 08-化学与生命科学学院2026年转专业工作细则.pdf 025-83535682 物联网学院 09-物联网学院2026年转专业工作细则.pdf 025-83535107 理学院 10-理学院2026年转专业工作细则.pdf 025-85866171 现代邮政学院、智慧交通学院 11-现代邮政学院、智慧交通学院2026年转专业工作细则.pdf 025-83492207 数字媒体与设计艺术学院 12-数字媒体与设计艺术学院2026年转专业工作细则.pdf 025-85866750 管理学院 13-管理学院2026年转专业工作细则.pdf 025-83535862 经济学院 14-经济学院2026年转专业工作细则.pdf 025-85866833 社会与人口学院、社会工作学院 15-社会与人口学院、社会工作学院2026年转专业工作细则.pdf 025-85866902 外国语学院 16-外国语学院2026年转专业工作细则.pdf 025-85866805 教育科学与技术学院 17-教育科学与技术学院2026年转专业工作细则.pdf 025-85866373 波特兰学院 18-波特兰学院2026年转专业工作细则.pdf 025-85866787",
+      "attachments": [
+        {
+          "name": "01-通信与信息工程学院2026年转专业工作细则.pdf",
+          "url": "https://jwc.njupt.edu.cn/_upload/article/files/0c/c6/fced94364eb1bc0867522c80f5b3/ad9abcf3-8ad7-40bd-af8e-5ad36f7b8273.pdf",
+          "type": "pdf",
+          "role": null,
+          "description": null,
+          "sensitive": false
+        },
+        {
+          "name": "02-电子与光学工程学院、柔性电子（未来技术）学院2026年转专业工作细则.pdf",
+          "url": "https://jwc.njupt.edu.cn/_upload/article/files/0c/c6/fced94364eb1bc0867522c80f5b3/827f67b2-aa6c-4b00-b5d6-92effc84760c.pdf",
+          "type": "pdf",
+          "role": null,
+          "description": null,
+          "sensitive": false
+        },
+        {
+          "name": "03-集成电路科学与工程学院（产教融合学院）2026年转专业工作细则.pdf",
+          "url": "https://jwc.njupt.edu.cn/_upload/article/files/0c/c6/fced94364eb1bc0867522c80f5b3/392e72ca-f820-4baf-bc13-c75661f2b594.pdf",
+          "type": "pdf",
+          "role": null,
+          "description": null,
+          "sensitive": false
+        },
+        {
+          "name": "04-计算机学院、软件学院、网络空间安全学院2026年转专业工作细则.pdf",
+          "url": "https://jwc.njupt.edu.cn/_upload/article/files/0c/c6/fced94364eb1bc0867522c80f5b3/39fd01d2-b862-41a7-92f0-f42edbd29f95.pdf",
+          "type": "pdf",
+          "role": null,
+          "description": null,
+          "sensitive": false
+        },
+        {
+          "name": "05-自动化学院2026年转专业工作细则.pdf",
+          "url": "https://jwc.njupt.edu.cn/_upload/article/files/0c/c6/fced94364eb1bc0867522c80f5b3/51940b68-a35f-4830-8c6c-178b134c0cb6.pdf",
+          "type": "pdf",
+          "role": null,
+          "description": null,
+          "sensitive": false
+        },
+        {
+          "name": "06-人工智能学院2026年转专业工作细则.pdf",
+          "url": "https://jwc.njupt.edu.cn/_upload/article/files/0c/c6/fced94364eb1bc0867522c80f5b3/795b2bc0-6fdf-42f6-a563-faee160d3f52.pdf",
+          "type": "pdf",
+          "role": null,
+          "description": null,
+          "sensitive": false
+        },
+        {
+          "name": "07-材料科学与工程学院2026年转专业工作细则.pdf",
+          "url": "https://jwc.njupt.edu.cn/_upload/article/files/0c/c6/fced94364eb1bc0867522c80f5b3/12a683e8-3856-401a-bb60-0c03b4c528b6.pdf",
+          "type": "pdf",
+          "role": null,
+          "description": null,
+          "sensitive": false
+        },
+        {
+          "name": "08-化学与生命科学学院2026年转专业工作细则.pdf",
+          "url": "https://jwc.njupt.edu.cn/_upload/article/files/0c/c6/fced94364eb1bc0867522c80f5b3/7bce1726-a03a-491d-ad00-99e470f21812.pdf",
+          "type": "pdf",
+          "role": null,
+          "description": null,
+          "sensitive": false
+        }
+      ],
+      "content_hash": "737676cdb0b7bc07ed1a",
+      "dedupe_key": "0cb876984e7897188fb5",
+      "language": "zh",
+      "status": "ok",
+      "fetched_at": "2026-05-24T20:12:03.279901+08:00",
+      "http_status": 200
+    },
+    "rule_guard": {
+      "restricted": false,
+      "sensitive": false,
+      "sensitive_types": [],
+      "low_evidence": false,
+      "duplicate": false,
+      "expired": false,
+      "evergreen": false,
+      "administrative_noise": false,
+      "risk_flags": [],
+      "allow_llm": true,
+      "allow_full_text_display": true,
+      "review_required": false,
+      "evaluated_at": "2026-05-24T12:12:04.723233Z"
+    },
+    "task_frames": []
   },
   {
     "id": "github-NJUPTFreeExams-NJUPT-General-Free-Exams-5360fe1c3b08d1d4ed43",
@@ -10744,7 +11128,7 @@
       "dedupe_key": "fe393a5478f9cac244fd",
       "language": "zh",
       "status": "ok",
-      "fetched_at": "2026-05-24T19:44:23.183125+08:00",
+      "fetched_at": "2026-05-24T20:12:03.279901+08:00",
       "http_status": 200
     },
     "rule_guard": {
@@ -10765,7 +11149,7 @@
       "allow_llm": false,
       "allow_full_text_display": false,
       "review_required": true,
-      "evaluated_at": "2026-05-24T11:49:50.863412Z"
+      "evaluated_at": "2026-05-24T12:12:51.909608Z"
     },
     "task_frames": []
   },
@@ -13417,7 +13801,7 @@
       "dedupe_key": "1e219d21b7eaba4d521c",
       "language": "zh",
       "status": "ok",
-      "fetched_at": "2026-05-24T19:44:23.183125+08:00",
+      "fetched_at": "2026-05-24T20:12:03.279901+08:00",
       "http_status": 200
     },
     "rule_guard": {
@@ -13438,7 +13822,7 @@
       "allow_llm": false,
       "allow_full_text_display": false,
       "review_required": true,
-      "evaluated_at": "2026-05-24T11:50:49.140744Z"
+      "evaluated_at": "2026-05-24T12:13:16.035099Z"
     },
     "task_frames": []
   },
@@ -14679,7 +15063,7 @@
       "dedupe_key": "210d97d8b3fa6a04ee17",
       "language": "zh",
       "status": "ok",
-      "fetched_at": "2026-05-24T19:44:23.183125+08:00",
+      "fetched_at": "2026-05-24T20:12:03.279901+08:00",
       "http_status": 200
     },
     "rule_guard": {
@@ -14697,7 +15081,7 @@
       "allow_llm": false,
       "allow_full_text_display": true,
       "review_required": true,
-      "evaluated_at": "2026-05-24T11:44:49.074596Z"
+      "evaluated_at": "2026-05-24T12:12:04.891076Z"
     },
     "task_frames": []
   },
@@ -16720,6 +17104,152 @@
     "task_frames": []
   },
   {
+    "id": "hqc-0d2ca4f4fe0d9bac05c1",
+    "kind": "notice",
+    "source_id": "hqc",
+    "channel_id": "hqc_notice",
+    "channel": "后勤服务通知",
+    "title": "关于寒假期间停电检修的通知",
+    "url": "https://hqc.njupt.edu.cn/2026/0123/c5002a296754/page.htm",
+    "source": "后勤管理处",
+    "source_domain": "hqc.njupt.edu.cn",
+    "source_type": "service_unit",
+    "category": "生活",
+    "domain": "logistics",
+    "intent": "alert",
+    "lifecycle": "unknown",
+    "evidence": [
+      "仙林、三牌楼校区高低压电气设备及变压器预防性试验拟于 2026 年 2 月 7 日— 2 月 8 日进行停电检修"
+    ],
+    "confidence": 0.9,
+    "sub_category": null,
+    "deadline": null,
+    "action_required": false,
+    "action_type": null,
+    "action_summary": null,
+    "required_materials": [],
+    "sensitive": false,
+    "sensitive_types": [],
+    "review_required": false,
+    "risk_flags": [],
+    "audience": [
+      "本科生",
+      "研究生",
+      "教职工"
+    ],
+    "published_at": "2026-04-05",
+    "content": "仙林、三牌楼校区高低压电气设备及变压器预防性试验拟于 2026 年 2 月 7 日— 2 月 8 日进行停电检修，在此期间请各学院和部门提前做好重要设备的关机和数据存储等，具体安排如下： 停电时间 校区 停电范围 2 月 7 日 全天 08 ： 00 -17 ： 00 三牌楼 每个楼宇单次停电时间约 4-5 小时 2 月 7 日 上午 08 ： 00 -14 ： 00 仙林 行政楼、教 1- 教 5 、梅兰竹菊、二食堂 2 月 7 日 下午 14 ： 00-17 ： 00 仙林 材料学科楼、新体育馆 2 月 8 日 上午 08 ： 00 -14 ： 00 仙林 教学楼 1-5 号、梅兰竹菊、二食堂 2 月 8 日 下午 14 ： 00-17 ： 00 仙林 青教一期、青教二期 请各单位高度重视并提前做好应急准备，实验室、机房等场所需提前关闭高功率仪器设备，避免断电造成损坏。重要数据及时备份，服务器及精密仪器建议配置不间断电源（ UPS ）。 在此停电期间，任何单位或个人未经允许不得擅自在检修线路上工作，否则后果自负。届时，将视工作进度，尽早结束，尽早送电。送电前不再另行通知，谨请相互转告，由此带来不便敬请谅解。 能源服务中心 2026 年 1 月 23 日",
+    "summary": "寒假期间仙林、三牌楼校区将停电检修，涉及教学楼、宿舍等，学生需提前关闭设备、备份数据。",
+    "attachments": [],
+    "student_score": 0.7712,
+    "freshness_score": 0.58,
+    "importance_score": 0.7319,
+    "source_weight": 0.82,
+    "tags": [
+      "生活",
+      "停电检修",
+      "寒假"
+    ],
+    "hash": "0d2ca4f4fe0d9bac05c1",
+    "cache_key": "02437934b514688c971e",
+    "llm_schema_version": "hytask-taskframe-v1",
+    "llm": {
+      "used": true,
+      "provider": "deepseek",
+      "model": "deepseek-v4-flash",
+      "prompt_version": "hytask-taskframe-v1",
+      "confidence": 0.9,
+      "review_required": false
+    },
+    "canonical": {
+      "doc_id": "hqc-0d2ca4f4fe0d9bac05c1",
+      "source_id": "hqc",
+      "channel_id": "hqc_notice",
+      "title": "关于寒假期间停电检修的通知",
+      "canonical_url": "https://hqc.njupt.edu.cn/2026/0123/c5002a296754/page.htm",
+      "published_at": "2026-04-05T00:00:00",
+      "clean_text": "仙林、三牌楼校区高低压电气设备及变压器预防性试验拟于 2026 年 2 月 7 日— 2 月 8 日进行停电检修，在此期间请各学院和部门提前做好重要设备的关机和数据存储等，具体安排如下： 停电时间 校区 停电范围 2 月 7 日 全天 08 ： 00 -17 ： 00 三牌楼 每个楼宇单次停电时间约 4-5 小时 2 月 7 日 上午 08 ： 00 -14 ： 00 仙林 行政楼、教 1- 教 5 、梅兰竹菊、二食堂 2 月 7 日 下午 14 ： 00-17 ： 00 仙林 材料学科楼、新体育馆 2 月 8 日 上午 08 ： 00 -14 ： 00 仙林 教学楼 1-5 号、梅兰竹菊、二食堂 2 月 8 日 下午 14 ： 00-17 ： 00 仙林 青教一期、青教二期 请各单位高度重视并提前做好应急准备，实验室、机房等场所需提前关闭高功率仪器设备，避免断电造成损坏。重要数据及时备份，服务器及精密仪器建议配置不间断电源（ UPS ）。 在此停电期间，任何单位或个人未经允许不得擅自在检修线路上工作，否则后果自负。届时，将视工作进度，尽早结束，尽早送电。送电前不再另行通知，谨请相互转告，由此带来不便敬请谅解。 能源服务中心 2026 年 1 月 23 日",
+      "attachments": [],
+      "content_hash": "1e62068234ade7ee83b3",
+      "dedupe_key": "a6bbf5ad56f9c4c657f0",
+      "language": "zh",
+      "status": "ok",
+      "fetched_at": "2026-05-24T20:12:03.279901+08:00",
+      "http_status": 200
+    },
+    "rule_guard": {
+      "restricted": false,
+      "sensitive": false,
+      "sensitive_types": [],
+      "low_evidence": false,
+      "duplicate": false,
+      "expired": false,
+      "evergreen": false,
+      "administrative_noise": false,
+      "risk_flags": [],
+      "allow_llm": true,
+      "allow_full_text_display": true,
+      "review_required": false,
+      "evaluated_at": "2026-05-24T12:12:19.374270Z"
+    },
+    "task_frames": [
+      {
+        "task_id": "task_a797c728d6ed8a23",
+        "doc_id": "hqc-0d2ca4f4fe0d9bac05c1",
+        "task_type": "schedule",
+        "who": {
+          "audience": [
+            "本科生",
+            "研究生",
+            "教职工"
+          ],
+          "college": [],
+          "grade": [],
+          "major": [],
+          "class_name": []
+        },
+        "what": "关于寒假期间停电检修的通知",
+        "action": {
+          "required": false,
+          "verb": null,
+          "object": null,
+          "summary": null
+        },
+        "time": {
+          "published_at": "2026-04-05",
+          "deadline": null,
+          "lifecycle": "unknown",
+          "urgency_days": null
+        },
+        "materials": [],
+        "location": {
+          "place": null,
+          "online": null,
+          "contact": null
+        },
+        "source": {
+          "source_id": "hqc",
+          "channel_id": "hqc_notice",
+          "authority": 0.82,
+          "official": true
+        },
+        "evidence": [
+          {
+            "field": "general",
+            "text": "仙林、三牌楼校区高低压电气设备及变压器预防性试验拟于 2026 年 2 月 7 日— 2 月 8 日进行停电检修"
+          }
+        ],
+        "risk": {
+          "sensitive": false,
+          "restricted": false,
+          "low_evidence": false,
+          "review_required": false
+        },
+        "confidence": 0.9
+      }
+    ]
+  },
+  {
     "id": "exchange-cc53d1f22da70a36c648",
     "kind": "notice",
     "source_id": "exchange",
@@ -16793,7 +17323,7 @@
       "dedupe_key": "b8d1ae146238902ef0bc",
       "language": "zh",
       "status": "ok",
-      "fetched_at": "2026-05-24T19:44:23.183125+08:00",
+      "fetched_at": "2026-05-24T20:12:03.279901+08:00",
       "http_status": 200
     },
     "rule_guard": {
@@ -16813,7 +17343,7 @@
       "allow_llm": false,
       "allow_full_text_display": false,
       "review_required": true,
-      "evaluated_at": "2026-05-24T11:48:49.449983Z"
+      "evaluated_at": "2026-05-24T12:12:22.239813Z"
     },
     "task_frames": []
   },
@@ -17074,7 +17604,7 @@
       "dedupe_key": "f3675d58c55b67497e6a",
       "language": "zh",
       "status": "ok",
-      "fetched_at": "2026-05-24T19:44:23.183125+08:00",
+      "fetched_at": "2026-05-24T20:12:03.279901+08:00",
       "http_status": 200
     },
     "rule_guard": {
@@ -17095,7 +17625,7 @@
       "allow_llm": false,
       "allow_full_text_display": false,
       "review_required": true,
-      "evaluated_at": "2026-05-24T11:50:50.208275Z"
+      "evaluated_at": "2026-05-24T12:13:16.105114Z"
     },
     "task_frames": []
   },
@@ -17901,7 +18431,7 @@
       "dedupe_key": "a79575f543fea332fd4c",
       "language": "zh",
       "status": "ok",
-      "fetched_at": "2026-05-24T19:44:23.183125+08:00",
+      "fetched_at": "2026-05-24T20:12:03.279901+08:00",
       "http_status": 200
     },
     "rule_guard": {
@@ -17922,7 +18452,7 @@
       "allow_llm": false,
       "allow_full_text_display": false,
       "review_required": true,
-      "evaluated_at": "2026-05-24T11:45:16.903355Z"
+      "evaluated_at": "2026-05-24T12:12:08.573444Z"
     },
     "task_frames": []
   },
@@ -18351,7 +18881,7 @@
       "dedupe_key": "f4ac6224a346a908838b",
       "language": "zh",
       "status": "ok",
-      "fetched_at": "2026-05-24T19:44:23.183125+08:00",
+      "fetched_at": "2026-05-24T20:12:03.279901+08:00",
       "http_status": 200
     },
     "rule_guard": {
@@ -18372,7 +18902,7 @@
       "allow_llm": false,
       "allow_full_text_display": false,
       "review_required": true,
-      "evaluated_at": "2026-05-24T11:51:49.747716Z"
+      "evaluated_at": "2026-05-24T12:13:19.264034Z"
     },
     "task_frames": []
   },
@@ -19159,98 +19689,95 @@
     "task_frames": []
   },
   {
-    "id": "pg-79cbbb741bc18901e7f0",
+    "id": "exchange-fa45a88a0c576d38ab5a",
     "kind": "notice",
-    "source_id": "pg",
-    "channel_id": "pg_notice",
-    "channel": "培养与学位通知",
-    "title": "南京邮电大学硕博连读研究生拟录取名单公示",
-    "url": "https://pg.njupt.edu.cn/2026/0430/c17489a301258/page.htm",
-    "source": "研究生院",
-    "source_domain": "pg.njupt.edu.cn",
+    "source_id": "exchange",
+    "channel_id": "exchange_notice",
+    "channel": "国际交流通知",
+    "title": "南京邮电大学学生国境外交流项目一览表",
+    "url": "http://exchange.njupt.edu.cn/2025/0527/c7449a284432/page.htm",
+    "source": "国际合作交流处",
+    "source_domain": "exchange.njupt.edu.cn",
     "source_type": "central_admin",
-    "category": "研究生",
-    "domain": "degree",
-    "intent": "publicity",
-    "lifecycle": "active",
+    "category": "项目",
+    "domain": "project",
+    "intent": "read",
+    "lifecycle": "unknown",
     "evidence": [
-      "南京邮电大学硕博连读研究生拟录取名单公示 南京邮电大学硕博连读研究生拟录取名单公示"
+      "南京邮电大学学生国境外交流项目一览表"
     ],
-    "confidence": null,
+    "confidence": 0.3,
     "sub_category": null,
     "deadline": null,
     "action_required": false,
     "action_type": null,
     "action_summary": null,
     "required_materials": [],
-    "sensitive": true,
-    "sensitive_types": [
-      "名单公示"
-    ],
+    "sensitive": false,
+    "sensitive_types": [],
     "review_required": true,
     "risk_flags": [
-      "sensitive_personal_info"
+      "low_evidence"
     ],
     "audience": [
-      "研究生"
-    ],
-    "published_at": "2026-04-30",
-    "content": "南京邮电大学硕博连读研究生拟录取名单公示",
-    "summary": "该通知可能包含名单、学号或联系方式等个人信息，已按元数据索引；请查看原文确认详情。",
-    "attachments": [],
-    "student_score": 0.7078,
-    "freshness_score": 0.78,
-    "importance_score": 0.8528,
-    "source_weight": 0.96,
-    "tags": [
+      "本科生",
       "研究生",
-      "公示"
+      "国际学生"
     ],
-    "hash": "79cbbb741bc18901e7f0",
-    "cache_key": "3a716bcadf7205980add",
+    "published_at": null,
+    "content": "南京邮电大学学生国境外交流项目一览表",
+    "summary": "南京邮电大学学生国境外交流项目一览表，但内容仅有标题，无具体项目信息。",
+    "attachments": [],
+    "student_score": 0.6982,
+    "freshness_score": 0.45,
+    "importance_score": 0.691,
+    "source_weight": 0.8,
+    "tags": [
+      "项目",
+      "国境外交流",
+      "项目一览表"
+    ],
+    "hash": "fa45a88a0c576d38ab5a",
+    "cache_key": "a79389fe1b7d111c82a8",
     "llm_schema_version": "hytask-taskframe-v1",
     "llm": {
-      "used": false,
-      "provider": null,
-      "model": null,
+      "used": true,
+      "provider": "deepseek",
+      "model": "deepseek-v4-flash",
       "prompt_version": "hytask-taskframe-v1",
-      "confidence": null,
-      "review_required": false
+      "confidence": 0.3,
+      "review_required": true
     },
     "canonical": {
-      "doc_id": "pg-79cbbb741bc18901e7f0",
-      "source_id": "pg",
-      "channel_id": "pg_notice",
-      "title": "南京邮电大学硕博连读研究生拟录取名单公示",
-      "canonical_url": "https://pg.njupt.edu.cn/2026/0430/c17489a301258/page.htm",
-      "published_at": "2026-04-30T00:00:00",
-      "clean_text": "南京邮电大学硕博连读研究生拟录取名单公示",
+      "doc_id": "exchange-fa45a88a0c576d38ab5a",
+      "source_id": "exchange",
+      "channel_id": "exchange_notice",
+      "title": "南京邮电大学学生国境外交流项目一览表",
+      "canonical_url": "http://exchange.njupt.edu.cn/2025/0527/c7449a284432/page.htm",
+      "published_at": null,
+      "clean_text": "南京邮电大学学生国境外交流项目一览表",
       "attachments": [],
-      "content_hash": "b00b73d354a5c25d2780",
-      "dedupe_key": "b25260dd7e6fc29b0449",
+      "content_hash": "a4ea4e8439e8801d7a6a",
+      "dedupe_key": "bd72b53e1f59944446b9",
       "language": "zh",
       "status": "ok",
-      "fetched_at": "2026-05-24T19:44:23.183125+08:00",
+      "fetched_at": "2026-05-24T20:12:03.279901+08:00",
       "http_status": 200
     },
     "rule_guard": {
       "restricted": false,
-      "sensitive": true,
-      "sensitive_types": [
-        "名单公示"
-      ],
+      "sensitive": false,
+      "sensitive_types": [],
       "low_evidence": false,
       "duplicate": false,
       "expired": false,
       "evergreen": false,
       "administrative_noise": false,
-      "risk_flags": [
-        "sensitive_personal_info"
-      ],
-      "allow_llm": false,
-      "allow_full_text_display": false,
-      "review_required": true,
-      "evaluated_at": "2026-05-24T11:45:39.832369Z"
+      "risk_flags": [],
+      "allow_llm": true,
+      "allow_full_text_display": true,
+      "review_required": false,
+      "evaluated_at": "2026-05-24T12:12:22.454146Z"
     },
     "task_frames": []
   },
@@ -20335,7 +20862,7 @@
       "dedupe_key": "fc595a56c637ec838fd1",
       "language": "zh",
       "status": "ok",
-      "fetched_at": "2026-05-24T19:44:23.183125+08:00",
+      "fetched_at": "2026-05-24T20:12:03.279901+08:00",
       "http_status": 200
     },
     "rule_guard": {
@@ -20356,7 +20883,7 @@
       "allow_llm": false,
       "allow_full_text_display": false,
       "review_required": true,
-      "evaluated_at": "2026-05-24T11:50:31.263384Z"
+      "evaluated_at": "2026-05-24T12:13:15.202924Z"
     },
     "task_frames": []
   },
@@ -20453,178 +20980,6 @@
       "allow_full_text_display": true,
       "review_required": false,
       "evaluated_at": "2026-05-24T09:11:51.016314Z"
-    },
-    "task_frames": []
-  },
-  {
-    "id": "cwc-269bc4ce4ecc08fc1f5a",
-    "kind": "notice",
-    "source_id": "cwc",
-    "channel_id": "cwc_notice",
-    "channel": "财务服务通知",
-    "title": "关于全面启用铁路、航空运输电子发票报销的通知",
-    "url": "https://cwc.njupt.edu.cn/2025/0929/c802a289564/page.htm",
-    "source": "财务处",
-    "source_domain": "cwc.njupt.edu.cn",
-    "source_type": "service_unit",
-    "category": "生活",
-    "domain": "logistics",
-    "intent": "read",
-    "lifecycle": "unknown",
-    "evidence": [
-      "关于全面启用铁路、航空运输电子发票报销的通知"
-    ],
-    "confidence": 0.8,
-    "sub_category": null,
-    "deadline": null,
-    "action_required": false,
-    "action_type": null,
-    "action_summary": null,
-    "required_materials": [],
-    "sensitive": false,
-    "sensitive_types": [],
-    "review_required": false,
-    "risk_flags": [],
-    "audience": [
-      "本科生",
-      "研究生",
-      "教职工"
-    ],
-    "published_at": null,
-    "content": "关于全面启用铁路、航空运输电子发票报销的通知",
-    "summary": "财务处通知全面启用铁路、航空运输电子发票报销，学生报销时需使用电子发票。",
-    "attachments": [],
-    "student_score": 0.6711,
-    "freshness_score": 0.45,
-    "importance_score": 0.7079,
-    "source_weight": 0.62,
-    "tags": [
-      "生活",
-      "财务",
-      "电子发票",
-      "报销"
-    ],
-    "hash": "269bc4ce4ecc08fc1f5a",
-    "cache_key": "a64f50a3590bc47d801b",
-    "llm_schema_version": "hytask-taskframe-v1",
-    "llm": {
-      "used": true,
-      "provider": "deepseek",
-      "model": "deepseek-v4-flash",
-      "prompt_version": "hytask-taskframe-v1",
-      "confidence": 0.8,
-      "review_required": false
-    },
-    "canonical": {
-      "doc_id": "cwc-269bc4ce4ecc08fc1f5a",
-      "source_id": "cwc",
-      "channel_id": "cwc_notice",
-      "title": "关于全面启用铁路、航空运输电子发票报销的通知",
-      "canonical_url": "https://cwc.njupt.edu.cn/2025/0929/c802a289564/page.htm",
-      "published_at": null,
-      "clean_text": "关于全面启用铁路、航空运输电子发票报销的通知",
-      "attachments": [],
-      "content_hash": "64ad1d9891a74b27f1e3",
-      "dedupe_key": "63f7d9b2e2345132396a",
-      "language": "zh",
-      "status": "ok",
-      "fetched_at": "2026-05-24T16:55:15.338793+08:00",
-      "http_status": 200
-    },
-    "rule_guard": {
-      "restricted": false,
-      "sensitive": false,
-      "sensitive_types": [],
-      "low_evidence": false,
-      "duplicate": false,
-      "expired": false,
-      "evergreen": false,
-      "administrative_noise": false,
-      "risk_flags": [],
-      "allow_llm": true,
-      "allow_full_text_display": true,
-      "review_required": false,
-      "evaluated_at": "2026-05-24T09:08:24.632212Z"
-    },
-    "task_frames": []
-  },
-  {
-    "id": "jwc-158830d5b83e1f3321dc",
-    "kind": "notice",
-    "status": "restricted",
-    "source_id": "jwc",
-    "channel_id": "jwc_notice",
-    "channel": "通知公告",
-    "title": "【教务管理办公室】2025-2026学年第二学期各学院转专业工作细则 2026-04-30",
-    "url": "https://jwc.njupt.edu.cn/2026/0430/c1594a301207/page.htm",
-    "source": "本科生院 / 教务处",
-    "source_domain": "jwc.njupt.edu.cn",
-    "source_type": "central_admin",
-    "category": "选课",
-    "domain": "course",
-    "intent": "read",
-    "lifecycle": "active",
-    "evidence": [
-      "【教务管理办公室】2025-2026学年第二学期各学院转专业工作细则 2026-04-30 提示：您当前ip并非校内地址，该信息仅允许校内地址访问 首页 关闭此页"
-    ],
-    "confidence": 0.35,
-    "sub_category": null,
-    "deadline": null,
-    "action_required": false,
-    "action_type": null,
-    "action_summary": null,
-    "required_materials": [],
-    "sensitive": false,
-    "sensitive_types": [],
-    "review_required": true,
-    "risk_flags": [
-      "restricted_content"
-    ],
-    "audience": [
-      "本科生"
-    ],
-    "published_at": "2026-04-30",
-    "content": "【教务管理办公室】2025-2026学年第二学期各学院转专业工作细则 2026-04-30",
-    "summary": "该页面访问受限，请点击原文在允许的网络环境下查看",
-    "attachments": [],
-    "student_score": 0.67,
-    "freshness_score": 0.78,
-    "importance_score": 0.8,
-    "source_weight": 1.0,
-    "tags": [
-      "选课",
-      "转专业"
-    ],
-    "hash": "158830d5b83e1f3321dc",
-    "cache_key": "89ad9bd85524a47aa393",
-    "llm_schema_version": "hytask-taskframe-v1",
-    "llm": {
-      "used": false,
-      "provider": null,
-      "model": null,
-      "prompt_version": "hytask-taskframe-v1",
-      "confidence": null,
-      "review_required": true
-    },
-    "canonical": {
-      "doc_id": "jwc-158830d5b83e1f3321dc",
-      "canonical_url": "https://jwc.njupt.edu.cn/2026/0430/c1594a301207/page.htm",
-      "content_hash": "bad4591712f827bde393",
-      "dedupe_key": "e45e0fe49d7115184ed9"
-    },
-    "rule_guard": {
-      "restricted": true,
-      "sensitive": false,
-      "low_evidence": false,
-      "duplicate": false,
-      "expired": false,
-      "evergreen": false,
-      "risk_flags": [
-        "restricted_content"
-      ],
-      "allow_llm": false,
-      "allow_full_text_display": false,
-      "review_required": true
     },
     "task_frames": []
   },
@@ -21366,7 +21721,7 @@
       "dedupe_key": "73924076d1e30e5d0353",
       "language": "zh",
       "status": "ok",
-      "fetched_at": "2026-05-24T19:44:23.183125+08:00",
+      "fetched_at": "2026-05-24T20:12:03.279901+08:00",
       "http_status": 200
     },
     "rule_guard": {
@@ -21384,7 +21739,7 @@
       "allow_llm": false,
       "allow_full_text_display": true,
       "review_required": true,
-      "evaluated_at": "2026-05-24T11:51:22.156873Z"
+      "evaluated_at": "2026-05-24T12:13:17.707588Z"
     },
     "task_frames": []
   },
@@ -21665,7 +22020,7 @@
       "dedupe_key": "caa017fee84ce5e73e63",
       "language": "zh",
       "status": "ok",
-      "fetched_at": "2026-05-24T19:44:23.183125+08:00",
+      "fetched_at": "2026-05-24T20:12:03.279901+08:00",
       "http_status": 200
     },
     "rule_guard": {
@@ -21684,7 +22039,7 @@
       "allow_llm": false,
       "allow_full_text_display": true,
       "review_required": true,
-      "evaluated_at": "2026-05-24T11:51:29.470183Z"
+      "evaluated_at": "2026-05-24T12:13:18.151066Z"
     },
     "task_frames": [
       {
@@ -21944,24 +22299,24 @@
     "task_frames": []
   },
   {
-    "id": "exchange-fa45a88a0c576d38ab5a",
+    "id": "exchange-0c67a93d80d70cec84e0",
     "kind": "notice",
     "source_id": "exchange",
     "channel_id": "exchange_notice",
     "channel": "国际交流通知",
-    "title": "南京邮电大学学生国境外交流项目一览表",
-    "url": "http://exchange.njupt.edu.cn/2025/0527/c7449a284432/page.htm",
+    "title": "我校港澳台学生赴梅园新村纪念馆开展国情教育实践活动",
+    "url": "https://exchange.njupt.edu.cn/2026/0424/c7465a300821/page.htm",
     "source": "国际合作交流处",
     "source_domain": "exchange.njupt.edu.cn",
     "source_type": "central_admin",
-    "category": "项目",
-    "domain": "international",
-    "intent": "read",
-    "lifecycle": "unknown",
+    "category": "生活",
+    "domain": "life",
+    "intent": "attend",
+    "lifecycle": "active",
     "evidence": [
-      "南京邮电大学学生国境外交流项目一览表"
+      "4月10日，国际合作交流处组织港澳台学生代表前往梅园新村纪念馆"
     ],
-    "confidence": 0.5,
+    "confidence": 0.9,
     "sub_category": null,
     "deadline": null,
     "action_required": false,
@@ -21970,53 +22325,51 @@
     "required_materials": [],
     "sensitive": false,
     "sensitive_types": [],
-    "review_required": true,
-    "risk_flags": [
-      "low_evidence"
-    ],
+    "review_required": false,
+    "risk_flags": [],
     "audience": [
       "本科生",
       "研究生",
       "国际学生"
     ],
-    "published_at": null,
-    "content": "南京邮电大学学生国境外交流项目一览表",
-    "summary": "南京邮电大学学生国境外交流项目一览表，正文内容缺失。",
+    "published_at": "2026-04-10",
+    "content": "寻访红色足迹 厚植家国情怀——港澳台学生赴梅园新村纪念馆开展国情教育实践活动 为深化港澳台学生国情教育，厚植家国情怀，增强民族认同感与向心力， 4 月 10 日，国际合作交流处组织港澳台学生代表前往梅园新村纪念馆，开展主题为“寻访红色足迹，传承革命精神”的国情教育实践活动，引导港澳台青年走进历史、感悟初心。 活动中，在纪念馆讲解员的带领下，学生代表们先后参观了中共代表团办事处旧址、史料陈列馆、周恩来铜像等展区。泛黄的书信、珍贵的文物、生动的影像资料，详细再现了 1946 年中共代表团在南京与国民党进行和平谈判的峥嵘岁月，生动诠释了革命先辈们为争取国家和平、民族独立而不懈奋斗的坚定信念与责任担当。学生们认真聆听讲解，不时驻足凝视，轻声交流感悟，在沉浸式体验中深刻体会革命先辈们不畏艰难、坚守信仰的崇高精神。 参观结束后，学生代表们纷纷分享心得。大家表示，此次梅园新村之行，让自己真切感受到了革命历史的厚重，对国家的发展历程有了更深刻的认识。作为新时代港澳台青年，将铭记历史、传承精神，主动加强对国情的学习了解，积极参与两岸三地交流活动，以实际行动凝聚共识，争做两岸三地交流交融的使者，用青春力量守护家国情怀，助力民族复兴。 此次实践活动，将国情教育与红色文化传承相结合，为港澳台学生搭建了了解祖国历史、感悟民族精神的重要平台，有效推动了港澳台学生融入国家发展大局，进一步筑牢了青年一代团结奋进的思想根基。 撰稿：张凤 审稿：张舒 国际合作交流处 港澳台事务办公室 2026.04.10",
+    "summary": "国际合作交流处组织港澳台学生赴梅园新村纪念馆开展国情教育实践活动，活动已于2026年4月10日举行。",
     "attachments": [],
     "student_score": 0.6331,
-    "freshness_score": 0.45,
+    "freshness_score": 0.58,
     "importance_score": 0.616,
     "source_weight": 0.8,
     "tags": [
-      "项目",
-      "交流项目",
-      "一览表"
+      "生活",
+      "国情教育",
+      "实践活动"
     ],
-    "hash": "fa45a88a0c576d38ab5a",
-    "cache_key": "a79389fe1b7d111c82a8",
+    "hash": "0c67a93d80d70cec84e0",
+    "cache_key": "30323c9f1401eb570a47",
     "llm_schema_version": "hytask-taskframe-v1",
     "llm": {
       "used": true,
-      "provider": "gemini",
-      "model": "gemini-3.1-flash-lite",
+      "provider": "deepseek",
+      "model": "deepseek-v4-flash",
       "prompt_version": "hytask-taskframe-v1",
-      "confidence": 0.5,
-      "review_required": true
+      "confidence": 0.9,
+      "review_required": false
     },
     "canonical": {
-      "doc_id": "exchange-fa45a88a0c576d38ab5a",
+      "doc_id": "exchange-0c67a93d80d70cec84e0",
       "source_id": "exchange",
       "channel_id": "exchange_notice",
-      "title": "南京邮电大学学生国境外交流项目一览表",
-      "canonical_url": "http://exchange.njupt.edu.cn/2025/0527/c7449a284432/page.htm",
-      "published_at": null,
-      "clean_text": "南京邮电大学学生国境外交流项目一览表",
+      "title": "我校港澳台学生赴梅园新村纪念馆开展国情教育实践活动",
+      "canonical_url": "https://exchange.njupt.edu.cn/2026/0424/c7465a300821/page.htm",
+      "published_at": "2026-04-10T00:00:00",
+      "clean_text": "寻访红色足迹 厚植家国情怀——港澳台学生赴梅园新村纪念馆开展国情教育实践活动 为深化港澳台学生国情教育，厚植家国情怀，增强民族认同感与向心力， 4 月 10 日，国际合作交流处组织港澳台学生代表前往梅园新村纪念馆，开展主题为“寻访红色足迹，传承革命精神”的国情教育实践活动，引导港澳台青年走进历史、感悟初心。 活动中，在纪念馆讲解员的带领下，学生代表们先后参观了中共代表团办事处旧址、史料陈列馆、周恩来铜像等展区。泛黄的书信、珍贵的文物、生动的影像资料，详细再现了 1946 年中共代表团在南京与国民党进行和平谈判的峥嵘岁月，生动诠释了革命先辈们为争取国家和平、民族独立而不懈奋斗的坚定信念与责任担当。学生们认真聆听讲解，不时驻足凝视，轻声交流感悟，在沉浸式体验中深刻体会革命先辈们不畏艰难、坚守信仰的崇高精神。 参观结束后，学生代表们纷纷分享心得。大家表示，此次梅园新村之行，让自己真切感受到了革命历史的厚重，对国家的发展历程有了更深刻的认识。作为新时代港澳台青年，将铭记历史、传承精神，主动加强对国情的学习了解，积极参与两岸三地交流活动，以实际行动凝聚共识，争做两岸三地交流交融的使者，用青春力量守护家国情怀，助力民族复兴。 此次实践活动，将国情教育与红色文化传承相结合，为港澳台学生搭建了了解祖国历史、感悟民族精神的重要平台，有效推动了港澳台学生融入国家发展大局，进一步筑牢了青年一代团结奋进的思想根基。 撰稿：张凤 审稿：张舒 国际合作交流处 港澳台事务办公室 2026.04.10",
       "attachments": [],
-      "content_hash": "a4ea4e8439e8801d7a6a",
-      "dedupe_key": "bd72b53e1f59944446b9",
+      "content_hash": "c56b05ee6a8f6d823762",
+      "dedupe_key": "1e4fc60c4fb2bbbcbb86",
       "language": "zh",
       "status": "ok",
-      "fetched_at": "2026-05-24T19:44:23.183125+08:00",
+      "fetched_at": "2026-05-24T20:12:03.279901+08:00",
       "http_status": 200
     },
     "rule_guard": {
@@ -22032,7 +22385,7 @@
       "allow_llm": true,
       "allow_full_text_display": true,
       "review_required": false,
-      "evaluated_at": "2026-05-24T11:48:53.502396Z"
+      "evaluated_at": "2026-05-24T12:12:22.054111Z"
     },
     "task_frames": []
   },
@@ -22440,7 +22793,7 @@
       "dedupe_key": "bedf5be7ecfe7461263d",
       "language": "zh",
       "status": "ok",
-      "fetched_at": "2026-05-24T19:44:23.183125+08:00",
+      "fetched_at": "2026-05-24T20:12:03.279901+08:00",
       "http_status": 200
     },
     "rule_guard": {
@@ -22458,7 +22811,7 @@
       "allow_llm": false,
       "allow_full_text_display": true,
       "review_required": true,
-      "evaluated_at": "2026-05-24T11:44:50.121615Z"
+      "evaluated_at": "2026-05-24T12:12:04.934251Z"
     },
     "task_frames": []
   },
@@ -22588,7 +22941,7 @@
       "dedupe_key": "0f5de39bd7c774a2fb99",
       "language": "zh",
       "status": "ok",
-      "fetched_at": "2026-05-24T19:44:23.183125+08:00",
+      "fetched_at": "2026-05-24T20:12:03.279901+08:00",
       "http_status": 200
     },
     "rule_guard": {
@@ -22607,7 +22960,7 @@
       "allow_llm": false,
       "allow_full_text_display": true,
       "review_required": true,
-      "evaluated_at": "2026-05-24T11:51:25.324066Z"
+      "evaluated_at": "2026-05-24T12:13:17.927781Z"
     },
     "task_frames": []
   },
@@ -23254,7 +23607,7 @@
       "dedupe_key": "b62ef744ff6019eb9209",
       "language": "zh",
       "status": "ok",
-      "fetched_at": "2026-05-24T19:44:23.183125+08:00",
+      "fetched_at": "2026-05-24T20:12:03.279901+08:00",
       "http_status": 200
     },
     "rule_guard": {
@@ -23272,7 +23625,7 @@
       "allow_llm": false,
       "allow_full_text_display": true,
       "review_required": true,
-      "evaluated_at": "2026-05-24T11:47:16.286309Z"
+      "evaluated_at": "2026-05-24T12:12:17.372608Z"
     },
     "task_frames": [
       {
@@ -23412,7 +23765,7 @@
       "dedupe_key": "5531f228aff3bbcbab60",
       "language": "zh",
       "status": "ok",
-      "fetched_at": "2026-05-24T19:44:23.183125+08:00",
+      "fetched_at": "2026-05-24T20:12:03.279901+08:00",
       "http_status": 200
     },
     "rule_guard": {
@@ -23432,7 +23785,7 @@
       "allow_llm": false,
       "allow_full_text_display": false,
       "review_required": true,
-      "evaluated_at": "2026-05-24T11:48:01.751038Z"
+      "evaluated_at": "2026-05-24T12:12:19.770252Z"
     },
     "task_frames": []
   },
@@ -23523,87 +23876,6 @@
       "allow_full_text_display": true,
       "review_required": false,
       "evaluated_at": "2026-05-24T08:58:58.878700Z"
-    },
-    "task_frames": []
-  },
-  {
-    "id": "cwc-fa326ed9cc7e8271b687",
-    "kind": "notice",
-    "status": "restricted",
-    "source_id": "cwc",
-    "channel_id": "cwc_notice",
-    "channel": "财务服务通知",
-    "title": "机关党委财务处支部扎实推进“财务服务进学院”主题党日活动",
-    "url": "https://cwc.njupt.edu.cn/2025/1021/c16802a290355/page.htm",
-    "source": "财务处",
-    "source_domain": "cwc.njupt.edu.cn",
-    "source_type": "service_unit",
-    "category": "学院",
-    "domain": "life",
-    "intent": "attend",
-    "lifecycle": "unknown",
-    "evidence": [
-      "机关党委财务处支部扎实推进“财务服务进学院”主题党日活动 提示：您当前ip并非校内地址，该信息仅允许校内地址访问 首页 关闭此页"
-    ],
-    "confidence": 0.35,
-    "sub_category": null,
-    "deadline": null,
-    "action_required": false,
-    "action_type": null,
-    "action_summary": null,
-    "required_materials": [],
-    "sensitive": false,
-    "sensitive_types": [],
-    "review_required": true,
-    "risk_flags": [
-      "restricted_content"
-    ],
-    "audience": [
-      "本科生",
-      "研究生",
-      "教职工"
-    ],
-    "published_at": null,
-    "content": "机关党委财务处支部扎实推进“财务服务进学院”主题党日活动",
-    "summary": "该页面访问受限，请点击原文在允许的网络环境下查看",
-    "attachments": [],
-    "student_score": 0.58,
-    "freshness_score": 0.45,
-    "importance_score": 0.6316,
-    "source_weight": 0.62,
-    "tags": [
-      "学院"
-    ],
-    "hash": "fa326ed9cc7e8271b687",
-    "cache_key": "42dbec9d1126a07613fa",
-    "llm_schema_version": "hytask-taskframe-v1",
-    "llm": {
-      "used": false,
-      "provider": null,
-      "model": null,
-      "prompt_version": "hytask-taskframe-v1",
-      "confidence": null,
-      "review_required": true
-    },
-    "canonical": {
-      "doc_id": "cwc-fa326ed9cc7e8271b687",
-      "canonical_url": "https://cwc.njupt.edu.cn/2025/1021/c16802a290355/page.htm",
-      "content_hash": "f1aa722689602e8528c2",
-      "dedupe_key": "4a3136c932de9276dfc4"
-    },
-    "rule_guard": {
-      "restricted": true,
-      "sensitive": false,
-      "low_evidence": false,
-      "duplicate": false,
-      "expired": false,
-      "evergreen": false,
-      "risk_flags": [
-        "restricted_content"
-      ],
-      "allow_llm": false,
-      "allow_full_text_display": false,
-      "review_required": true
     },
     "task_frames": []
   },
@@ -23864,7 +24136,7 @@
       "dedupe_key": "39ce435d8d517b7260dd",
       "language": "zh",
       "status": "ok",
-      "fetched_at": "2026-05-24T19:44:23.183125+08:00",
+      "fetched_at": "2026-05-24T20:12:03.279901+08:00",
       "http_status": 200
     },
     "rule_guard": {
@@ -23885,7 +24157,7 @@
       "allow_llm": false,
       "allow_full_text_display": false,
       "review_required": true,
-      "evaluated_at": "2026-05-24T11:50:36.459863Z"
+      "evaluated_at": "2026-05-24T12:13:15.509254Z"
     },
     "task_frames": []
   },

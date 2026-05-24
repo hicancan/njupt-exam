@@ -1,6 +1,6 @@
 {
   "schema_version": "hytask-taskframe-v1",
-  "updated_at": "2026-05-24T19:44:23.183125+08:00",
+  "updated_at": "2026-05-24T20:12:03.279901+08:00",
   "entries": {
     "2c1479f4bf8b94d14d0f": {
       "schema_version": "llm-v5",
@@ -31814,28 +31814,25 @@
     },
     "b8ddef0e2fa029b1fffd": {
       "schema_version": "hytask-taskframe-v1",
-      "provider": "gemini",
-      "model": "gemini-3.1-flash-lite",
+      "provider": "deepseek",
+      "model": "deepseek-v4-flash",
       "source_id": "exchange",
       "url": "https://exchange.njupt.edu.cn/2026/0430/c7465a301286/page.htm",
       "normalized_url": "https://exchange.njupt.edu.cn/2026/0430/c7465a301286/page.htm",
       "title": "我校与哈萨克斯坦阿拉木图能源与通信大学举行合作交流座谈会",
       "content_hash": "87f9e33801de1dcc9a57",
       "attachment_hash": "cf1cbb66a638b4860a51",
-      "updated_at": "2026-05-24T19:44:23.183125+08:00",
+      "updated_at": "2026-05-24T20:12:03.279901+08:00",
       "result": {
-        "is_student_facing": true,
-        "student_relevance": 0.5,
-        "audience": [
-          "本科生",
-          "研究生"
-        ],
+        "is_student_facing": false,
+        "student_relevance": 0.2,
+        "audience": [],
         "category": "公告",
         "domain": "news",
         "intent": "read",
         "sub_category": null,
         "tags": [
-          "国际交流",
+          "合作交流",
           "座谈会"
         ],
         "importance_score": 0.3,
@@ -31844,7 +31841,7 @@
         "action_type": null,
         "action_summary": null,
         "required_materials": [],
-        "student_summary": "学校与哈萨克斯坦阿拉木图能源与通信大学举行合作交流座谈会，探讨人才培养与师生互访等事宜。",
+        "student_summary": "我校与哈萨克斯坦阿拉木图能源与通信大学举行合作交流座谈会，讨论人才培养、师生互访等合作事宜。",
         "sensitive": false,
         "sensitive_types": [],
         "attachment_roles": [],
@@ -31859,36 +31856,34 @@
     },
     "a6b0fe97f2c0b439c8b6": {
       "schema_version": "hytask-taskframe-v1",
-      "provider": "gemini",
-      "model": "gemini-3.1-flash-lite",
+      "provider": "deepseek",
+      "model": "deepseek-v4-flash",
       "source_id": "exchange",
       "url": "https://exchange.njupt.edu.cn/2026/0424/c7465a300776/page.htm",
       "normalized_url": "https://exchange.njupt.edu.cn/2026/0424/c7465a300776/page.htm",
       "title": "我校召开2026年国际化工作推进会",
       "content_hash": "76f9728536894199c87a",
       "attachment_hash": "cf1cbb66a638b4860a51",
-      "updated_at": "2026-05-24T19:44:23.183125+08:00",
+      "updated_at": "2026-05-24T20:12:03.279901+08:00",
       "result": {
         "is_student_facing": false,
         "student_relevance": 0.2,
-        "audience": [
-          "教职工"
-        ],
+        "audience": [],
         "category": "公告",
         "domain": "news",
         "intent": "read",
         "sub_category": null,
         "tags": [
           "国际化工作",
-          "工作推进会"
+          "推进会"
         ],
-        "importance_score": 0.2,
+        "importance_score": 0.3,
         "deadline": null,
         "action_required": false,
         "action_type": null,
         "action_summary": null,
         "required_materials": [],
-        "student_summary": "学校召开2026年国际化工作推进会，总结国际化指标并部署年度重点工作。",
+        "student_summary": "我校召开2026年国际化工作推进会，总结2025年国际化指标完成情况，部署2026年重点工作。",
         "sensitive": false,
         "sensitive_types": [],
         "attachment_roles": [],
@@ -31903,73 +31898,70 @@
     },
     "30323c9f1401eb570a47": {
       "schema_version": "hytask-taskframe-v1",
-      "provider": "gemini",
-      "model": "gemini-3.1-flash-lite",
+      "provider": "deepseek",
+      "model": "deepseek-v4-flash",
       "source_id": "exchange",
       "url": "https://exchange.njupt.edu.cn/2026/0424/c7465a300821/page.htm",
       "normalized_url": "https://exchange.njupt.edu.cn/2026/0424/c7465a300821/page.htm",
       "title": "我校港澳台学生赴梅园新村纪念馆开展国情教育实践活动",
       "content_hash": "f45340dabdd819310b9e",
       "attachment_hash": "cf1cbb66a638b4860a51",
-      "updated_at": "2026-05-24T19:44:23.183125+08:00",
+      "updated_at": "2026-05-24T20:12:03.279901+08:00",
       "result": {
         "is_student_facing": true,
-        "student_relevance": 0.4,
+        "student_relevance": 0.7,
         "audience": [
           "港澳台学生"
         ],
-        "category": "公告",
+        "category": "生活",
         "domain": "life",
-        "intent": "read",
+        "intent": "attend",
         "sub_category": null,
         "tags": [
           "国情教育",
           "实践活动"
         ],
-        "importance_score": 0.3,
+        "importance_score": 0.6,
         "deadline": null,
         "action_required": false,
         "action_type": null,
         "action_summary": null,
         "required_materials": [],
-        "student_summary": "国际合作交流处组织港澳台学生代表赴梅园新村纪念馆开展国情教育实践活动。",
+        "student_summary": "国际合作交流处组织港澳台学生赴梅园新村纪念馆开展国情教育实践活动，活动已于2026年4月10日举行。",
         "sensitive": false,
         "sensitive_types": [],
         "attachment_roles": [],
         "task_frames": [],
         "risk_flags": [],
         "evidence": [
-          "国际合作交流处组织港澳台学生代表前往梅园新村纪念馆，开展主题为“寻访红色足迹，传承革命精神”的国情教育实践活动"
+          "4月10日，国际合作交流处组织港澳台学生代表前往梅园新村纪念馆"
         ],
-        "confidence": 0.95,
+        "confidence": 0.9,
         "review_required": false
       }
     },
     "efd62f7943d80ccbc60c": {
       "schema_version": "hytask-taskframe-v1",
-      "provider": "gemini",
-      "model": "gemini-3.1-flash-lite",
+      "provider": "deepseek",
+      "model": "deepseek-v4-flash",
       "source_id": "exchange",
       "url": "https://exchange.njupt.edu.cn/2026/0330/c7465a298681/page.htm",
       "normalized_url": "https://exchange.njupt.edu.cn/2026/0330/c7465a298681/page.htm",
       "title": "我校与哈萨克斯坦卡拉干达萨金诺夫技术大学举行合作交流会议",
       "content_hash": "902d2973316cdcc6cf43",
       "attachment_hash": "cf1cbb66a638b4860a51",
-      "updated_at": "2026-05-24T19:44:23.183125+08:00",
+      "updated_at": "2026-05-24T20:12:03.279901+08:00",
       "result": {
-        "is_student_facing": true,
-        "student_relevance": 0.5,
-        "audience": [
-          "本科生",
-          "研究生"
-        ],
+        "is_student_facing": false,
+        "student_relevance": 0.2,
+        "audience": [],
         "category": "公告",
         "domain": "news",
         "intent": "read",
         "sub_category": null,
         "tags": [
-          "国际交流",
-          "合作会议"
+          "合作交流",
+          "座谈会"
         ],
         "importance_score": 0.3,
         "deadline": null,
@@ -31977,14 +31969,14 @@
         "action_type": null,
         "action_summary": null,
         "required_materials": [],
-        "student_summary": "学校与哈萨克斯坦卡拉干达萨金诺夫技术大学举行合作交流会议，签署教育合作备忘录。",
+        "student_summary": "我校与哈萨克斯坦卡拉干达萨金诺夫技术大学举行合作交流会议，讨论设立海外卓越工程师学院等合作事宜。",
         "sensitive": false,
         "sensitive_types": [],
         "attachment_roles": [],
         "task_frames": [],
         "risk_flags": [],
         "evidence": [
-          "我校与哈萨克斯坦卡拉干达萨金诺夫技术大学举行合作交流会议"
+          "我校与哈萨克斯坦卡拉干达萨金诺夫技术大学合作交流会议在仙林校区行政楼第三会议室举行"
         ],
         "confidence": 0.95,
         "review_required": false
@@ -31992,43 +31984,41 @@
     },
     "b20979c13d8536f92023": {
       "schema_version": "hytask-taskframe-v1",
-      "provider": "gemini",
-      "model": "gemini-3.1-flash-lite",
+      "provider": "deepseek",
+      "model": "deepseek-v4-flash",
       "source_id": "exchange",
       "url": "https://exchange.njupt.edu.cn/2026/0325/c7465a298430/page.htm",
       "normalized_url": "https://exchange.njupt.edu.cn/2026/0325/c7465a298430/page.htm",
       "title": "江苏第二师范学院来我校调研",
       "content_hash": "d4c60794d2b2b6ccde80",
       "attachment_hash": "cf1cbb66a638b4860a51",
-      "updated_at": "2026-05-24T19:44:23.183125+08:00",
+      "updated_at": "2026-05-24T20:12:03.279901+08:00",
       "result": {
         "is_student_facing": false,
         "student_relevance": 0.2,
-        "audience": [
-          "教职工"
-        ],
+        "audience": [],
         "category": "公告",
         "domain": "news",
         "intent": "read",
         "sub_category": null,
         "tags": [
-          "校际交流",
-          "调研"
+          "调研",
+          "中外合作办学"
         ],
-        "importance_score": 0.2,
+        "importance_score": 0.3,
         "deadline": null,
         "action_required": false,
         "action_type": null,
         "action_summary": null,
         "required_materials": [],
-        "student_summary": "江苏第二师范学院来我校调研中外合作办学相关工作。",
+        "student_summary": "江苏第二师范学院来我校调研中外合作办学工作。",
         "sensitive": false,
         "sensitive_types": [],
         "attachment_roles": [],
         "task_frames": [],
         "risk_flags": [],
         "evidence": [
-          "江苏第二师范学院来我校调研"
+          "江苏第二师范学院来我校调研，围绕中外合作办学开展专项调研"
         ],
         "confidence": 0.95,
         "review_required": false
@@ -32036,35 +32026,33 @@
     },
     "31a6643539345dcdc318": {
       "schema_version": "hytask-taskframe-v1",
-      "provider": "gemini",
-      "model": "gemini-3.1-flash-lite",
+      "provider": "deepseek",
+      "model": "deepseek-v4-flash",
       "source_id": "exchange",
       "url": "http://exchange.njupt.edu.cn/2026/0416/c14424a300157/page.htm",
       "normalized_url": "http://exchange.njupt.edu.cn/2026/0416/c14424a300157/page.htm",
       "title": "关于申报2026年度国家外国专家项目的通知",
       "content_hash": "c46de521b21c0e4e3505",
       "attachment_hash": "cf1cbb66a638b4860a51",
-      "updated_at": "2026-05-24T19:44:23.183125+08:00",
+      "updated_at": "2026-05-24T20:12:03.279901+08:00",
       "result": {
         "is_student_facing": false,
         "student_relevance": 0.1,
-        "audience": [
-          "教职工"
-        ],
+        "audience": [],
         "category": "公告",
-        "domain": "project",
+        "domain": "news",
         "intent": "read",
         "sub_category": null,
         "tags": [
-          "项目申报"
+          "外国专家项目"
         ],
-        "importance_score": 0.5,
+        "importance_score": 0.2,
         "deadline": null,
         "action_required": false,
         "action_type": null,
         "action_summary": null,
         "required_materials": [],
-        "student_summary": "关于申报2026年度国家外国专家项目的通知，正文内容缺失。",
+        "student_summary": "关于申报2026年度国家外国专家项目的通知，但内容仅有标题，无具体信息。",
         "sensitive": false,
         "sensitive_types": [],
         "attachment_roles": [],
@@ -32075,116 +32063,79 @@
         "evidence": [
           "关于申报2026年度国家外国专家项目的通知"
         ],
-        "confidence": 0.5,
+        "confidence": 0.3,
         "review_required": true
       }
     },
     "45ef81c52e2017928124": {
       "schema_version": "hytask-taskframe-v1",
-      "provider": "gemini",
-      "model": "gemini-3.1-flash-lite",
+      "provider": "deepseek",
+      "model": "deepseek-v4-flash",
       "source_id": "exchange",
       "url": "https://exchange.njupt.edu.cn/2026/0320/c7442a298116/page.htm",
       "normalized_url": "https://exchange.njupt.edu.cn/2026/0320/c7442a298116/page.htm",
       "title": "关于申报2026年度国际青年人才来华交流项目的通知",
       "content_hash": "bf3ef48862e480e1a041",
       "attachment_hash": "8ea5c8648a3553624619",
-      "updated_at": "2026-05-24T19:44:23.183125+08:00",
+      "updated_at": "2026-05-24T20:12:03.279901+08:00",
       "result": {
-        "is_student_facing": true,
-        "student_relevance": 0.8,
+        "is_student_facing": false,
+        "student_relevance": 0.3,
         "audience": [
-          "外国青年人才"
+          "教师",
+          "学院"
         ],
         "category": "项目",
         "domain": "project",
         "intent": "apply",
         "sub_category": null,
         "tags": [
-          "国际交流",
-          "项目申报"
+          "国际青年人才",
+          "来华交流"
         ],
-        "importance_score": 0.8,
+        "importance_score": 0.5,
         "deadline": "2026-04-10T23:59:00+08:00",
         "action_required": true,
         "action_type": "contact",
-        "action_summary": "意向申报人请在4月10日前联系国际处张老师。",
-        "required_materials": [
-          "国际青年人才来华交流项目申报表（短期工作类）",
-          "国际青年人才来华交流项目申报表（访问交流类）",
-          "国际青年人才来华交流项目申报表（国际实习类）",
-          "申报指南"
-        ],
-        "student_summary": "学校开展2026年度国际青年人才来华交流项目申报，包含访问交流、国际实习、短期工作三类，意向申报人需在4月10日前联系国际处。",
+        "action_summary": "意向申报人需在4月10日前联系国际处张老师（电话：85866246）。",
+        "required_materials": [],
+        "student_summary": "关于申报2026年度国际青年人才来华交流项目的通知，资助外国青年来华访问交流、实习或短期工作，我校每类限报2项，需在4月10日前联系国际处。",
         "sensitive": false,
         "sensitive_types": [],
-        "attachment_roles": [
-          {
-            "name": "",
-            "role": "申请表",
-            "description": null,
-            "sensitive": false
-          },
-          {
-            "name": "",
-            "role": "申请表",
-            "description": null,
-            "sensitive": false
-          },
-          {
-            "name": "",
-            "role": "申请表",
-            "description": null,
-            "sensitive": false
-          },
-          {
-            "name": "",
-            "role": "指南",
-            "description": null,
-            "sensitive": false
-          },
-          {
-            "name": "",
-            "role": "提示",
-            "description": null,
-            "sensitive": false
-          }
-        ],
+        "attachment_roles": [],
         "task_frames": [
           {
-            "task_id": "apply_2026_intl_youth",
-            "doc_id": "exchange-06d7a85422b76ecad291",
+            "task_id": "",
+            "doc_id": "45ef81c52e2017928124",
             "task_type": "application",
             "who": {
               "audience": [
-                "外国青年人才"
-              ]
+                "教师",
+                "学院"
+              ],
+              "college": [],
+              "grade": [],
+              "major": [],
+              "class_name": []
             },
             "what": "申报2026年度国际青年人才来华交流项目",
             "action": {
               "required": true,
               "verb": "联系",
-              "object": "国际处张老师",
-              "summary": "意向申报人请在4月10日前联系国际处张老师进行申报"
+              "object": "国际处",
+              "summary": "意向申报人需在4月10日前联系国际处张老师（电话：85866246）。"
             },
             "time": {
-              "published_at": "2026-03-20",
+              "published_at": null,
               "deadline": "2026-04-10T23:59:00+08:00",
-              "lifecycle": "expired",
+              "lifecycle": "upcoming",
               "urgency_days": null
             },
-            "materials": [
-              {
-                "name": "申报表模板",
-                "role": "申请表",
-                "required": true,
-                "sensitive": false
-              }
-            ],
+            "materials": [],
             "location": {
               "place": null,
               "online": null,
-              "contact": "张老师，电话：85866246"
+              "contact": "张老师 85866246"
             },
             "source": {
               "source_id": "exchange",
@@ -32195,7 +32146,7 @@
             "evidence": [
               {
                 "field": "deadline",
-                "text": "请意向申报人在 4 月 10 日前联系国际处"
+                "text": "请意向申报人在4月10日前联系国际处"
               }
             ],
             "risk": {
@@ -32204,52 +32155,53 @@
               "low_evidence": false,
               "review_required": false
             },
-            "confidence": 0.95
+            "confidence": 0.9
           }
         ],
         "risk_flags": [
           "evergreen"
         ],
         "evidence": [
-          "请意向申报人在 4 月 10 日前联系国际处"
+          "请意向申报人在4月10日前联系国际处",
+          "我校每类项目限项填报2项"
         ],
-        "confidence": 0.95,
+        "confidence": 0.9,
         "review_required": false
       }
     },
     "a79389fe1b7d111c82a8": {
       "schema_version": "hytask-taskframe-v1",
-      "provider": "gemini",
-      "model": "gemini-3.1-flash-lite",
+      "provider": "deepseek",
+      "model": "deepseek-v4-flash",
       "source_id": "exchange",
       "url": "http://exchange.njupt.edu.cn/2025/0527/c7449a284432/page.htm",
       "normalized_url": "http://exchange.njupt.edu.cn/2025/0527/c7449a284432/page.htm",
       "title": "南京邮电大学学生国境外交流项目一览表",
       "content_hash": "52d770be48f9ba79a9eb",
       "attachment_hash": "cf1cbb66a638b4860a51",
-      "updated_at": "2026-05-24T19:44:23.183125+08:00",
+      "updated_at": "2026-05-24T20:12:03.279901+08:00",
       "result": {
         "is_student_facing": true,
-        "student_relevance": 0.7,
+        "student_relevance": 0.8,
         "audience": [
           "本科生",
           "研究生"
         ],
-        "category": "资料",
-        "domain": "international",
+        "category": "项目",
+        "domain": "project",
         "intent": "read",
         "sub_category": null,
         "tags": [
-          "交流项目",
-          "一览表"
+          "国境外交流",
+          "项目一览表"
         ],
-        "importance_score": 0.6,
+        "importance_score": 0.7,
         "deadline": null,
         "action_required": false,
         "action_type": null,
         "action_summary": null,
         "required_materials": [],
-        "student_summary": "南京邮电大学学生国境外交流项目一览表，正文内容缺失。",
+        "student_summary": "南京邮电大学学生国境外交流项目一览表，但内容仅有标题，无具体项目信息。",
         "sensitive": false,
         "sensitive_types": [],
         "attachment_roles": [],
@@ -32260,66 +32212,71 @@
         "evidence": [
           "南京邮电大学学生国境外交流项目一览表"
         ],
-        "confidence": 0.5,
+        "confidence": 0.3,
         "review_required": true
       }
     },
     "c9c536c7631677481ac3": {
       "schema_version": "hytask-taskframe-v1",
-      "provider": "gemini",
-      "model": "gemini-3.1-flash-lite",
+      "provider": "deepseek",
+      "model": "deepseek-v4-flash",
       "source_id": "exchange",
       "url": "https://exchange.njupt.edu.cn/2021/0511/c7467a192932/page.htm",
       "normalized_url": "https://exchange.njupt.edu.cn/2021/0511/c7467a192932/page.htm",
       "title": "香港理工大学暑假“科技创新”访学项目",
       "content_hash": "7d8ba49b7704e1e85444",
       "attachment_hash": "cf1cbb66a638b4860a51",
-      "updated_at": "2026-05-24T19:44:23.183125+08:00",
+      "updated_at": "2026-05-24T20:12:03.279901+08:00",
       "result": {
         "is_student_facing": true,
-        "student_relevance": 0.9,
+        "student_relevance": 0.95,
         "audience": [
           "本科生"
         ],
         "category": "项目",
-        "domain": "international",
+        "domain": "project",
         "intent": "apply",
         "sub_category": null,
         "tags": [
-          "访学项目",
-          "香港理工大学"
+          "香港理工大学",
+          "暑假",
+          "访学"
         ],
-        "importance_score": 0.8,
+        "importance_score": 0.85,
         "deadline": null,
         "action_required": true,
         "action_type": "submit",
-        "action_summary": "每年5月报名，向所在学院提交申请材料。",
+        "action_summary": "每年5月报名，7-8月派出。申请人需向学院提交《南京邮电大学本科生海外访学申请表》、英语水平证明、学术科研能力证明、获奖证书等材料。",
         "required_materials": [
-          "南京邮电大学本科生海外访学申请表",
-          "英语水平证明",
-          "学术科研能力证明",
-          "获奖证书"
+          "《南京邮电大学本科生海外访学申请表》",
+          "英语水平证明及复印件",
+          "学术科研能力证明材料及复印件",
+          "获奖证书及复印件"
         ],
-        "student_summary": "香港理工大学暑假“科技创新”访学项目，每年5月报名，7-8月派出，采取个人申请、学院推荐方式。",
+        "student_summary": "香港理工大学暑假“科技创新”访学项目，8天，费用6600元（减免后），每年5月报名，7-8月派出，需向学院提交申请材料。",
         "sensitive": false,
         "sensitive_types": [],
         "attachment_roles": [],
         "task_frames": [
           {
-            "task_id": "apply_hkpoly_summer",
-            "doc_id": "exchange-176cb6ec00a0d59cab1e",
+            "task_id": "",
+            "doc_id": "c9c536c7631677481ac3",
             "task_type": "application",
             "who": {
               "audience": [
                 "本科生"
-              ]
+              ],
+              "college": [],
+              "grade": [],
+              "major": [],
+              "class_name": []
             },
-            "what": "香港理工大学暑假“科技创新”访学项目申请",
+            "what": "申请香港理工大学暑假访学项目",
             "action": {
               "required": true,
               "verb": "提交",
-              "object": "申请材料",
-              "summary": "向所在学院提交申请表及相关证明材料"
+              "object": "申请材料至学院",
+              "summary": "申请人将申请材料交至各学院，包括申请表、英语水平证明、学术科研能力证明、获奖证书等。"
             },
             "time": {
               "published_at": null,
@@ -32329,16 +32286,34 @@
             },
             "materials": [
               {
-                "name": "南京邮电大学本科生海外访学申请表",
+                "name": "《南京邮电大学本科生海外访学申请表》",
                 "role": "申请表",
+                "required": true,
+                "sensitive": false
+              },
+              {
+                "name": "英语水平证明及复印件",
+                "role": "证明材料",
+                "required": true,
+                "sensitive": false
+              },
+              {
+                "name": "学术科研能力证明材料及复印件",
+                "role": "证明材料",
+                "required": true,
+                "sensitive": false
+              },
+              {
+                "name": "获奖证书及复印件",
+                "role": "证明材料",
                 "required": true,
                 "sensitive": false
               }
             ],
             "location": {
-              "place": "所在学院",
+              "place": "各学院",
               "online": null,
-              "contact": "国际合作交流处 朱老师 85866716"
+              "contact": "朱老师 85866716"
             },
             "source": {
               "source_id": "exchange",
@@ -32348,8 +32323,8 @@
             },
             "evidence": [
               {
-                "field": "deadline",
-                "text": "每年 5 月报名"
+                "field": "action",
+                "text": "申请人应向所在学院提交以下材料：A. 《南京邮电大学本科生海外访学申请表》；B. 英语水平证明及复印件；C. 学术科研能力证明材料及复印件；D. 获奖证书及复印件。"
               }
             ],
             "risk": {
@@ -32363,7 +32338,8 @@
         ],
         "risk_flags": [],
         "evidence": [
-          "每年 5 月报名， 7 月－ 8 月派出"
+          "每年5月报名，7月－8月派出",
+          "申请人应向所在学院提交以下材料：A. 《南京邮电大学本科生海外访学申请表》；B. 英语水平证明及复印件；C. 学术科研能力证明材料及复印件；D. 获奖证书及复印件。"
         ],
         "confidence": 0.9,
         "review_required": false
@@ -32371,60 +32347,65 @@
     },
     "967c79d0086ae9320038": {
       "schema_version": "hytask-taskframe-v1",
-      "provider": "gemini",
-      "model": "gemini-3.1-flash-lite",
+      "provider": "deepseek",
+      "model": "deepseek-v4-flash",
       "source_id": "exchange",
       "url": "https://exchange.njupt.edu.cn/2021/0511/c7467a192930/page.htm",
       "normalized_url": "https://exchange.njupt.edu.cn/2021/0511/c7467a192930/page.htm",
       "title": "香港大学 “创新创业”赴港交流项目",
       "content_hash": "8fbcd89f886a7d97f96c",
       "attachment_hash": "cf1cbb66a638b4860a51",
-      "updated_at": "2026-05-24T19:44:23.183125+08:00",
+      "updated_at": "2026-05-24T20:12:03.279901+08:00",
       "result": {
         "is_student_facing": true,
-        "student_relevance": 0.9,
+        "student_relevance": 0.95,
         "audience": [
           "本科生"
         ],
         "category": "项目",
-        "domain": "international",
+        "domain": "project",
         "intent": "apply",
         "sub_category": null,
         "tags": [
-          "访学项目",
-          "香港大学"
+          "香港大学",
+          "创新创业",
+          "交流"
         ],
-        "importance_score": 0.8,
+        "importance_score": 0.85,
         "deadline": null,
         "action_required": true,
         "action_type": "submit",
-        "action_summary": "每年5月报名，向所在学院提交申请材料。",
+        "action_summary": "每年5月报名，7-8月派出。申请人需向学院提交《南京邮电大学本科生海外访学申请表》、英语水平证明、学术科研能力证明、获奖证书等材料。",
         "required_materials": [
-          "南京邮电大学本科生海外访学申请表",
-          "英语水平证明",
-          "学术科研能力证明",
-          "获奖证书"
+          "《南京邮电大学本科生海外访学申请表》",
+          "英语水平证明及复印件",
+          "学术科研能力证明材料及复印件",
+          "获奖证书及复印件"
         ],
-        "student_summary": "香港大学“创新创业”赴港交流项目，每年5月报名，7-8月派出，采取个人申请、学院推荐方式。",
+        "student_summary": "香港大学“创新创业”赴港交流项目，8天，费用6600港币起，每年5月报名，7-8月派出，需向学院提交申请材料。",
         "sensitive": false,
         "sensitive_types": [],
         "attachment_roles": [],
         "task_frames": [
           {
-            "task_id": "apply_hku_summer",
-            "doc_id": "exchange-5b8b5d43475cad50110e",
+            "task_id": "",
+            "doc_id": "967c79d0086ae9320038",
             "task_type": "application",
             "who": {
               "audience": [
                 "本科生"
-              ]
+              ],
+              "college": [],
+              "grade": [],
+              "major": [],
+              "class_name": []
             },
-            "what": "香港大学“创新创业”赴港交流项目申请",
+            "what": "申请香港大学创新创业交流项目",
             "action": {
               "required": true,
               "verb": "提交",
-              "object": "申请材料",
-              "summary": "向所在学院提交申请表及相关证明材料"
+              "object": "申请材料至学院",
+              "summary": "申请人将申请材料交至各学院，包括申请表、英语水平证明、学术科研能力证明、获奖证书等。"
             },
             "time": {
               "published_at": null,
@@ -32434,16 +32415,34 @@
             },
             "materials": [
               {
-                "name": "南京邮电大学本科生海外访学申请表",
+                "name": "《南京邮电大学本科生海外访学申请表》",
                 "role": "申请表",
+                "required": true,
+                "sensitive": false
+              },
+              {
+                "name": "英语水平证明及复印件",
+                "role": "证明材料",
+                "required": true,
+                "sensitive": false
+              },
+              {
+                "name": "学术科研能力证明材料及复印件",
+                "role": "证明材料",
+                "required": true,
+                "sensitive": false
+              },
+              {
+                "name": "获奖证书及复印件",
+                "role": "证明材料",
                 "required": true,
                 "sensitive": false
               }
             ],
             "location": {
-              "place": "所在学院",
+              "place": "各学院",
               "online": null,
-              "contact": "国际合作交流处 朱老师 85866716"
+              "contact": "朱老师 85866716"
             },
             "source": {
               "source_id": "exchange",
@@ -32453,8 +32452,8 @@
             },
             "evidence": [
               {
-                "field": "deadline",
-                "text": "每年 5 月报名"
+                "field": "action",
+                "text": "申请人应向所在学院提交以下材料：A. 《南京邮电大学本科生海外访学申请表》；B. 英语水平证明及复印件；C. 学术科研能力证明材料及复印件；D. 获奖证书及复印件。"
               }
             ],
             "risk": {
@@ -32468,7 +32467,8 @@
         ],
         "risk_flags": [],
         "evidence": [
-          "每年 5 月报名， 7 月－ 8 月派出"
+          "每年5月报名，7月－8月派出",
+          "申请人应向所在学院提交以下材料：A. 《南京邮电大学本科生海外访学申请表》；B. 英语水平证明及复印件；C. 学术科研能力证明材料及复印件；D. 获奖证书及复印件。"
         ],
         "confidence": 0.9,
         "review_required": false
@@ -32476,62 +32476,67 @@
     },
     "7c16f44e909811431b04": {
       "schema_version": "hytask-taskframe-v1",
-      "provider": "gemini",
-      "model": "gemini-3.1-flash-lite",
+      "provider": "deepseek",
+      "model": "deepseek-v4-flash",
       "source_id": "exchange",
       "url": "https://exchange.njupt.edu.cn/2021/0511/c7467a192928/page.htm",
       "normalized_url": "https://exchange.njupt.edu.cn/2021/0511/c7467a192928/page.htm",
       "title": "南洋理工大学寒暑假交流项目",
       "content_hash": "dd3fd86c289c8cb826f2",
       "attachment_hash": "cf1cbb66a638b4860a51",
-      "updated_at": "2026-05-24T19:44:23.183125+08:00",
+      "updated_at": "2026-05-24T20:12:03.279901+08:00",
       "result": {
         "is_student_facing": true,
-        "student_relevance": 0.9,
+        "student_relevance": 0.95,
         "audience": [
           "本科生",
           "研究生"
         ],
         "category": "项目",
-        "domain": "international",
+        "domain": "project",
         "intent": "apply",
         "sub_category": null,
         "tags": [
-          "访学项目",
-          "南洋理工大学"
+          "南洋理工大学",
+          "寒暑假",
+          "交流"
         ],
-        "importance_score": 0.8,
+        "importance_score": 0.85,
         "deadline": null,
         "action_required": true,
         "action_type": "submit",
-        "action_summary": "每年11月或4月报名，向所在学院提交申请材料。",
+        "action_summary": "每年11月报名次年1月开课，或每年4月报名7月开课。申请人需向学院提交《南京邮电大学本科生海外访学申请表》、英语水平证明、学术科研能力证明、获奖证书等材料。",
         "required_materials": [
-          "南京邮电大学本科生海外访学申请表",
-          "英语水平证明",
-          "学术科研能力证明",
-          "获奖证书"
+          "《南京邮电大学本科生海外访学申请表》",
+          "英语水平证明复印件",
+          "学术科研能力证明材料复印件",
+          "获奖证书复印件"
         ],
-        "student_summary": "南洋理工大学寒暑假交流项目，每年11月报名次年1月开课，每年4月报名7月开课，采取个人申请、学院推荐方式。",
+        "student_summary": "南洋理工大学寒暑假交流项目，6周，费用5580/6980元，每年11月或4月报名，需向学院提交申请材料。",
         "sensitive": false,
         "sensitive_types": [],
         "attachment_roles": [],
         "task_frames": [
           {
-            "task_id": "apply_ntu_exchange",
-            "doc_id": "exchange-8c940f9a9a38972abe4d",
+            "task_id": "",
+            "doc_id": "7c16f44e909811431b04",
             "task_type": "application",
             "who": {
               "audience": [
                 "本科生",
                 "研究生"
-              ]
+              ],
+              "college": [],
+              "grade": [],
+              "major": [],
+              "class_name": []
             },
-            "what": "南洋理工大学寒暑假交流项目申请",
+            "what": "申请南洋理工大学寒暑假交流项目",
             "action": {
               "required": true,
               "verb": "提交",
-              "object": "申请材料",
-              "summary": "向所在学院提交申请表及相关证明材料"
+              "object": "申请材料至学院",
+              "summary": "申请人将申请材料交至各学院，包括申请表、英语水平证明、学术科研能力证明、获奖证书等。"
             },
             "time": {
               "published_at": null,
@@ -32541,16 +32546,34 @@
             },
             "materials": [
               {
-                "name": "南京邮电大学本科生海外访学申请表",
+                "name": "《南京邮电大学本科生海外访学申请表》",
                 "role": "申请表",
+                "required": true,
+                "sensitive": false
+              },
+              {
+                "name": "英语水平证明复印件",
+                "role": "证明材料",
+                "required": true,
+                "sensitive": false
+              },
+              {
+                "name": "学术科研能力证明材料复印件",
+                "role": "证明材料",
+                "required": true,
+                "sensitive": false
+              },
+              {
+                "name": "获奖证书复印件",
+                "role": "证明材料",
                 "required": true,
                 "sensitive": false
               }
             ],
             "location": {
-              "place": "所在学院",
+              "place": "各学院",
               "online": null,
-              "contact": "国际合作交流处 朱老师 85866716"
+              "contact": "朱老师 85866716"
             },
             "source": {
               "source_id": "exchange",
@@ -32560,8 +32583,8 @@
             },
             "evidence": [
               {
-                "field": "deadline",
-                "text": "每年 11 月报名，次年 1 月开课；每年 4 月报名， 7 月开课"
+                "field": "action",
+                "text": "申请人将申请材料交至各学院，申请人应向所在学院提交以下材料：（a）《南京邮电大学本科生海外访学申请表》；（b）英语水平证明复印件；（c）学术科研能力证明材料复印件；（d）获奖证书复印件。"
               }
             ],
             "risk": {
@@ -32575,7 +32598,8 @@
         ],
         "risk_flags": [],
         "evidence": [
-          "每年 11 月报名，次年 1 月开课；每年 4 月报名， 7 月开课"
+          "每年11月报名，次年1月开课；每年4月报名，7月开课",
+          "申请人将申请材料交至各学院，申请人应向所在学院提交以下材料：（a）《南京邮电大学本科生海外访学申请表》；（b）英语水平证明复印件；（c）学术科研能力证明材料复印件；（d）获奖证书复印件。"
         ],
         "confidence": 0.9,
         "review_required": false
@@ -32790,6 +32814,613 @@
           "投递简历至 qingyou@njupt.edu.cn"
         ],
         "confidence": 0.85,
+        "review_required": false
+      }
+    },
+    "978e597f0e96e6d8b70b": {
+      "schema_version": "hytask-taskframe-v1",
+      "provider": "deepseek",
+      "model": "deepseek-v4-flash",
+      "source_id": "jwc",
+      "url": "https://jwc.njupt.edu.cn/2026/0430/c1594a301207/page.htm",
+      "normalized_url": "https://jwc.njupt.edu.cn/2026/0430/c1594a301207/page.htm",
+      "title": "【教务管理办公室】2025-2026学年第二学期各学院转专业工作细则",
+      "content_hash": "38455ab7bfd78e672942",
+      "attachment_hash": "b3f3c43c26934ad7bd4b",
+      "updated_at": "2026-05-24T20:12:03.279901+08:00",
+      "result": {
+        "is_student_facing": true,
+        "student_relevance": 0.95,
+        "audience": [
+          "本科生"
+        ],
+        "category": "公告",
+        "domain": "academic",
+        "intent": "read",
+        "sub_category": null,
+        "tags": [
+          "转专业",
+          "工作细则",
+          "2025-2026学年第二学期"
+        ],
+        "importance_score": 0.85,
+        "deadline": null,
+        "action_required": false,
+        "action_type": null,
+        "action_summary": null,
+        "required_materials": [],
+        "student_summary": "教务处发布了2025-2026学年第二学期各学院转专业工作细则，包含各学院咨询电话和PDF附件，供学生查阅。",
+        "sensitive": false,
+        "sensitive_types": [],
+        "attachment_roles": [],
+        "task_frames": [],
+        "risk_flags": [],
+        "evidence": [
+          "2025-2026学年第二学期各学院转专业工作细则",
+          "咨询电话",
+          "PDF附件"
+        ],
+        "confidence": 0.86,
+        "review_required": false
+      }
+    },
+    "18e6a4d6c563cb08e4fb": {
+      "schema_version": "hytask-taskframe-v1",
+      "provider": "deepseek",
+      "model": "deepseek-v4-flash",
+      "source_id": "youth",
+      "url": "https://youth.njupt.edu.cn/2025/1229/c7521a295451/page.htm",
+      "normalized_url": "https://youth.njupt.edu.cn/2025/1229/c7521a295451/page.htm",
+      "title": "关于王红月等同志职务任免的通知",
+      "content_hash": "b64d2cb0ae13a103429f",
+      "attachment_hash": "cf1cbb66a638b4860a51",
+      "updated_at": "2026-05-24T20:12:03.279901+08:00",
+      "result": {
+        "is_student_facing": false,
+        "student_relevance": 0.1,
+        "audience": [],
+        "category": "公告",
+        "domain": "news",
+        "intent": "read",
+        "sub_category": null,
+        "tags": [
+          "职务任免"
+        ],
+        "importance_score": 0.1,
+        "deadline": null,
+        "action_required": false,
+        "action_type": null,
+        "action_summary": null,
+        "required_materials": [],
+        "student_summary": "这是一则关于王红月等同志职务任免的通知，属于校内人事变动，与学生事务无关。",
+        "sensitive": false,
+        "sensitive_types": [],
+        "attachment_roles": [],
+        "task_frames": [],
+        "risk_flags": [
+          "administrative_noise"
+        ],
+        "evidence": [
+          "关于王红月等同志职务任免的通知"
+        ],
+        "confidence": 0.95,
+        "review_required": false
+      }
+    },
+    "815b5484e53c6236334c": {
+      "schema_version": "hytask-taskframe-v1",
+      "provider": "deepseek",
+      "model": "deepseek-v4-flash",
+      "source_id": "cwc",
+      "url": "https://cwc.njupt.edu.cn/2026/0518/c802a302006/page.htm",
+      "normalized_url": "https://cwc.njupt.edu.cn/2026/0518/c802a302006/page.htm",
+      "title": "关于下达2026年学校经费预算的通知",
+      "content_hash": "52a5c96c50eb5c54eb78",
+      "attachment_hash": "cf1cbb66a638b4860a51",
+      "updated_at": "2026-05-24T20:12:03.279901+08:00",
+      "result": {
+        "is_student_facing": false,
+        "student_relevance": 0.1,
+        "audience": [],
+        "category": "公告",
+        "domain": "policy",
+        "intent": "read",
+        "sub_category": null,
+        "tags": [
+          "预算",
+          "经费"
+        ],
+        "importance_score": 0.3,
+        "deadline": null,
+        "action_required": false,
+        "action_type": null,
+        "action_summary": null,
+        "required_materials": [],
+        "student_summary": "财务处发布2026年学校经费预算通知，面向校内各单位，不直接涉及学生事务。",
+        "sensitive": false,
+        "sensitive_types": [],
+        "attachment_roles": [],
+        "task_frames": [],
+        "risk_flags": [],
+        "evidence": [
+          "关于下达2026年学校经费预算的通知"
+        ],
+        "confidence": 0.95,
+        "review_required": false
+      }
+    },
+    "6ca6647715a835f118dc": {
+      "schema_version": "hytask-taskframe-v1",
+      "provider": "deepseek",
+      "model": "deepseek-v4-flash",
+      "source_id": "cwc",
+      "url": "https://cwc.njupt.edu.cn/2026/0330/c802a298694/page.htm",
+      "normalized_url": "https://cwc.njupt.edu.cn/2026/0330/c802a298694/page.htm",
+      "title": "财发【2026】1号关于调整领导干部出差报销要求的通知",
+      "content_hash": "c621735955fa47124556",
+      "attachment_hash": "cf1cbb66a638b4860a51",
+      "updated_at": "2026-05-24T20:12:03.279901+08:00",
+      "result": {
+        "is_student_facing": false,
+        "student_relevance": 0.2,
+        "audience": [],
+        "category": "公告",
+        "domain": "policy",
+        "intent": "read",
+        "sub_category": null,
+        "tags": [
+          "报销",
+          "出差"
+        ],
+        "importance_score": 0.3,
+        "deadline": null,
+        "action_required": false,
+        "action_type": null,
+        "action_summary": null,
+        "required_materials": [],
+        "student_summary": "财务处调整领导干部出差报销要求，主要面向领导干部，学生可能间接相关。",
+        "sensitive": false,
+        "sensitive_types": [],
+        "attachment_roles": [],
+        "task_frames": [],
+        "risk_flags": [],
+        "evidence": [
+          "关于调整领导干部出差报销要求的通知"
+        ],
+        "confidence": 0.9,
+        "review_required": false
+      }
+    },
+    "aa7d74c969a2053a2c14": {
+      "schema_version": "hytask-taskframe-v1",
+      "provider": "deepseek",
+      "model": "deepseek-v4-flash",
+      "source_id": "cwc",
+      "url": "https://cwc.njupt.edu.cn/2025/1201/c802a292954/page.htm",
+      "normalized_url": "https://cwc.njupt.edu.cn/2025/1201/c802a292954/page.htm",
+      "title": "关于编报2026年度校内预算的通知",
+      "content_hash": "9abfeaa5632769e145bc",
+      "attachment_hash": "cf1cbb66a638b4860a51",
+      "updated_at": "2026-05-24T20:12:03.279901+08:00",
+      "result": {
+        "is_student_facing": false,
+        "student_relevance": 0.1,
+        "audience": [],
+        "category": "公告",
+        "domain": "policy",
+        "intent": "read",
+        "sub_category": null,
+        "tags": [
+          "预算",
+          "编报"
+        ],
+        "importance_score": 0.3,
+        "deadline": null,
+        "action_required": false,
+        "action_type": null,
+        "action_summary": null,
+        "required_materials": [],
+        "student_summary": "财务处发布2026年度校内预算编报通知，面向校内各单位，不直接涉及学生。",
+        "sensitive": false,
+        "sensitive_types": [],
+        "attachment_roles": [],
+        "task_frames": [],
+        "risk_flags": [],
+        "evidence": [
+          "关于编报2026年度校内预算的通知"
+        ],
+        "confidence": 0.95,
+        "review_required": false
+      }
+    },
+    "6ffd3e1e20f99b3869cf": {
+      "schema_version": "hytask-taskframe-v1",
+      "provider": "deepseek",
+      "model": "deepseek-v4-flash",
+      "source_id": "cwc",
+      "url": "https://cwc.njupt.edu.cn/2025/1124/c802a292503/page.htm",
+      "normalized_url": "https://cwc.njupt.edu.cn/2025/1124/c802a292503/page.htm",
+      "title": "2025年度年终财务结账工作的通知",
+      "content_hash": "8f436f057c1fb43e88aa",
+      "attachment_hash": "cf1cbb66a638b4860a51",
+      "updated_at": "2026-05-24T20:12:03.279901+08:00",
+      "result": {
+        "is_student_facing": false,
+        "student_relevance": 0.3,
+        "audience": [],
+        "category": "公告",
+        "domain": "policy",
+        "intent": "read",
+        "sub_category": null,
+        "tags": [
+          "财务结账",
+          "年终"
+        ],
+        "importance_score": 0.4,
+        "deadline": null,
+        "action_required": false,
+        "action_type": null,
+        "action_summary": null,
+        "required_materials": [],
+        "student_summary": "财务处发布2025年度年终财务结账工作通知，可能影响学生报销等事务。",
+        "sensitive": false,
+        "sensitive_types": [],
+        "attachment_roles": [],
+        "task_frames": [],
+        "risk_flags": [],
+        "evidence": [
+          "2025年度年终财务结账工作的通知"
+        ],
+        "confidence": 0.9,
+        "review_required": false
+      }
+    },
+    "685617f18b451185ff13": {
+      "schema_version": "hytask-taskframe-v1",
+      "provider": "deepseek",
+      "model": "deepseek-v4-flash",
+      "source_id": "cwc",
+      "url": "https://cwc.njupt.edu.cn/2025/1013/c802a289947/page.htm",
+      "normalized_url": "https://cwc.njupt.edu.cn/2025/1013/c802a289947/page.htm",
+      "title": "关于加快推进2025年度预算执行进度的通知",
+      "content_hash": "6b27be206afa6b67fbf0",
+      "attachment_hash": "cf1cbb66a638b4860a51",
+      "updated_at": "2026-05-24T20:12:03.279901+08:00",
+      "result": {
+        "is_student_facing": false,
+        "student_relevance": 0.1,
+        "audience": [],
+        "category": "公告",
+        "domain": "policy",
+        "intent": "read",
+        "sub_category": null,
+        "tags": [
+          "预算执行",
+          "进度"
+        ],
+        "importance_score": 0.3,
+        "deadline": null,
+        "action_required": false,
+        "action_type": null,
+        "action_summary": null,
+        "required_materials": [],
+        "student_summary": "财务处通知加快推进2025年度预算执行进度，面向校内各单位，不直接涉及学生。",
+        "sensitive": false,
+        "sensitive_types": [],
+        "attachment_roles": [],
+        "task_frames": [],
+        "risk_flags": [],
+        "evidence": [
+          "关于加快推进2025年度预算执行进度的通知"
+        ],
+        "confidence": 0.95,
+        "review_required": false
+      }
+    },
+    "aae93e3e26458bd33e99": {
+      "schema_version": "hytask-taskframe-v1",
+      "provider": "deepseek",
+      "model": "deepseek-v4-flash",
+      "source_id": "cwc",
+      "url": "https://cwc.njupt.edu.cn/2025/0929/c802a289564/page.htm",
+      "normalized_url": "https://cwc.njupt.edu.cn/2025/0929/c802a289564/page.htm",
+      "title": "关于全面启用铁路、航空运输电子发票报销的通知",
+      "content_hash": "da628a6193669656bfa1",
+      "attachment_hash": "cf1cbb66a638b4860a51",
+      "updated_at": "2026-05-24T20:12:03.279901+08:00",
+      "result": {
+        "is_student_facing": true,
+        "student_relevance": 0.7,
+        "audience": [
+          "教职工",
+          "学生"
+        ],
+        "category": "公告",
+        "domain": "policy",
+        "intent": "read",
+        "sub_category": null,
+        "tags": [
+          "电子发票",
+          "报销"
+        ],
+        "importance_score": 0.6,
+        "deadline": null,
+        "action_required": false,
+        "action_type": null,
+        "action_summary": null,
+        "required_materials": [],
+        "student_summary": "财务处通知全面启用铁路、航空运输电子发票报销，学生出差或实习报销需使用电子发票。",
+        "sensitive": false,
+        "sensitive_types": [],
+        "attachment_roles": [],
+        "task_frames": [],
+        "risk_flags": [],
+        "evidence": [
+          "关于全面启用铁路、航空运输电子发票报销的通知"
+        ],
+        "confidence": 0.9,
+        "review_required": false
+      }
+    },
+    "660616c8165429497fed": {
+      "schema_version": "hytask-taskframe-v1",
+      "provider": "deepseek",
+      "model": "deepseek-v4-flash",
+      "source_id": "cwc",
+      "url": "https://cwc.njupt.edu.cn/2026/0415/c16802a300010/page.htm",
+      "normalized_url": "https://cwc.njupt.edu.cn/2026/0415/c16802a300010/page.htm",
+      "title": "党建引领聚合力 结对共建促发展",
+      "content_hash": "d2f18217389b03595fa7",
+      "attachment_hash": "cf1cbb66a638b4860a51",
+      "updated_at": "2026-05-24T20:12:03.279901+08:00",
+      "result": {
+        "is_student_facing": false,
+        "student_relevance": 0.0,
+        "audience": [],
+        "category": "公告",
+        "domain": "news",
+        "intent": "read",
+        "sub_category": null,
+        "tags": [
+          "党建",
+          "交流"
+        ],
+        "importance_score": 0.1,
+        "deadline": null,
+        "action_required": false,
+        "action_type": null,
+        "action_summary": null,
+        "required_materials": [],
+        "student_summary": "财务处党支部与江苏科技大学财务处开展支部共建活动，不涉及学生事务。",
+        "sensitive": false,
+        "sensitive_types": [],
+        "attachment_roles": [],
+        "task_frames": [],
+        "risk_flags": [],
+        "evidence": [
+          "江苏科技大学财务处处长江建蓬一行6人来我校调研交流"
+        ],
+        "confidence": 0.95,
+        "review_required": false
+      }
+    },
+    "5cf7bbd6229f45bd640b": {
+      "schema_version": "hytask-taskframe-v1",
+      "provider": "deepseek",
+      "model": "deepseek-v4-flash",
+      "source_id": "cwc",
+      "url": "https://cwc.njupt.edu.cn/2025/1031/c16802a291044/page.htm",
+      "normalized_url": "https://cwc.njupt.edu.cn/2025/1031/c16802a291044/page.htm",
+      "title": "机关党委财务处支部开展《习近平谈治国理政》第五卷学习",
+      "content_hash": "86ac8e0dac4a1391ddac",
+      "attachment_hash": "cf1cbb66a638b4860a51",
+      "updated_at": "2026-05-24T20:12:03.279901+08:00",
+      "result": {
+        "is_student_facing": false,
+        "student_relevance": 0.0,
+        "audience": [],
+        "category": "公告",
+        "domain": "news",
+        "intent": "read",
+        "sub_category": null,
+        "tags": [
+          "党建",
+          "学习"
+        ],
+        "importance_score": 0.1,
+        "deadline": null,
+        "action_required": false,
+        "action_type": null,
+        "action_summary": null,
+        "required_materials": [],
+        "student_summary": "财务处支部组织学习《习近平谈治国理政》第五卷，不涉及学生事务。",
+        "sensitive": false,
+        "sensitive_types": [],
+        "attachment_roles": [],
+        "task_frames": [],
+        "risk_flags": [],
+        "evidence": [
+          "集中研读《习近平谈治国理政》第五卷"
+        ],
+        "confidence": 0.95,
+        "review_required": false
+      }
+    },
+    "414d0774b2ef56b16376": {
+      "schema_version": "hytask-taskframe-v1",
+      "provider": "deepseek",
+      "model": "deepseek-v4-flash",
+      "source_id": "cwc",
+      "url": "https://cwc.njupt.edu.cn/2025/1021/c16802a290355/page.htm",
+      "normalized_url": "https://cwc.njupt.edu.cn/2025/1021/c16802a290355/page.htm",
+      "title": "机关党委财务处支部扎实推进“财务服务进学院”主题党日活动",
+      "content_hash": "8f1a6d0a4dcc249f3fd3",
+      "attachment_hash": "cf1cbb66a638b4860a51",
+      "updated_at": "2026-05-24T20:12:03.279901+08:00",
+      "result": {
+        "is_student_facing": true,
+        "student_relevance": 0.6,
+        "audience": [
+          "教职工",
+          "学生"
+        ],
+        "category": "公告",
+        "domain": "news",
+        "intent": "read",
+        "sub_category": null,
+        "tags": [
+          "财务服务",
+          "宣讲"
+        ],
+        "importance_score": 0.4,
+        "deadline": null,
+        "action_required": false,
+        "action_type": null,
+        "action_summary": null,
+        "required_materials": [],
+        "student_summary": "财务处支部开展“财务服务进学院”活动，宣讲财务政策，学生可关注相关财务知识。",
+        "sensitive": false,
+        "sensitive_types": [],
+        "attachment_roles": [],
+        "task_frames": [],
+        "risk_flags": [
+          "evergreen"
+        ],
+        "evidence": [
+          "累计开展财务政策宣讲8场次"
+        ],
+        "confidence": 0.85,
+        "review_required": false
+      }
+    },
+    "bfe79619943a0073af7b": {
+      "schema_version": "hytask-taskframe-v1",
+      "provider": "deepseek",
+      "model": "deepseek-v4-flash",
+      "source_id": "cwc",
+      "url": "https://cwc.njupt.edu.cn/2025/0530/c16802a284805/page.htm",
+      "normalized_url": "https://cwc.njupt.edu.cn/2025/0530/c16802a284805/page.htm",
+      "title": "机关党委财务处支部赴渡江胜利纪念馆开展党日活动",
+      "content_hash": "165ac13d97ec5e5d0663",
+      "attachment_hash": "cf1cbb66a638b4860a51",
+      "updated_at": "2026-05-24T20:12:03.279901+08:00",
+      "result": {
+        "is_student_facing": false,
+        "student_relevance": 0.0,
+        "audience": [],
+        "category": "公告",
+        "domain": "news",
+        "intent": "read",
+        "sub_category": null,
+        "tags": [
+          "党建",
+          "党日活动"
+        ],
+        "importance_score": 0.1,
+        "deadline": null,
+        "action_required": false,
+        "action_type": null,
+        "action_summary": null,
+        "required_materials": [],
+        "student_summary": "财务处支部赴渡江胜利纪念馆开展党日活动，不涉及学生事务。",
+        "sensitive": false,
+        "sensitive_types": [],
+        "attachment_roles": [],
+        "task_frames": [],
+        "risk_flags": [],
+        "evidence": [
+          "前往廉政教育基地渡江胜利纪念馆"
+        ],
+        "confidence": 0.95,
+        "review_required": false
+      }
+    },
+    "926a08b6d0160d6cc689": {
+      "schema_version": "hytask-taskframe-v1",
+      "provider": "deepseek",
+      "model": "deepseek-v4-flash",
+      "source_id": "cwc",
+      "url": "https://cwc.njupt.edu.cn/2024/1204/c16802a275599/page.htm",
+      "normalized_url": "https://cwc.njupt.edu.cn/2024/1204/c16802a275599/page.htm",
+      "title": "机关党委财务处支部开展“我为师生办实事”",
+      "content_hash": "9b2205bb5e1843d610e5",
+      "attachment_hash": "cf1cbb66a638b4860a51",
+      "updated_at": "2026-05-24T20:12:03.279901+08:00",
+      "result": {
+        "is_student_facing": true,
+        "student_relevance": 0.5,
+        "audience": [
+          "教职工",
+          "学生"
+        ],
+        "category": "公告",
+        "domain": "news",
+        "intent": "read",
+        "sub_category": null,
+        "tags": [
+          "财务政策",
+          "宣讲"
+        ],
+        "importance_score": 0.4,
+        "deadline": null,
+        "action_required": false,
+        "action_type": null,
+        "action_summary": null,
+        "required_materials": [],
+        "student_summary": "财务处支部走进自动化学院开展财务政策宣讲，介绍报销政策和电子发票规范。",
+        "sensitive": false,
+        "sensitive_types": [],
+        "attachment_roles": [],
+        "task_frames": [],
+        "risk_flags": [
+          "evergreen"
+        ],
+        "evidence": [
+          "走进自动化学院开展‘我为师生办实事’财务政策宣讲活动"
+        ],
+        "confidence": 0.85,
+        "review_required": false
+      }
+    },
+    "a7fef0f8364a773d87e3": {
+      "schema_version": "hytask-taskframe-v1",
+      "provider": "deepseek",
+      "model": "deepseek-v4-flash",
+      "source_id": "cwc",
+      "url": "https://cwc.njupt.edu.cn/2024/1009/c16802a270942/page.htm",
+      "normalized_url": "https://cwc.njupt.edu.cn/2024/1009/c16802a270942/page.htm",
+      "title": "机关党委财务处支部与南京医科大学财务处党支部开展支部共建活动",
+      "content_hash": "3313da5d5cc510043120",
+      "attachment_hash": "cf1cbb66a638b4860a51",
+      "updated_at": "2026-05-24T20:12:03.279901+08:00",
+      "result": {
+        "is_student_facing": false,
+        "student_relevance": 0.0,
+        "audience": [],
+        "category": "公告",
+        "domain": "news",
+        "intent": "read",
+        "sub_category": null,
+        "tags": [
+          "党建",
+          "共建"
+        ],
+        "importance_score": 0.1,
+        "deadline": null,
+        "action_required": false,
+        "action_type": null,
+        "action_summary": null,
+        "required_materials": [],
+        "student_summary": "财务处支部与南京医科大学财务处党支部开展共建活动，不涉及学生事务。",
+        "sensitive": false,
+        "sensitive_types": [],
+        "attachment_roles": [],
+        "task_frames": [],
+        "risk_flags": [],
+        "evidence": [
+          "与南京医科大学财务处党支部开展支部共建活动"
+        ],
+        "confidence": 0.95,
         "review_required": false
       }
     }

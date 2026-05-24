@@ -2020,7 +2020,7 @@
     "confidence": 0.9
   },
   {
-    "task_id": "apply_hkpoly_summer",
+    "task_id": "task_afe04ff20f7e02c3",
     "doc_id": "exchange-176cb6ec00a0d59cab1e",
     "task_type": "application",
     "who": {
@@ -2032,12 +2032,12 @@
       "major": [],
       "class_name": []
     },
-    "what": "香港理工大学暑假“科技创新”访学项目申请",
+    "what": "申请香港理工大学暑假访学项目",
     "action": {
       "required": true,
       "verb": "提交",
-      "object": "申请材料",
-      "summary": "向所在学院提交申请表及相关证明材料"
+      "object": "申请材料至学院",
+      "summary": "申请人将申请材料交至各学院，包括申请表、英语水平证明、学术科研能力证明、获奖证书等。"
     },
     "time": {
       "published_at": null,
@@ -2047,16 +2047,34 @@
     },
     "materials": [
       {
-        "name": "南京邮电大学本科生海外访学申请表",
+        "name": "《南京邮电大学本科生海外访学申请表》",
         "role": "申请表",
+        "required": true,
+        "sensitive": false
+      },
+      {
+        "name": "英语水平证明及复印件",
+        "role": "证明材料",
+        "required": true,
+        "sensitive": false
+      },
+      {
+        "name": "学术科研能力证明材料及复印件",
+        "role": "证明材料",
+        "required": true,
+        "sensitive": false
+      },
+      {
+        "name": "获奖证书及复印件",
+        "role": "证明材料",
         "required": true,
         "sensitive": false
       }
     ],
     "location": {
-      "place": "所在学院",
+      "place": "各学院",
       "online": null,
-      "contact": "国际合作交流处 朱老师 85866716"
+      "contact": "朱老师 85866716"
     },
     "source": {
       "source_id": "exchange",
@@ -2066,8 +2084,8 @@
     },
     "evidence": [
       {
-        "field": "deadline",
-        "text": "每年 5 月报名"
+        "field": "action",
+        "text": "申请人应向所在学院提交以下材料：A. 《南京邮电大学本科生海外访学申请表》；B. 英语水平证明及复印件；C. 学术科研能力证明材料及复印件；D. 获奖证书及复印件。"
       }
     ],
     "risk": {
@@ -2079,7 +2097,7 @@
     "confidence": 0.9
   },
   {
-    "task_id": "apply_ntu_exchange",
+    "task_id": "task_f09a916fe171af7e",
     "doc_id": "exchange-8c940f9a9a38972abe4d",
     "task_type": "application",
     "who": {
@@ -2092,12 +2110,12 @@
       "major": [],
       "class_name": []
     },
-    "what": "南洋理工大学寒暑假交流项目申请",
+    "what": "申请南洋理工大学寒暑假交流项目",
     "action": {
       "required": true,
       "verb": "提交",
-      "object": "申请材料",
-      "summary": "向所在学院提交申请表及相关证明材料"
+      "object": "申请材料至学院",
+      "summary": "申请人将申请材料交至各学院，包括申请表、英语水平证明、学术科研能力证明、获奖证书等。"
     },
     "time": {
       "published_at": null,
@@ -2107,16 +2125,34 @@
     },
     "materials": [
       {
-        "name": "南京邮电大学本科生海外访学申请表",
+        "name": "《南京邮电大学本科生海外访学申请表》",
         "role": "申请表",
+        "required": true,
+        "sensitive": false
+      },
+      {
+        "name": "英语水平证明复印件",
+        "role": "证明材料",
+        "required": true,
+        "sensitive": false
+      },
+      {
+        "name": "学术科研能力证明材料复印件",
+        "role": "证明材料",
+        "required": true,
+        "sensitive": false
+      },
+      {
+        "name": "获奖证书复印件",
+        "role": "证明材料",
         "required": true,
         "sensitive": false
       }
     ],
     "location": {
-      "place": "所在学院",
+      "place": "各学院",
       "online": null,
-      "contact": "国际合作交流处 朱老师 85866716"
+      "contact": "朱老师 85866716"
     },
     "source": {
       "source_id": "exchange",
@@ -2126,8 +2162,8 @@
     },
     "evidence": [
       {
-        "field": "deadline",
-        "text": "每年 11 月报名，次年 1 月开课；每年 4 月报名， 7 月开课"
+        "field": "action",
+        "text": "申请人将申请材料交至各学院，申请人应向所在学院提交以下材料：（a）《南京邮电大学本科生海外访学申请表》；（b）英语水平证明复印件；（c）学术科研能力证明材料复印件；（d）获奖证书复印件。"
       }
     ],
     "risk": {
@@ -2139,7 +2175,7 @@
     "confidence": 0.9
   },
   {
-    "task_id": "apply_hku_summer",
+    "task_id": "task_effcb041c767319a",
     "doc_id": "exchange-5b8b5d43475cad50110e",
     "task_type": "application",
     "who": {
@@ -2151,12 +2187,12 @@
       "major": [],
       "class_name": []
     },
-    "what": "香港大学“创新创业”赴港交流项目申请",
+    "what": "申请香港大学创新创业交流项目",
     "action": {
       "required": true,
       "verb": "提交",
-      "object": "申请材料",
-      "summary": "向所在学院提交申请表及相关证明材料"
+      "object": "申请材料至学院",
+      "summary": "申请人将申请材料交至各学院，包括申请表、英语水平证明、学术科研能力证明、获奖证书等。"
     },
     "time": {
       "published_at": null,
@@ -2166,16 +2202,34 @@
     },
     "materials": [
       {
-        "name": "南京邮电大学本科生海外访学申请表",
+        "name": "《南京邮电大学本科生海外访学申请表》",
         "role": "申请表",
+        "required": true,
+        "sensitive": false
+      },
+      {
+        "name": "英语水平证明及复印件",
+        "role": "证明材料",
+        "required": true,
+        "sensitive": false
+      },
+      {
+        "name": "学术科研能力证明材料及复印件",
+        "role": "证明材料",
+        "required": true,
+        "sensitive": false
+      },
+      {
+        "name": "获奖证书及复印件",
+        "role": "证明材料",
         "required": true,
         "sensitive": false
       }
     ],
     "location": {
-      "place": "所在学院",
+      "place": "各学院",
       "online": null,
-      "contact": "国际合作交流处 朱老师 85866716"
+      "contact": "朱老师 85866716"
     },
     "source": {
       "source_id": "exchange",
@@ -2185,8 +2239,8 @@
     },
     "evidence": [
       {
-        "field": "deadline",
-        "text": "每年 5 月报名"
+        "field": "action",
+        "text": "申请人应向所在学院提交以下材料：A. 《南京邮电大学本科生海外访学申请表》；B. 英语水平证明及复印件；C. 学术科研能力证明材料及复印件；D. 获奖证书及复印件。"
       }
     ],
     "risk": {
@@ -3083,6 +3137,60 @@
       {
         "field": "general",
         "text": "停电时间 10 月 25 日 0 点 -1 点 14 点 -15 点 教学 1-5 、学生宿舍 （ 梅、兰、竹、菊 ） 第一食堂 、 第二食堂"
+      }
+    ],
+    "risk": {
+      "sensitive": false,
+      "restricted": false,
+      "low_evidence": false,
+      "review_required": false
+    },
+    "confidence": 0.9
+  },
+  {
+    "task_id": "task_a797c728d6ed8a23",
+    "doc_id": "hqc-0d2ca4f4fe0d9bac05c1",
+    "task_type": "schedule",
+    "who": {
+      "audience": [
+        "本科生",
+        "研究生",
+        "教职工"
+      ],
+      "college": [],
+      "grade": [],
+      "major": [],
+      "class_name": []
+    },
+    "what": "关于寒假期间停电检修的通知",
+    "action": {
+      "required": false,
+      "verb": null,
+      "object": null,
+      "summary": null
+    },
+    "time": {
+      "published_at": "2026-04-05",
+      "deadline": null,
+      "lifecycle": "unknown",
+      "urgency_days": null
+    },
+    "materials": [],
+    "location": {
+      "place": null,
+      "online": null,
+      "contact": null
+    },
+    "source": {
+      "source_id": "hqc",
+      "channel_id": "hqc_notice",
+      "authority": 0.82,
+      "official": true
+    },
+    "evidence": [
+      {
+        "field": "general",
+        "text": "仙林、三牌楼校区高低压电气设备及变压器预防性试验拟于 2026 年 2 月 7 日— 2 月 8 日进行停电检修"
       }
     ],
     "risk": {
