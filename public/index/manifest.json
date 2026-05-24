@@ -1,7 +1,8 @@
 {
-  "generated_at": "2026-05-24T22:28:39.158309+08:00",
-  "total_documents": 190,
+  "generated_at": "2026-05-24T23:03:27.314247+08:00",
+  "total_documents": 159,
   "strategy": "hytask-rag-source-channel-taskframe-hybrid-index-v1",
+  "semantic_pipeline_version": "semantic-router-v1",
   "llm_schema_version": "hytask-taskframe-v1.2",
   "llm_enabled": true,
   "llm_provider": "deepseek",
@@ -12,23 +13,45 @@
   "llm_stats": {
     "cache_reused": 0,
     "llm_reused": 0,
-    "llm_attempted": 212,
-    "llm_reprocessed": 204,
+    "llm_attempted": 244,
+    "llm_reprocessed": 236,
     "llm_failed": 0,
-    "llm_fallback": 44,
+    "llm_fallback": 47,
     "llm_skipped_by_limit": 0,
-    "llm_batches_attempted": 21,
-    "llm_batch_docs_attempted": 212,
+    "llm_batches_attempted": 37,
+    "llm_batch_docs_attempted": 244,
     "candidate_llm_cache_reused": 0,
-    "restricted": 12
+    "restricted": 0
   },
+  "semantic_mode_counts": {
+    "llm": 141,
+    "heuristic": 0,
+    "heuristic_degraded": 0,
+    "guarded_metadata": 1,
+    "unprocessed": 0
+  },
+  "field_source_counts": {
+    "deadline": {
+      "llm": 141,
+      "heuristic": 0,
+      "null": 154
+    },
+    "action_required": {
+      "llm": 141,
+      "heuristic": 0,
+      "rule_guard": 1
+    }
+  },
+  "training_eligible_count": 111,
+  "heuristic_degraded_count": 0,
+  "llm_purity_rate": 1.0,
   "source_count": 30,
   "channel_count": 99,
   "audited_channel_count": 99,
   "production_channel_count": 99,
   "failed_channel_count": 0,
-  "task_frame_count": 101,
-  "documents_with_task_frame": 98,
+  "task_frame_count": 81,
+  "documents_with_task_frame": 75,
   "evidence_coverage": {
     "audience": 1.0,
     "action": 1.0,
@@ -38,14 +61,14 @@
     "sensitive": 0.0,
     "overall": 0.8333
   },
-  "review_required_count": 38,
-  "low_evidence_count": 18,
-  "restricted_count": 2,
-  "sensitive_count": 16,
+  "review_required_count": 9,
+  "low_evidence_count": 0,
+  "restricted_count": 0,
+  "sensitive_count": 4,
   "hybrid_index": {
-    "doc_count": 190,
-    "task_frame_count": 101,
-    "avg_doc_len": 592.2895
+    "doc_count": 159,
+    "task_frame_count": 81,
+    "avg_doc_len": 655.9497
   },
   "sources": [
     {
@@ -139,13 +162,13 @@
         }
       ],
       "status": "ok",
-      "documents": 13,
-      "last_fetch_at": "2026-05-24T22:28:39.158309+08:00",
+      "documents": 12,
+      "last_fetch_at": "2026-05-24T23:03:27.314247+08:00",
       "list_errors": [
         "http://jwc.njupt.edu.cn/2025/0904/c1528a288083/page.htm: 412 Client Error: Precondition Failed for url: http://jwc.njupt.edu.cn/2025/0904/c1528a288083/page.htm"
       ],
       "candidates": 14,
-      "filtered_out": 1
+      "filtered_out": 2
     },
     {
       "id": "xsc",
@@ -196,12 +219,10 @@
           "priority": 0.84,
           "student_value": 0.86,
           "audit_status": "chrome_audited",
-          "status": "warning",
+          "status": "ok",
           "documents": 0,
           "candidates": 25,
-          "list_errors": [
-            "https://xsc.njupt.edu.cn/1158/list2.htm: 502 Server Error: Bad Gateway for url: https://xsc.njupt.edu.cn/1158/list2.htm"
-          ]
+          "list_errors": []
         },
         {
           "id": "xsc_service",
@@ -227,13 +248,10 @@
         }
       ],
       "status": "ok",
-      "documents": 7,
-      "last_fetch_at": "2026-05-24T22:28:39.158309+08:00",
-      "list_errors": [
-        "https://xsc.njupt.edu.cn/1158/list2.htm: 502 Server Error: Bad Gateway for url: https://xsc.njupt.edu.cn/1158/list2.htm"
-      ],
+      "documents": 8,
+      "last_fetch_at": "2026-05-24T23:03:27.314247+08:00",
       "candidates": 14,
-      "filtered_out": 7
+      "filtered_out": 6
     },
     {
       "id": "pg",
@@ -302,10 +320,10 @@
         }
       ],
       "status": "ok",
-      "documents": 12,
-      "last_fetch_at": "2026-05-24T22:28:39.158309+08:00",
+      "documents": 7,
+      "last_fetch_at": "2026-05-24T23:03:27.314247+08:00",
       "candidates": 13,
-      "filtered_out": 1
+      "filtered_out": 6
     },
     {
       "id": "ygb",
@@ -363,10 +381,10 @@
         }
       ],
       "status": "ok",
-      "documents": 7,
-      "last_fetch_at": "2026-05-24T22:28:39.158309+08:00",
+      "documents": 6,
+      "last_fetch_at": "2026-05-24T23:03:27.314247+08:00",
       "candidates": 14,
-      "filtered_out": 7
+      "filtered_out": 8
     },
     {
       "id": "youth",
@@ -385,7 +403,7 @@
           "student_value": 0.92,
           "audit_status": "chrome_audited",
           "status": "ok",
-          "documents": 11,
+          "documents": 10,
           "candidates": 36,
           "list_errors": []
         },
@@ -425,9 +443,9 @@
       ],
       "status": "ok",
       "documents": 5,
-      "last_fetch_at": "2026-05-24T22:28:39.158309+08:00",
-      "candidates": 11,
-      "filtered_out": 6
+      "last_fetch_at": "2026-05-24T23:03:27.314247+08:00",
+      "candidates": 10,
+      "filtered_out": 5
     },
     {
       "id": "cxcy",
@@ -497,7 +515,7 @@
       ],
       "status": "ok",
       "documents": 14,
-      "last_fetch_at": "2026-05-24T22:28:39.158309+08:00",
+      "last_fetch_at": "2026-05-24T23:03:27.314247+08:00",
       "candidates": 14,
       "filtered_out": 0
     },
@@ -541,7 +559,7 @@
       ],
       "status": "ok",
       "documents": 18,
-      "last_fetch_at": "2026-05-24T22:28:39.158309+08:00"
+      "last_fetch_at": "2026-05-24T23:03:27.314247+08:00"
     },
     {
       "id": "lib",
@@ -599,10 +617,10 @@
         }
       ],
       "status": "ok",
-      "documents": 10,
-      "last_fetch_at": "2026-05-24T22:28:39.158309+08:00",
+      "documents": 7,
+      "last_fetch_at": "2026-05-24T23:03:27.314247+08:00",
       "candidates": 14,
-      "filtered_out": 4
+      "filtered_out": 7
     },
     {
       "id": "bwc",
@@ -660,10 +678,10 @@
         }
       ],
       "status": "ok",
-      "documents": 3,
-      "last_fetch_at": "2026-05-24T22:28:39.158309+08:00",
+      "documents": 2,
+      "last_fetch_at": "2026-05-24T23:03:27.314247+08:00",
       "candidates": 12,
-      "filtered_out": 9
+      "filtered_out": 10
     },
     {
       "id": "hqc",
@@ -732,10 +750,10 @@
         }
       ],
       "status": "ok",
-      "documents": 8,
-      "last_fetch_at": "2026-05-24T22:28:39.158309+08:00",
+      "documents": 5,
+      "last_fetch_at": "2026-05-24T23:03:27.314247+08:00",
       "candidates": 14,
-      "filtered_out": 6
+      "filtered_out": 9
     },
     {
       "id": "njupt_notice",
@@ -783,7 +801,7 @@
       ],
       "status": "ok",
       "documents": 3,
-      "last_fetch_at": "2026-05-24T22:28:39.158309+08:00",
+      "last_fetch_at": "2026-05-24T23:03:27.314247+08:00",
       "candidates": 14,
       "filtered_out": 11
     },
@@ -821,10 +839,10 @@
         }
       ],
       "status": "ok",
-      "documents": 7,
-      "last_fetch_at": "2026-05-24T22:28:39.158309+08:00",
+      "documents": 8,
+      "last_fetch_at": "2026-05-24T23:03:27.314247+08:00",
       "candidates": 14,
-      "filtered_out": 7
+      "filtered_out": 6
     },
     {
       "id": "xxgk",
@@ -872,7 +890,7 @@
       ],
       "status": "ok",
       "documents": 0,
-      "last_fetch_at": "2026-05-24T22:28:39.158309+08:00",
+      "last_fetch_at": "2026-05-24T23:03:27.314247+08:00",
       "candidates": 0,
       "filtered_out": 0
     },
@@ -932,10 +950,10 @@
         }
       ],
       "status": "ok",
-      "documents": 6,
-      "last_fetch_at": "2026-05-24T22:28:39.158309+08:00",
+      "documents": 5,
+      "last_fetch_at": "2026-05-24T23:03:27.314247+08:00",
       "candidates": 14,
-      "filtered_out": 8
+      "filtered_out": 9
     },
     {
       "id": "yzb",
@@ -1004,10 +1022,10 @@
         }
       ],
       "status": "ok",
-      "documents": 7,
-      "last_fetch_at": "2026-05-24T22:28:39.158309+08:00",
+      "documents": 6,
+      "last_fetch_at": "2026-05-24T23:03:27.314247+08:00",
       "candidates": 8,
-      "filtered_out": 1
+      "filtered_out": 2
     },
     {
       "id": "xxb",
@@ -1065,10 +1083,10 @@
         }
       ],
       "status": "ok",
-      "documents": 4,
-      "last_fetch_at": "2026-05-24T22:28:39.158309+08:00",
+      "documents": 2,
+      "last_fetch_at": "2026-05-24T23:03:27.314247+08:00",
       "candidates": 6,
-      "filtered_out": 2
+      "filtered_out": 4
     },
     {
       "id": "cwc",
@@ -1104,10 +1122,10 @@
         }
       ],
       "status": "ok",
-      "documents": 3,
-      "last_fetch_at": "2026-05-24T22:28:39.158309+08:00",
+      "documents": 0,
+      "last_fetch_at": "2026-05-24T23:03:27.314247+08:00",
       "candidates": 13,
-      "filtered_out": 10
+      "filtered_out": 13
     },
     {
       "id": "archives",
@@ -1154,10 +1172,10 @@
         }
       ],
       "status": "ok",
-      "documents": 3,
-      "last_fetch_at": "2026-05-24T22:28:39.158309+08:00",
+      "documents": 1,
+      "last_fetch_at": "2026-05-24T23:03:27.314247+08:00",
       "candidates": 14,
-      "filtered_out": 11
+      "filtered_out": 13
     },
     {
       "id": "pe",
@@ -1215,10 +1233,10 @@
         }
       ],
       "status": "ok",
-      "documents": 6,
-      "last_fetch_at": "2026-05-24T22:28:39.158309+08:00",
+      "documents": 3,
+      "last_fetch_at": "2026-05-24T23:03:27.314247+08:00",
       "candidates": 12,
-      "filtered_out": 6
+      "filtered_out": 9
     },
     {
       "id": "cs",
@@ -1255,7 +1273,7 @@
       ],
       "status": "ok",
       "documents": 6,
-      "last_fetch_at": "2026-05-24T22:28:39.158309+08:00",
+      "last_fetch_at": "2026-05-24T23:03:27.314247+08:00",
       "candidates": 8,
       "filtered_out": 2
     },
@@ -1294,7 +1312,7 @@
       ],
       "status": "ok",
       "documents": 0,
-      "last_fetch_at": "2026-05-24T22:28:39.158309+08:00",
+      "last_fetch_at": "2026-05-24T23:03:27.314247+08:00",
       "candidates": 0,
       "filtered_out": 0
     },
@@ -1333,7 +1351,7 @@
       ],
       "status": "ok",
       "documents": 0,
-      "last_fetch_at": "2026-05-24T22:28:39.158309+08:00",
+      "last_fetch_at": "2026-05-24T23:03:27.314247+08:00",
       "candidates": 0,
       "filtered_out": 0
     },
@@ -1372,7 +1390,7 @@
       ],
       "status": "ok",
       "documents": 0,
-      "last_fetch_at": "2026-05-24T22:28:39.158309+08:00",
+      "last_fetch_at": "2026-05-24T23:03:27.314247+08:00",
       "candidates": 0,
       "filtered_out": 0
     },
@@ -1411,7 +1429,7 @@
       ],
       "status": "ok",
       "documents": 0,
-      "last_fetch_at": "2026-05-24T22:28:39.158309+08:00",
+      "last_fetch_at": "2026-05-24T23:03:27.314247+08:00",
       "candidates": 0,
       "filtered_out": 0
     },
@@ -1450,7 +1468,7 @@
       ],
       "status": "ok",
       "documents": 0,
-      "last_fetch_at": "2026-05-24T22:28:39.158309+08:00",
+      "last_fetch_at": "2026-05-24T23:03:27.314247+08:00",
       "candidates": 0,
       "filtered_out": 0
     },
@@ -1489,7 +1507,7 @@
       ],
       "status": "ok",
       "documents": 0,
-      "last_fetch_at": "2026-05-24T22:28:39.158309+08:00",
+      "last_fetch_at": "2026-05-24T23:03:27.314247+08:00",
       "candidates": 0,
       "filtered_out": 0
     },
@@ -1528,7 +1546,7 @@
       ],
       "status": "ok",
       "documents": 0,
-      "last_fetch_at": "2026-05-24T22:28:39.158309+08:00",
+      "last_fetch_at": "2026-05-24T23:03:27.314247+08:00",
       "candidates": 0,
       "filtered_out": 0
     },
@@ -1566,10 +1584,10 @@
         }
       ],
       "status": "ok",
-      "documents": 9,
-      "last_fetch_at": "2026-05-24T22:28:39.158309+08:00",
+      "documents": 5,
+      "last_fetch_at": "2026-05-24T23:03:27.314247+08:00",
       "candidates": 13,
-      "filtered_out": 4
+      "filtered_out": 8
     },
     {
       "id": "bc",
@@ -1605,10 +1623,10 @@
         }
       ],
       "status": "ok",
-      "documents": 8,
-      "last_fetch_at": "2026-05-24T22:28:39.158309+08:00",
+      "documents": 6,
+      "last_fetch_at": "2026-05-24T23:03:27.314247+08:00",
       "candidates": 14,
-      "filtered_out": 6
+      "filtered_out": 8
     },
     {
       "id": "jjxy",
@@ -1645,7 +1663,7 @@
       ],
       "status": "ok",
       "documents": 0,
-      "last_fetch_at": "2026-05-24T22:28:39.158309+08:00",
+      "last_fetch_at": "2026-05-24T23:03:27.314247+08:00",
       "candidates": 0,
       "filtered_out": 0
     },
@@ -1655,9 +1673,9 @@
       "domain": "github.com",
       "source_type": "github_resource",
       "status": "ok",
-      "documents": 1,
-      "last_fetch_at": "2026-05-24T22:28:39.158309+08:00",
-      "warning": "GitHub fetch failed; reused stale cached documents: 'latin-1' codec can't encode character '\\ufeff' in position 7: ordinal not in range(256)"
+      "documents": 2,
+      "last_fetch_at": "2026-05-24T23:03:27.314247+08:00",
+      "candidates": 2
     },
     {
       "id": "github:hicancan/njupt-jwxt-assistant",
@@ -1666,8 +1684,8 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-24T22:28:39.158309+08:00",
-      "warning": "GitHub fetch failed; reused stale cached documents: 'latin-1' codec can't encode character '\\ufeff' in position 7: ordinal not in range(256)"
+      "last_fetch_at": "2026-05-24T23:03:27.314247+08:00",
+      "candidates": 1
     },
     {
       "id": "github:ZsgsDesign/NOJ",
@@ -1676,8 +1694,8 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 5,
-      "last_fetch_at": "2026-05-24T22:28:39.158309+08:00",
-      "warning": "GitHub fetch failed; reused stale cached documents: 'latin-1' codec can't encode character '\\ufeff' in position 7: ordinal not in range(256)"
+      "last_fetch_at": "2026-05-24T23:03:27.314247+08:00",
+      "candidates": 5
     },
     {
       "id": "github:NJUPTFreeExams/NJUPT-General-Free-Exams",
@@ -1686,8 +1704,8 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-24T22:28:39.158309+08:00",
-      "warning": "GitHub fetch failed; reused stale cached documents: 'latin-1' codec can't encode character '\\ufeff' in position 7: ordinal not in range(256)"
+      "last_fetch_at": "2026-05-24T23:03:27.314247+08:00",
+      "candidates": 1
     },
     {
       "id": "github:NJUPTFreeExams/NJUPT-CST-Free-Exams",
@@ -1696,8 +1714,8 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-24T22:28:39.158309+08:00",
-      "warning": "GitHub fetch failed; reused stale cached documents: 'latin-1' codec can't encode character '\\ufeff' in position 7: ordinal not in range(256)"
+      "last_fetch_at": "2026-05-24T23:03:27.314247+08:00",
+      "candidates": 1
     },
     {
       "id": "github:NJUPTFreeExams/NJUPT-CS-FREE",
@@ -1706,8 +1724,8 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-24T22:28:39.158309+08:00",
-      "warning": "GitHub fetch failed; reused stale cached documents: 'latin-1' codec can't encode character '\\ufeff' in position 7: ordinal not in range(256)"
+      "last_fetch_at": "2026-05-24T23:03:27.314247+08:00",
+      "candidates": 1
     },
     {
       "id": "github:bmxbmx3/cn_sort",
@@ -1716,8 +1734,8 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-24T22:28:39.158309+08:00",
-      "warning": "GitHub fetch failed; reused stale cached documents: 'latin-1' codec can't encode character '\\ufeff' in position 7: ordinal not in range(256)"
+      "last_fetch_at": "2026-05-24T23:03:27.314247+08:00",
+      "candidates": 1
     },
     {
       "id": "github:leftjs/StudentGradesManageSystem",
@@ -1726,8 +1744,8 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-24T22:28:39.158309+08:00",
-      "warning": "GitHub fetch failed; reused stale cached documents: 'latin-1' codec can't encode character '\\ufeff' in position 7: ordinal not in range(256)"
+      "last_fetch_at": "2026-05-24T23:03:27.314247+08:00",
+      "candidates": 1
     },
     {
       "id": "github:renyuanzhe/NJUPT-CS-Courses",
@@ -1736,8 +1754,8 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-24T22:28:39.158309+08:00",
-      "warning": "GitHub fetch failed; reused stale cached documents: 'latin-1' codec can't encode character '\\ufeff' in position 7: ordinal not in range(256)"
+      "last_fetch_at": "2026-05-24T23:03:27.314247+08:00",
+      "candidates": 1
     },
     {
       "id": "github:Wonz5130/NJUPT-Yellow-Page",
@@ -1746,8 +1764,8 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-24T22:28:39.158309+08:00",
-      "warning": "GitHub fetch failed; reused stale cached documents: 'latin-1' codec can't encode character '\\ufeff' in position 7: ordinal not in range(256)"
+      "last_fetch_at": "2026-05-24T23:03:27.314247+08:00",
+      "candidates": 1
     },
     {
       "id": "github:GreenPomelo/Undergraduate",
@@ -1756,8 +1774,8 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 3,
-      "last_fetch_at": "2026-05-24T22:28:39.158309+08:00",
-      "warning": "GitHub fetch failed; reused stale cached documents: 'latin-1' codec can't encode character '\\ufeff' in position 7: ordinal not in range(256)"
+      "last_fetch_at": "2026-05-24T23:03:27.314247+08:00",
+      "candidates": 3
     },
     {
       "id": "github:NJUPTFreeExams/NJUPT-AUTO-Free-Exams",
@@ -1766,8 +1784,8 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-24T22:28:39.158309+08:00",
-      "warning": "GitHub fetch failed; reused stale cached documents: 'latin-1' codec can't encode character '\\ufeff' in position 7: ordinal not in range(256)"
+      "last_fetch_at": "2026-05-24T23:03:27.314247+08:00",
+      "candidates": 1
     },
     {
       "id": "github:NJUPT-CG/NCTF2018",
@@ -1776,8 +1794,8 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-24T22:28:39.158309+08:00",
-      "warning": "GitHub fetch failed; reused stale cached documents: 'latin-1' codec can't encode character '\\ufeff' in position 7: ordinal not in range(256)"
+      "last_fetch_at": "2026-05-24T23:03:27.314247+08:00",
+      "candidates": 1
     },
     {
       "id": "github:gzr-lgtm/NJUPThesis-Bachelor",
@@ -1786,8 +1804,8 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-24T22:28:39.158309+08:00",
-      "warning": "GitHub fetch failed; reused stale cached documents: 'latin-1' codec can't encode character '\\ufeff' in position 7: ordinal not in range(256)"
+      "last_fetch_at": "2026-05-24T23:03:27.314247+08:00",
+      "candidates": 1
     },
     {
       "id": "github:gaoliang/NJUPT-API",
@@ -1796,8 +1814,8 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-24T22:28:39.158309+08:00",
-      "warning": "GitHub fetch failed; reused stale cached documents: 'latin-1' codec can't encode character '\\ufeff' in position 7: ordinal not in range(256)"
+      "last_fetch_at": "2026-05-24T23:03:27.314247+08:00",
+      "candidates": 1
     },
     {
       "id": "github:xiafanglongfei/NJUPT-auto-evaluate",
@@ -1806,8 +1824,8 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-24T22:28:39.158309+08:00",
-      "warning": "GitHub fetch failed; reused stale cached documents: 'latin-1' codec can't encode character '\\ufeff' in position 7: ordinal not in range(256)"
+      "last_fetch_at": "2026-05-24T23:03:27.314247+08:00",
+      "candidates": 1
     },
     {
       "id": "github:NJUPTFreeExams/NJUPT-TE-Free-Exams",
@@ -1816,8 +1834,8 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-24T22:28:39.158309+08:00",
-      "warning": "GitHub fetch failed; reused stale cached documents: 'latin-1' codec can't encode character '\\ufeff' in position 7: ordinal not in range(256)"
+      "last_fetch_at": "2026-05-24T23:03:27.314247+08:00",
+      "candidates": 1
     },
     {
       "id": "github:kaijy91/NJUPT_NET",
@@ -1826,8 +1844,8 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-24T22:28:39.158309+08:00",
-      "warning": "GitHub fetch failed; reused stale cached documents: 'latin-1' codec can't encode character '\\ufeff' in position 7: ordinal not in range(256)"
+      "last_fetch_at": "2026-05-24T23:03:27.314247+08:00",
+      "warning": "GitHub fetch failed; reused stale cached documents: 403 Client Error: rate limit exceeded for url: https://api.github.com/repos/kaijy91/NJUPT_NET/contents/README.md?ref=master"
     },
     {
       "id": "github:s235784/NJUPT_AutoLogin",
@@ -1836,8 +1854,8 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 2,
-      "last_fetch_at": "2026-05-24T22:28:39.158309+08:00",
-      "warning": "GitHub fetch failed; reused stale cached documents: 'latin-1' codec can't encode character '\\ufeff' in position 7: ordinal not in range(256)"
+      "last_fetch_at": "2026-05-24T23:03:27.314247+08:00",
+      "warning": "GitHub fetch failed; reused stale cached documents: 403 Client Error: rate limit exceeded for url: https://api.github.com/repos/s235784/NJUPT_AutoLogin"
     },
     {
       "id": "github:Freedomisgood/NjuptCmcc",
@@ -1846,8 +1864,8 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-24T22:28:39.158309+08:00",
-      "warning": "GitHub fetch failed; reused stale cached documents: 'latin-1' codec can't encode character '\\ufeff' in position 7: ordinal not in range(256)"
+      "last_fetch_at": "2026-05-24T23:03:27.314247+08:00",
+      "warning": "GitHub fetch failed; reused stale cached documents: 403 Client Error: rate limit exceeded for url: https://api.github.com/repos/Freedomisgood/NjuptCmcc"
     },
     {
       "id": "github:love98ooo/ZhengFangJiaoWuSystemTampermonkeyScript",
@@ -1856,8 +1874,8 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-24T22:28:39.158309+08:00",
-      "warning": "GitHub fetch failed; reused stale cached documents: 'latin-1' codec can't encode character '\\ufeff' in position 7: ordinal not in range(256)"
+      "last_fetch_at": "2026-05-24T23:03:27.314247+08:00",
+      "warning": "GitHub fetch failed; reused stale cached documents: 403 Client Error: rate limit exceeded for url: https://api.github.com/repos/love98ooo/ZhengFangJiaoWuSystemTampermonkeyScript"
     },
     {
       "id": "github:NJUPT-NAVI/NJUPT-Survival-Guide",
@@ -1866,8 +1884,8 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 2,
-      "last_fetch_at": "2026-05-24T22:28:39.158309+08:00",
-      "warning": "GitHub fetch failed; reused stale cached documents: 'latin-1' codec can't encode character '\\ufeff' in position 7: ordinal not in range(256)"
+      "last_fetch_at": "2026-05-24T23:03:27.314247+08:00",
+      "warning": "GitHub fetch failed; reused stale cached documents: 403 Client Error: rate limit exceeded for url: https://api.github.com/repos/NJUPT-NAVI/NJUPT-Survival-Guide"
     },
     {
       "id": "github:bmxbmx3/finger_vein_recognition",
@@ -1876,8 +1894,8 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-24T22:28:39.158309+08:00",
-      "warning": "GitHub fetch failed; reused stale cached documents: 'latin-1' codec can't encode character '\\ufeff' in position 7: ordinal not in range(256)"
+      "last_fetch_at": "2026-05-24T23:03:27.314247+08:00",
+      "warning": "GitHub fetch failed; reused stale cached documents: 403 Client Error: rate limit exceeded for url: https://api.github.com/repos/bmxbmx3/finger_vein_recognition"
     },
     {
       "id": "github:lux-QAQ/NJUPT_Fastlogin",
@@ -1886,8 +1904,8 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-24T22:28:39.158309+08:00",
-      "warning": "GitHub fetch failed; reused stale cached documents: 'latin-1' codec can't encode character '\\ufeff' in position 7: ordinal not in range(256)"
+      "last_fetch_at": "2026-05-24T23:03:27.314247+08:00",
+      "warning": "GitHub fetch failed; reused stale cached documents: 403 Client Error: rate limit exceeded for url: https://api.github.com/repos/lux-QAQ/NJUPT_Fastlogin"
     },
     {
       "id": "github:NJUPTFreeExams/njuptfreeexams.github.io",
@@ -1896,8 +1914,8 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-24T22:28:39.158309+08:00",
-      "warning": "GitHub fetch failed; reused stale cached documents: 'latin-1' codec can't encode character '\\ufeff' in position 7: ordinal not in range(256)"
+      "last_fetch_at": "2026-05-24T23:03:27.314247+08:00",
+      "warning": "GitHub fetch failed; reused stale cached documents: 403 Client Error: rate limit exceeded for url: https://api.github.com/repos/NJUPTFreeExams/njuptfreeexams.github.io"
     },
     {
       "id": "github:dhiyu/NJUPT-Bachelor",
@@ -1906,8 +1924,8 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-24T22:28:39.158309+08:00",
-      "warning": "GitHub fetch failed; reused stale cached documents: 'latin-1' codec can't encode character '\\ufeff' in position 7: ordinal not in range(256)"
+      "last_fetch_at": "2026-05-24T23:03:27.314247+08:00",
+      "warning": "GitHub fetch failed; reused stale cached documents: 403 Client Error: rate limit exceeded for url: https://api.github.com/repos/dhiyu/NJUPT-Bachelor"
     },
     {
       "id": "github:yosunpeng/postgraduate_test_njupt",
@@ -1916,8 +1934,8 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-24T22:28:39.158309+08:00",
-      "warning": "GitHub fetch failed; reused stale cached documents: 'latin-1' codec can't encode character '\\ufeff' in position 7: ordinal not in range(256)"
+      "last_fetch_at": "2026-05-24T23:03:27.314247+08:00",
+      "warning": "GitHub fetch failed; reused stale cached documents: 403 Client Error: rate limit exceeded for url: https://api.github.com/repos/yosunpeng/postgraduate_test_njupt"
     },
     {
       "id": "github:NJUPTFreeExams/NJUPT-InfoSec-Free-Exams",
@@ -1926,8 +1944,8 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-24T22:28:39.158309+08:00",
-      "warning": "GitHub fetch failed; reused stale cached documents: 'latin-1' codec can't encode character '\\ufeff' in position 7: ordinal not in range(256)"
+      "last_fetch_at": "2026-05-24T23:03:27.314247+08:00",
+      "warning": "GitHub fetch failed; reused stale cached documents: 403 Client Error: rate limit exceeded for url: https://api.github.com/repos/NJUPTFreeExams/NJUPT-InfoSec-Free-Exams"
     },
     {
       "id": "github:ace-trump-tech/NJUPT-Graduation-thesis",
@@ -1936,8 +1954,8 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-24T22:28:39.158309+08:00",
-      "warning": "GitHub fetch failed; reused stale cached documents: 'latin-1' codec can't encode character '\\ufeff' in position 7: ordinal not in range(256)"
+      "last_fetch_at": "2026-05-24T23:03:27.314247+08:00",
+      "warning": "GitHub fetch failed; reused stale cached documents: 403 Client Error: rate limit exceeded for url: https://api.github.com/repos/ace-trump-tech/NJUPT-Graduation-thesis"
     },
     {
       "id": "github:Yolumia/NJUPT-NETWORK",
@@ -1946,8 +1964,8 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-24T22:28:39.158309+08:00",
-      "warning": "GitHub fetch failed; reused stale cached documents: 'latin-1' codec can't encode character '\\ufeff' in position 7: ordinal not in range(256)"
+      "last_fetch_at": "2026-05-24T23:03:27.314247+08:00",
+      "warning": "GitHub fetch failed; reused stale cached documents: 403 Client Error: rate limit exceeded for url: https://api.github.com/repos/Yolumia/NJUPT-NETWORK"
     },
     {
       "id": "github:Moonike1217/NJUPTExamICSBuilder",
@@ -1956,8 +1974,8 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-24T22:28:39.158309+08:00",
-      "warning": "GitHub fetch failed; reused stale cached documents: 'latin-1' codec can't encode character '\\ufeff' in position 7: ordinal not in range(256)"
+      "last_fetch_at": "2026-05-24T23:03:27.314247+08:00",
+      "warning": "GitHub fetch failed; reused stale cached documents: 403 Client Error: rate limit exceeded for url: https://api.github.com/repos/Moonike1217/NJUPTExamICSBuilder"
     },
     {
       "id": "github:musnows/Njupt-Wifi-Login",
@@ -1966,8 +1984,8 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-24T22:28:39.158309+08:00",
-      "warning": "GitHub fetch failed; reused stale cached documents: 'latin-1' codec can't encode character '\\ufeff' in position 7: ordinal not in range(256)"
+      "last_fetch_at": "2026-05-24T23:03:27.314247+08:00",
+      "warning": "GitHub fetch failed; reused stale cached documents: 403 Client Error: rate limit exceeded for url: https://api.github.com/repos/musnows/Njupt-Wifi-Login"
     }
   ]
 }
