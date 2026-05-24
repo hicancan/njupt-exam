@@ -1,5 +1,13 @@
 import unittest
+import sys
 from datetime import datetime
+from pathlib import Path
+
+ROOT_DIR = Path(__file__).resolve().parents[1]
+SCRIPTS_DIR = ROOT_DIR / "scripts"
+for path in (ROOT_DIR, SCRIPTS_DIR):
+    if str(path) not in sys.path:
+        sys.path.insert(0, str(path))
 
 from scripts.core.semantic_pipeline import route_semantic_pipeline
 from scripts.models.semantic_result import SemanticMode
@@ -40,12 +48,22 @@ class TestSemanticPipeline(unittest.TestCase):
         guard = {"allow_llm": True}
         run_config = {"no_llm": False}
         llm_result = {
-            "category": "讲座",
-            "domain": "campus_life",
-            "intent": "attend",
-            "confidence": 0.9,
-            "action_required": True,
-            "deadline": "2026-05-30T00:00:00"
+            "validated": {
+                "category": "讲座",
+                "domain": "lecture",
+                "intent": "attend",
+                "confidence": 0.9,
+                "action_required": True,
+                "deadline": "2026-05-30T00:00:00"
+            },
+            "raw_field_presence": {
+                "category": True,
+                "domain": True,
+                "intent": True,
+                "confidence": True,
+                "action_required": True,
+                "deadline": True
+            },
         }
         result = route_semantic_pipeline(self.base_entry, llm_result, guard, run_config, self.mock_now)
         self.assertEqual(result.semantic_mode, "llm")
@@ -58,8 +76,14 @@ class TestSemanticPipeline(unittest.TestCase):
         guard = {"allow_llm": True}
         run_config = {"no_llm": False}
         llm_result = {
-            "confidence": 0.9,
-            "action_required": False
+            "validated": {
+                "confidence": 0.9,
+                "action_required": False
+            },
+            "raw_field_presence": {
+                "confidence": True,
+                "action_required": True
+            },
         }
         result = route_semantic_pipeline(self.base_entry, llm_result, guard, run_config, self.mock_now)
         self.assertEqual(result.semantic_mode, "llm")

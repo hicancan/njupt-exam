@@ -46,6 +46,10 @@ REQUIRED_DOCUMENT_FIELDS = {
     "canonical",
     "rule_guard",
     "task_frames",
+    "semantic_pipeline_version",
+    "raw_field_presence",
+    "student_score_source",
+    "importance_score_source",
 }
 TASK_FRAMES_PATH = os.path.join(BASE_DIR, "public", "index", "task_frames.json")
 HYBRID_INDEX_PATH = os.path.join(BASE_DIR, "public", "index", "hybrid_index.json")

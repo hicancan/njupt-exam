@@ -165,6 +165,10 @@ def derive_semantic_fields_llm(entry: dict[str, Any], llm_result: dict[str, Any]
         "summary": "llm" if raw_presence.get("student_summary") else "llm_missing",
         "evidence": "llm" if raw_presence.get("evidence") else "llm_missing",
         "sensitive": "llm" if raw_presence.get("sensitive") else "llm_missing",
+        "review_required": "llm" if raw_presence.get("review_required") else "llm_missing",
+        "student_score": "hybrid_rank_feature",
+        "importance_score": "hybrid_rank_feature",
+        "task_frames": "llm_raw_task_frame" if val.get("task_frames") else "empty_not_applicable"
     }
     
     val_out = {**val, "raw_field_presence": raw_presence}
@@ -228,7 +232,11 @@ def derive_semantic_fields_heuristic(entry: dict[str, Any], guard: dict[str, Any
     category = derive_display_category(fallback_domain, fallback_intent, rule_category)
     attachments = enrich_attachment_metadata(base["attachments"], [])
     
-    field_sources = {k: "heuristic" for k in ["category", "domain", "intent", "deadline", "action_required", "action_summary", "summary", "evidence"]}
+    field_sources = {k: "heuristic" for k in ["category", "domain", "intent", "deadline", "action_required", "action_summary", "summary", "evidence", "sensitive"]}
+    field_sources["review_required"] = "system_default" if mode == "heuristic" else "heuristic_degraded"
+    field_sources["student_score"] = "rule_guard"
+    field_sources["importance_score"] = "rule_guard"
+    field_sources["task_frames"] = "heuristic_rule_frame"
     
     return SemanticResult(
         semantic_mode=mode,
@@ -266,7 +274,10 @@ def derive_semantic_fields_heuristic(entry: dict[str, Any], guard: dict[str, Any
 
 def derive_semantic_fields_guarded(entry: dict[str, Any], guard: dict[str, Any], now: datetime) -> SemanticResult:
     base = _get_base_fields(entry, guard)
-    field_sources = {k: "rule_guard" for k in ["category", "domain", "intent", "deadline", "action_required", "summary"]}
+    field_sources = {k: "rule_guard" for k in ["category", "domain", "intent", "deadline", "action_required", "action_summary", "summary", "evidence", "sensitive", "review_required"]}
+    field_sources["student_score"] = "rule_guard"
+    field_sources["importance_score"] = "rule_guard"
+    field_sources["task_frames"] = "guarded_metadata_empty"
     
     return SemanticResult(
         semantic_mode="guarded_metadata",

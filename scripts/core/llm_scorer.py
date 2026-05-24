@@ -106,6 +106,16 @@ class LLMRawResult(BaseModel):
         text = str(value).strip()
         return text or None
 
+    @field_validator("location", mode="before")
+    @classmethod
+    def _coerce_location(cls, value: Any) -> str | None:
+        if not value:
+            return None
+        if isinstance(value, dict):
+            parts = [str(v) for v in value.values() if v]
+            return ", ".join(parts) if parts else None
+        return str(value).strip() or None
+
     @field_validator("deadline", mode="before")
     @classmethod
     def _validate_deadline(cls, value: Any) -> str | None:
@@ -142,6 +152,24 @@ class LLMRawResult(BaseModel):
             return roles
         return []
 
+    @field_validator("field_evidence", mode="before")
+    @classmethod
+    def _coerce_field_evidence(cls, value: Any) -> dict[str, list[str]]:
+        if not value or not isinstance(value, dict):
+            return {}
+        result: dict[str, list[str]] = {}
+        for key, raw_items in value.items():
+            if not isinstance(raw_items, list):
+                continue
+            strings = []
+            for item in raw_items:
+                if isinstance(item, str):
+                    strings.append(item)
+                elif isinstance(item, dict) and "text" in item:
+                    strings.append(str(item["text"]))
+            result[key] = strings
+        return result
+
     @field_validator("task_frames", mode="before")
     @classmethod
     def _coerce_task_frames(cls, value: Any) -> list[dict[str, Any]]:
@@ -162,6 +190,17 @@ class LLMRawResult(BaseModel):
     def _coerce_intent(cls, value: Any) -> str | None:
         if not value: return None
         return normalize_intent(value)
+
+    @field_validator("category", mode="before")
+    @classmethod
+    def _coerce_category(cls, value: Any) -> str | None:
+        if not value:
+            return None
+        text = str(value).strip()
+        allowed = {"考试", "选课", "竞赛", "奖助", "就业", "讲座", "生活", "研究生", "学院", "项目", "资料", "公告"}
+        if text in allowed:
+            return text
+        return "公告"
 
 
 class LLMValidatedResult(BaseModel):
@@ -273,11 +312,11 @@ def _build_batch_prompt(documents: list[dict[str, Any]], schema_version: str) ->
         pack["doc_id"] = document.get("doc_id") or document["id"]
         compact_documents.append(pack)
 
-    return f"""
+    prompt_template = """
 你是南京邮电大学学生信息清洗助手。你的任务是把多条公开网页转成可验证的学生事务结构化数据。
 
 硬性要求：
-1. 只输出合法 JSON object，不要 Markdown；顶层必须是 {{"results": [...]}}。
+1. 只输出合法 JSON object，不要 Markdown；顶层必须是 {"results": [...]}。
 2. 每个 results[i].id 必须原样使用输入文档 id；不得新增、改写、遗漏 id。
 3. 不要编造原文没有的信息；标题暗示但正文没有证据时，降低 confidence 并设置 review_required=true。
 4. deadline 必须是严格的 ISO 8601 格式（如 "2026-05-01T23:59:00+08:00"）。如果原文只有模糊描述（如“每年5月”、“开学前”），请将其写入 student_summary 或 action_summary 中，并将 deadline 设为 null！
@@ -288,15 +327,15 @@ def _build_batch_prompt(documents: list[dict[str, Any]], schema_version: str) ->
 9. Rule Guard 优先于 LLM。若 rule_guard.allow_llm=false 或 restricted/sensitive/low_evidence=true，不得生成具体 task_frames。
 10. 访问受限页面 summary 只能表达访问受限，不得推断正文任务；敏感页面不得展开敏感正文。
 
-{task_frame_prompt_contract()}
+__TASK_FRAME_CONTRACT__
 
-Schema 版本: {schema_version}
+Schema 版本: __SCHEMA_VERSION__
 category 枚举: 考试|选课|竞赛|奖助|就业|讲座|生活|研究生|学院|项目|资料|公告
-domain 枚举: {'|'.join(SEARCH_DOMAINS)}
-intent 枚举: {'|'.join(SEARCH_INTENTS)}
+domain 枚举: __DOMAIN_ENUM__
+intent 枚举: __INTENT_ENUM__
 
 每个 result 的 JSON 字段：
-{{
+{
   "id": "输入文档 id",
   "is_student_facing": true,
   "student_relevance": 0.95,
@@ -345,11 +384,23 @@ intent 枚举: {'|'.join(SEARCH_INTENTS)}
   "evidence": ["原文中支撑分类、截止时间或行动事项的短句"],
   "confidence": 0.86,
   "review_required": false
-}}
+}
 
 输入文档 JSON：
-{json.dumps({"documents": compact_documents}, ensure_ascii=False)}
+__INPUT_DOCUMENTS__
 """
+
+    return prompt_template.replace(
+        "__TASK_FRAME_CONTRACT__", task_frame_prompt_contract()
+    ).replace(
+        "__SCHEMA_VERSION__", schema_version
+    ).replace(
+        "__DOMAIN_ENUM__", "|".join(SEARCH_DOMAINS)
+    ).replace(
+        "__INTENT_ENUM__", "|".join(SEARCH_INTENTS)
+    ).replace(
+        "__INPUT_DOCUMENTS__", json.dumps({"documents": compact_documents}, ensure_ascii=False)
+    )
 
 
 def _parse_batch_response(text: str, expected_ids: set[str], provider: str, model: str) -> dict[str, dict[str, Any]]:
@@ -462,6 +513,7 @@ def analyze_documents_batch_with_llm(
     errors: list[str] = []
 
     for candidate_provider in provider_chain(provider):
+        text_result = ""
         try:
             if candidate_provider == "deepseek":
                 text_result, used_provider, used_model = _call_deepseek(prompt, max_output_tokens)
@@ -471,6 +523,7 @@ def analyze_documents_batch_with_llm(
                 continue
             return _parse_batch_response(text_result, expected_ids, used_provider, used_model)
         except (ValidationError, json.JSONDecodeError, KeyError, IndexError, requests.RequestException, RuntimeError, UnicodeError) as exc:
+            print(f"LLM provider {candidate_provider} failed: {redact_for_log(exc)}", flush=True)
             errors.append(f"{candidate_provider}: {redact_for_log(exc)}")
             continue
 

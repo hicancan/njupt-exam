@@ -22,7 +22,8 @@ from config.indexer_config import (
     MIN_STUDENT_SCORE, GITHUB_TOKEN_ENV, GITHUB_API_BASE, GITHUB_FILE_SIZE_LIMIT_BYTES,
     NEGATIVE_KEYWORDS, SourceConfig, GitHubSourceConfig, SOURCES,
     ChannelConfig, JOB_API_BASE, JOB_STATION_CODE, CATEGORY_KEYWORDS,
-    NAV_TITLES, STATIC_EXTENSIONS, ATTACHMENT_EXTENSIONS, POSITIVE_KEYWORDS
+    NAV_TITLES, STATIC_EXTENSIONS, ATTACHMENT_EXTENSIONS, POSITIVE_KEYWORDS,
+    clean_env_value,
 )
 from core.llm_scorer import (
     LLM_BATCH_MAX_CHARS, LLM_BATCH_MAX_DOCS, LLM_BATCH_MAX_OUTPUT_TOKENS,
@@ -92,6 +93,22 @@ TASK_FRAMES_PATH = os.path.join(INDEX_DIR, "task_frames.json")
 HYBRID_INDEX_PATH = os.path.join(INDEX_DIR, "hybrid_index.json")
 PUBLIC_QUERY_ALIASES_PATH = os.path.join(INDEX_DIR, "query_aliases.json")
 PUBLIC_ONTOLOGY_PATH = os.path.join(INDEX_DIR, "ontology.json")
+SEMANTIC_FIELDS_TO_TRACK = [
+    "category",
+    "domain",
+    "intent",
+    "deadline",
+    "action_required",
+    "action_summary",
+    "required_materials",
+    "summary",
+    "evidence",
+    "sensitive",
+    "review_required",
+    "student_score",
+    "importance_score",
+    "task_frames",
+]
 
 
 def read_json_file(path: str, fallback: Any) -> Any:
@@ -302,23 +319,6 @@ def document_hash(*parts: Any) -> str:
 def contains_relevant_keyword(text: str) -> bool:
     lowered = text.lower()
     all_keywords = POSITIVE_KEYWORDS + [keyword for keywords in CATEGORY_KEYWORDS.values() for keyword in keywords]
-    return any(keyword.lower() in lowered for keyword in all_keywords)
-
-
-def looks_like_notice_link(title: str, parent_text: str, url: str, now: datetime) -> bool:
-    stripped_title = title.strip()
-    lowered_title = stripped_title.lower()
-    path = urlparse(url).path.lower()
-
-    if stripped_title in NAV_TITLES or lowered_title in NAV_TITLES:
-        return False
-    if path.endswith("/main.htm") or path.endswith("main.htm") or path.endswith("list.htm"):
-        return False
-    if len(stripped_title) < 6:
-        return False
-
-    combined = f"{stripped_title} {parent_text} {url}"
-    has_date = parse_date(combined, now) is not None
     return any(keyword.lower() in lowered for keyword in all_keywords)
 
 
@@ -811,6 +811,17 @@ def build_search_document_from_prepared(
         "field_sources": semantic.field_sources,
         "canonical": entry.get("canonical", {}),
         "rule_guard": guard,
+        "semantic_pipeline_version": "semantic-router-v2",
+        "llm_prompt_version": "v2",
+        "llm_input_pack_version": "v1",
+        "raw_field_presence": semantic.raw_field_presence,
+        "llm_student_relevance": semantic.llm_student_relevance,
+        "llm_importance_score": semantic.llm_importance_score,
+        "rule_student_score": semantic.rule_student_score,
+        "rule_importance_score": semantic.rule_importance_score,
+        "student_score_source": semantic.student_score_source,
+        "importance_score_source": semantic.importance_score_source,
+        "llm_failure": semantic.llm_failure,
     }
     document["task_frames"] = extract_task_frames(document, llm_result=llm_result, rule_guard=document["rule_guard"])
     return document
@@ -1169,6 +1180,7 @@ def read_github_source_configs() -> tuple[GitHubSourceConfig, ...]:
 
 
 def github_headers(token: str | None) -> dict[str, str]:
+    token = str(token or "").strip().lstrip("\ufeff").strip() or None
     headers = {
         "Accept": "application/vnd.github+json",
         "User-Agent": "njupt-search-indexer",
@@ -1335,7 +1347,7 @@ def crawl_github_resource_source(source: GitHubSourceConfig, now: datetime) -> t
     if not source.enabled:
         return [], manifest_entry
 
-    token = os.environ.get(GITHUB_TOKEN_ENV) or os.environ.get("GITHUB_TOKEN")
+    token = clean_env_value(GITHUB_TOKEN_ENV) or clean_env_value("GITHUB_TOKEN") or None
     try:
         repo_payload = github_api_get(f"/repos/{source.repo}", token)
         branch = repo_payload.get("default_branch") or "main"
@@ -1531,11 +1543,127 @@ def write_json_if_changed(path: str, payload: Any) -> bool:
     return True
 
 
+def infer_cached_semantic_mode(document: dict[str, Any]) -> str:
+    mode = str(document.get("semantic_mode") or "").strip()
+    if mode:
+        return mode
+    if document.get("source_type") == "exam_vertical":
+        return "structured_exam"
+
+    field_sources = document.get("field_sources")
+    llm_payload = document.get("llm") if isinstance(document.get("llm"), dict) else {}
+    if isinstance(field_sources, dict) and field_sources:
+        return "llm" if any(str(value).startswith("llm") for value in field_sources.values()) else "heuristic"
+    if llm_payload.get("used") is False:
+        return "heuristic"
+    if llm_payload.get("raw_field_presence") or llm_payload.get("__llm_provider") or "student_relevance" in llm_payload:
+        return "llm"
+    return "unprocessed"
+
+
+def llm_field_source(field: str, raw_presence: dict[str, bool]) -> str:
+    raw_field = "student_summary" if field == "summary" else field
+    return "llm" if raw_presence.get(raw_field) else "llm_missing"
+
+
+def default_field_sources_for(document: dict[str, Any], semantic_mode: str, raw_presence: dict[str, bool]) -> dict[str, str]:
+    if semantic_mode == "llm":
+        return {
+            "category": llm_field_source("category", raw_presence),
+            "domain": llm_field_source("domain", raw_presence),
+            "intent": llm_field_source("intent", raw_presence),
+            "deadline": llm_field_source("deadline", raw_presence),
+            "action_required": llm_field_source("action_required", raw_presence),
+            "action_summary": llm_field_source("action_summary", raw_presence),
+            "required_materials": llm_field_source("required_materials", raw_presence),
+            "summary": llm_field_source("summary", raw_presence),
+            "evidence": llm_field_source("evidence", raw_presence),
+            "sensitive": llm_field_source("sensitive", raw_presence),
+            "review_required": llm_field_source("review_required", raw_presence),
+            "student_score": "hybrid_rank_feature",
+            "importance_score": "hybrid_rank_feature",
+            "task_frames": "llm_raw_task_frame" if document.get("task_frames") else "empty_not_applicable",
+        }
+    if semantic_mode == "structured_exam":
+        return {field: "structured_exam_data" for field in SEMANTIC_FIELDS_TO_TRACK}
+    if semantic_mode == "guarded_metadata":
+        return {field: "rule_guard" for field in SEMANTIC_FIELDS_TO_TRACK}
+    if semantic_mode in {"heuristic", "heuristic_degraded"}:
+        sources = {field: "heuristic" for field in SEMANTIC_FIELDS_TO_TRACK}
+        sources["student_score"] = "rule_guard"
+        sources["importance_score"] = "rule_guard"
+        sources["task_frames"] = "heuristic_rule_frame"
+        return sources
+    return {field: "unprocessed" for field in SEMANTIC_FIELDS_TO_TRACK}
+
+
+def ensure_document_provenance(document: dict[str, Any]) -> dict[str, Any]:
+    from core.semantic_pipeline import SEMANTIC_PIPELINE_VERSION
+
+    semantic_mode = infer_cached_semantic_mode(document)
+    document["semantic_mode"] = semantic_mode
+
+    llm_payload = document.get("llm") if isinstance(document.get("llm"), dict) else {}
+    raw_presence = document.get("raw_field_presence") if isinstance(document.get("raw_field_presence"), dict) else None
+    if raw_presence is None:
+        raw_presence = llm_payload.get("raw_field_presence") if isinstance(llm_payload.get("raw_field_presence"), dict) else {}
+    document["raw_field_presence"] = raw_presence
+
+    field_sources = document.get("field_sources") if isinstance(document.get("field_sources"), dict) else {}
+    for field, source in default_field_sources_for(document, semantic_mode, raw_presence).items():
+        field_sources.setdefault(field, source)
+    document["field_sources"] = field_sources
+
+    document.setdefault("semantic_pipeline_version", SEMANTIC_PIPELINE_VERSION)
+    score_source = "hybrid_rank_feature" if semantic_mode == "llm" else field_sources.get("student_score", "unprocessed")
+    importance_source = "hybrid_rank_feature" if semantic_mode == "llm" else field_sources.get("importance_score", "unprocessed")
+    document.setdefault("student_score_source", score_source)
+    document.setdefault("importance_score_source", importance_source)
+    document.setdefault("llm_failure", None)
+    return document
+
+
+def source_mode_for_document(document: dict[str, Any]) -> str:
+    semantic_mode = str(document.get("semantic_mode") or "")
+    task_source = str((document.get("field_sources") or {}).get("task_frames") or "")
+    if task_source in {"llm_raw_task_frame", "generated_from_llm_fields", "heuristic_rule_frame"}:
+        return task_source
+    if semantic_mode == "llm":
+        return "generated_from_llm_fields"
+    if semantic_mode == "structured_exam":
+        return "exam_structured_data"
+    if semantic_mode == "guarded_metadata":
+        return "guarded_metadata_empty"
+    if semantic_mode in {"heuristic", "heuristic_degraded"}:
+        return "heuristic_rule_frame"
+    return "unprocessed"
+
+
+def normalize_existing_task_frames(document: dict[str, Any]) -> None:
+    frames = document.get("task_frames")
+    if not isinstance(frames, list):
+        document["task_frames"] = []
+        return
+    source_mode = source_mode_for_document(document)
+    field_sources = document.get("field_sources") if isinstance(document.get("field_sources"), dict) else {}
+    for frame in frames:
+        if not isinstance(frame, dict):
+            continue
+        if not frame.get("source_mode") or frame.get("source_mode") == "unknown":
+            frame["source_mode"] = source_mode
+        if not isinstance(frame.get("field_sources"), dict) or not frame.get("field_sources"):
+            frame["field_sources"] = field_sources
+
+
 def finalize_hytask_documents(documents: list[dict[str, Any]]) -> list[dict[str, Any]]:
     finalized: list[dict[str, Any]] = []
     seen_dedupe: set[str] = set()
     for document in documents:
         doc = dict(document)
+        doc = ensure_document_provenance(doc)
+        doc["source_type"] = normalize_source_type(doc.get("source_type"))
+        doc["domain"] = normalize_domain(doc.get("domain"))
+        doc["intent"] = normalize_intent(doc.get("intent"))
         if not doc.get("source_id"):
             doc["source_id"] = infer_source_id_from_document(doc)
         if not doc.get("channel_id"):
@@ -1582,6 +1710,7 @@ def finalize_hytask_documents(documents: list[dict[str, Any]]) -> list[dict[str,
             doc["summary"] = restricted_summary()
         if not doc.get("task_frames"):
             doc["task_frames"] = extract_task_frames(doc, llm_result=None, rule_guard=doc["rule_guard"])
+        normalize_existing_task_frames(doc)
         finalized.append(doc)
     return finalized
 
@@ -1727,29 +1856,23 @@ def main() -> None:
 
     from core.semantic_pipeline import SEMANTIC_PIPELINE_VERSION
 
-    semantic_mode_counts = {
-        "llm": sum(1 for d in all_documents if d.get("semantic_mode") == "llm"),
-        "heuristic": sum(1 for d in all_documents if d.get("semantic_mode") == "heuristic"),
-        "heuristic_degraded": sum(1 for d in all_documents if d.get("semantic_mode") == "heuristic_degraded"),
-        "guarded_metadata": sum(1 for d in all_documents if d.get("semantic_mode") == "guarded_metadata"),
-        "unprocessed": sum(1 for d in all_documents if d.get("semantic_mode") == "unprocessed"),
-    }
-    
-    fields_to_track = [
-        "category", "domain", "intent", "deadline", "action_required", 
-        "action_summary", "required_materials", "summary", "evidence", 
-        "sensitive", "review_required", "student_score", "importance_score", "task_frames"
-    ]
-    field_source_counts = {field: {} for field in fields_to_track}
+    semantic_mode_counts: dict[str, int] = {}
+    for document in all_documents:
+        mode = str(document.get("semantic_mode") or "unprocessed")
+        semantic_mode_counts[mode] = semantic_mode_counts.get(mode, 0) + 1
+    for mode in ("llm", "heuristic", "heuristic_degraded", "guarded_metadata", "unprocessed"):
+        semantic_mode_counts.setdefault(mode, 0)
+
+    field_source_counts = {field: {} for field in SEMANTIC_FIELDS_TO_TRACK}
     for doc in all_documents:
         sources = doc.get("field_sources", {})
-        for field in fields_to_track:
+        for field in SEMANTIC_FIELDS_TO_TRACK:
             src = sources.get(field, "null")
             field_source_counts[field][src] = field_source_counts[field].get(src, 0) + 1
             
     llm_missing_field_counts = {
         field: sum(1 for doc in all_documents if doc.get("field_sources", {}).get(field) == "llm_missing")
-        for field in fields_to_track
+        for field in SEMANTIC_FIELDS_TO_TRACK
     }
     
     task_frame_source_mode_counts = {}
@@ -1760,7 +1883,7 @@ def main() -> None:
     hybrid_score_field_count = sum(1 for doc in all_documents if doc.get("student_score_source") == "hybrid_rank_feature")
     
     training_eligible_count = sum(1 for d in all_documents if d.get("semantic_mode") == "llm" and not d.get("review_required") and float(d.get("confidence", 0) or 0) >= 0.8)
-    heuristic_degraded_count = semantic_mode_counts["heuristic_degraded"]
+    heuristic_degraded_count = semantic_mode_counts.get("heuristic_degraded", 0)
     
     # llm_purity_rate: percentage of llm mode docs that don't have heuristic field sources
     llm_docs = [d for d in all_documents if d.get("semantic_mode") == "llm"]

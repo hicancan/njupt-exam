@@ -26,13 +26,24 @@ def extract_task_frames(
         "review_required": bool(document.get("review_required") or rule_guard.get("review_required")),
     }
     raw_frames = llm_result.get("task_frames") if isinstance(llm_result, dict) else []
+    if semantic_mode == "llm":
+        source_mode = "llm_raw_task_frame" if raw_frames else "generated_from_llm_fields"
+    elif semantic_mode == "structured_exam":
+        source_mode = "exam_structured_data"
+    elif semantic_mode == "guarded_metadata":
+        source_mode = "guarded_metadata_empty"
+    elif semantic_mode in ("heuristic", "heuristic_degraded"):
+        source_mode = "heuristic_rule_frame"
+    else:
+        source_mode = "unprocessed"
+
     frames = normalize_task_frames(
         raw_frames,
         doc_id=str(document.get("id")),
         source_id=str(document.get("source_id") or ""),
         channel_id=str(document.get("channel_id") or ""),
         authority=float(document.get("source_weight", 0.7) or 0.7),
-        source_mode=str(semantic_mode or "unknown"),
+        source_mode=source_mode,
         field_sources=document.get("field_sources") or {},
         fallback_title=str(document.get("title") or ""),
         fallback_audience=list(document.get("audience") or []),
