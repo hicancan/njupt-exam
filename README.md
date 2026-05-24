@@ -4,112 +4,122 @@
 
 <img src="public/assets/logo.png" height="80" alt="njupt-search logo" />
 
-**南邮学生的信息入口：搜任务、搜截止、搜名单、搜讲座、搜服务、搜资料。**
+**南邮学生事务的源审计、任务理解、混合检索与静态信息入口。**
 
-[在线使用](https://njupt.hicancan.top) · [报告 Bug](https://github.com/hicancan/njupt-search/issues) · [路线图](docs/njupt-search-product-roadmap.md)
-
-![License](https://img.shields.io/badge/license-AGPL--3.0-blue.svg?style=flat-square)
-![TypeScript](https://img.shields.io/badge/TypeScript-5.9-blue.svg?style=flat-square)
-![React Version](https://img.shields.io/badge/react-19.x-61dafb.svg?style=flat-square)
-![TailwindCSS Version](https://img.shields.io/badge/tailwindcss-v4.1-38bdf8.svg?style=flat-square)
-![Vite](https://img.shields.io/badge/vite-7.x-646CFF.svg?style=flat-square)
+[在线使用](https://njupt.hicancan.top) · [报告 Bug](https://github.com/hicancan/njupt-search/issues)
 
 </div>
 
----
-
 ## 项目定位
 
-`njupt-search` 致力于将分散在南邮各个公开站点里的学生相关信息，整合为一个可搜索、可过滤、可持续更新的极速校园信息入口。
-
-当前版本内置了独立的考试垂直频道：输入班级号即可查看期末考试安排、手动勾选课程并导出 `.ics` 日历。除此之外，全局搜索结果接入了源注册表、离线 LLM 清洗、多轴分类、行动事项、截止时间、学院站和开源 GitHub 资料仓库。
-
-## 已接入数据
-
-校园公开源配置位于：
+`njupt-search` 不是普通公告聚合站，也不是单纯考试查询工具。当前主架构是 HyTask-RAG：Hybrid Student Task Retrieval-Augmented Graph。
 
 ```text
-config/campus_sources.json
+Source-Channel Graph
+-> Canonical Document
+-> Rule Guard
+-> LLM TaskFrame
+-> Hybrid Index
+-> Query Understanding
+-> Hybrid Retrieval
+-> Student Utility Ranking
+-> Product UI
+-> Self Evaluation
+-> Static Deploy
 ```
 
-当前源注册表按 Tier 接入：
+考试查询保留为 `exam_vertical` 垂直频道：输入班级号可查看期末考试安排、勾选课程并导出 `.ics` 日历。公告、通知、就业、图书馆、后勤、保卫、档案、体育、国际交流、学院通知和 GitHub 学习资料进入统一搜索。
 
-| 层级 | 源 | 主要内容 |
-| --- | --- | --- |
-| Tier 0 | 教务、学工、研究生、研工、团委、创新创业、就业、图书馆、保卫、后勤 | 学生刚需事务 |
-| Tier 1 | 学校官网通知、官网首页、新闻网、信息公开、国际合作交流处 | 校级公开信息流 |
-| Tier 2 | 计算机、通信、电光、集成电路、自动化、人工智能、物联网、理学院、现代邮政、管理、经济等学院 | 学院通知、答辩、竞赛、实习、项目 |
-| Tier 3 | 科学技术处、社会科学处、学科建设办公室、产业合作处等 | 项目、科研机会、讲座，默认强过滤 |
+## 主配置
 
-索引产物位于：
+生产主链路只使用 Source-Channel Graph：
 
 ```text
-public/index/documents.json
-public/index/manifest.json
+config/source_channels.json
 ```
 
-GitHub 资料源配置仍位于：
+每个 source 可以包含多个 channel。channel 是抓取、审计、过滤和排序的基本单位。`campus_sources.json` 不再作为运行主链路。
+
+辅助配置：
 
 ```text
+config/query_aliases.json
+config/ontology.json
+config/ranking_weights.json
 config/github_search_sources.json
 ```
 
-考试数据仍位于：
+生成索引：
+
+```text
+public/index/documents.json
+public/index/task_frames.json
+public/index/hybrid_index.json
+public/index/query_aliases.json
+public/index/ontology.json
+public/index/manifest.json
+```
+
+考试数据：
 
 ```text
 public/data/all_exams.json
 public/data/data_summary.json
 ```
 
-## 核心能力
+## HyTask-RAG 组件
 
-- 统一搜索：公告、考试记录、就业宣讲、项目文档、学院通知和学习资源进入同一排序模型。
-- 多轴理解：搜索和筛选不再依赖旧一级分类频道，主体验使用 `domain`、`intent`、`source_type`、`lifecycle`、`deadline`、`evidence`。
-- 默认过滤：入库时过滤低学生相关内容，结果页按相关度和发布时间展示。
-- 任务卡片：结果页展示事务领域、动作类型、生命周期、截止时间、行动说明、附件角色和敏感标记。
-- 考试垂直频道：班级号搜索、模糊班级选择、手动勾选考试、导出标准 iCalendar。
-- 自动更新：GitHub Actions 每 6 小时更新考试数据、校园搜索索引和已配置 GitHub 资料源，并执行索引契约校验。
-- PWA / Android TWA：支持添加到主屏幕，缓存 `/data/` 和 `/index/` 数据并监听后台更新。
+- Source-Channel Graph：记录公开源站、栏目、学生价值、预期领域/意图、选择器、分页、风险和关键词。
+- Canonical Document：统一 URL、正文、附件、发布时间、hash、dedupe key、source_id 和 channel_id。
+- Rule Guard：在 LLM 前检测 restricted、sensitive、low_evidence、duplicate、expired、evergreen、附件风险和行政噪声。
+- TaskFrame：把通知建模为学生任务，包含对象、任务、动作、截止、材料、地点、证据、风险和置信度。
+- Hybrid Index：存储 BM25 词项、字段文本、任务文本、材料、证据、source/channel 信号。
+- Query Aliases：把“保研/推免”“大创”“校园网”等学生自然语言映射到领域、意图和语义扩展。
+- Hybrid Retrieval：组合 BM25、字段、标签、实体、语义扩展、学生效用和风险惩罚。
+- Self Evaluation：`scripts/eval/eval_search.py` 与 `scripts/eval/query_smoke_test.py` 做自动质量与产品烟测。
+
+## 安全边界
+
+- 只抓公开网页和公开接口。
+- 不登录学校系统。
+- 不绕过校园网或统一身份认证限制。
+- restricted 页面不生成具体任务。
+- sensitive 页面不向 LLM 发送敏感正文，不展示敏感正文片段。
+- API key 只来自环境变量或 GitHub Actions secrets，不写入仓库。
+- 本项目为非官方工具，请以官网原文为准。
 
 ## 本地开发
 
-> 需要 Node.js >= 20。Windows 环境建议使用 PowerShell 7。
+需要 Node.js >= 20，Windows 建议 PowerShell 7。
 
 ```powershell
-npm install
+npm ci
 npm run dev
-```
-
-生产构建：
-
-```powershell
-npm run build
 ```
 
 质量检查：
 
 ```powershell
-npm run typecheck
 npm run lint
 npm test
+npm run typecheck
+npm run build
 ```
 
-## 数据更新
-
-安装 Python 依赖：
+Python 依赖：
 
 ```powershell
 uv pip install -r requirements.txt
 ```
 
-更新考试 Excel 与结构化考试数据：
+更新考试数据：
 
 ```powershell
 uv run python scripts\auto_update_exam_data.py
 uv run python scripts\analyze_and_update.py
 ```
 
-更新校园搜索索引：
+更新 HyTask-RAG 搜索索引：
 
 ```powershell
 uv run python scripts\update_search_index.py
@@ -124,103 +134,44 @@ uv run python scripts\update_search_index.py --llm-provider deepseek --llm-batch
 uv run python scripts\update_search_index.py --no-github
 ```
 
-索引契约校验：
+校验与自评：
 
 ```powershell
-uv run python scripts\validate_search_index.py
+uv run python scripts\utils\validate_search_index.py
+uv run python scripts\eval\eval_search.py --write-report
+uv run python scripts\eval\query_smoke_test.py
 ```
 
-官方公开源审计：
+## 自动更新
 
-```powershell
-uv run python scripts\audit_njupt_sources.py
-```
+`.github/workflows/auto-update.yml` 每 6 小时更新考试数据、公开校园索引和 GitHub 资料源，并运行索引契约校验。`.github/workflows/deploy.yml` 负责 lint、test、build 与 GitHub Pages 部署。
 
-### LLM 增强清洗
-
-校园搜索索引支持可选的离线 LLM 清洗。未配置 Key 时会自动回退到规则分类；配置后只在索引构建阶段调用，不会在用户搜索时实时调用模型。默认 provider 为 `auto`：优先使用 DeepSeek V4 Flash，未配置时回退到 Gemini。
+LLM 增强只在离线索引构建阶段运行。未配置 Key 时使用规则抽取，不影响静态搜索可用性。
 
 可选环境变量：
 
 ```powershell
 $env:DEEPSEEK_API_KEY="..."
 $env:DEEPSEEK_MODEL="deepseek-v4-flash"
-$env:DEEPSEEK_API_BASE="https://api.deepseek.com"
 $env:GEMINI_API_KEYS="key1,key2,key3"
-$env:LLM_BATCH_MAX_DOCS="32"
-$env:LLM_BATCH_MAX_CHARS="250000"
-```
-
-LLM 清洗会写入二级分类、学生相关性、行动事项、截止时间、材料清单、学生视角摘要、附件角色、敏感信息标记、复核标记和 evidence。索引脚本同时包含 `llm_schema_version`、受限页面识别、Python 侧 Pydantic 校验、批量 JSON 输出校验、候选级持久缓存、可重跑参数和规则兜底，避免旧缓存或格式漂移污染线上 `documents.json`。
-
-候选级 LLM 缓存位于 `cache/search_llm_cache.json`，只保存 URL、hash、标题和结构化结果，不保存正文。常规更新复用缓存；需要全量重跑时使用：
-
-```powershell
-uv run python scripts\update_search_index.py --force-llm --llm-provider deepseek
-```
-
-CI 中如需读取 GitHub 资料仓库，请配置仓库级 Actions secret：
-
-```powershell
-gh auth token | gh secret set NJUPT_SEARCH_GITHUB_TOKEN --repo hicancan/njupt-search
-```
-
-数据流水线：
-
-```mermaid
-graph LR
-    A["config/campus_sources.json"] --> B["update_search_index.py"]
-    C1["南邮公开站点"] --> B
-    X["GitHub 资料仓库"] --> B
-    L["DeepSeek/Gemini 离线批量理解"] --> B
-    C["教务处 Excel"] --> D["analyze_and_update.py"]
-    B --> E["public/index/documents.json"]
-    D --> F["public/data/all_exams.json"]
-    E --> G["React + Vite 前端"]
-    F --> G
-    G --> H["GitHub Pages / PWA"]
+$env:NJUPT_SEARCH_GITHUB_TOKEN="..."
 ```
 
 ## 项目结构
 
 ```text
-njupt-search/
-├── docs/
-│   └── njupt-search-product-roadmap.md
-│   └── source-audit.md
-├── config/
-│   ├── campus_sources.json
-│   └── github_search_sources.json
-├── public/
-│   ├── data/                  # 考试垂直频道数据
-│   ├── index/                 # 校园搜索索引
-│   └── assets/
-├── scripts/
-│   ├── auto_update_exam_data.py
-│   ├── analyze_and_update.py
-│   ├── indexer_config.py
-│   ├── indexer_scoring.py
-│   ├── semantic_model.py
-│   ├── validate_search_index.py
-│   ├── audit_njupt_sources.py
-│   ├── llm_scorer.py
-│   └── update_search_index.py
-├── src/
-│   ├── components/
-│   ├── hooks/
-│   ├── types/
-│   └── utils/
-└── .github/workflows/
-    ├── auto-update.yml
-    ├── deploy.yml
-    └── build-apk.yml
+config/                 # source-channel graph, ontology, aliases, ranking
+docs/architecture/      # HyTask-RAG 架构
+docs/source-audit/      # Chrome DevTools MCP 公开源审计
+docs/product/           # 产品冻结报告
+eval/                   # 自动 query 集与报告
+public/data/            # 考试垂直频道数据
+public/index/           # 静态 HyTask-RAG 索引
+scripts/core/           # Rule Guard, BM25, query expansion, hybrid ranking
+scripts/models/         # CanonicalDocument, SourceGraph, TaskFrame, HybridIndex
+scripts/eval/           # eval_search and query smoke tests
+src/                    # React/Vite/PWA 前端
 ```
-
-## 免责声明
-
-- 只抓取公开网页与公开接口，不接入需要登录的系统。
-- 考试信息由教务处公开 Excel 自动解析生成，最终时间地点请以学校教务系统及准考证为准。
-- 公告索引依赖各站点公开页面可用性，若源站短暂异常，`manifest.json` 会记录源级状态。
 
 ## License
 

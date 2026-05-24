@@ -216,7 +216,7 @@ def _channel_configs_from_item(source_id: str, source_priority: float, raw_chann
     return tuple(channels)
 
 
-def read_campus_source_configs(path: str = SOURCE_CHANNEL_CONFIG_PATH) -> tuple[SourceConfig, ...]:
+def read_source_channel_configs(path: str = SOURCE_CHANNEL_CONFIG_PATH) -> tuple[SourceConfig, ...]:
     channel_sources = _read_source_channel_payload(path)
     raw_sources = channel_sources
 
@@ -269,4 +269,4 @@ def read_campus_source_configs(path: str = SOURCE_CHANNEL_CONFIG_PATH) -> tuple[
     return tuple(sources)
 
 
-SOURCES: tuple[SourceConfig, ...] = read_campus_source_configs()
+SOURCES: tuple[SourceConfig, ...] = read_source_channel_configs()

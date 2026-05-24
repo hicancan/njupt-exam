@@ -1,11 +1,20 @@
-# Small Model Distillation Readiness
+# Small-Model Distillation Readiness
 
-This directory is intentionally a placeholder for the next phase. The current HyTask-RAG pipeline produces:
+This directory documents the next phase only. The current v1 product freeze does not train, download, or connect a Hugging Face model.
 
-- canonical documents;
-- rule-guarded task frames;
-- hybrid retrieval features;
-- query aliases and ontology labels;
-- evaluation reports.
+The distillation substrate is produced by the static HyTask-RAG pipeline:
 
-Those artifacts are the distillation substrate. This repository does not train or download a Hugging Face model in this phase.
+- `public/index/documents.json`: canonical, rule-guarded search documents;
+- `public/index/task_frames.json`: student task frames with evidence and risk;
+- `public/index/hybrid_index.json`: BM25/field/task/material/evidence features;
+- `public/index/query_aliases.json`: student query expansion;
+- `eval/reports/latest.json`: automatic search/evaluation report;
+- `scripts/eval/query_smoke_test.py`: product-level query gate.
+
+Do not start small-model training until:
+
+- source-channel graph is stable;
+- CI-equivalent checks pass;
+- query smoke passes;
+- evidence coverage is acceptable without fabricated evidence;
+- the user explicitly starts the small-model phase.

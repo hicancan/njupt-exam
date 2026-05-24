@@ -1297,6 +1297,12 @@ def github_api_get(endpoint: str, token: str | None) -> Any:
         headers=github_headers(token),
         timeout=REQUEST_TIMEOUT,
     )
+    if token and response.status_code in {401, 403}:
+        response = requests.get(
+            f"{GITHUB_API_BASE}{endpoint}",
+            headers=github_headers(None),
+            timeout=REQUEST_TIMEOUT,
+        )
     response.raise_for_status()
     return response.json()
 
@@ -1475,6 +1481,11 @@ def crawl_github_resource_source(source: GitHubSourceConfig, now: datetime) -> t
             manifest_entry["warning"] = f"GitHub fetch failed; reused stale cached documents: {exc}"
             manifest_entry["documents"] = len(stale_documents)
             return stale_documents, manifest_entry
+        if "rate limit" in str(exc).lower():
+            manifest_entry["status"] = "ok"
+            manifest_entry["warning"] = f"GitHub fetch rate-limited; skipped this optional resource source: {exc}"
+            manifest_entry["documents"] = 0
+            return [], manifest_entry
         manifest_entry["status"] = "error"
         manifest_entry["error"] = str(exc)
         return [], manifest_entry
@@ -1705,8 +1716,12 @@ def calculate_evidence_coverage(task_frames: list[dict[str, Any]]) -> dict[str, 
     coverage: dict[str, float] = {}
     for field in fields:
         count = 0
+        applicable = 0
         for frame in task_frames:
             evidence = frame.get("evidence") if isinstance(frame.get("evidence"), list) else []
+            if not evidence_field_applicable(frame, field):
+                continue
+            applicable += 1
             if any(isinstance(item, dict) and str(item.get("field", "")).lower() == field for item in evidence):
                 count += 1
             elif field == "action" and (frame.get("action") or {}).get("summary") and evidence:
@@ -1715,9 +1730,32 @@ def calculate_evidence_coverage(task_frames: list[dict[str, Any]]) -> dict[str, 
                 count += 1
             elif field == "audience" and (frame.get("who") or {}).get("audience") and evidence:
                 count += 1
-        coverage[field] = round(count / len(task_frames), 4)
-    coverage["overall"] = round(sum(coverage.values()) / len(fields), 4)
+        coverage[field] = round(count / applicable, 4) if applicable else 0.0
+    applicable_values = [
+        coverage[field]
+        for field in fields
+        if any(evidence_field_applicable(frame, field) for frame in task_frames)
+    ]
+    coverage["overall"] = round(sum(applicable_values) / len(applicable_values), 4) if applicable_values else 0
     return coverage
+
+
+def evidence_field_applicable(frame: dict[str, Any], field: str) -> bool:
+    if field == "audience":
+        return bool((frame.get("who") or {}).get("audience"))
+    if field == "action":
+        action = frame.get("action") or {}
+        return bool(action.get("summary") or action.get("verb") or action.get("required"))
+    if field == "deadline":
+        return bool((frame.get("time") or {}).get("deadline"))
+    if field == "materials":
+        return bool(frame.get("materials"))
+    if field == "location":
+        location = frame.get("location") or {}
+        return bool(location.get("place") or location.get("online") or location.get("contact"))
+    if field == "sensitive":
+        return bool((frame.get("risk") or {}).get("sensitive"))
+    return False
 
 
 def parse_args() -> argparse.Namespace:

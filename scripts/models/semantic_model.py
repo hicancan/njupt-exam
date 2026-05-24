@@ -206,6 +206,9 @@ def normalize_source_type(value: Any, fallback: str = "central_admin") -> str:
 
 
 def infer_domain(text: str, fallback_category: str = "公告", source_type: str = "central_admin") -> str:
+    if source_type == "github_resource":
+        return "resource"
+
     lowered = text.lower()
     best_domain = ""
     best_score = 0

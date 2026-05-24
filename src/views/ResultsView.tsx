@@ -101,6 +101,11 @@ function SearchResultCard({ document, onOpenClass }: SearchResultCardProps) {
                         {primaryTask.evidence.length > 0 ? (
                             <div className="line-clamp-2"><span className="text-[#70757a] dark:text-[#9aa0a6]">证据：</span>{primaryTask.evidence[0]?.text || ''}</div>
                         ) : null}
+                        <div className="flex flex-wrap gap-x-4 gap-y-1">
+                            <span><span className="text-[#70757a] dark:text-[#9aa0a6]">来源：</span>{document.source} · {document.channel}</span>
+                            <span><span className="text-[#70757a] dark:text-[#9aa0a6]">原文：</span>{isExternalUrl(document.url) ? '打开官网原文' : '打开详情'}</span>
+                            <span><span className="text-[#70757a] dark:text-[#9aa0a6]">风险：</span>{isRestricted ? '访问受限' : document.sensitive ? '敏感信息' : document.review_required ? '需复核' : '未标记'}</span>
+                        </div>
                     </div>
                 </div>
             ) : null}

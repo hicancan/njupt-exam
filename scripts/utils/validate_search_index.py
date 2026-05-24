@@ -53,6 +53,9 @@ PUBLIC_QUERY_ALIASES_PATH = os.path.join(BASE_DIR, "public", "index", "query_ali
 PUBLIC_ONTOLOGY_PATH = os.path.join(BASE_DIR, "public", "index", "ontology.json")
 
 MIN_EXPECTED_DOCUMENTS = 120
+MIN_SOURCE_COUNT = 30
+MIN_CHANNEL_COUNT = 60
+MIN_PRODUCTION_CHANNEL_COUNT = 50
 MAX_ERROR_SOURCE_RATIO = 0.1
 MAX_ERROR_SOURCES = 3
 CORE_SOURCE_IDS = {"jwc", "xsc", "pg", "ygb", "youth", "cxcy", "job", "lib"}
@@ -75,6 +78,7 @@ def validate_source_channels() -> None:
         fail("config/source_channels.json must contain sources")
     source_ids: set[str] = set()
     channel_ids: set[str] = set()
+    production_channel_count = 0
     for source in sources:
         if not isinstance(source, dict):
             fail("source_channels contains non-object source")
@@ -100,6 +104,14 @@ def validate_source_channels() -> None:
                 fail(f"channel {channel_id} source_id does not match source {source_id}")
             if not isinstance(channel.get("list_urls"), list) or not channel["list_urls"]:
                 fail(f"channel {channel_id} must have list_urls")
+            if bool(channel.get("production_enabled", True)):
+                production_channel_count += 1
+    if len(source_ids) < MIN_SOURCE_COUNT:
+        fail(f"source_channels source_count {len(source_ids)} < {MIN_SOURCE_COUNT}")
+    if len(channel_ids) < MIN_CHANNEL_COUNT:
+        fail(f"source_channels channel_count {len(channel_ids)} < {MIN_CHANNEL_COUNT}")
+    if production_channel_count < MIN_PRODUCTION_CHANNEL_COUNT:
+        fail(f"source_channels production_channel_count {production_channel_count} < {MIN_PRODUCTION_CHANNEL_COUNT}")
 
 
 def validate_llm_fixture() -> None:
@@ -210,6 +222,14 @@ def validate_manifest() -> None:
     ):
         if field not in manifest:
             fail(f"manifest missing {field}")
+    if int(manifest.get("source_count", 0) or 0) < MIN_SOURCE_COUNT:
+        fail(f"manifest source_count {manifest.get('source_count')} < {MIN_SOURCE_COUNT}")
+    if int(manifest.get("channel_count", 0) or 0) < MIN_CHANNEL_COUNT:
+        fail(f"manifest channel_count {manifest.get('channel_count')} < {MIN_CHANNEL_COUNT}")
+    if int(manifest.get("production_channel_count", 0) or 0) < MIN_PRODUCTION_CHANNEL_COUNT:
+        fail(f"manifest production_channel_count {manifest.get('production_channel_count')} < {MIN_PRODUCTION_CHANNEL_COUNT}")
+    if int(manifest.get("channel_count", 0) or 0) <= int(manifest.get("source_count", 0) or 0):
+        fail("manifest channel_count must be greater than source_count")
     sources = manifest.get("sources")
     if not isinstance(sources, list) or not sources:
         fail("manifest has no sources")

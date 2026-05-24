@@ -7,33 +7,379 @@
       "base_url": "https://jwc.njupt.edu.cn/",
       "source_type": "central_admin",
       "authority": 1.0,
-      "default_audience": ["本科生"],
+      "default_audience": [
+        "本科生"
+      ],
       "access_level": "public_with_possible_campus_restricted_details",
-      "audit_status": "channels_seeded",
+      "audit_status": "channels_deepened",
       "enabled": true,
       "adapter_kind": "njupt_wp",
-      "include_patterns": ["*/20*/**/page.htm"],
+      "include_patterns": [
+        "*/20*/**/page.htm"
+      ],
       "exclude_patterns": [],
       "notes": "本科教学、考试、选课、学籍、推免等第一核心源。",
       "channels": [
         {
-          "id": "jwc_notice",
+          "id": "jwc_exam",
           "source_id": "jwc",
-          "name": "通知公告",
-          "list_urls": ["https://jwc.njupt.edu.cn/1594/list.htm", "https://jwc.njupt.edu.cn/1756/list.htm", "https://jwc.njupt.edu.cn/1503/list.htm", "https://jwc.njupt.edu.cn/1690/list.htm"],
+          "name": "考试工作",
+          "list_urls": [
+            "https://jwc.njupt.edu.cn/1756/list.htm",
+            "https://jwc.njupt.edu.cn/1506/list.htm",
+            "https://jwc.njupt.edu.cn/1699/list.htm"
+          ],
           "student_value": 1.0,
-          "expected_domains": ["exam", "course", "degree", "academic"],
-          "expected_intents": ["schedule", "download", "apply", "check_result", "read"],
+          "expected_domains": [
+            "exam"
+          ],
+          "expected_intents": [
+            "schedule",
+            "download",
+            "check_result"
+          ],
           "priority": 1.0,
           "crawl_depth": 3,
-          "pagination": {"type": "next_link", "pattern": null},
-          "selectors": {"list_item": null, "title": null, "date": null, "link": null, "content": ".wp_articlecontent", "attachments": "a[href]"},
-          "sensitive_risks": ["学号", "成绩", "考试名单"],
-          "positive_keywords": ["考试", "选课", "推免", "转专业", "校历", "补考", "四六级"],
-          "negative_keywords": ["采购", "招标", "会议纪要"],
-          "audit_status": "manual_seeded",
+          "pagination": {
+            "type": "next_link",
+            "pattern": null
+          },
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
+          "sensitive_risks": [
+            "学号",
+            "成绩",
+            "考试名单"
+          ],
+          "positive_keywords": [
+            "考试",
+            "期末",
+            "补考",
+            "重修",
+            "四六级",
+            "考场",
+            "准考证"
+          ],
+          "negative_keywords": [
+            "采购",
+            "招标",
+            "会议纪要"
+          ],
+          "audit_status": "chrome_audited",
           "production_enabled": true,
-          "notes": "P0 主栏目。"
+          "notes": ""
+        },
+        {
+          "id": "jwc_course",
+          "source_id": "jwc",
+          "name": "选课与课程",
+          "list_urls": [
+            "https://jwc.njupt.edu.cn/1505/list.htm",
+            "https://jwc.njupt.edu.cn/1694/list.htm",
+            "https://jwc.njupt.edu.cn/1755/list.htm"
+          ],
+          "student_value": 0.98,
+          "expected_domains": [
+            "course",
+            "academic"
+          ],
+          "expected_intents": [
+            "schedule",
+            "register",
+            "read"
+          ],
+          "priority": 0.98,
+          "crawl_depth": 3,
+          "pagination": {
+            "type": "next_link",
+            "pattern": null
+          },
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
+          "sensitive_risks": [],
+          "positive_keywords": [
+            "选课",
+            "课程",
+            "慕课",
+            "教学安排",
+            "培养方案"
+          ],
+          "negative_keywords": [
+            "采购",
+            "招标",
+            "会议纪要"
+          ],
+          "audit_status": "chrome_audited",
+          "production_enabled": true,
+          "notes": ""
+        },
+        {
+          "id": "jwc_degree",
+          "source_id": "jwc",
+          "name": "毕业结业与学位",
+          "list_urls": [
+            "https://jwc.njupt.edu.cn/1512/list.htm",
+            "https://jwc.njupt.edu.cn/1698/list.htm",
+            "https://jwc.njupt.edu.cn/1731/list.htm"
+          ],
+          "student_value": 0.96,
+          "expected_domains": [
+            "degree",
+            "academic"
+          ],
+          "expected_intents": [
+            "apply",
+            "submit",
+            "check_result",
+            "read"
+          ],
+          "priority": 0.96,
+          "crawl_depth": 3,
+          "pagination": {
+            "type": "next_link",
+            "pattern": null
+          },
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
+          "sensitive_risks": [
+            "名单",
+            "学号"
+          ],
+          "positive_keywords": [
+            "毕业",
+            "结业",
+            "学位",
+            "答辩"
+          ],
+          "negative_keywords": [
+            "采购",
+            "招标",
+            "会议纪要"
+          ],
+          "audit_status": "chrome_audited",
+          "production_enabled": true,
+          "notes": ""
+        },
+        {
+          "id": "jwc_transfer",
+          "source_id": "jwc",
+          "name": "转专业与学籍",
+          "list_urls": [
+            "https://jwc.njupt.edu.cn/1503/list.htm",
+            "https://jwc.njupt.edu.cn/1504/list.htm",
+            "https://jwc.njupt.edu.cn/1692/list.htm"
+          ],
+          "student_value": 0.96,
+          "expected_domains": [
+            "academic",
+            "course"
+          ],
+          "expected_intents": [
+            "apply",
+            "submit",
+            "check_result"
+          ],
+          "priority": 0.96,
+          "crawl_depth": 3,
+          "pagination": {
+            "type": "next_link",
+            "pattern": null
+          },
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
+          "sensitive_risks": [
+            "名单",
+            "学号"
+          ],
+          "positive_keywords": [
+            "转专业",
+            "学籍",
+            "休学",
+            "复学",
+            "退学"
+          ],
+          "negative_keywords": [
+            "采购",
+            "招标",
+            "会议纪要"
+          ],
+          "audit_status": "chrome_audited",
+          "production_enabled": true,
+          "notes": ""
+        },
+        {
+          "id": "jwc_recommendation",
+          "source_id": "jwc",
+          "name": "推免与升学",
+          "list_urls": [
+            "https://jwc.njupt.edu.cn/1511/list.htm",
+            "https://jwc.njupt.edu.cn/1697/list.htm",
+            "https://jwc.njupt.edu.cn/1594/list.htm"
+          ],
+          "student_value": 0.98,
+          "expected_domains": [
+            "degree",
+            "academic"
+          ],
+          "expected_intents": [
+            "apply",
+            "publicity",
+            "check_result"
+          ],
+          "priority": 0.98,
+          "crawl_depth": 3,
+          "pagination": {
+            "type": "next_link",
+            "pattern": null
+          },
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
+          "sensitive_risks": [
+            "名单",
+            "学号",
+            "成绩"
+          ],
+          "positive_keywords": [
+            "推免",
+            "保研",
+            "推荐免试",
+            "免试研究生"
+          ],
+          "negative_keywords": [
+            "采购",
+            "招标",
+            "会议纪要"
+          ],
+          "audit_status": "chrome_audited",
+          "production_enabled": true,
+          "notes": ""
+        },
+        {
+          "id": "jwc_download",
+          "source_id": "jwc",
+          "name": "教务常用下载",
+          "list_urls": [
+            "https://jwc.njupt.edu.cn/1690/list.htm",
+            "https://jwc.njupt.edu.cn/1691/list.htm"
+          ],
+          "student_value": 0.9,
+          "expected_domains": [
+            "resource",
+            "academic"
+          ],
+          "expected_intents": [
+            "download",
+            "read"
+          ],
+          "priority": 0.9,
+          "crawl_depth": 2,
+          "pagination": {
+            "type": "next_link",
+            "pattern": null
+          },
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
+          "sensitive_risks": [],
+          "positive_keywords": [
+            "下载",
+            "表格",
+            "模板",
+            "申请表"
+          ],
+          "negative_keywords": [
+            "采购",
+            "招标",
+            "会议纪要"
+          ],
+          "audit_status": "chrome_audited",
+          "production_enabled": true,
+          "notes": ""
+        },
+        {
+          "id": "jwc_calendar",
+          "source_id": "jwc",
+          "name": "校历与制度",
+          "list_urls": [
+            "http://jwc.njupt.edu.cn/2025/0904/c1528a288083/page.htm",
+            "https://jwc.njupt.edu.cn/1533/list.htm",
+            "https://jwc.njupt.edu.cn/1535/list.htm",
+            "https://jwc.njupt.edu.cn/1537/list.htm"
+          ],
+          "student_value": 0.88,
+          "expected_domains": [
+            "policy",
+            "academic",
+            "exam"
+          ],
+          "expected_intents": [
+            "schedule",
+            "read"
+          ],
+          "priority": 0.88,
+          "crawl_depth": 1,
+          "pagination": {
+            "type": "none",
+            "pattern": null
+          },
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
+          "sensitive_risks": [],
+          "positive_keywords": [
+            "校历",
+            "规则",
+            "办法",
+            "制度"
+          ],
+          "negative_keywords": [
+            "采购",
+            "招标",
+            "会议纪要"
+          ],
+          "audit_status": "chrome_audited",
+          "production_enabled": true,
+          "notes": ""
         }
       ]
     },
@@ -43,33 +389,304 @@
       "base_url": "https://xsc.njupt.edu.cn/",
       "source_type": "central_admin",
       "authority": 0.96,
-      "default_audience": ["本科生"],
+      "default_audience": [
+        "本科生"
+      ],
       "access_level": "public_with_possible_sensitive_lists",
-      "audit_status": "channels_seeded",
+      "audit_status": "channels_deepened",
       "enabled": true,
       "adapter_kind": "njupt_wp",
-      "include_patterns": ["*/20*/**/page.htm"],
+      "include_patterns": [
+        "*/20*/**/page.htm"
+      ],
       "exclude_patterns": [],
       "notes": "奖助、心理、宿舍、学生社区和就业指导。",
       "channels": [
         {
-          "id": "xsc_notice",
+          "id": "xsc_scholarship",
           "source_id": "xsc",
-          "name": "学生工作通知",
-          "list_urls": ["https://xsc.njupt.edu.cn/", "https://xsc.njupt.edu.cn/1158/list.htm", "https://xsc.njupt.edu.cn/1169/list.htm", "https://xsc.njupt.edu.cn/jzgl/list.htm", "https://xsc.njupt.edu.cn/xjgl/list.htm"],
+          "name": "奖学金与评优",
+          "list_urls": [
+            "https://xsc.njupt.edu.cn/jzgl/list.htm",
+            "https://xsc.njupt.edu.cn/1158/list.htm"
+          ],
           "student_value": 0.98,
-          "expected_domains": ["scholarship", "life", "employment"],
-          "expected_intents": ["apply", "submit", "publicity", "read"],
+          "expected_domains": [
+            "scholarship"
+          ],
+          "expected_intents": [
+            "apply",
+            "publicity",
+            "check_result"
+          ],
           "priority": 0.96,
-          "crawl_depth": 2,
-          "pagination": {"type": "homepage_links", "pattern": null},
-          "selectors": {"list_item": null, "title": null, "date": null, "link": null, "content": ".wp_articlecontent", "attachments": "a[href]"},
-          "sensitive_risks": ["困难认定", "获奖名单", "学号", "联系方式"],
-          "positive_keywords": ["奖学金", "助学金", "困难认定", "评优", "宿舍", "心理"],
-          "negative_keywords": ["党建", "会议纪要"],
-          "audit_status": "manual_seeded",
+          "crawl_depth": 3,
+          "pagination": {
+            "type": "homepage_links",
+            "pattern": null
+          },
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
+          "sensitive_risks": [
+            "获奖名单",
+            "学号"
+          ],
+          "positive_keywords": [
+            "奖学金",
+            "评奖评优",
+            "优秀学生",
+            "公示"
+          ],
+          "negative_keywords": [
+            "党建",
+            "会议纪要"
+          ],
+          "audit_status": "chrome_audited",
           "production_enabled": true,
-          "notes": "P0 主栏目。"
+          "notes": ""
+        },
+        {
+          "id": "xsc_subsidy",
+          "source_id": "xsc",
+          "name": "资助与困难认定",
+          "list_urls": [
+            "https://xsc.njupt.edu.cn/1169/list.htm",
+            "https://xsc.njupt.edu.cn/jzgl/list.htm"
+          ],
+          "student_value": 0.98,
+          "expected_domains": [
+            "subsidy",
+            "scholarship"
+          ],
+          "expected_intents": [
+            "apply",
+            "submit",
+            "publicity"
+          ],
+          "priority": 0.96,
+          "crawl_depth": 3,
+          "pagination": {
+            "type": "homepage_links",
+            "pattern": null
+          },
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
+          "sensitive_risks": [
+            "困难认定",
+            "学号",
+            "联系方式"
+          ],
+          "positive_keywords": [
+            "助学金",
+            "资助",
+            "困难认定",
+            "补助"
+          ],
+          "negative_keywords": [
+            "党建",
+            "会议纪要"
+          ],
+          "audit_status": "chrome_audited",
+          "production_enabled": true,
+          "notes": ""
+        },
+        {
+          "id": "xsc_dormitory",
+          "source_id": "xsc",
+          "name": "宿舍与学生社区",
+          "list_urls": [
+            "https://xsc.njupt.edu.cn/",
+            "https://xsc.njupt.edu.cn/1158/list.htm"
+          ],
+          "student_value": 0.9,
+          "expected_domains": [
+            "life",
+            "logistics"
+          ],
+          "expected_intents": [
+            "read",
+            "apply",
+            "alert"
+          ],
+          "priority": 0.88,
+          "crawl_depth": 2,
+          "pagination": {
+            "type": "homepage_links",
+            "pattern": null
+          },
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
+          "sensitive_risks": [],
+          "positive_keywords": [
+            "宿舍",
+            "社区",
+            "公寓",
+            "入住",
+            "搬迁"
+          ],
+          "negative_keywords": [
+            "党建"
+          ],
+          "audit_status": "chrome_audited",
+          "production_enabled": true,
+          "notes": ""
+        },
+        {
+          "id": "xsc_psychology",
+          "source_id": "xsc",
+          "name": "心理健康",
+          "list_urls": [
+            "https://xsc.njupt.edu.cn/",
+            "https://xsc.njupt.edu.cn/1158/list.htm"
+          ],
+          "student_value": 0.86,
+          "expected_domains": [
+            "life"
+          ],
+          "expected_intents": [
+            "attend",
+            "read",
+            "contact"
+          ],
+          "priority": 0.84,
+          "crawl_depth": 2,
+          "pagination": {
+            "type": "homepage_links",
+            "pattern": null
+          },
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
+          "sensitive_risks": [],
+          "positive_keywords": [
+            "心理",
+            "咨询",
+            "健康",
+            "辅导"
+          ],
+          "negative_keywords": [
+            "党建"
+          ],
+          "audit_status": "chrome_audited",
+          "production_enabled": true,
+          "notes": ""
+        },
+        {
+          "id": "xsc_service",
+          "source_id": "xsc",
+          "name": "学生事务服务",
+          "list_urls": [
+            "https://xsc.njupt.edu.cn/xjgl/list.htm",
+            "https://xsc.njupt.edu.cn/1158/list.htm"
+          ],
+          "student_value": 0.9,
+          "expected_domains": [
+            "life",
+            "academic"
+          ],
+          "expected_intents": [
+            "read",
+            "download",
+            "submit"
+          ],
+          "priority": 0.88,
+          "crawl_depth": 2,
+          "pagination": {
+            "type": "homepage_links",
+            "pattern": null
+          },
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
+          "sensitive_risks": [],
+          "positive_keywords": [
+            "服务指南",
+            "学籍",
+            "学生事务",
+            "办理"
+          ],
+          "negative_keywords": [
+            "党建"
+          ],
+          "audit_status": "chrome_audited",
+          "production_enabled": true,
+          "notes": ""
+        },
+        {
+          "id": "xsc_download",
+          "source_id": "xsc",
+          "name": "学工下载专区",
+          "list_urls": [
+            "https://xsc.njupt.edu.cn/1169/list.htm",
+            "https://xsc.njupt.edu.cn/xjgl/list.htm"
+          ],
+          "student_value": 0.86,
+          "expected_domains": [
+            "resource",
+            "scholarship"
+          ],
+          "expected_intents": [
+            "download",
+            "submit"
+          ],
+          "priority": 0.84,
+          "crawl_depth": 2,
+          "pagination": {
+            "type": "homepage_links",
+            "pattern": null
+          },
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
+          "sensitive_risks": [
+            "学号",
+            "联系方式"
+          ],
+          "positive_keywords": [
+            "下载",
+            "表格",
+            "模板",
+            "申请表"
+          ],
+          "negative_keywords": [
+            "党建"
+          ],
+          "audit_status": "chrome_audited",
+          "production_enabled": true,
+          "notes": ""
         }
       ]
     },
@@ -79,33 +696,261 @@
       "base_url": "https://pg.njupt.edu.cn/",
       "source_type": "central_admin",
       "authority": 0.96,
-      "default_audience": ["研究生"],
+      "default_audience": [
+        "研究生"
+      ],
       "access_level": "public_with_possible_sensitive_lists",
-      "audit_status": "channels_seeded",
+      "audit_status": "channels_deepened",
       "enabled": true,
       "adapter_kind": "njupt_wp",
-      "include_patterns": ["*/20*/**/page.htm"],
+      "include_patterns": [
+        "*/20*/**/page.htm"
+      ],
       "exclude_patterns": [],
       "notes": "研究生培养、学位、答辩、竞赛和公示。",
       "channels": [
         {
-          "id": "pg_notice",
+          "id": "pg_training",
           "source_id": "pg",
-          "name": "培养与学位通知",
-          "list_urls": ["https://pg.njupt.edu.cn/", "https://pg.njupt.edu.cn/967/list.htm", "https://pg.njupt.edu.cn/975/list.htm", "https://pg.njupt.edu.cn/xzzq/list.htm"],
+          "name": "研究生培养",
+          "list_urls": [
+            "https://pg.njupt.edu.cn/967/list.htm",
+            "https://pg.njupt.edu.cn/"
+          ],
           "student_value": 0.96,
-          "expected_domains": ["degree", "academic", "exam"],
-          "expected_intents": ["schedule", "apply", "submit", "check_result"],
+          "expected_domains": [
+            "degree",
+            "academic",
+            "course"
+          ],
+          "expected_intents": [
+            "schedule",
+            "read",
+            "submit"
+          ],
           "priority": 0.96,
-          "crawl_depth": 2,
-          "pagination": {"type": "homepage_links", "pattern": null},
-          "selectors": {"list_item": null, "title": null, "date": null, "link": null, "content": ".wp_articlecontent", "attachments": "a[href]"},
-          "sensitive_risks": ["名单", "学号", "成绩"],
-          "positive_keywords": ["研究生", "学位", "培养", "答辩", "开题", "毕业"],
-          "negative_keywords": ["采购", "招标"],
-          "audit_status": "manual_seeded",
+          "crawl_depth": 3,
+          "pagination": {
+            "type": "homepage_links",
+            "pattern": null
+          },
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
+          "sensitive_risks": [],
+          "positive_keywords": [
+            "培养",
+            "课程",
+            "教学",
+            "开题",
+            "中期"
+          ],
+          "negative_keywords": [
+            "采购",
+            "招标",
+            "会议纪要"
+          ],
+          "audit_status": "chrome_audited",
           "production_enabled": true,
-          "notes": "P0 主栏目。"
+          "notes": ""
+        },
+        {
+          "id": "pg_degree",
+          "source_id": "pg",
+          "name": "学位与答辩",
+          "list_urls": [
+            "https://pg.njupt.edu.cn/975/list.htm",
+            "https://pg.njupt.edu.cn/"
+          ],
+          "student_value": 0.96,
+          "expected_domains": [
+            "degree"
+          ],
+          "expected_intents": [
+            "apply",
+            "submit",
+            "schedule",
+            "check_result"
+          ],
+          "priority": 0.96,
+          "crawl_depth": 3,
+          "pagination": {
+            "type": "homepage_links",
+            "pattern": null
+          },
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
+          "sensitive_risks": [
+            "名单",
+            "学号",
+            "学位公示"
+          ],
+          "positive_keywords": [
+            "学位",
+            "答辩",
+            "论文",
+            "毕业",
+            "授予"
+          ],
+          "negative_keywords": [
+            "采购",
+            "招标",
+            "会议纪要"
+          ],
+          "audit_status": "chrome_audited",
+          "production_enabled": true,
+          "notes": ""
+        },
+        {
+          "id": "pg_download",
+          "source_id": "pg",
+          "name": "研究生下载专区",
+          "list_urls": [
+            "https://pg.njupt.edu.cn/xzzq/list.htm"
+          ],
+          "student_value": 0.88,
+          "expected_domains": [
+            "resource",
+            "degree"
+          ],
+          "expected_intents": [
+            "download",
+            "submit"
+          ],
+          "priority": 0.88,
+          "crawl_depth": 2,
+          "pagination": {
+            "type": "homepage_links",
+            "pattern": null
+          },
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
+          "sensitive_risks": [],
+          "positive_keywords": [
+            "下载",
+            "表格",
+            "模板",
+            "申请表"
+          ],
+          "negative_keywords": [
+            "采购",
+            "招标",
+            "会议纪要"
+          ],
+          "audit_status": "chrome_audited",
+          "production_enabled": true,
+          "notes": ""
+        },
+        {
+          "id": "pg_policy",
+          "source_id": "pg",
+          "name": "研究生规章制度",
+          "list_urls": [
+            "https://pg.njupt.edu.cn/"
+          ],
+          "student_value": 0.8,
+          "expected_domains": [
+            "policy",
+            "degree"
+          ],
+          "expected_intents": [
+            "read"
+          ],
+          "priority": 0.8,
+          "crawl_depth": 1,
+          "pagination": {
+            "type": "homepage_links",
+            "pattern": null
+          },
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
+          "sensitive_risks": [],
+          "positive_keywords": [
+            "规章",
+            "制度",
+            "办法"
+          ],
+          "negative_keywords": [
+            "采购",
+            "招标",
+            "会议纪要"
+          ],
+          "audit_status": "chrome_audited",
+          "production_enabled": true,
+          "notes": ""
+        },
+        {
+          "id": "pg_graduation",
+          "source_id": "pg",
+          "name": "毕业与论文",
+          "list_urls": [
+            "https://pg.njupt.edu.cn/975/list.htm",
+            "https://pg.njupt.edu.cn/967/list.htm"
+          ],
+          "student_value": 0.94,
+          "expected_domains": [
+            "degree"
+          ],
+          "expected_intents": [
+            "schedule",
+            "submit",
+            "check_result"
+          ],
+          "priority": 0.94,
+          "crawl_depth": 3,
+          "pagination": {
+            "type": "homepage_links",
+            "pattern": null
+          },
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
+          "sensitive_risks": [
+            "名单",
+            "学号"
+          ],
+          "positive_keywords": [
+            "毕业",
+            "论文",
+            "盲审",
+            "答辩"
+          ],
+          "negative_keywords": [
+            "采购",
+            "招标",
+            "会议纪要"
+          ],
+          "audit_status": "chrome_audited",
+          "production_enabled": true,
+          "notes": ""
         }
       ]
     },
@@ -115,33 +960,209 @@
       "base_url": "https://ygb.njupt.edu.cn/",
       "source_type": "central_admin",
       "authority": 0.92,
-      "default_audience": ["研究生"],
+      "default_audience": [
+        "研究生"
+      ],
       "access_level": "public_with_possible_sensitive_lists",
-      "audit_status": "channels_seeded",
+      "audit_status": "channels_deepened",
       "enabled": true,
       "adapter_kind": "njupt_wp",
-      "include_patterns": ["*/20*/**/page.htm"],
+      "include_patterns": [
+        "*/20*/**/page.htm"
+      ],
       "exclude_patterns": [],
       "notes": "研究生奖助、评优、实践和学术活动。",
       "channels": [
         {
-          "id": "ygb_notice",
+          "id": "ygb_scholarship",
           "source_id": "ygb",
-          "name": "研工通知",
-          "list_urls": ["https://ygb.njupt.edu.cn/", "https://ygb.njupt.edu.cn/swgl/list.htm", "https://ygb.njupt.edu.cn/zzfw/list.htm", "https://ygb.njupt.edu.cn/xskjsj/list.htm", "https://ygb.njupt.edu.cn/3788/list.htm"],
-          "student_value": 0.92,
-          "expected_domains": ["scholarship", "life", "lecture"],
-          "expected_intents": ["apply", "publicity", "attend", "read"],
+          "name": "研究生奖学金",
+          "list_urls": [
+            "https://ygb.njupt.edu.cn/zzfw/list.htm",
+            "https://ygb.njupt.edu.cn/"
+          ],
+          "student_value": 0.94,
+          "expected_domains": [
+            "scholarship"
+          ],
+          "expected_intents": [
+            "apply",
+            "publicity",
+            "check_result"
+          ],
           "priority": 0.92,
           "crawl_depth": 2,
-          "pagination": {"type": "homepage_links", "pattern": null},
-          "selectors": {"list_item": null, "title": null, "date": null, "link": null, "content": ".wp_articlecontent", "attachments": "a[href]"},
-          "sensitive_risks": ["名单", "学号", "奖助"],
-          "positive_keywords": ["研究生", "奖学金", "助学金", "评优", "实践"],
-          "negative_keywords": ["党建", "会议"],
-          "audit_status": "manual_seeded",
+          "pagination": {
+            "type": "homepage_links",
+            "pattern": null
+          },
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
+          "sensitive_risks": [
+            "名单",
+            "学号"
+          ],
+          "positive_keywords": [
+            "奖学金",
+            "评优",
+            "公示"
+          ],
+          "negative_keywords": [
+            "党建"
+          ],
+          "audit_status": "chrome_audited",
           "production_enabled": true,
-          "notes": "P0 主栏目。"
+          "notes": ""
+        },
+        {
+          "id": "ygb_subsidy",
+          "source_id": "ygb",
+          "name": "研究生资助",
+          "list_urls": [
+            "https://ygb.njupt.edu.cn/zzfw/list.htm"
+          ],
+          "student_value": 0.9,
+          "expected_domains": [
+            "subsidy",
+            "scholarship"
+          ],
+          "expected_intents": [
+            "apply",
+            "submit"
+          ],
+          "priority": 0.88,
+          "crawl_depth": 2,
+          "pagination": {
+            "type": "homepage_links",
+            "pattern": null
+          },
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
+          "sensitive_risks": [
+            "困难认定",
+            "学号"
+          ],
+          "positive_keywords": [
+            "助学金",
+            "资助",
+            "困难",
+            "补助"
+          ],
+          "negative_keywords": [
+            "党建"
+          ],
+          "audit_status": "chrome_audited",
+          "production_enabled": true,
+          "notes": ""
+        },
+        {
+          "id": "ygb_practice",
+          "source_id": "ygb",
+          "name": "学术科技与实践",
+          "list_urls": [
+            "https://ygb.njupt.edu.cn/xskjsj/list.htm"
+          ],
+          "student_value": 0.88,
+          "expected_domains": [
+            "competition",
+            "lecture",
+            "research"
+          ],
+          "expected_intents": [
+            "attend",
+            "register",
+            "apply"
+          ],
+          "priority": 0.86,
+          "crawl_depth": 2,
+          "pagination": {
+            "type": "homepage_links",
+            "pattern": null
+          },
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
+          "sensitive_risks": [],
+          "positive_keywords": [
+            "学术",
+            "科技",
+            "实践",
+            "竞赛",
+            "活动"
+          ],
+          "negative_keywords": [
+            "采购",
+            "招标",
+            "会议纪要"
+          ],
+          "audit_status": "chrome_audited",
+          "production_enabled": true,
+          "notes": ""
+        },
+        {
+          "id": "ygb_service",
+          "source_id": "ygb",
+          "name": "研工事务管理",
+          "list_urls": [
+            "https://ygb.njupt.edu.cn/swgl/list.htm",
+            "https://ygb.njupt.edu.cn/3788/list.htm"
+          ],
+          "student_value": 0.84,
+          "expected_domains": [
+            "life",
+            "resource"
+          ],
+          "expected_intents": [
+            "read",
+            "download",
+            "submit"
+          ],
+          "priority": 0.82,
+          "crawl_depth": 2,
+          "pagination": {
+            "type": "homepage_links",
+            "pattern": null
+          },
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
+          "sensitive_risks": [],
+          "positive_keywords": [
+            "事务",
+            "下载",
+            "指南",
+            "办理"
+          ],
+          "negative_keywords": [
+            "采购",
+            "招标",
+            "会议纪要"
+          ],
+          "audit_status": "chrome_audited",
+          "production_enabled": true,
+          "notes": ""
         }
       ]
     },
@@ -151,33 +1172,207 @@
       "base_url": "https://youth.njupt.edu.cn/",
       "source_type": "central_admin",
       "authority": 0.9,
-      "default_audience": ["本科生", "研究生"],
+      "default_audience": [
+        "本科生",
+        "研究生"
+      ],
       "access_level": "public",
-      "audit_status": "channels_seeded",
+      "audit_status": "channels_deepened",
       "enabled": true,
       "adapter_kind": "njupt_wp",
-      "include_patterns": ["*/20*/**/page.htm"],
+      "include_patterns": [
+        "*/20*/**/page.htm"
+      ],
       "exclude_patterns": [],
       "notes": "社团、挑战杯、志愿服务和学生组织。",
       "channels": [
         {
-          "id": "youth_notice",
+          "id": "youth_competition",
           "source_id": "youth",
-          "name": "团学通知",
-          "list_urls": ["https://youth.njupt.edu.cn/", "https://youth.njupt.edu.cn/7515/list.htm", "https://youth.njupt.edu.cn/7516/list.htm", "https://youth.njupt.edu.cn/7522/list.htm"],
-          "student_value": 0.9,
-          "expected_domains": ["competition", "life", "lecture"],
-          "expected_intents": ["register", "attend", "apply", "read"],
+          "name": "挑战杯与竞赛",
+          "list_urls": [
+            "https://youth.njupt.edu.cn/7515/list.htm",
+            "https://youth.njupt.edu.cn/"
+          ],
+          "student_value": 0.92,
+          "expected_domains": [
+            "competition"
+          ],
+          "expected_intents": [
+            "register",
+            "apply",
+            "check_result"
+          ],
           "priority": 0.9,
           "crawl_depth": 2,
-          "pagination": {"type": "homepage_links", "pattern": null},
-          "selectors": {"list_item": null, "title": null, "date": null, "link": null, "content": ".wp_articlecontent", "attachments": "a[href]"},
-          "sensitive_risks": ["参赛名单", "获奖名单"],
-          "positive_keywords": ["挑战杯", "竞赛", "社团", "志愿", "活动", "报名"],
-          "negative_keywords": ["会议纪要"],
-          "audit_status": "manual_seeded",
+          "pagination": {
+            "type": "homepage_links",
+            "pattern": null
+          },
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
+          "sensitive_risks": [
+            "参赛名单",
+            "获奖名单"
+          ],
+          "positive_keywords": [
+            "挑战杯",
+            "竞赛",
+            "校赛",
+            "获奖"
+          ],
+          "negative_keywords": [
+            "采购",
+            "招标",
+            "会议纪要"
+          ],
+          "audit_status": "chrome_audited",
           "production_enabled": true,
-          "notes": "P0 主栏目。"
+          "notes": ""
+        },
+        {
+          "id": "youth_volunteer",
+          "source_id": "youth",
+          "name": "志愿服务",
+          "list_urls": [
+            "https://youth.njupt.edu.cn/7516/list.htm",
+            "https://youth.njupt.edu.cn/"
+          ],
+          "student_value": 0.86,
+          "expected_domains": [
+            "life"
+          ],
+          "expected_intents": [
+            "attend",
+            "register"
+          ],
+          "priority": 0.84,
+          "crawl_depth": 2,
+          "pagination": {
+            "type": "homepage_links",
+            "pattern": null
+          },
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
+          "sensitive_risks": [],
+          "positive_keywords": [
+            "志愿",
+            "服务",
+            "活动",
+            "报名"
+          ],
+          "negative_keywords": [
+            "采购",
+            "招标",
+            "会议纪要"
+          ],
+          "audit_status": "chrome_audited",
+          "production_enabled": true,
+          "notes": ""
+        },
+        {
+          "id": "youth_organization",
+          "source_id": "youth",
+          "name": "团学组织",
+          "list_urls": [
+            "https://youth.njupt.edu.cn/7522/list.htm",
+            "https://youth.njupt.edu.cn/"
+          ],
+          "student_value": 0.84,
+          "expected_domains": [
+            "life",
+            "lecture"
+          ],
+          "expected_intents": [
+            "attend",
+            "apply",
+            "read"
+          ],
+          "priority": 0.82,
+          "crawl_depth": 2,
+          "pagination": {
+            "type": "homepage_links",
+            "pattern": null
+          },
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
+          "sensitive_risks": [],
+          "positive_keywords": [
+            "社团",
+            "团委",
+            "学生组织",
+            "活动"
+          ],
+          "negative_keywords": [
+            "采购",
+            "招标",
+            "会议纪要"
+          ],
+          "audit_status": "chrome_audited",
+          "production_enabled": true,
+          "notes": ""
+        },
+        {
+          "id": "youth_download",
+          "source_id": "youth",
+          "name": "团委下载与专题",
+          "list_urls": [
+            "https://youth.njupt.edu.cn/7522/list.htm"
+          ],
+          "student_value": 0.78,
+          "expected_domains": [
+            "resource"
+          ],
+          "expected_intents": [
+            "download",
+            "read"
+          ],
+          "priority": 0.76,
+          "crawl_depth": 1,
+          "pagination": {
+            "type": "homepage_links",
+            "pattern": null
+          },
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
+          "sensitive_risks": [],
+          "positive_keywords": [
+            "下载",
+            "表格",
+            "专题"
+          ],
+          "negative_keywords": [
+            "采购",
+            "招标",
+            "会议纪要"
+          ],
+          "audit_status": "chrome_audited",
+          "production_enabled": true,
+          "notes": ""
         }
       ]
     },
@@ -187,33 +1382,266 @@
       "base_url": "https://cxcy.njupt.edu.cn/",
       "source_type": "central_admin",
       "authority": 0.9,
-      "default_audience": ["本科生", "研究生"],
+      "default_audience": [
+        "本科生",
+        "研究生"
+      ],
       "access_level": "public_with_possible_sensitive_lists",
-      "audit_status": "channels_seeded",
+      "audit_status": "channels_deepened",
       "enabled": true,
       "adapter_kind": "njupt_wp",
-      "include_patterns": ["*/20*/**/page.htm"],
+      "include_patterns": [
+        "*/20*/**/page.htm"
+      ],
       "exclude_patterns": [],
       "notes": "竞赛、大创、创业基金和项目报名。",
       "channels": [
         {
-          "id": "cxcy_notice",
+          "id": "cxcy_project",
           "source_id": "cxcy",
-          "name": "创新创业通知",
-          "list_urls": ["https://cxcy.njupt.edu.cn/", "https://cxcy.njupt.edu.cn/15464/list.htm", "https://cxcy.njupt.edu.cn/15493/list.htm", "https://cxcy.njupt.edu.cn/15494/list.htm", "https://cxcy.njupt.edu.cn/15465/list.htm", "https://cxcy.njupt.edu.cn/15495/list.htm", "https://cxcy.njupt.edu.cn/15468/list.htm"],
-          "student_value": 0.95,
-          "expected_domains": ["project", "competition"],
-          "expected_intents": ["apply", "register", "submit", "check_result"],
-          "priority": 0.9,
-          "crawl_depth": 2,
-          "pagination": {"type": "homepage_links", "pattern": null},
-          "selectors": {"list_item": null, "title": null, "date": null, "link": null, "content": ".wp_articlecontent", "attachments": "a[href]"},
-          "sensitive_risks": ["参赛队员", "获奖名单", "项目成员"],
-          "positive_keywords": ["大创", "创新创业", "竞赛", "项目申报", "挑战杯", "互联网+"],
-          "negative_keywords": ["采购", "招标"],
-          "audit_status": "manual_seeded",
+          "name": "大创项目",
+          "list_urls": [
+            "https://cxcy.njupt.edu.cn/15464/list.htm",
+            "https://cxcy.njupt.edu.cn/15493/list.htm",
+            "https://cxcy.njupt.edu.cn/15494/list.htm"
+          ],
+          "student_value": 0.98,
+          "expected_domains": [
+            "innovation_project",
+            "project"
+          ],
+          "expected_intents": [
+            "apply",
+            "submit",
+            "check_result"
+          ],
+          "priority": 0.94,
+          "crawl_depth": 3,
+          "pagination": {
+            "type": "homepage_links",
+            "pattern": null
+          },
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
+          "sensitive_risks": [
+            "项目成员",
+            "学号"
+          ],
+          "positive_keywords": [
+            "大创",
+            "创新训练",
+            "项目申报",
+            "立项",
+            "结题"
+          ],
+          "negative_keywords": [
+            "采购",
+            "招标",
+            "会议纪要"
+          ],
+          "audit_status": "chrome_audited",
           "production_enabled": true,
-          "notes": "P0 主栏目。"
+          "notes": ""
+        },
+        {
+          "id": "cxcy_competition",
+          "source_id": "cxcy",
+          "name": "学科竞赛",
+          "list_urls": [
+            "https://cxcy.njupt.edu.cn/15465/list.htm",
+            "https://cxcy.njupt.edu.cn/15495/list.htm"
+          ],
+          "student_value": 0.94,
+          "expected_domains": [
+            "competition"
+          ],
+          "expected_intents": [
+            "register",
+            "apply",
+            "check_result"
+          ],
+          "priority": 0.9,
+          "crawl_depth": 3,
+          "pagination": {
+            "type": "homepage_links",
+            "pattern": null
+          },
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
+          "sensitive_risks": [
+            "参赛队员",
+            "获奖名单"
+          ],
+          "positive_keywords": [
+            "竞赛",
+            "挑战杯",
+            "互联网+",
+            "蓝桥杯",
+            "校赛"
+          ],
+          "negative_keywords": [
+            "采购",
+            "招标",
+            "会议纪要"
+          ],
+          "audit_status": "chrome_audited",
+          "production_enabled": true,
+          "notes": ""
+        },
+        {
+          "id": "cxcy_fund",
+          "source_id": "cxcy",
+          "name": "创业基金与孵化",
+          "list_urls": [
+            "https://cxcy.njupt.edu.cn/15468/list.htm",
+            "https://cxcy.njupt.edu.cn/"
+          ],
+          "student_value": 0.86,
+          "expected_domains": [
+            "project"
+          ],
+          "expected_intents": [
+            "apply",
+            "submit"
+          ],
+          "priority": 0.84,
+          "crawl_depth": 2,
+          "pagination": {
+            "type": "homepage_links",
+            "pattern": null
+          },
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
+          "sensitive_risks": [],
+          "positive_keywords": [
+            "创业",
+            "基金",
+            "孵化",
+            "项目"
+          ],
+          "negative_keywords": [
+            "采购",
+            "招标",
+            "会议纪要"
+          ],
+          "audit_status": "chrome_audited",
+          "production_enabled": true,
+          "notes": ""
+        },
+        {
+          "id": "cxcy_publicity",
+          "source_id": "cxcy",
+          "name": "项目竞赛公示",
+          "list_urls": [
+            "https://cxcy.njupt.edu.cn/15494/list.htm",
+            "https://cxcy.njupt.edu.cn/15495/list.htm"
+          ],
+          "student_value": 0.88,
+          "expected_domains": [
+            "competition",
+            "innovation_project"
+          ],
+          "expected_intents": [
+            "publicity",
+            "check_result"
+          ],
+          "priority": 0.86,
+          "crawl_depth": 2,
+          "pagination": {
+            "type": "homepage_links",
+            "pattern": null
+          },
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
+          "sensitive_risks": [
+            "名单",
+            "学号",
+            "项目成员"
+          ],
+          "positive_keywords": [
+            "公示",
+            "名单",
+            "获奖",
+            "立项"
+          ],
+          "negative_keywords": [
+            "采购",
+            "招标",
+            "会议纪要"
+          ],
+          "audit_status": "chrome_audited",
+          "production_enabled": true,
+          "notes": ""
+        },
+        {
+          "id": "cxcy_download",
+          "source_id": "cxcy",
+          "name": "创新创业下载",
+          "list_urls": [
+            "https://cxcy.njupt.edu.cn/15468/list.htm"
+          ],
+          "student_value": 0.82,
+          "expected_domains": [
+            "resource",
+            "project"
+          ],
+          "expected_intents": [
+            "download",
+            "submit"
+          ],
+          "priority": 0.8,
+          "crawl_depth": 1,
+          "pagination": {
+            "type": "homepage_links",
+            "pattern": null
+          },
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
+          "sensitive_risks": [],
+          "positive_keywords": [
+            "下载",
+            "表格",
+            "模板",
+            "申报书"
+          ],
+          "negative_keywords": [
+            "采购",
+            "招标",
+            "会议纪要"
+          ],
+          "audit_status": "chrome_audited",
+          "production_enabled": true,
+          "notes": ""
         }
       ]
     },
@@ -223,9 +1651,12 @@
       "base_url": "https://njupt.91job.org.cn/",
       "source_type": "job_platform",
       "authority": 0.88,
-      "default_audience": ["本科生", "研究生"],
+      "default_audience": [
+        "本科生",
+        "研究生"
+      ],
       "access_level": "public_api",
-      "audit_status": "adapter_validated",
+      "audit_status": "channels_deepened",
       "enabled": true,
       "adapter_kind": "job_api",
       "include_patterns": [],
@@ -233,23 +1664,136 @@
       "notes": "就业招聘会和宣讲会走公开就业平台适配器。",
       "channels": [
         {
+          "id": "job_talk",
+          "source_id": "job",
+          "name": "宣讲会",
+          "list_urls": [
+            "https://njupt.91job.org.cn/"
+          ],
+          "student_value": 0.92,
+          "expected_domains": [
+            "employment"
+          ],
+          "expected_intents": [
+            "attend",
+            "register"
+          ],
+          "priority": 0.9,
+          "crawl_depth": 1,
+          "pagination": {
+            "type": "json_api",
+            "pattern": null
+          },
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
+          "sensitive_risks": [],
+          "positive_keywords": [
+            "宣讲会",
+            "招聘",
+            "就业"
+          ],
+          "negative_keywords": [
+            "采购",
+            "招标",
+            "会议纪要"
+          ],
+          "audit_status": "chrome_audited",
+          "production_enabled": true,
+          "notes": ""
+        },
+        {
           "id": "job_fair",
           "source_id": "job",
-          "name": "宣讲会与招聘会",
-          "list_urls": ["https://njupt.91job.org.cn/"],
+          "name": "招聘会与双选会",
+          "list_urls": [
+            "https://njupt.91job.org.cn/"
+          ],
           "student_value": 0.9,
-          "expected_domains": ["employment"],
-          "expected_intents": ["attend", "register", "read"],
+          "expected_domains": [
+            "employment"
+          ],
+          "expected_intents": [
+            "attend",
+            "register"
+          ],
           "priority": 0.88,
           "crawl_depth": 1,
-          "pagination": {"type": "json_api", "pattern": null},
-          "selectors": {"list_item": null, "title": null, "date": null, "link": null, "content": null, "attachments": null},
+          "pagination": {
+            "type": "json_api",
+            "pattern": null
+          },
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
           "sensitive_risks": [],
-          "positive_keywords": ["宣讲会", "招聘会", "双选会", "实习", "就业"],
-          "negative_keywords": [],
-          "audit_status": "manual_seeded",
+          "positive_keywords": [
+            "招聘会",
+            "双选会",
+            "就业"
+          ],
+          "negative_keywords": [
+            "采购",
+            "招标",
+            "会议纪要"
+          ],
+          "audit_status": "chrome_audited",
           "production_enabled": true,
-          "notes": "P0 公开就业平台。"
+          "notes": ""
+        },
+        {
+          "id": "job_internship",
+          "source_id": "job",
+          "name": "实习岗位",
+          "list_urls": [
+            "https://njupt.91job.org.cn/"
+          ],
+          "student_value": 0.86,
+          "expected_domains": [
+            "employment"
+          ],
+          "expected_intents": [
+            "apply",
+            "read"
+          ],
+          "priority": 0.84,
+          "crawl_depth": 1,
+          "pagination": {
+            "type": "json_api",
+            "pattern": null
+          },
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
+          "sensitive_risks": [],
+          "positive_keywords": [
+            "实习",
+            "岗位",
+            "招聘"
+          ],
+          "negative_keywords": [
+            "采购",
+            "招标",
+            "会议纪要"
+          ],
+          "audit_status": "chrome_audited",
+          "production_enabled": true,
+          "notes": ""
         }
       ]
     },
@@ -259,33 +1803,207 @@
       "base_url": "https://lib.njupt.edu.cn/",
       "source_type": "service_unit",
       "authority": 0.82,
-      "default_audience": ["本科生", "研究生", "教职工"],
+      "default_audience": [
+        "本科生",
+        "研究生",
+        "教职工"
+      ],
       "access_level": "public",
-      "audit_status": "channels_seeded",
+      "audit_status": "channels_deepened",
       "enabled": true,
       "adapter_kind": "njupt_wp",
-      "include_patterns": ["*/20*/**/page.htm"],
+      "include_patterns": [
+        "*/20*/**/page.htm"
+      ],
       "exclude_patterns": [],
       "notes": "开放安排、数据库、研读室和阅读活动。",
       "channels": [
         {
-          "id": "lib_notice",
+          "id": "lib_opening",
           "source_id": "lib",
-          "name": "图书馆通知",
-          "list_urls": ["https://lib.njupt.edu.cn/", "https://lib.njupt.edu.cn/1384/list.htm", "https://lib.njupt.edu.cn/1387/list.htm", "https://lib.njupt.edu.cn/1395/list.htm", "https://lib.njupt.edu.cn/1402/list.htm", "https://lib.njupt.edu.cn/1408/list.htm"],
+          "name": "开放时间与通知",
+          "list_urls": [
+            "https://lib.njupt.edu.cn/1384/list.htm",
+            "https://lib.njupt.edu.cn/"
+          ],
+          "student_value": 0.86,
+          "expected_domains": [
+            "library"
+          ],
+          "expected_intents": [
+            "schedule",
+            "read",
+            "alert"
+          ],
+          "priority": 0.84,
+          "crawl_depth": 2,
+          "pagination": {
+            "type": "homepage_links",
+            "pattern": null
+          },
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
+          "sensitive_risks": [],
+          "positive_keywords": [
+            "开放",
+            "闭馆",
+            "时间",
+            "通知"
+          ],
+          "negative_keywords": [
+            "采购",
+            "招标",
+            "会议纪要"
+          ],
+          "audit_status": "chrome_audited",
+          "production_enabled": true,
+          "notes": ""
+        },
+        {
+          "id": "lib_resource",
+          "source_id": "lib",
+          "name": "数据库与资源",
+          "list_urls": [
+            "https://lib.njupt.edu.cn/1387/list.htm",
+            "https://lib.njupt.edu.cn/1395/list.htm"
+          ],
           "student_value": 0.84,
-          "expected_domains": ["library", "resource"],
-          "expected_intents": ["schedule", "download", "read", "attend"],
+          "expected_domains": [
+            "library",
+            "resource"
+          ],
+          "expected_intents": [
+            "read",
+            "download"
+          ],
           "priority": 0.82,
           "crawl_depth": 2,
-          "pagination": {"type": "homepage_links", "pattern": null},
-          "selectors": {"list_item": null, "title": null, "date": null, "link": null, "content": ".wp_articlecontent", "attachments": "a[href]"},
+          "pagination": {
+            "type": "homepage_links",
+            "pattern": null
+          },
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
           "sensitive_risks": [],
-          "positive_keywords": ["开放", "图书馆", "数据库", "研读室", "借阅"],
-          "negative_keywords": ["采购", "招标"],
-          "audit_status": "manual_seeded",
+          "positive_keywords": [
+            "数据库",
+            "资源",
+            "电子书",
+            "VPN"
+          ],
+          "negative_keywords": [
+            "采购",
+            "招标",
+            "会议纪要"
+          ],
+          "audit_status": "chrome_audited",
           "production_enabled": true,
-          "notes": "P0 服务源。"
+          "notes": ""
+        },
+        {
+          "id": "lib_study_space",
+          "source_id": "lib",
+          "name": "研读室与空间",
+          "list_urls": [
+            "https://lib.njupt.edu.cn/1402/list.htm"
+          ],
+          "student_value": 0.8,
+          "expected_domains": [
+            "library",
+            "life"
+          ],
+          "expected_intents": [
+            "schedule",
+            "register"
+          ],
+          "priority": 0.78,
+          "crawl_depth": 1,
+          "pagination": {
+            "type": "homepage_links",
+            "pattern": null
+          },
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
+          "sensitive_risks": [],
+          "positive_keywords": [
+            "研读室",
+            "座位",
+            "预约",
+            "空间"
+          ],
+          "negative_keywords": [
+            "采购",
+            "招标",
+            "会议纪要"
+          ],
+          "audit_status": "chrome_audited",
+          "production_enabled": true,
+          "notes": ""
+        },
+        {
+          "id": "lib_activity",
+          "source_id": "lib",
+          "name": "阅读活动",
+          "list_urls": [
+            "https://lib.njupt.edu.cn/1408/list.htm",
+            "https://lib.njupt.edu.cn/"
+          ],
+          "student_value": 0.76,
+          "expected_domains": [
+            "lecture",
+            "library"
+          ],
+          "expected_intents": [
+            "attend",
+            "read"
+          ],
+          "priority": 0.74,
+          "crawl_depth": 1,
+          "pagination": {
+            "type": "homepage_links",
+            "pattern": null
+          },
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
+          "sensitive_risks": [],
+          "positive_keywords": [
+            "讲座",
+            "阅读",
+            "活动",
+            "培训"
+          ],
+          "negative_keywords": [
+            "采购",
+            "招标",
+            "会议纪要"
+          ],
+          "audit_status": "chrome_audited",
+          "production_enabled": true,
+          "notes": ""
         }
       ]
     },
@@ -295,33 +2013,207 @@
       "base_url": "https://bwc.njupt.edu.cn/",
       "source_type": "service_unit",
       "authority": 0.8,
-      "default_audience": ["本科生", "研究生", "教职工"],
+      "default_audience": [
+        "本科生",
+        "研究生",
+        "教职工"
+      ],
       "access_level": "public",
-      "audit_status": "channels_seeded",
+      "audit_status": "channels_deepened",
       "enabled": true,
       "adapter_kind": "njupt_wp",
-      "include_patterns": ["*/20*/**/page.htm"],
+      "include_patterns": [
+        "*/20*/**/page.htm"
+      ],
       "exclude_patterns": [],
       "notes": "交通、安全、消防、车贴和户籍。",
       "channels": [
         {
-          "id": "bwc_notice",
+          "id": "bwc_security",
           "source_id": "bwc",
-          "name": "安全与交通通知",
-          "list_urls": ["https://bwc.njupt.edu.cn/", "https://bwc.njupt.edu.cn/zajt/list.htm", "https://bwc.njupt.edu.cn/xyxf/list.htm", "https://bwc.njupt.edu.cn/hjsw/list.htm", "https://bwc.njupt.edu.cn/516/list.htm"],
+          "name": "校园安全",
+          "list_urls": [
+            "https://bwc.njupt.edu.cn/zajt/list.htm",
+            "https://bwc.njupt.edu.cn/"
+          ],
+          "student_value": 0.84,
+          "expected_domains": [
+            "security"
+          ],
+          "expected_intents": [
+            "alert",
+            "read"
+          ],
+          "priority": 0.82,
+          "crawl_depth": 2,
+          "pagination": {
+            "type": "homepage_links",
+            "pattern": null
+          },
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
+          "sensitive_risks": [],
+          "positive_keywords": [
+            "安全",
+            "治安",
+            "防范",
+            "提醒"
+          ],
+          "negative_keywords": [
+            "采购",
+            "招标",
+            "会议纪要"
+          ],
+          "audit_status": "chrome_audited",
+          "production_enabled": true,
+          "notes": ""
+        },
+        {
+          "id": "bwc_household",
+          "source_id": "bwc",
+          "name": "户籍与证件",
+          "list_urls": [
+            "https://bwc.njupt.edu.cn/hjsw/list.htm",
+            "https://bwc.njupt.edu.cn/516/list.htm"
+          ],
           "student_value": 0.8,
-          "expected_domains": ["security", "life"],
-          "expected_intents": ["alert", "read", "download"],
+          "expected_domains": [
+            "security",
+            "life"
+          ],
+          "expected_intents": [
+            "read",
+            "download",
+            "submit"
+          ],
+          "priority": 0.78,
+          "crawl_depth": 2,
+          "pagination": {
+            "type": "homepage_links",
+            "pattern": null
+          },
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
+          "sensitive_risks": [
+            "户籍",
+            "证件"
+          ],
+          "positive_keywords": [
+            "户籍",
+            "证件",
+            "居住证",
+            "办理"
+          ],
+          "negative_keywords": [
+            "采购",
+            "招标",
+            "会议纪要"
+          ],
+          "audit_status": "chrome_audited",
+          "production_enabled": true,
+          "notes": ""
+        },
+        {
+          "id": "bwc_traffic",
+          "source_id": "bwc",
+          "name": "交通与管制",
+          "list_urls": [
+            "https://bwc.njupt.edu.cn/zajt/list.htm"
+          ],
+          "student_value": 0.82,
+          "expected_domains": [
+            "security",
+            "life"
+          ],
+          "expected_intents": [
+            "alert",
+            "read"
+          ],
           "priority": 0.8,
           "crawl_depth": 2,
-          "pagination": {"type": "homepage_links", "pattern": null},
-          "selectors": {"list_item": null, "title": null, "date": null, "link": null, "content": ".wp_articlecontent", "attachments": "a[href]"},
-          "sensitive_risks": ["户籍", "证件"],
-          "positive_keywords": ["交通", "安全", "消防", "户籍", "车贴", "管制"],
-          "negative_keywords": ["采购", "招标"],
-          "audit_status": "manual_seeded",
+          "pagination": {
+            "type": "homepage_links",
+            "pattern": null
+          },
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
+          "sensitive_risks": [],
+          "positive_keywords": [
+            "交通",
+            "管制",
+            "车辆",
+            "车贴"
+          ],
+          "negative_keywords": [
+            "采购",
+            "招标",
+            "会议纪要"
+          ],
+          "audit_status": "chrome_audited",
           "production_enabled": true,
-          "notes": "P0 服务源。"
+          "notes": ""
+        },
+        {
+          "id": "bwc_fire",
+          "source_id": "bwc",
+          "name": "消防安全",
+          "list_urls": [
+            "https://bwc.njupt.edu.cn/xyxf/list.htm"
+          ],
+          "student_value": 0.78,
+          "expected_domains": [
+            "security"
+          ],
+          "expected_intents": [
+            "alert",
+            "read"
+          ],
+          "priority": 0.76,
+          "crawl_depth": 1,
+          "pagination": {
+            "type": "homepage_links",
+            "pattern": null
+          },
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
+          "sensitive_risks": [],
+          "positive_keywords": [
+            "消防",
+            "演练",
+            "安全"
+          ],
+          "negative_keywords": [
+            "采购",
+            "招标",
+            "会议纪要"
+          ],
+          "audit_status": "chrome_audited",
+          "production_enabled": true,
+          "notes": ""
         }
       ]
     },
@@ -331,33 +2223,254 @@
       "base_url": "https://hqc.njupt.edu.cn/",
       "source_type": "service_unit",
       "authority": 0.8,
-      "default_audience": ["本科生", "研究生", "教职工"],
+      "default_audience": [
+        "本科生",
+        "研究生",
+        "教职工"
+      ],
       "access_level": "public",
-      "audit_status": "channels_seeded",
+      "audit_status": "channels_deepened",
       "enabled": true,
       "adapter_kind": "njupt_wp",
-      "include_patterns": ["*/20*/**/page.htm"],
+      "include_patterns": [
+        "*/20*/**/page.htm"
+      ],
       "exclude_patterns": [],
       "notes": "停水停电、维修、医保和班车。",
       "channels": [
         {
-          "id": "hqc_notice",
+          "id": "hqc_logistics",
           "source_id": "hqc",
-          "name": "后勤服务通知",
-          "list_urls": ["https://hqc.njupt.edu.cn/5002/list.htm", "https://hqc.njupt.edu.cn/5033/list.htm", "https://hqc.njupt.edu.cn/bcskb/list.htm", "https://hqc.njupt.edu.cn/5004/list.htm"],
-          "student_value": 0.82,
-          "expected_domains": ["logistics", "life"],
-          "expected_intents": ["alert", "schedule", "read"],
-          "priority": 0.8,
+          "name": "停水停电与后勤通知",
+          "list_urls": [
+            "https://hqc.njupt.edu.cn/5002/list.htm",
+            "https://hqc.njupt.edu.cn/"
+          ],
+          "student_value": 0.88,
+          "expected_domains": [
+            "logistics",
+            "life"
+          ],
+          "expected_intents": [
+            "alert",
+            "read"
+          ],
+          "priority": 0.84,
           "crawl_depth": 2,
-          "pagination": {"type": "homepage_links", "pattern": null},
-          "selectors": {"list_item": null, "title": null, "date": null, "link": null, "content": ".wp_articlecontent", "attachments": "a[href]"},
-          "sensitive_risks": ["医保", "体检"],
-          "positive_keywords": ["停水", "停电", "维修", "医保", "体检", "班车", "后勤"],
-          "negative_keywords": ["采购", "招标"],
-          "audit_status": "manual_seeded",
+          "pagination": {
+            "type": "homepage_links",
+            "pattern": null
+          },
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
+          "sensitive_risks": [],
+          "positive_keywords": [
+            "停水",
+            "停电",
+            "后勤",
+            "检修"
+          ],
+          "negative_keywords": [
+            "采购",
+            "招标",
+            "会议纪要"
+          ],
+          "audit_status": "chrome_audited",
           "production_enabled": true,
-          "notes": "P0 服务源。"
+          "notes": ""
+        },
+        {
+          "id": "hqc_repair",
+          "source_id": "hqc",
+          "name": "维修服务",
+          "list_urls": [
+            "https://hqc.njupt.edu.cn/5033/list.htm"
+          ],
+          "student_value": 0.82,
+          "expected_domains": [
+            "logistics"
+          ],
+          "expected_intents": [
+            "submit",
+            "contact",
+            "read"
+          ],
+          "priority": 0.8,
+          "crawl_depth": 1,
+          "pagination": {
+            "type": "homepage_links",
+            "pattern": null
+          },
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
+          "sensitive_risks": [],
+          "positive_keywords": [
+            "维修",
+            "报修",
+            "服务",
+            "热线"
+          ],
+          "negative_keywords": [
+            "采购",
+            "招标",
+            "会议纪要"
+          ],
+          "audit_status": "chrome_audited",
+          "production_enabled": true,
+          "notes": ""
+        },
+        {
+          "id": "hqc_shuttle",
+          "source_id": "hqc",
+          "name": "班车时刻表",
+          "list_urls": [
+            "https://hqc.njupt.edu.cn/bcskb/list.htm"
+          ],
+          "student_value": 0.82,
+          "expected_domains": [
+            "logistics",
+            "life"
+          ],
+          "expected_intents": [
+            "schedule",
+            "read"
+          ],
+          "priority": 0.8,
+          "crawl_depth": 1,
+          "pagination": {
+            "type": "homepage_links",
+            "pattern": null
+          },
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
+          "sensitive_risks": [],
+          "positive_keywords": [
+            "班车",
+            "时刻",
+            "校车"
+          ],
+          "negative_keywords": [
+            "采购",
+            "招标",
+            "会议纪要"
+          ],
+          "audit_status": "chrome_audited",
+          "production_enabled": true,
+          "notes": ""
+        },
+        {
+          "id": "hqc_medical",
+          "source_id": "hqc",
+          "name": "医保体检",
+          "list_urls": [
+            "https://hqc.njupt.edu.cn/5004/list.htm",
+            "https://hqc.njupt.edu.cn/5002/list.htm"
+          ],
+          "student_value": 0.84,
+          "expected_domains": [
+            "medical_insurance",
+            "life"
+          ],
+          "expected_intents": [
+            "read",
+            "submit",
+            "pay"
+          ],
+          "priority": 0.82,
+          "crawl_depth": 2,
+          "pagination": {
+            "type": "homepage_links",
+            "pattern": null
+          },
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
+          "sensitive_risks": [
+            "医保",
+            "体检",
+            "个人信息"
+          ],
+          "positive_keywords": [
+            "医保",
+            "体检",
+            "医疗"
+          ],
+          "negative_keywords": [
+            "采购",
+            "招标",
+            "会议纪要"
+          ],
+          "audit_status": "chrome_audited",
+          "production_enabled": true,
+          "notes": ""
+        },
+        {
+          "id": "hqc_download",
+          "source_id": "hqc",
+          "name": "后勤下载",
+          "list_urls": [
+            "https://hqc.njupt.edu.cn/5033/list.htm"
+          ],
+          "student_value": 0.72,
+          "expected_domains": [
+            "resource",
+            "logistics"
+          ],
+          "expected_intents": [
+            "download",
+            "read"
+          ],
+          "priority": 0.7,
+          "crawl_depth": 1,
+          "pagination": {
+            "type": "homepage_links",
+            "pattern": null
+          },
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
+          "sensitive_risks": [],
+          "positive_keywords": [
+            "下载",
+            "表格",
+            "指南"
+          ],
+          "negative_keywords": [
+            "采购",
+            "招标",
+            "会议纪要"
+          ],
+          "audit_status": "chrome_audited",
+          "production_enabled": true,
+          "notes": ""
         }
       ]
     },
@@ -367,33 +2480,166 @@
       "base_url": "https://www.njupt.edu.cn/",
       "source_type": "central_notice",
       "authority": 0.86,
-      "default_audience": ["本科生", "研究生", "全体学生"],
+      "default_audience": [
+        "本科生",
+        "研究生",
+        "全体学生"
+      ],
       "access_level": "public",
-      "audit_status": "channels_seeded",
+      "audit_status": "channels_deepened",
       "enabled": true,
       "adapter_kind": "njupt_wp",
-      "include_patterns": ["*/20*/**/page.htm"],
+      "include_patterns": [
+        "*/20*/**/page.htm"
+      ],
       "exclude_patterns": [],
       "notes": "校级通知总入口，需强学生相关过滤。",
       "channels": [
         {
           "id": "njupt_notice_main",
           "source_id": "njupt_notice",
-          "name": "通知通告",
-          "list_urls": ["https://www.njupt.edu.cn/72/list.htm"],
+          "name": "校级通知通告",
+          "list_urls": [
+            "https://www.njupt.edu.cn/72/list.htm"
+          ],
           "student_value": 0.86,
-          "expected_domains": ["policy", "life", "lecture", "academic"],
-          "expected_intents": ["read", "alert", "attend", "download"],
+          "expected_domains": [
+            "policy",
+            "life",
+            "lecture",
+            "academic"
+          ],
+          "expected_intents": [
+            "read",
+            "alert",
+            "attend",
+            "download"
+          ],
           "priority": 0.86,
           "crawl_depth": 3,
-          "pagination": {"type": "next_link", "pattern": null},
-          "selectors": {"list_item": null, "title": null, "date": null, "link": null, "content": ".wp_articlecontent", "attachments": "a[href]"},
-          "sensitive_risks": ["名单", "联系方式"],
-          "positive_keywords": ["学生", "讲座", "活动", "停水", "停电", "报名", "开放"],
-          "negative_keywords": ["巡察", "采购", "招标", "干部"],
-          "audit_status": "manual_seeded",
+          "pagination": {
+            "type": "next_link",
+            "pattern": null
+          },
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
+          "sensitive_risks": [],
+          "positive_keywords": [
+            "学生",
+            "讲座",
+            "活动",
+            "停水",
+            "停电",
+            "报名",
+            "开放"
+          ],
+          "negative_keywords": [
+            "巡察",
+            "采购",
+            "招标",
+            "干部"
+          ],
+          "audit_status": "chrome_audited",
           "production_enabled": true,
-          "notes": "P1 校级公开源。"
+          "notes": ""
+        },
+        {
+          "id": "njupt_admission_employment",
+          "source_id": "njupt_notice",
+          "name": "招生就业入口",
+          "list_urls": [
+            "https://www.njupt.edu.cn/46/list.htm",
+            "https://www.njupt.edu.cn/72/list.htm"
+          ],
+          "student_value": 0.72,
+          "expected_domains": [
+            "employment",
+            "academic"
+          ],
+          "expected_intents": [
+            "read",
+            "attend"
+          ],
+          "priority": 0.7,
+          "crawl_depth": 1,
+          "pagination": {
+            "type": "next_link",
+            "pattern": null
+          },
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
+          "sensitive_risks": [],
+          "positive_keywords": [
+            "招生",
+            "就业",
+            "学生"
+          ],
+          "negative_keywords": [
+            "采购",
+            "招标",
+            "会议纪要"
+          ],
+          "audit_status": "chrome_audited",
+          "production_enabled": true,
+          "notes": ""
+        },
+        {
+          "id": "njupt_smart_campus",
+          "source_id": "njupt_notice",
+          "name": "智慧校园入口",
+          "list_urls": [
+            "https://www.njupt.edu.cn/72/list.htm"
+          ],
+          "student_value": 0.68,
+          "expected_domains": [
+            "campus_network",
+            "life"
+          ],
+          "expected_intents": [
+            "read",
+            "download"
+          ],
+          "priority": 0.66,
+          "crawl_depth": 1,
+          "pagination": {
+            "type": "next_link",
+            "pattern": null
+          },
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
+          "sensitive_risks": [],
+          "positive_keywords": [
+            "智慧校园",
+            "信息化",
+            "邮箱",
+            "VPN"
+          ],
+          "negative_keywords": [
+            "采购",
+            "招标",
+            "会议纪要"
+          ],
+          "audit_status": "chrome_audited",
+          "production_enabled": true,
+          "notes": ""
         }
       ]
     },
@@ -403,12 +2649,18 @@
       "base_url": "https://news.njupt.edu.cn/",
       "source_type": "central_news",
       "authority": 0.62,
-      "default_audience": ["本科生", "研究生", "全体学生"],
+      "default_audience": [
+        "本科生",
+        "研究生",
+        "全体学生"
+      ],
       "access_level": "public",
       "audit_status": "channels_seeded",
       "enabled": true,
       "adapter_kind": "njupt_wp",
-      "include_patterns": ["*/20*/**/page.htm"],
+      "include_patterns": [
+        "*/20*/**/page.htm"
+      ],
       "exclude_patterns": [],
       "notes": "新闻频道只作为低权重校园动态。",
       "channels": [
@@ -416,20 +2668,92 @@
           "id": "news_campus",
           "source_id": "news",
           "name": "校园新闻",
-          "list_urls": ["https://news.njupt.edu.cn/"],
+          "list_urls": [
+            "https://news.njupt.edu.cn/"
+          ],
           "student_value": 0.55,
-          "expected_domains": ["news", "lecture"],
-          "expected_intents": ["read", "attend"],
+          "expected_domains": [
+            "news",
+            "lecture"
+          ],
+          "expected_intents": [
+            "read",
+            "attend"
+          ],
           "priority": 0.62,
           "crawl_depth": 1,
-          "pagination": {"type": "homepage_links", "pattern": null},
-          "selectors": {"list_item": null, "title": null, "date": null, "link": null, "content": ".wp_articlecontent", "attachments": "a[href]"},
+          "pagination": {
+            "type": "homepage_links",
+            "pattern": null
+          },
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
           "sensitive_risks": [],
-          "positive_keywords": ["学生", "讲座", "报告", "活动"],
-          "negative_keywords": ["调研", "会议", "理论学习"],
+          "positive_keywords": [
+            "学生",
+            "讲座",
+            "报告",
+            "活动"
+          ],
+          "negative_keywords": [
+            "调研",
+            "会议",
+            "理论学习"
+          ],
           "audit_status": "manual_seeded",
           "production_enabled": true,
-          "notes": "P1 新闻低权重源。"
+          "notes": ""
+        },
+        {
+          "id": "news_activity",
+          "source_id": "news",
+          "name": "学生活动新闻",
+          "list_urls": [
+            "https://news.njupt.edu.cn/"
+          ],
+          "student_value": 0.5,
+          "expected_domains": [
+            "news",
+            "life"
+          ],
+          "expected_intents": [
+            "read"
+          ],
+          "priority": 0.56,
+          "crawl_depth": 1,
+          "pagination": {
+            "type": "homepage_links",
+            "pattern": null
+          },
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
+          "sensitive_risks": [],
+          "positive_keywords": [
+            "学生",
+            "活动",
+            "竞赛",
+            "获奖"
+          ],
+          "negative_keywords": [
+            "调研",
+            "会议",
+            "领导"
+          ],
+          "audit_status": "manual_seeded",
+          "production_enabled": true,
+          "notes": ""
         }
       ]
     },
@@ -439,33 +2763,151 @@
       "base_url": "https://xxgk.njupt.edu.cn/",
       "source_type": "policy",
       "authority": 0.58,
-      "default_audience": ["本科生", "研究生", "全体学生"],
+      "default_audience": [
+        "本科生",
+        "研究生",
+        "全体学生"
+      ],
       "access_level": "public",
-      "audit_status": "channels_seeded",
+      "audit_status": "channels_deepened",
       "enabled": true,
       "adapter_kind": "njupt_wp",
-      "include_patterns": ["*/20*/**/page.htm"],
+      "include_patterns": [
+        "*/20*/**/page.htm"
+      ],
       "exclude_patterns": [],
       "notes": "规章制度和公开事项，默认低频低权重。",
       "channels": [
         {
           "id": "xxgk_policy",
           "source_id": "xxgk",
-          "name": "信息公开与制度",
-          "list_urls": ["https://xxgk.njupt.edu.cn/"],
-          "student_value": 0.58,
-          "expected_domains": ["policy"],
-          "expected_intents": ["read", "download"],
+          "name": "信息公开目录",
+          "list_urls": [
+            "https://xxgk.njupt.edu.cn/xxgkml/list.htm",
+            "https://xxgk.njupt.edu.cn/zxgkxx/list.htm"
+          ],
+          "student_value": 0.62,
+          "expected_domains": [
+            "policy"
+          ],
+          "expected_intents": [
+            "read"
+          ],
+          "priority": 0.62,
+          "crawl_depth": 1,
+          "pagination": {
+            "type": "homepage_links",
+            "pattern": null
+          },
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
+          "sensitive_risks": [],
+          "positive_keywords": [
+            "学生",
+            "教学",
+            "学位",
+            "信息公开"
+          ],
+          "negative_keywords": [
+            "采购",
+            "资产"
+          ],
+          "audit_status": "chrome_audited",
+          "production_enabled": true,
+          "notes": ""
+        },
+        {
+          "id": "xxgk_student_service",
+          "source_id": "xxgk",
+          "name": "学生管理服务公开",
+          "list_urls": [
+            "https://xxgk.njupt.edu.cn/xxgkml/list.htm"
+          ],
+          "student_value": 0.64,
+          "expected_domains": [
+            "policy",
+            "life"
+          ],
+          "expected_intents": [
+            "read"
+          ],
+          "priority": 0.62,
+          "crawl_depth": 1,
+          "pagination": {
+            "type": "homepage_links",
+            "pattern": null
+          },
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
+          "sensitive_risks": [],
+          "positive_keywords": [
+            "学生管理",
+            "服务",
+            "奖助",
+            "学籍"
+          ],
+          "negative_keywords": [
+            "采购"
+          ],
+          "audit_status": "chrome_audited",
+          "production_enabled": true,
+          "notes": ""
+        },
+        {
+          "id": "xxgk_fee_degree",
+          "source_id": "xxgk",
+          "name": "收费教学学位公开",
+          "list_urls": [
+            "https://xxgk.njupt.edu.cn/xxgkml/list.htm"
+          ],
+          "student_value": 0.6,
+          "expected_domains": [
+            "policy",
+            "degree"
+          ],
+          "expected_intents": [
+            "read",
+            "pay"
+          ],
           "priority": 0.58,
           "crawl_depth": 1,
-          "pagination": {"type": "homepage_links", "pattern": null},
-          "selectors": {"list_item": null, "title": null, "date": null, "link": null, "content": ".wp_articlecontent", "attachments": "a[href]"},
+          "pagination": {
+            "type": "homepage_links",
+            "pattern": null
+          },
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
           "sensitive_risks": [],
-          "positive_keywords": ["学生", "规章", "制度", "流程", "办法"],
-          "negative_keywords": ["预算", "采购", "审计"],
-          "audit_status": "manual_seeded",
+          "positive_keywords": [
+            "收费",
+            "教学质量",
+            "学位",
+            "招生考试"
+          ],
+          "negative_keywords": [
+            "采购"
+          ],
+          "audit_status": "chrome_audited",
           "production_enabled": true,
-          "notes": "P1 政策源。"
+          "notes": ""
         }
       ]
     },
@@ -475,12 +2917,18 @@
       "base_url": "https://exchange.njupt.edu.cn/",
       "source_type": "central_admin",
       "authority": 0.78,
-      "default_audience": ["本科生", "研究生", "国际学生"],
+      "default_audience": [
+        "本科生",
+        "研究生",
+        "国际学生"
+      ],
       "access_level": "public",
-      "audit_status": "channels_seeded",
+      "audit_status": "channels_deepened",
       "enabled": true,
       "adapter_kind": "njupt_wp",
-      "include_patterns": ["*/20*/**/page.htm"],
+      "include_patterns": [
+        "*/20*/**/page.htm"
+      ],
       "exclude_patterns": [],
       "notes": "海外交流、交换项目和留学生相关公开信息。",
       "channels": [
@@ -488,20 +2936,189 @@
           "id": "exchange_notice",
           "source_id": "exchange",
           "name": "国际交流通知",
-          "list_urls": ["https://exchange.njupt.edu.cn/"],
-          "student_value": 0.8,
-          "expected_domains": ["international", "project"],
-          "expected_intents": ["apply", "register", "read"],
-          "priority": 0.78,
+          "list_urls": [
+            "https://exchange.njupt.edu.cn/",
+            "https://exchange.njupt.edu.cn/7442/list.htm"
+          ],
+          "student_value": 0.74,
+          "expected_domains": [
+            "international"
+          ],
+          "expected_intents": [
+            "apply",
+            "read"
+          ],
+          "priority": 0.72,
           "crawl_depth": 2,
-          "pagination": {"type": "homepage_links", "pattern": null},
-          "selectors": {"list_item": null, "title": null, "date": null, "link": null, "content": ".wp_articlecontent", "attachments": "a[href]"},
-          "sensitive_risks": ["护照", "名单"],
-          "positive_keywords": ["海外", "交流", "交换", "访学", "报名"],
-          "negative_keywords": ["外事接待"],
-          "audit_status": "manual_seeded",
+          "pagination": {
+            "type": "homepage_links",
+            "pattern": null
+          },
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
+          "sensitive_risks": [
+            "奖学金名单"
+          ],
+          "positive_keywords": [
+            "交流",
+            "访学",
+            "项目",
+            "报名"
+          ],
+          "negative_keywords": [
+            "采购",
+            "招标",
+            "会议纪要"
+          ],
+          "audit_status": "chrome_audited",
           "production_enabled": true,
-          "notes": "P1 国际交流源。"
+          "notes": ""
+        },
+        {
+          "id": "exchange_project",
+          "source_id": "exchange",
+          "name": "海外交流项目",
+          "list_urls": [
+            "https://exchange.njupt.edu.cn/7449/list.htm",
+            "https://exchange.njupt.edu.cn/7450/list.htm"
+          ],
+          "student_value": 0.78,
+          "expected_domains": [
+            "international",
+            "project"
+          ],
+          "expected_intents": [
+            "apply",
+            "submit"
+          ],
+          "priority": 0.76,
+          "crawl_depth": 2,
+          "pagination": {
+            "type": "homepage_links",
+            "pattern": null
+          },
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
+          "sensitive_risks": [],
+          "positive_keywords": [
+            "项目",
+            "访学",
+            "海外",
+            "交流"
+          ],
+          "negative_keywords": [
+            "采购",
+            "招标",
+            "会议纪要"
+          ],
+          "audit_status": "chrome_audited",
+          "production_enabled": true,
+          "notes": ""
+        },
+        {
+          "id": "exchange_download",
+          "source_id": "exchange",
+          "name": "国际交流材料下载",
+          "list_urls": [
+            "https://exchange.njupt.edu.cn/7454/list.htm",
+            "https://exchange.njupt.edu.cn/7462/list.htm"
+          ],
+          "student_value": 0.7,
+          "expected_domains": [
+            "resource",
+            "international"
+          ],
+          "expected_intents": [
+            "download",
+            "submit"
+          ],
+          "priority": 0.68,
+          "crawl_depth": 1,
+          "pagination": {
+            "type": "homepage_links",
+            "pattern": null
+          },
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
+          "sensitive_risks": [],
+          "positive_keywords": [
+            "下载",
+            "表格",
+            "材料"
+          ],
+          "negative_keywords": [
+            "采购",
+            "招标",
+            "会议纪要"
+          ],
+          "audit_status": "chrome_audited",
+          "production_enabled": true,
+          "notes": ""
+        },
+        {
+          "id": "exchange_admission",
+          "source_id": "exchange",
+          "name": "留学与港澳台招生",
+          "list_urls": [
+            "https://exchange.njupt.edu.cn/7459/list.htm",
+            "https://exchange.njupt.edu.cn/gjhcg/list.htm",
+            "https://exchange.njupt.edu.cn/16717/list.htm"
+          ],
+          "student_value": 0.62,
+          "expected_domains": [
+            "international",
+            "academic"
+          ],
+          "expected_intents": [
+            "read",
+            "apply"
+          ],
+          "priority": 0.6,
+          "crawl_depth": 1,
+          "pagination": {
+            "type": "homepage_links",
+            "pattern": null
+          },
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
+          "sensitive_risks": [],
+          "positive_keywords": [
+            "留学",
+            "港澳台",
+            "招生"
+          ],
+          "negative_keywords": [
+            "采购",
+            "招标",
+            "会议纪要"
+          ],
+          "audit_status": "chrome_audited",
+          "production_enabled": true,
+          "notes": ""
         }
       ]
     },
@@ -511,69 +3128,465 @@
       "base_url": "https://yzb.njupt.edu.cn/",
       "source_type": "central_admin",
       "authority": 0.74,
-      "default_audience": ["考生", "研究生"],
+      "default_audience": [
+        "考生",
+        "研究生"
+      ],
       "access_level": "public",
-      "audit_status": "planned",
+      "audit_status": "channels_deepened",
       "enabled": true,
       "adapter_kind": "njupt_wp",
-      "include_patterns": ["*/20*/**/page.htm"],
+      "include_patterns": [
+        "*/20*/**/page.htm"
+      ],
       "exclude_patterns": [],
       "notes": "P1 扩展源。",
       "channels": [
         {
-          "id": "yzb_notice",
+          "id": "yzb_master",
           "source_id": "yzb",
-          "name": "招生通知",
-          "list_urls": ["https://yzb.njupt.edu.cn/"],
-          "student_value": 0.62,
-          "expected_domains": ["academic", "degree"],
-          "expected_intents": ["read", "schedule", "check_result"],
+          "name": "硕士招生",
+          "list_urls": [
+            "https://yzb.njupt.edu.cn/7799/list.htm"
+          ],
+          "student_value": 0.76,
+          "expected_domains": [
+            "degree",
+            "academic"
+          ],
+          "expected_intents": [
+            "apply",
+            "read",
+            "check_result"
+          ],
           "priority": 0.74,
-          "crawl_depth": 1,
-          "pagination": {"type": "homepage_links", "pattern": null},
-          "selectors": {"list_item": null, "title": null, "date": null, "link": null, "content": ".wp_articlecontent", "attachments": "a[href]"},
-          "sensitive_risks": ["考生名单", "准考证号"],
-          "positive_keywords": ["招生", "复试", "录取", "调剂"],
-          "negative_keywords": [],
-          "audit_status": "planned",
+          "crawl_depth": 2,
+          "pagination": {
+            "type": "homepage_links",
+            "pattern": null
+          },
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
+          "sensitive_risks": [],
+          "positive_keywords": [
+            "硕士",
+            "招生",
+            "复试",
+            "录取"
+          ],
+          "negative_keywords": [
+            "采购",
+            "招标",
+            "会议纪要"
+          ],
+          "audit_status": "chrome_audited",
           "production_enabled": true,
-          "notes": "P1 planned。"
+          "notes": ""
+        },
+        {
+          "id": "yzb_recommendation",
+          "source_id": "yzb",
+          "name": "推免生招生",
+          "list_urls": [
+            "https://yzb.njupt.edu.cn/7800/list.htm"
+          ],
+          "student_value": 0.82,
+          "expected_domains": [
+            "degree",
+            "academic"
+          ],
+          "expected_intents": [
+            "apply",
+            "publicity",
+            "check_result"
+          ],
+          "priority": 0.8,
+          "crawl_depth": 2,
+          "pagination": {
+            "type": "homepage_links",
+            "pattern": null
+          },
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
+          "sensitive_risks": [
+            "名单",
+            "学号"
+          ],
+          "positive_keywords": [
+            "推免",
+            "推荐免试",
+            "保研",
+            "录取"
+          ],
+          "negative_keywords": [
+            "采购",
+            "招标",
+            "会议纪要"
+          ],
+          "audit_status": "chrome_audited",
+          "production_enabled": true,
+          "notes": ""
+        },
+        {
+          "id": "yzb_doctor",
+          "source_id": "yzb",
+          "name": "博士招生",
+          "list_urls": [
+            "https://yzb.njupt.edu.cn/7804/list.htm",
+            "https://yzb.njupt.edu.cn/7805/list.htm"
+          ],
+          "student_value": 0.68,
+          "expected_domains": [
+            "degree",
+            "academic"
+          ],
+          "expected_intents": [
+            "apply",
+            "read",
+            "check_result"
+          ],
+          "priority": 0.66,
+          "crawl_depth": 1,
+          "pagination": {
+            "type": "homepage_links",
+            "pattern": null
+          },
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
+          "sensitive_risks": [],
+          "positive_keywords": [
+            "博士",
+            "申请考核",
+            "招生"
+          ],
+          "negative_keywords": [
+            "采购",
+            "招标",
+            "会议纪要"
+          ],
+          "audit_status": "chrome_audited",
+          "production_enabled": true,
+          "notes": ""
+        },
+        {
+          "id": "yzb_data",
+          "source_id": "yzb",
+          "name": "招生历史数据",
+          "list_urls": [
+            "https://yzb.njupt.edu.cn/7813/list.htm",
+            "https://yzb.njupt.edu.cn/7814/list.htm",
+            "https://yzb.njupt.edu.cn/bslnbkwlqqk/list.htm"
+          ],
+          "student_value": 0.64,
+          "expected_domains": [
+            "resource",
+            "degree"
+          ],
+          "expected_intents": [
+            "read",
+            "download"
+          ],
+          "priority": 0.62,
+          "crawl_depth": 1,
+          "pagination": {
+            "type": "homepage_links",
+            "pattern": null
+          },
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
+          "sensitive_risks": [],
+          "positive_keywords": [
+            "报录",
+            "分数线",
+            "历史数据"
+          ],
+          "negative_keywords": [
+            "采购",
+            "招标",
+            "会议纪要"
+          ],
+          "audit_status": "chrome_audited",
+          "production_enabled": true,
+          "notes": ""
+        },
+        {
+          "id": "yzb_download",
+          "source_id": "yzb",
+          "name": "招生下载",
+          "list_urls": [
+            "https://yzb.njupt.edu.cn/7803/list.htm",
+            "https://yzb.njupt.edu.cn/7809/list.htm"
+          ],
+          "student_value": 0.64,
+          "expected_domains": [
+            "resource",
+            "degree"
+          ],
+          "expected_intents": [
+            "download",
+            "submit"
+          ],
+          "priority": 0.62,
+          "crawl_depth": 1,
+          "pagination": {
+            "type": "homepage_links",
+            "pattern": null
+          },
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
+          "sensitive_risks": [],
+          "positive_keywords": [
+            "下载",
+            "表格",
+            "材料"
+          ],
+          "negative_keywords": [
+            "采购",
+            "招标",
+            "会议纪要"
+          ],
+          "audit_status": "chrome_audited",
+          "production_enabled": true,
+          "notes": ""
         }
       ]
     },
     {
-      "id": "nic",
+      "id": "xxb",
       "name": "信息化建设与管理办公室",
-      "base_url": "https://nic.njupt.edu.cn/",
+      "base_url": "https://xxb.njupt.edu.cn/",
       "source_type": "service_unit",
       "authority": 0.72,
-      "default_audience": ["本科生", "研究生", "教职工"],
-      "access_level": "public_with_possible_campus_restricted_details",
+      "default_audience": [
+        "本科生",
+        "研究生",
+        "教职工"
+      ],
+      "access_level": "public_with_login_outbound_links",
       "audit_status": "planned",
       "enabled": true,
       "adapter_kind": "njupt_wp",
-      "include_patterns": ["*/20*/**/page.htm"],
+      "include_patterns": [
+        "*/20*/**/page.htm"
+      ],
       "exclude_patterns": [],
-      "notes": "P1 校园网、VPN、统一身份认证、邮箱。",
+      "notes": "P1 信息化、校园网、VPN、统一身份认证和下载中心。",
       "channels": [
         {
-          "id": "nic_service",
-          "source_id": "nic",
-          "name": "信息化服务通知",
-          "list_urls": ["https://nic.njupt.edu.cn/"],
-          "student_value": 0.78,
-          "expected_domains": ["campus_network", "life"],
-          "expected_intents": ["read", "download", "alert"],
-          "priority": 0.72,
-          "crawl_depth": 1,
-          "pagination": {"type": "homepage_links", "pattern": null},
-          "selectors": {"list_item": null, "title": null, "date": null, "link": null, "content": ".wp_articlecontent", "attachments": "a[href]"},
-          "sensitive_risks": ["账号", "统一身份认证"],
-          "positive_keywords": ["校园网", "VPN", "统一身份认证", "邮箱", "信息化"],
-          "negative_keywords": ["采购", "招标"],
-          "audit_status": "planned",
+          "id": "xxb_network",
+          "source_id": "xxb",
+          "name": "校园网服务",
+          "list_urls": [
+            "https://xxb.njupt.edu.cn/wlxxfw/list.htm",
+            "https://xxb.njupt.edu.cn/18380/list.htm",
+            "https://xxb.njupt.edu.cn/cjwt/list.htm"
+          ],
+          "student_value": 0.82,
+          "expected_domains": [
+            "campus_network"
+          ],
+          "expected_intents": [
+            "read",
+            "download",
+            "contact"
+          ],
+          "priority": 0.78,
+          "crawl_depth": 2,
+          "pagination": {
+            "type": "homepage_links",
+            "pattern": null
+          },
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
+          "sensitive_risks": [],
+          "positive_keywords": [
+            "校园网",
+            "VPN",
+            "统一身份",
+            "邮箱",
+            "上网"
+          ],
+          "negative_keywords": [
+            "党建"
+          ],
+          "audit_status": "chrome_audited",
           "production_enabled": true,
-          "notes": "P1 planned。"
+          "notes": ""
+        },
+        {
+          "id": "xxb_identity",
+          "source_id": "xxb",
+          "name": "统一身份认证",
+          "list_urls": [
+            "https://xxb.njupt.edu.cn/tysfrz/list.htm",
+            "https://xxb.njupt.edu.cn/fwznnew/list.htm"
+          ],
+          "student_value": 0.78,
+          "expected_domains": [
+            "campus_network"
+          ],
+          "expected_intents": [
+            "read",
+            "download"
+          ],
+          "priority": 0.74,
+          "crawl_depth": 1,
+          "pagination": {
+            "type": "homepage_links",
+            "pattern": null
+          },
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
+          "sensitive_risks": [],
+          "positive_keywords": [
+            "统一身份",
+            "认证",
+            "账号",
+            "密码"
+          ],
+          "negative_keywords": [
+            "采购",
+            "招标",
+            "会议纪要"
+          ],
+          "audit_status": "chrome_audited",
+          "production_enabled": true,
+          "notes": ""
+        },
+        {
+          "id": "xxb_platform",
+          "source_id": "xxb",
+          "name": "智慧校园与平台服务",
+          "list_urls": [
+            "https://xxb.njupt.edu.cn/ggptfw/list.htm",
+            "https://xxb.njupt.edu.cn/szjxfw/list.htm"
+          ],
+          "student_value": 0.72,
+          "expected_domains": [
+            "campus_network",
+            "resource"
+          ],
+          "expected_intents": [
+            "read",
+            "contact"
+          ],
+          "priority": 0.7,
+          "crawl_depth": 1,
+          "pagination": {
+            "type": "homepage_links",
+            "pattern": null
+          },
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
+          "sensitive_risks": [],
+          "positive_keywords": [
+            "智慧校园",
+            "平台",
+            "教学服务",
+            "南邮云盘"
+          ],
+          "negative_keywords": [
+            "采购",
+            "招标",
+            "会议纪要"
+          ],
+          "audit_status": "chrome_audited",
+          "production_enabled": true,
+          "notes": ""
+        },
+        {
+          "id": "xxb_download",
+          "source_id": "xxb",
+          "name": "信息化下载中心",
+          "list_urls": [
+            "https://xxb.njupt.edu.cn/5248/list.htm",
+            "https://xxb.njupt.edu.cn/bgxz/list.htm"
+          ],
+          "student_value": 0.68,
+          "expected_domains": [
+            "resource",
+            "campus_network"
+          ],
+          "expected_intents": [
+            "download",
+            "submit"
+          ],
+          "priority": 0.66,
+          "crawl_depth": 1,
+          "pagination": {
+            "type": "homepage_links",
+            "pattern": null
+          },
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
+          "sensitive_risks": [],
+          "positive_keywords": [
+            "下载",
+            "表格",
+            "申请"
+          ],
+          "negative_keywords": [
+            "采购",
+            "招标",
+            "会议纪要"
+          ],
+          "audit_status": "chrome_audited",
+          "production_enabled": true,
+          "notes": ""
         }
       ]
     },
@@ -583,33 +3596,116 @@
       "base_url": "https://cwc.njupt.edu.cn/",
       "source_type": "service_unit",
       "authority": 0.62,
-      "default_audience": ["本科生", "研究生", "教职工"],
+      "default_audience": [
+        "本科生",
+        "研究生",
+        "教职工"
+      ],
       "access_level": "public",
       "audit_status": "planned",
       "enabled": true,
       "adapter_kind": "njupt_wp",
-      "include_patterns": ["*/20*/**/page.htm"],
-      "exclude_patterns": ["*招标*", "*采购*"],
+      "include_patterns": [
+        "*/20*/**/page.htm"
+      ],
+      "exclude_patterns": [
+        "*招标*",
+        "*采购*"
+      ],
       "notes": "P1 缴费、报销和财务流程。",
       "channels": [
         {
           "id": "cwc_notice",
           "source_id": "cwc",
-          "name": "财务服务通知",
-          "list_urls": ["https://cwc.njupt.edu.cn/"],
+          "name": "财务通知",
+          "list_urls": [
+            "https://cwc.njupt.edu.cn/"
+          ],
           "student_value": 0.58,
-          "expected_domains": ["life", "policy"],
-          "expected_intents": ["read", "pay", "download"],
-          "priority": 0.62,
+          "expected_domains": [
+            "life",
+            "policy"
+          ],
+          "expected_intents": [
+            "read",
+            "pay"
+          ],
+          "priority": 0.56,
           "crawl_depth": 1,
-          "pagination": {"type": "homepage_links", "pattern": null},
-          "selectors": {"list_item": null, "title": null, "date": null, "link": null, "content": ".wp_articlecontent", "attachments": "a[href]"},
-          "sensitive_risks": ["缴费", "银行卡"],
-          "positive_keywords": ["缴费", "学费", "报销", "财务"],
-          "negative_keywords": ["采购", "招标"],
-          "audit_status": "planned",
+          "pagination": {
+            "type": "homepage_links",
+            "pattern": null
+          },
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
+          "sensitive_risks": [],
+          "positive_keywords": [
+            "缴费",
+            "收费",
+            "财务",
+            "学生"
+          ],
+          "negative_keywords": [
+            "采购",
+            "招标",
+            "会议纪要"
+          ],
+          "audit_status": "manual_seeded",
           "production_enabled": true,
-          "notes": "P1 planned。"
+          "notes": ""
+        },
+        {
+          "id": "cwc_download",
+          "source_id": "cwc",
+          "name": "财务下载与流程",
+          "list_urls": [
+            "https://cwc.njupt.edu.cn/"
+          ],
+          "student_value": 0.54,
+          "expected_domains": [
+            "resource",
+            "life"
+          ],
+          "expected_intents": [
+            "download",
+            "pay",
+            "read"
+          ],
+          "priority": 0.52,
+          "crawl_depth": 1,
+          "pagination": {
+            "type": "homepage_links",
+            "pattern": null
+          },
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
+          "sensitive_risks": [],
+          "positive_keywords": [
+            "下载",
+            "流程",
+            "报销",
+            "缴费"
+          ],
+          "negative_keywords": [
+            "采购",
+            "招标",
+            "会议纪要"
+          ],
+          "audit_status": "manual_seeded",
+          "production_enabled": true,
+          "notes": ""
         }
       ]
     },
@@ -619,33 +3715,162 @@
       "base_url": "https://dag.njupt.edu.cn/",
       "source_type": "service_unit",
       "authority": 0.62,
-      "default_audience": ["本科生", "研究生", "校友"],
+      "default_audience": [
+        "本科生",
+        "研究生",
+        "校友"
+      ],
       "access_level": "public",
-      "audit_status": "planned",
+      "audit_status": "channels_deepened",
       "enabled": true,
       "adapter_kind": "njupt_wp",
-      "include_patterns": ["*/20*/**/page.htm"],
+      "include_patterns": [
+        "*/20*/**/page.htm"
+      ],
       "exclude_patterns": [],
       "notes": "P1 档案、证明、流程。",
       "channels": [
         {
           "id": "archives_guide",
           "source_id": "archives",
-          "name": "档案服务",
-          "list_urls": ["https://dag.njupt.edu.cn/"],
-          "student_value": 0.62,
-          "expected_domains": ["archive", "resource"],
-          "expected_intents": ["read", "download"],
-          "priority": 0.62,
-          "crawl_depth": 1,
-          "pagination": {"type": "homepage_links", "pattern": null},
-          "selectors": {"list_item": null, "title": null, "date": null, "link": null, "content": ".wp_articlecontent", "attachments": "a[href]"},
-          "sensitive_risks": ["档案", "个人信息"],
-          "positive_keywords": ["档案", "证明", "流程", "下载"],
-          "negative_keywords": [],
-          "audit_status": "planned",
+          "name": "用档服务指南",
+          "list_urls": [
+            "https://dag.njupt.edu.cn/1259/list.htm",
+            "https://dag.njupt.edu.cn/1261/list.htm"
+          ],
+          "student_value": 0.66,
+          "expected_domains": [
+            "archive",
+            "resource"
+          ],
+          "expected_intents": [
+            "read",
+            "download"
+          ],
+          "priority": 0.64,
+          "crawl_depth": 2,
+          "pagination": {
+            "type": "homepage_links",
+            "pattern": null
+          },
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
+          "sensitive_risks": [
+            "档案",
+            "个人信息"
+          ],
+          "positive_keywords": [
+            "档案",
+            "证明",
+            "用档",
+            "指南"
+          ],
+          "negative_keywords": [
+            "采购",
+            "招标",
+            "会议纪要"
+          ],
+          "audit_status": "chrome_audited",
           "production_enabled": true,
-          "notes": "P1 planned。"
+          "notes": ""
+        },
+        {
+          "id": "archives_notice",
+          "source_id": "archives",
+          "name": "档案馆通知",
+          "list_urls": [
+            "https://dag.njupt.edu.cn/",
+            "https://dag.njupt.edu.cn/1277/list.htm"
+          ],
+          "student_value": 0.62,
+          "expected_domains": [
+            "archive",
+            "life"
+          ],
+          "expected_intents": [
+            "schedule",
+            "read"
+          ],
+          "priority": 0.6,
+          "crawl_depth": 1,
+          "pagination": {
+            "type": "homepage_links",
+            "pattern": null
+          },
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
+          "sensitive_risks": [],
+          "positive_keywords": [
+            "寒假",
+            "暑假",
+            "办理",
+            "成绩单"
+          ],
+          "negative_keywords": [
+            "采购",
+            "招标",
+            "会议纪要"
+          ],
+          "audit_status": "chrome_audited",
+          "production_enabled": true,
+          "notes": ""
+        },
+        {
+          "id": "archives_download",
+          "source_id": "archives",
+          "name": "档案下载专栏",
+          "list_urls": [
+            "https://dag.njupt.edu.cn/1270/list.htm"
+          ],
+          "student_value": 0.58,
+          "expected_domains": [
+            "resource",
+            "archive"
+          ],
+          "expected_intents": [
+            "download",
+            "submit"
+          ],
+          "priority": 0.56,
+          "crawl_depth": 1,
+          "pagination": {
+            "type": "homepage_links",
+            "pattern": null
+          },
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
+          "sensitive_risks": [],
+          "positive_keywords": [
+            "下载",
+            "表格",
+            "申请"
+          ],
+          "negative_keywords": [
+            "采购",
+            "招标",
+            "会议纪要"
+          ],
+          "audit_status": "chrome_audited",
+          "production_enabled": true,
+          "notes": ""
         }
       ]
     },
@@ -655,33 +3880,207 @@
       "base_url": "https://tyb.njupt.edu.cn/",
       "source_type": "service_unit",
       "authority": 0.58,
-      "default_audience": ["本科生", "研究生"],
+      "default_audience": [
+        "本科生",
+        "研究生"
+      ],
       "access_level": "public",
-      "audit_status": "planned",
+      "audit_status": "channels_deepened",
       "enabled": true,
       "adapter_kind": "njupt_wp",
-      "include_patterns": ["*/20*/**/page.htm"],
+      "include_patterns": [
+        "*/20*/**/page.htm"
+      ],
       "exclude_patterns": [],
       "notes": "P1 体育课程、体测、竞赛。",
       "channels": [
         {
-          "id": "pe_notice",
+          "id": "pe_course",
           "source_id": "pe",
-          "name": "体育通知",
-          "list_urls": ["https://tyb.njupt.edu.cn/"],
-          "student_value": 0.58,
-          "expected_domains": ["life", "course", "competition"],
-          "expected_intents": ["schedule", "attend", "read"],
-          "priority": 0.58,
+          "name": "体育课程",
+          "list_urls": [
+            "https://tyb.njupt.edu.cn/7228/list.htm",
+            "https://tyb.njupt.edu.cn/7226/list.htm"
+          ],
+          "student_value": 0.64,
+          "expected_domains": [
+            "course",
+            "life"
+          ],
+          "expected_intents": [
+            "schedule",
+            "read"
+          ],
+          "priority": 0.62,
           "crawl_depth": 1,
-          "pagination": {"type": "homepage_links", "pattern": null},
-          "selectors": {"list_item": null, "title": null, "date": null, "link": null, "content": ".wp_articlecontent", "attachments": "a[href]"},
-          "sensitive_risks": ["体测名单"],
-          "positive_keywords": ["体育", "体测", "比赛", "课程"],
-          "negative_keywords": [],
-          "audit_status": "planned",
+          "pagination": {
+            "type": "homepage_links",
+            "pattern": null
+          },
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
+          "sensitive_risks": [],
+          "positive_keywords": [
+            "体育课程",
+            "教学",
+            "课程表"
+          ],
+          "negative_keywords": [
+            "采购",
+            "招标",
+            "会议纪要"
+          ],
+          "audit_status": "chrome_audited",
           "production_enabled": true,
-          "notes": "P1 planned。"
+          "notes": ""
+        },
+        {
+          "id": "pe_running",
+          "source_id": "pe",
+          "name": "晨跑与体测",
+          "list_urls": [
+            "https://tyb.njupt.edu.cn/7233/list.htm",
+            "https://tyb.njupt.edu.cn/"
+          ],
+          "student_value": 0.66,
+          "expected_domains": [
+            "life"
+          ],
+          "expected_intents": [
+            "schedule",
+            "alert",
+            "read"
+          ],
+          "priority": 0.64,
+          "crawl_depth": 1,
+          "pagination": {
+            "type": "homepage_links",
+            "pattern": null
+          },
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
+          "sensitive_risks": [
+            "体测名单"
+          ],
+          "positive_keywords": [
+            "晨跑",
+            "体测",
+            "锻炼",
+            "补早锻炼"
+          ],
+          "negative_keywords": [
+            "采购",
+            "招标",
+            "会议纪要"
+          ],
+          "audit_status": "chrome_audited",
+          "production_enabled": true,
+          "notes": ""
+        },
+        {
+          "id": "pe_competition",
+          "source_id": "pe",
+          "name": "体育竞赛",
+          "list_urls": [
+            "https://tyb.njupt.edu.cn/7229/list.htm",
+            "https://tyb.njupt.edu.cn/7257/list.htm"
+          ],
+          "student_value": 0.62,
+          "expected_domains": [
+            "competition",
+            "life"
+          ],
+          "expected_intents": [
+            "attend",
+            "register",
+            "check_result"
+          ],
+          "priority": 0.6,
+          "crawl_depth": 1,
+          "pagination": {
+            "type": "homepage_links",
+            "pattern": null
+          },
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
+          "sensitive_risks": [],
+          "positive_keywords": [
+            "比赛",
+            "竞赛",
+            "体育文化月",
+            "运动会"
+          ],
+          "negative_keywords": [
+            "采购",
+            "招标",
+            "会议纪要"
+          ],
+          "audit_status": "chrome_audited",
+          "production_enabled": true,
+          "notes": ""
+        },
+        {
+          "id": "pe_download",
+          "source_id": "pe",
+          "name": "体育资料下载",
+          "list_urls": [
+            "https://tyb.njupt.edu.cn/zlxz/list.htm"
+          ],
+          "student_value": 0.54,
+          "expected_domains": [
+            "resource",
+            "life"
+          ],
+          "expected_intents": [
+            "download",
+            "read"
+          ],
+          "priority": 0.52,
+          "crawl_depth": 1,
+          "pagination": {
+            "type": "homepage_links",
+            "pattern": null
+          },
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
+          "sensitive_risks": [],
+          "positive_keywords": [
+            "下载",
+            "资料",
+            "表格"
+          ],
+          "negative_keywords": [
+            "采购",
+            "招标",
+            "会议纪要"
+          ],
+          "audit_status": "chrome_audited",
+          "production_enabled": true,
+          "notes": ""
         }
       ]
     },
@@ -691,33 +4090,125 @@
       "base_url": "https://cs.njupt.edu.cn/",
       "source_type": "college",
       "authority": 0.78,
-      "default_audience": ["本科生", "研究生", "计算机学院"],
+      "default_audience": [
+        "本科生",
+        "研究生",
+        "计算机学院"
+      ],
       "access_level": "public_with_possible_sensitive_lists",
-      "audit_status": "channels_seeded",
+      "audit_status": "channels_deepened",
       "enabled": true,
       "adapter_kind": "njupt_wp",
-      "include_patterns": ["*/20*/**/page.htm"],
+      "include_patterns": [
+        "*/20*/**/page.htm"
+      ],
       "exclude_patterns": [],
       "notes": "P2 重点学院站。",
       "channels": [
         {
-          "id": "cs_notice",
+          "id": "cs_academic",
           "source_id": "cs",
-          "name": "学院通知公告",
-          "list_urls": ["https://cs.njupt.edu.cn/tzgg/list.htm"],
+          "name": "学院学业通知",
+          "list_urls": [
+            "https://cs.njupt.edu.cn/tzgg/list.htm"
+          ],
           "student_value": 0.78,
-          "expected_domains": ["academic", "degree", "competition"],
-          "expected_intents": ["read", "submit", "schedule", "check_result"],
+          "expected_domains": [
+            "academic",
+            "degree"
+          ],
+          "expected_intents": [
+            "read",
+            "submit",
+            "schedule",
+            "check_result"
+          ],
           "priority": 0.78,
           "crawl_depth": 2,
-          "pagination": {"type": "next_link", "pattern": null},
-          "selectors": {"list_item": null, "title": null, "date": null, "link": null, "content": ".wp_articlecontent", "attachments": "a[href]"},
-          "sensitive_risks": ["班级", "名单", "学号"],
-          "positive_keywords": ["毕业设计", "答辩", "竞赛", "班级", "研究生"],
-          "negative_keywords": ["采购", "招标"],
+          "pagination": {
+            "type": "next_link",
+            "pattern": null
+          },
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
+          "sensitive_risks": [
+            "班级",
+            "名单",
+            "学号"
+          ],
+          "positive_keywords": [
+            "毕业设计",
+            "答辩",
+            "课程",
+            "考试",
+            "班级",
+            "研究生"
+          ],
+          "negative_keywords": [
+            "采购",
+            "招标"
+          ],
           "audit_status": "manual_seeded",
           "production_enabled": true,
-          "notes": "P2 学院 channel。"
+          "notes": "P2 学院学业 channel。"
+        },
+        {
+          "id": "cs_competition",
+          "source_id": "cs",
+          "name": "学院竞赛项目",
+          "list_urls": [
+            "https://cs.njupt.edu.cn/tzgg/list.htm"
+          ],
+          "student_value": 0.74,
+          "expected_domains": [
+            "competition",
+            "project"
+          ],
+          "expected_intents": [
+            "register",
+            "apply",
+            "submit",
+            "check_result"
+          ],
+          "priority": 0.74,
+          "crawl_depth": 1,
+          "pagination": {
+            "type": "next_link",
+            "pattern": null
+          },
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
+          "sensitive_risks": [
+            "名单",
+            "学号"
+          ],
+          "positive_keywords": [
+            "竞赛",
+            "项目",
+            "大创",
+            "挑战杯",
+            "报名",
+            "获奖"
+          ],
+          "negative_keywords": [
+            "采购",
+            "招标"
+          ],
+          "audit_status": "manual_seeded",
+          "production_enabled": true,
+          "notes": "P2 学院机会 channel。"
         }
       ]
     },
@@ -727,33 +4218,125 @@
       "base_url": "https://scie.njupt.edu.cn/",
       "source_type": "college",
       "authority": 0.76,
-      "default_audience": ["本科生", "研究生", "通信与信息工程学院"],
+      "default_audience": [
+        "本科生",
+        "研究生",
+        "通信与信息工程学院"
+      ],
       "access_level": "public_with_possible_sensitive_lists",
-      "audit_status": "channels_seeded",
+      "audit_status": "channels_deepened",
       "enabled": true,
       "adapter_kind": "njupt_wp",
-      "include_patterns": ["*/20*/**/page.htm"],
+      "include_patterns": [
+        "*/20*/**/page.htm"
+      ],
       "exclude_patterns": [],
       "notes": "P2 学院站。",
       "channels": [
         {
-          "id": "scie_notice",
+          "id": "scie_academic",
           "source_id": "scie",
-          "name": "学院通知公告",
-          "list_urls": ["https://scie.njupt.edu.cn/tzgg/list.htm"],
+          "name": "学院学业通知",
+          "list_urls": [
+            "https://scie.njupt.edu.cn/tzgg/list.htm"
+          ],
           "student_value": 0.76,
-          "expected_domains": ["academic", "degree", "competition"],
-          "expected_intents": ["read", "submit", "schedule", "check_result"],
+          "expected_domains": [
+            "academic",
+            "degree"
+          ],
+          "expected_intents": [
+            "read",
+            "submit",
+            "schedule",
+            "check_result"
+          ],
           "priority": 0.76,
           "crawl_depth": 2,
-          "pagination": {"type": "next_link", "pattern": null},
-          "selectors": {"list_item": null, "title": null, "date": null, "link": null, "content": ".wp_articlecontent", "attachments": "a[href]"},
-          "sensitive_risks": ["班级", "名单", "学号"],
-          "positive_keywords": ["毕业设计", "答辩", "竞赛", "班级", "研究生"],
-          "negative_keywords": ["采购", "招标"],
+          "pagination": {
+            "type": "next_link",
+            "pattern": null
+          },
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
+          "sensitive_risks": [
+            "班级",
+            "名单",
+            "学号"
+          ],
+          "positive_keywords": [
+            "毕业设计",
+            "答辩",
+            "课程",
+            "考试",
+            "班级",
+            "研究生"
+          ],
+          "negative_keywords": [
+            "采购",
+            "招标"
+          ],
           "audit_status": "manual_seeded",
           "production_enabled": true,
-          "notes": "P2 学院 channel。"
+          "notes": "P2 学院学业 channel。"
+        },
+        {
+          "id": "scie_competition",
+          "source_id": "scie",
+          "name": "学院竞赛项目",
+          "list_urls": [
+            "https://scie.njupt.edu.cn/tzgg/list.htm"
+          ],
+          "student_value": 0.72,
+          "expected_domains": [
+            "competition",
+            "project"
+          ],
+          "expected_intents": [
+            "register",
+            "apply",
+            "submit",
+            "check_result"
+          ],
+          "priority": 0.72,
+          "crawl_depth": 1,
+          "pagination": {
+            "type": "next_link",
+            "pattern": null
+          },
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
+          "sensitive_risks": [
+            "名单",
+            "学号"
+          ],
+          "positive_keywords": [
+            "竞赛",
+            "项目",
+            "大创",
+            "挑战杯",
+            "报名",
+            "获奖"
+          ],
+          "negative_keywords": [
+            "采购",
+            "招标"
+          ],
+          "audit_status": "manual_seeded",
+          "production_enabled": true,
+          "notes": "P2 学院机会 channel。"
         }
       ]
     },
@@ -763,33 +4346,125 @@
       "base_url": "https://eoe.njupt.edu.cn/",
       "source_type": "college",
       "authority": 0.74,
-      "default_audience": ["本科生", "研究生", "电子与光学工程学院"],
+      "default_audience": [
+        "本科生",
+        "研究生",
+        "电子与光学工程学院"
+      ],
       "access_level": "public_with_possible_sensitive_lists",
-      "audit_status": "channels_seeded",
+      "audit_status": "channels_deepened",
       "enabled": true,
       "adapter_kind": "njupt_wp",
-      "include_patterns": ["*/20*/**/page.htm"],
+      "include_patterns": [
+        "*/20*/**/page.htm"
+      ],
       "exclude_patterns": [],
       "notes": "P2 学院站。",
       "channels": [
         {
-          "id": "eoe_notice",
+          "id": "eoe_academic",
           "source_id": "eoe",
-          "name": "学院通知公告",
-          "list_urls": ["https://eoe.njupt.edu.cn/tzgg/list.htm"],
+          "name": "学院学业通知",
+          "list_urls": [
+            "https://eoe.njupt.edu.cn/tzgg/list.htm"
+          ],
           "student_value": 0.74,
-          "expected_domains": ["academic", "degree", "competition"],
-          "expected_intents": ["read", "submit", "schedule", "check_result"],
+          "expected_domains": [
+            "academic",
+            "degree"
+          ],
+          "expected_intents": [
+            "read",
+            "submit",
+            "schedule",
+            "check_result"
+          ],
           "priority": 0.74,
           "crawl_depth": 2,
-          "pagination": {"type": "next_link", "pattern": null},
-          "selectors": {"list_item": null, "title": null, "date": null, "link": null, "content": ".wp_articlecontent", "attachments": "a[href]"},
-          "sensitive_risks": ["班级", "名单", "学号"],
-          "positive_keywords": ["毕业设计", "答辩", "竞赛", "班级", "研究生"],
-          "negative_keywords": ["采购", "招标"],
+          "pagination": {
+            "type": "next_link",
+            "pattern": null
+          },
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
+          "sensitive_risks": [
+            "班级",
+            "名单",
+            "学号"
+          ],
+          "positive_keywords": [
+            "毕业设计",
+            "答辩",
+            "课程",
+            "考试",
+            "班级",
+            "研究生"
+          ],
+          "negative_keywords": [
+            "采购",
+            "招标"
+          ],
           "audit_status": "manual_seeded",
           "production_enabled": true,
-          "notes": "P2 学院 channel。"
+          "notes": "P2 学院学业 channel。"
+        },
+        {
+          "id": "eoe_competition",
+          "source_id": "eoe",
+          "name": "学院竞赛项目",
+          "list_urls": [
+            "https://eoe.njupt.edu.cn/tzgg/list.htm"
+          ],
+          "student_value": 0.7,
+          "expected_domains": [
+            "competition",
+            "project"
+          ],
+          "expected_intents": [
+            "register",
+            "apply",
+            "submit",
+            "check_result"
+          ],
+          "priority": 0.7,
+          "crawl_depth": 1,
+          "pagination": {
+            "type": "next_link",
+            "pattern": null
+          },
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
+          "sensitive_risks": [
+            "名单",
+            "学号"
+          ],
+          "positive_keywords": [
+            "竞赛",
+            "项目",
+            "大创",
+            "挑战杯",
+            "报名",
+            "获奖"
+          ],
+          "negative_keywords": [
+            "采购",
+            "招标"
+          ],
+          "audit_status": "manual_seeded",
+          "production_enabled": true,
+          "notes": "P2 学院机会 channel。"
         }
       ]
     },
@@ -799,33 +4474,125 @@
       "base_url": "https://ic.njupt.edu.cn/",
       "source_type": "college",
       "authority": 0.74,
-      "default_audience": ["本科生", "研究生", "集成电路学院"],
+      "default_audience": [
+        "本科生",
+        "研究生",
+        "集成电路学院"
+      ],
       "access_level": "public_with_possible_sensitive_lists",
-      "audit_status": "channels_seeded",
+      "audit_status": "channels_deepened",
       "enabled": true,
       "adapter_kind": "njupt_wp",
-      "include_patterns": ["*/20*/**/page.htm"],
+      "include_patterns": [
+        "*/20*/**/page.htm"
+      ],
       "exclude_patterns": [],
       "notes": "P2 学院站。",
       "channels": [
         {
-          "id": "ic_notice",
+          "id": "ic_academic",
           "source_id": "ic",
-          "name": "学院通知公告",
-          "list_urls": ["https://ic.njupt.edu.cn/tzgg/list.htm"],
+          "name": "学院学业通知",
+          "list_urls": [
+            "https://ic.njupt.edu.cn/tzgg/list.htm"
+          ],
           "student_value": 0.74,
-          "expected_domains": ["academic", "degree", "competition"],
-          "expected_intents": ["read", "submit", "schedule", "check_result"],
+          "expected_domains": [
+            "academic",
+            "degree"
+          ],
+          "expected_intents": [
+            "read",
+            "submit",
+            "schedule",
+            "check_result"
+          ],
           "priority": 0.74,
           "crawl_depth": 2,
-          "pagination": {"type": "next_link", "pattern": null},
-          "selectors": {"list_item": null, "title": null, "date": null, "link": null, "content": ".wp_articlecontent", "attachments": "a[href]"},
-          "sensitive_risks": ["班级", "名单", "学号"],
-          "positive_keywords": ["毕业设计", "答辩", "竞赛", "班级", "研究生"],
-          "negative_keywords": ["采购", "招标"],
+          "pagination": {
+            "type": "next_link",
+            "pattern": null
+          },
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
+          "sensitive_risks": [
+            "班级",
+            "名单",
+            "学号"
+          ],
+          "positive_keywords": [
+            "毕业设计",
+            "答辩",
+            "课程",
+            "考试",
+            "班级",
+            "研究生"
+          ],
+          "negative_keywords": [
+            "采购",
+            "招标"
+          ],
           "audit_status": "manual_seeded",
           "production_enabled": true,
-          "notes": "P2 学院 channel。"
+          "notes": "P2 学院学业 channel。"
+        },
+        {
+          "id": "ic_competition",
+          "source_id": "ic",
+          "name": "学院竞赛项目",
+          "list_urls": [
+            "https://ic.njupt.edu.cn/tzgg/list.htm"
+          ],
+          "student_value": 0.7,
+          "expected_domains": [
+            "competition",
+            "project"
+          ],
+          "expected_intents": [
+            "register",
+            "apply",
+            "submit",
+            "check_result"
+          ],
+          "priority": 0.7,
+          "crawl_depth": 1,
+          "pagination": {
+            "type": "next_link",
+            "pattern": null
+          },
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
+          "sensitive_risks": [
+            "名单",
+            "学号"
+          ],
+          "positive_keywords": [
+            "竞赛",
+            "项目",
+            "大创",
+            "挑战杯",
+            "报名",
+            "获奖"
+          ],
+          "negative_keywords": [
+            "采购",
+            "招标"
+          ],
+          "audit_status": "manual_seeded",
+          "production_enabled": true,
+          "notes": "P2 学院机会 channel。"
         }
       ]
     },
@@ -835,33 +4602,125 @@
       "base_url": "https://coa.njupt.edu.cn/",
       "source_type": "college",
       "authority": 0.72,
-      "default_audience": ["本科生", "研究生", "自动化学院"],
+      "default_audience": [
+        "本科生",
+        "研究生",
+        "自动化学院"
+      ],
       "access_level": "public_with_possible_sensitive_lists",
-      "audit_status": "channels_seeded",
+      "audit_status": "channels_deepened",
       "enabled": true,
       "adapter_kind": "njupt_wp",
-      "include_patterns": ["*/20*/**/page.htm"],
+      "include_patterns": [
+        "*/20*/**/page.htm"
+      ],
       "exclude_patterns": [],
       "notes": "P2 学院站。",
       "channels": [
         {
-          "id": "coa_notice",
+          "id": "coa_academic",
           "source_id": "coa",
-          "name": "学院通知公告",
-          "list_urls": ["https://coa.njupt.edu.cn/tzgg/list.htm"],
+          "name": "学院学业通知",
+          "list_urls": [
+            "https://coa.njupt.edu.cn/tzgg/list.htm"
+          ],
           "student_value": 0.72,
-          "expected_domains": ["academic", "degree", "competition"],
-          "expected_intents": ["read", "submit", "schedule", "check_result"],
+          "expected_domains": [
+            "academic",
+            "degree"
+          ],
+          "expected_intents": [
+            "read",
+            "submit",
+            "schedule",
+            "check_result"
+          ],
           "priority": 0.72,
           "crawl_depth": 2,
-          "pagination": {"type": "next_link", "pattern": null},
-          "selectors": {"list_item": null, "title": null, "date": null, "link": null, "content": ".wp_articlecontent", "attachments": "a[href]"},
-          "sensitive_risks": ["班级", "名单", "学号"],
-          "positive_keywords": ["毕业设计", "答辩", "竞赛", "班级", "研究生"],
-          "negative_keywords": ["采购", "招标"],
+          "pagination": {
+            "type": "next_link",
+            "pattern": null
+          },
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
+          "sensitive_risks": [
+            "班级",
+            "名单",
+            "学号"
+          ],
+          "positive_keywords": [
+            "毕业设计",
+            "答辩",
+            "课程",
+            "考试",
+            "班级",
+            "研究生"
+          ],
+          "negative_keywords": [
+            "采购",
+            "招标"
+          ],
           "audit_status": "manual_seeded",
           "production_enabled": true,
-          "notes": "P2 学院 channel。"
+          "notes": "P2 学院学业 channel。"
+        },
+        {
+          "id": "coa_competition",
+          "source_id": "coa",
+          "name": "学院竞赛项目",
+          "list_urls": [
+            "https://coa.njupt.edu.cn/tzgg/list.htm"
+          ],
+          "student_value": 0.6799999999999999,
+          "expected_domains": [
+            "competition",
+            "project"
+          ],
+          "expected_intents": [
+            "register",
+            "apply",
+            "submit",
+            "check_result"
+          ],
+          "priority": 0.6799999999999999,
+          "crawl_depth": 1,
+          "pagination": {
+            "type": "next_link",
+            "pattern": null
+          },
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
+          "sensitive_risks": [
+            "名单",
+            "学号"
+          ],
+          "positive_keywords": [
+            "竞赛",
+            "项目",
+            "大创",
+            "挑战杯",
+            "报名",
+            "获奖"
+          ],
+          "negative_keywords": [
+            "采购",
+            "招标"
+          ],
+          "audit_status": "manual_seeded",
+          "production_enabled": true,
+          "notes": "P2 学院机会 channel。"
         }
       ]
     },
@@ -871,33 +4730,125 @@
       "base_url": "https://ai.njupt.edu.cn/",
       "source_type": "college",
       "authority": 0.72,
-      "default_audience": ["本科生", "研究生", "人工智能学院"],
+      "default_audience": [
+        "本科生",
+        "研究生",
+        "人工智能学院"
+      ],
       "access_level": "public_with_possible_sensitive_lists",
-      "audit_status": "channels_seeded",
+      "audit_status": "channels_deepened",
       "enabled": true,
       "adapter_kind": "njupt_wp",
-      "include_patterns": ["*/20*/**/page.htm"],
+      "include_patterns": [
+        "*/20*/**/page.htm"
+      ],
       "exclude_patterns": [],
       "notes": "P2 学院站。",
       "channels": [
         {
-          "id": "ai_notice",
+          "id": "ai_academic",
           "source_id": "ai",
-          "name": "学院通知公告",
-          "list_urls": ["https://ai.njupt.edu.cn/tzgg/list.htm"],
+          "name": "学院学业通知",
+          "list_urls": [
+            "https://ai.njupt.edu.cn/tzgg/list.htm"
+          ],
           "student_value": 0.72,
-          "expected_domains": ["academic", "degree", "competition"],
-          "expected_intents": ["read", "submit", "schedule", "check_result"],
+          "expected_domains": [
+            "academic",
+            "degree"
+          ],
+          "expected_intents": [
+            "read",
+            "submit",
+            "schedule",
+            "check_result"
+          ],
           "priority": 0.72,
           "crawl_depth": 2,
-          "pagination": {"type": "next_link", "pattern": null},
-          "selectors": {"list_item": null, "title": null, "date": null, "link": null, "content": ".wp_articlecontent", "attachments": "a[href]"},
-          "sensitive_risks": ["班级", "名单", "学号"],
-          "positive_keywords": ["毕业设计", "答辩", "竞赛", "班级", "研究生"],
-          "negative_keywords": ["采购", "招标"],
+          "pagination": {
+            "type": "next_link",
+            "pattern": null
+          },
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
+          "sensitive_risks": [
+            "班级",
+            "名单",
+            "学号"
+          ],
+          "positive_keywords": [
+            "毕业设计",
+            "答辩",
+            "课程",
+            "考试",
+            "班级",
+            "研究生"
+          ],
+          "negative_keywords": [
+            "采购",
+            "招标"
+          ],
           "audit_status": "manual_seeded",
           "production_enabled": true,
-          "notes": "P2 学院 channel。"
+          "notes": "P2 学院学业 channel。"
+        },
+        {
+          "id": "ai_competition",
+          "source_id": "ai",
+          "name": "学院竞赛项目",
+          "list_urls": [
+            "https://ai.njupt.edu.cn/tzgg/list.htm"
+          ],
+          "student_value": 0.6799999999999999,
+          "expected_domains": [
+            "competition",
+            "project"
+          ],
+          "expected_intents": [
+            "register",
+            "apply",
+            "submit",
+            "check_result"
+          ],
+          "priority": 0.6799999999999999,
+          "crawl_depth": 1,
+          "pagination": {
+            "type": "next_link",
+            "pattern": null
+          },
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
+          "sensitive_risks": [
+            "名单",
+            "学号"
+          ],
+          "positive_keywords": [
+            "竞赛",
+            "项目",
+            "大创",
+            "挑战杯",
+            "报名",
+            "获奖"
+          ],
+          "negative_keywords": [
+            "采购",
+            "招标"
+          ],
+          "audit_status": "manual_seeded",
+          "production_enabled": true,
+          "notes": "P2 学院机会 channel。"
         }
       ]
     },
@@ -907,33 +4858,125 @@
       "base_url": "https://ciot.njupt.edu.cn/",
       "source_type": "college",
       "authority": 0.72,
-      "default_audience": ["本科生", "研究生", "物联网学院"],
+      "default_audience": [
+        "本科生",
+        "研究生",
+        "物联网学院"
+      ],
       "access_level": "public_with_possible_sensitive_lists",
-      "audit_status": "channels_seeded",
+      "audit_status": "channels_deepened",
       "enabled": true,
       "adapter_kind": "njupt_wp",
-      "include_patterns": ["*/20*/**/page.htm"],
+      "include_patterns": [
+        "*/20*/**/page.htm"
+      ],
       "exclude_patterns": [],
       "notes": "P2 学院站。",
       "channels": [
         {
-          "id": "ciot_notice",
+          "id": "ciot_academic",
           "source_id": "ciot",
-          "name": "学院通知公告",
-          "list_urls": ["https://ciot.njupt.edu.cn/tzgg/list.htm"],
+          "name": "学院学业通知",
+          "list_urls": [
+            "https://ciot.njupt.edu.cn/tzgg/list.htm"
+          ],
           "student_value": 0.72,
-          "expected_domains": ["academic", "degree", "competition"],
-          "expected_intents": ["read", "submit", "schedule", "check_result"],
+          "expected_domains": [
+            "academic",
+            "degree"
+          ],
+          "expected_intents": [
+            "read",
+            "submit",
+            "schedule",
+            "check_result"
+          ],
           "priority": 0.72,
           "crawl_depth": 2,
-          "pagination": {"type": "next_link", "pattern": null},
-          "selectors": {"list_item": null, "title": null, "date": null, "link": null, "content": ".wp_articlecontent", "attachments": "a[href]"},
-          "sensitive_risks": ["班级", "名单", "学号"],
-          "positive_keywords": ["毕业设计", "答辩", "竞赛", "班级", "研究生"],
-          "negative_keywords": ["采购", "招标"],
+          "pagination": {
+            "type": "next_link",
+            "pattern": null
+          },
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
+          "sensitive_risks": [
+            "班级",
+            "名单",
+            "学号"
+          ],
+          "positive_keywords": [
+            "毕业设计",
+            "答辩",
+            "课程",
+            "考试",
+            "班级",
+            "研究生"
+          ],
+          "negative_keywords": [
+            "采购",
+            "招标"
+          ],
           "audit_status": "manual_seeded",
           "production_enabled": true,
-          "notes": "P2 学院 channel。"
+          "notes": "P2 学院学业 channel。"
+        },
+        {
+          "id": "ciot_competition",
+          "source_id": "ciot",
+          "name": "学院竞赛项目",
+          "list_urls": [
+            "https://ciot.njupt.edu.cn/tzgg/list.htm"
+          ],
+          "student_value": 0.6799999999999999,
+          "expected_domains": [
+            "competition",
+            "project"
+          ],
+          "expected_intents": [
+            "register",
+            "apply",
+            "submit",
+            "check_result"
+          ],
+          "priority": 0.6799999999999999,
+          "crawl_depth": 1,
+          "pagination": {
+            "type": "next_link",
+            "pattern": null
+          },
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
+          "sensitive_risks": [
+            "名单",
+            "学号"
+          ],
+          "positive_keywords": [
+            "竞赛",
+            "项目",
+            "大创",
+            "挑战杯",
+            "报名",
+            "获奖"
+          ],
+          "negative_keywords": [
+            "采购",
+            "招标"
+          ],
+          "audit_status": "manual_seeded",
+          "production_enabled": true,
+          "notes": "P2 学院机会 channel。"
         }
       ]
     },
@@ -943,33 +4986,125 @@
       "base_url": "https://lxy.njupt.edu.cn/",
       "source_type": "college",
       "authority": 0.68,
-      "default_audience": ["本科生", "研究生", "理学院"],
+      "default_audience": [
+        "本科生",
+        "研究生",
+        "理学院"
+      ],
       "access_level": "public_with_possible_sensitive_lists",
-      "audit_status": "channels_seeded",
+      "audit_status": "channels_deepened",
       "enabled": true,
       "adapter_kind": "njupt_wp",
-      "include_patterns": ["*/20*/**/page.htm"],
+      "include_patterns": [
+        "*/20*/**/page.htm"
+      ],
       "exclude_patterns": [],
       "notes": "P2 学院站。",
       "channels": [
         {
-          "id": "lxy_notice",
+          "id": "lxy_academic",
           "source_id": "lxy",
-          "name": "学院通知公告",
-          "list_urls": ["https://lxy.njupt.edu.cn/tzgg/list.htm"],
+          "name": "学院学业通知",
+          "list_urls": [
+            "https://lxy.njupt.edu.cn/tzgg/list.htm"
+          ],
           "student_value": 0.68,
-          "expected_domains": ["academic", "degree", "competition"],
-          "expected_intents": ["read", "submit", "schedule", "check_result"],
+          "expected_domains": [
+            "academic",
+            "degree"
+          ],
+          "expected_intents": [
+            "read",
+            "submit",
+            "schedule",
+            "check_result"
+          ],
           "priority": 0.68,
           "crawl_depth": 2,
-          "pagination": {"type": "next_link", "pattern": null},
-          "selectors": {"list_item": null, "title": null, "date": null, "link": null, "content": ".wp_articlecontent", "attachments": "a[href]"},
-          "sensitive_risks": ["班级", "名单", "学号"],
-          "positive_keywords": ["高数", "补考", "毕业设计", "答辩", "竞赛"],
-          "negative_keywords": ["采购", "招标"],
+          "pagination": {
+            "type": "next_link",
+            "pattern": null
+          },
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
+          "sensitive_risks": [
+            "班级",
+            "名单",
+            "学号"
+          ],
+          "positive_keywords": [
+            "毕业设计",
+            "答辩",
+            "课程",
+            "考试",
+            "班级",
+            "研究生"
+          ],
+          "negative_keywords": [
+            "采购",
+            "招标"
+          ],
           "audit_status": "manual_seeded",
           "production_enabled": true,
-          "notes": "P2 学院 channel。"
+          "notes": "P2 学院学业 channel。"
+        },
+        {
+          "id": "lxy_competition",
+          "source_id": "lxy",
+          "name": "学院竞赛项目",
+          "list_urls": [
+            "https://lxy.njupt.edu.cn/tzgg/list.htm"
+          ],
+          "student_value": 0.64,
+          "expected_domains": [
+            "competition",
+            "project"
+          ],
+          "expected_intents": [
+            "register",
+            "apply",
+            "submit",
+            "check_result"
+          ],
+          "priority": 0.64,
+          "crawl_depth": 1,
+          "pagination": {
+            "type": "next_link",
+            "pattern": null
+          },
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
+          "sensitive_risks": [
+            "名单",
+            "学号"
+          ],
+          "positive_keywords": [
+            "竞赛",
+            "项目",
+            "大创",
+            "挑战杯",
+            "报名",
+            "获奖"
+          ],
+          "negative_keywords": [
+            "采购",
+            "招标"
+          ],
+          "audit_status": "manual_seeded",
+          "production_enabled": true,
+          "notes": "P2 学院机会 channel。"
         }
       ]
     },
@@ -979,33 +5114,125 @@
       "base_url": "https://simp.njupt.edu.cn/",
       "source_type": "college",
       "authority": 0.68,
-      "default_audience": ["本科生", "研究生", "现代邮政学院"],
+      "default_audience": [
+        "本科生",
+        "研究生",
+        "现代邮政学院"
+      ],
       "access_level": "public_with_possible_sensitive_lists",
-      "audit_status": "channels_seeded",
+      "audit_status": "channels_deepened",
       "enabled": true,
       "adapter_kind": "njupt_wp",
-      "include_patterns": ["*/20*/**/page.htm"],
+      "include_patterns": [
+        "*/20*/**/page.htm"
+      ],
       "exclude_patterns": [],
       "notes": "P2 学院站。",
       "channels": [
         {
-          "id": "simp_notice",
+          "id": "simp_academic",
           "source_id": "simp",
-          "name": "学院通知公告",
-          "list_urls": ["https://simp.njupt.edu.cn/tzgg/list.htm"],
+          "name": "学院学业通知",
+          "list_urls": [
+            "https://simp.njupt.edu.cn/tzgg/list.htm"
+          ],
           "student_value": 0.68,
-          "expected_domains": ["academic", "degree", "competition"],
-          "expected_intents": ["read", "submit", "schedule", "check_result"],
+          "expected_domains": [
+            "academic",
+            "degree"
+          ],
+          "expected_intents": [
+            "read",
+            "submit",
+            "schedule",
+            "check_result"
+          ],
           "priority": 0.68,
           "crawl_depth": 2,
-          "pagination": {"type": "next_link", "pattern": null},
-          "selectors": {"list_item": null, "title": null, "date": null, "link": null, "content": ".wp_articlecontent", "attachments": "a[href]"},
-          "sensitive_risks": ["班级", "名单", "学号"],
-          "positive_keywords": ["毕业设计", "答辩", "竞赛", "班级", "研究生"],
-          "negative_keywords": ["采购", "招标"],
+          "pagination": {
+            "type": "next_link",
+            "pattern": null
+          },
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
+          "sensitive_risks": [
+            "班级",
+            "名单",
+            "学号"
+          ],
+          "positive_keywords": [
+            "毕业设计",
+            "答辩",
+            "课程",
+            "考试",
+            "班级",
+            "研究生"
+          ],
+          "negative_keywords": [
+            "采购",
+            "招标"
+          ],
           "audit_status": "manual_seeded",
           "production_enabled": true,
-          "notes": "P2 学院 channel。"
+          "notes": "P2 学院学业 channel。"
+        },
+        {
+          "id": "simp_competition",
+          "source_id": "simp",
+          "name": "学院竞赛项目",
+          "list_urls": [
+            "https://simp.njupt.edu.cn/tzgg/list.htm"
+          ],
+          "student_value": 0.64,
+          "expected_domains": [
+            "competition",
+            "project"
+          ],
+          "expected_intents": [
+            "register",
+            "apply",
+            "submit",
+            "check_result"
+          ],
+          "priority": 0.64,
+          "crawl_depth": 1,
+          "pagination": {
+            "type": "next_link",
+            "pattern": null
+          },
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
+          "sensitive_risks": [
+            "名单",
+            "学号"
+          ],
+          "positive_keywords": [
+            "竞赛",
+            "项目",
+            "大创",
+            "挑战杯",
+            "报名",
+            "获奖"
+          ],
+          "negative_keywords": [
+            "采购",
+            "招标"
+          ],
+          "audit_status": "manual_seeded",
+          "production_enabled": true,
+          "notes": "P2 学院机会 channel。"
         }
       ]
     },
@@ -1015,33 +5242,125 @@
       "base_url": "https://bc.njupt.edu.cn/",
       "source_type": "college",
       "authority": 0.66,
-      "default_audience": ["本科生", "研究生", "管理学院"],
+      "default_audience": [
+        "本科生",
+        "研究生",
+        "管理学院"
+      ],
       "access_level": "public_with_possible_sensitive_lists",
-      "audit_status": "channels_seeded",
+      "audit_status": "channels_deepened",
       "enabled": true,
       "adapter_kind": "njupt_wp",
-      "include_patterns": ["*/20*/**/page.htm"],
+      "include_patterns": [
+        "*/20*/**/page.htm"
+      ],
       "exclude_patterns": [],
       "notes": "P2 学院站。",
       "channels": [
         {
-          "id": "bc_notice",
+          "id": "bc_academic",
           "source_id": "bc",
-          "name": "学院通知公告",
-          "list_urls": ["https://bc.njupt.edu.cn/tzgg/list.htm"],
+          "name": "学院学业通知",
+          "list_urls": [
+            "https://bc.njupt.edu.cn/tzgg/list.htm"
+          ],
           "student_value": 0.66,
-          "expected_domains": ["academic", "degree", "competition"],
-          "expected_intents": ["read", "submit", "schedule", "check_result"],
+          "expected_domains": [
+            "academic",
+            "degree"
+          ],
+          "expected_intents": [
+            "read",
+            "submit",
+            "schedule",
+            "check_result"
+          ],
           "priority": 0.66,
           "crawl_depth": 2,
-          "pagination": {"type": "next_link", "pattern": null},
-          "selectors": {"list_item": null, "title": null, "date": null, "link": null, "content": ".wp_articlecontent", "attachments": "a[href]"},
-          "sensitive_risks": ["班级", "名单", "学号"],
-          "positive_keywords": ["毕业设计", "答辩", "竞赛", "班级", "研究生"],
-          "negative_keywords": ["采购", "招标"],
+          "pagination": {
+            "type": "next_link",
+            "pattern": null
+          },
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
+          "sensitive_risks": [
+            "班级",
+            "名单",
+            "学号"
+          ],
+          "positive_keywords": [
+            "毕业设计",
+            "答辩",
+            "课程",
+            "考试",
+            "班级",
+            "研究生"
+          ],
+          "negative_keywords": [
+            "采购",
+            "招标"
+          ],
           "audit_status": "manual_seeded",
           "production_enabled": true,
-          "notes": "P2 学院 channel。"
+          "notes": "P2 学院学业 channel。"
+        },
+        {
+          "id": "bc_competition",
+          "source_id": "bc",
+          "name": "学院竞赛项目",
+          "list_urls": [
+            "https://bc.njupt.edu.cn/tzgg/list.htm"
+          ],
+          "student_value": 0.62,
+          "expected_domains": [
+            "competition",
+            "project"
+          ],
+          "expected_intents": [
+            "register",
+            "apply",
+            "submit",
+            "check_result"
+          ],
+          "priority": 0.62,
+          "crawl_depth": 1,
+          "pagination": {
+            "type": "next_link",
+            "pattern": null
+          },
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
+          "sensitive_risks": [
+            "名单",
+            "学号"
+          ],
+          "positive_keywords": [
+            "竞赛",
+            "项目",
+            "大创",
+            "挑战杯",
+            "报名",
+            "获奖"
+          ],
+          "negative_keywords": [
+            "采购",
+            "招标"
+          ],
+          "audit_status": "manual_seeded",
+          "production_enabled": true,
+          "notes": "P2 学院机会 channel。"
         }
       ]
     },
@@ -1051,33 +5370,125 @@
       "base_url": "https://jjxy.njupt.edu.cn/",
       "source_type": "college",
       "authority": 0.66,
-      "default_audience": ["本科生", "研究生", "经济学院"],
+      "default_audience": [
+        "本科生",
+        "研究生",
+        "经济学院"
+      ],
       "access_level": "public_with_possible_sensitive_lists",
-      "audit_status": "channels_seeded",
+      "audit_status": "channels_deepened",
       "enabled": true,
       "adapter_kind": "njupt_wp",
-      "include_patterns": ["*/20*/**/page.htm"],
+      "include_patterns": [
+        "*/20*/**/page.htm"
+      ],
       "exclude_patterns": [],
       "notes": "P2 学院站。",
       "channels": [
         {
-          "id": "jjxy_notice",
+          "id": "jjxy_academic",
           "source_id": "jjxy",
-          "name": "学院通知公告",
-          "list_urls": ["https://jjxy.njupt.edu.cn/tzgg/list.htm"],
+          "name": "学院学业通知",
+          "list_urls": [
+            "https://jjxy.njupt.edu.cn/tzgg/list.htm"
+          ],
           "student_value": 0.66,
-          "expected_domains": ["academic", "degree", "competition"],
-          "expected_intents": ["read", "submit", "schedule", "check_result"],
+          "expected_domains": [
+            "academic",
+            "degree"
+          ],
+          "expected_intents": [
+            "read",
+            "submit",
+            "schedule",
+            "check_result"
+          ],
           "priority": 0.66,
           "crawl_depth": 2,
-          "pagination": {"type": "next_link", "pattern": null},
-          "selectors": {"list_item": null, "title": null, "date": null, "link": null, "content": ".wp_articlecontent", "attachments": "a[href]"},
-          "sensitive_risks": ["班级", "名单", "学号"],
-          "positive_keywords": ["毕业设计", "答辩", "竞赛", "班级", "研究生"],
-          "negative_keywords": ["采购", "招标"],
+          "pagination": {
+            "type": "next_link",
+            "pattern": null
+          },
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
+          "sensitive_risks": [
+            "班级",
+            "名单",
+            "学号"
+          ],
+          "positive_keywords": [
+            "毕业设计",
+            "答辩",
+            "课程",
+            "考试",
+            "班级",
+            "研究生"
+          ],
+          "negative_keywords": [
+            "采购",
+            "招标"
+          ],
           "audit_status": "manual_seeded",
           "production_enabled": true,
-          "notes": "P2 学院 channel。"
+          "notes": "P2 学院学业 channel。"
+        },
+        {
+          "id": "jjxy_competition",
+          "source_id": "jjxy",
+          "name": "学院竞赛项目",
+          "list_urls": [
+            "https://jjxy.njupt.edu.cn/tzgg/list.htm"
+          ],
+          "student_value": 0.62,
+          "expected_domains": [
+            "competition",
+            "project"
+          ],
+          "expected_intents": [
+            "register",
+            "apply",
+            "submit",
+            "check_result"
+          ],
+          "priority": 0.62,
+          "crawl_depth": 1,
+          "pagination": {
+            "type": "next_link",
+            "pattern": null
+          },
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
+          "sensitive_risks": [
+            "名单",
+            "学号"
+          ],
+          "positive_keywords": [
+            "竞赛",
+            "项目",
+            "大创",
+            "挑战杯",
+            "报名",
+            "获奖"
+          ],
+          "negative_keywords": [
+            "采购",
+            "招标"
+          ],
+          "audit_status": "manual_seeded",
+          "production_enabled": true,
+          "notes": "P2 学院机会 channel。"
         }
       ]
     }

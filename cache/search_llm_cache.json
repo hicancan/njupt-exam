@@ -1,6 +1,6 @@
 {
   "schema_version": "hytask-taskframe-v1",
-  "updated_at": "2026-05-24T20:12:03.279901+08:00",
+  "updated_at": "2026-05-24T20:18:01.064232+08:00",
   "entries": {
     "2c1479f4bf8b94d14d0f": {
       "schema_version": "llm-v5",
@@ -33422,6 +33422,108 @@
         ],
         "confidence": 0.95,
         "review_required": false
+      }
+    },
+    "eac62c6dc9b33be972cb": {
+      "schema_version": "hytask-taskframe-v1",
+      "provider": "deepseek",
+      "model": "deepseek-v4-flash",
+      "source_id": "exchange",
+      "url": "https://exchange.njupt.edu.cn/2026/0320/c7442a298116/page.htm",
+      "normalized_url": "https://exchange.njupt.edu.cn/2026/0320/c7442a298116/page.htm",
+      "title": "关于申报2026年度国际青年人才来华交流项目的通知",
+      "content_hash": "4ceba3233c01989b241d",
+      "attachment_hash": "cf1cbb66a638b4860a51",
+      "updated_at": "2026-05-24T20:18:01.064232+08:00",
+      "result": {
+        "is_student_facing": true,
+        "student_relevance": 0.9,
+        "audience": [
+          "本科生",
+          "研究生"
+        ],
+        "category": "项目",
+        "domain": "international",
+        "intent": "apply",
+        "sub_category": null,
+        "tags": [
+          "国际交流",
+          "青年人才",
+          "来华项目"
+        ],
+        "importance_score": 0.85,
+        "deadline": null,
+        "action_required": true,
+        "action_type": "申报",
+        "action_summary": "申报2026年度国际青年人才来华交流项目",
+        "required_materials": [],
+        "student_summary": "国际合作交流处发布关于申报2026年度国际青年人才来华交流项目的通知，学生可申报该项目。",
+        "sensitive": false,
+        "sensitive_types": [],
+        "attachment_roles": [],
+        "task_frames": [
+          {
+            "task_id": "task-eac62c6dc9b33be972cb-1",
+            "doc_id": "eac62c6dc9b33be972cb",
+            "task_type": "application",
+            "who": {
+              "audience": [
+                "本科生",
+                "研究生"
+              ],
+              "college": [],
+              "grade": [],
+              "major": [],
+              "class_name": []
+            },
+            "what": "申报2026年度国际青年人才来华交流项目",
+            "action": {
+              "required": true,
+              "verb": "申报",
+              "object": "2026年度国际青年人才来华交流项目",
+              "summary": "根据通知，需要申报该项目。"
+            },
+            "time": {
+              "published_at": null,
+              "deadline": null,
+              "lifecycle": "upcoming",
+              "urgency_days": null
+            },
+            "materials": [],
+            "location": {
+              "place": null,
+              "online": null,
+              "contact": null
+            },
+            "source": {
+              "source_id": "exchange",
+              "channel_id": "exchange_notice",
+              "authority": 0.9,
+              "official": true
+            },
+            "evidence": [
+              {
+                "field": "action",
+                "text": "关于申报2026年度国际青年人才来华交流项目的通知"
+              }
+            ],
+            "risk": {
+              "sensitive": false,
+              "restricted": false,
+              "low_evidence": true,
+              "review_required": true
+            },
+            "confidence": 0.6
+          }
+        ],
+        "risk_flags": [
+          "low_evidence"
+        ],
+        "evidence": [
+          "关于申报2026年度国际青年人才来华交流项目的通知"
+        ],
+        "confidence": 0.6,
+        "review_required": true
       }
     }
   }

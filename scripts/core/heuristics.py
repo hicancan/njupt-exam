@@ -23,7 +23,6 @@ SENSITIVE_PATTERNS = (
     "获奖名单",
     "名单公示",
     "参赛队员",
-    "学号",
 )
 
 SENSITIVE_MATERIAL_PATTERNS = ("身份证", "学生证", "营业执照")
@@ -192,6 +191,10 @@ def detect_sensitive_info(text: str, attachments: list[dict[str, Any]]) -> tuple
     for pattern in SENSITIVE_PATTERNS:
         if pattern in combined:
             sensitive_types.add(pattern)
+    if re.search(r"学号\s*[:：]?\s*\d{4,}", combined):
+        sensitive_types.add("学号")
+    if re.search(r"(名单|公示|成绩|考生|获奖|拟录取|处分|困难认定).{0,24}学号|学号.{0,24}(名单|公示|成绩|考生|获奖|拟录取|处分|困难认定)", combined):
+        sensitive_types.add("学号")
     if re.search(r"(?<!\d)1[3-9]\d{9}(?!\d)", combined):
         sensitive_types.add("手机号")
     if re.search(r"(?<!\d)\d{17}[\dXx](?!\d)", combined):

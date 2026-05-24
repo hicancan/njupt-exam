@@ -34,6 +34,7 @@ def extract_task_frames(
         lifecycle=str(document.get("lifecycle") or "unknown"),
         evidence=list(document.get("evidence") or []),
         attachments=list(document.get("attachments") or []),
+        required_materials=list(document.get("required_materials") or []),
         action_required=bool(document.get("action_required")),
         action_type=document.get("action_type"),
         action_summary=document.get("action_summary"),

@@ -191,18 +191,44 @@ const scoreHybridFields = (fields: Record<string, string>, query: string): numbe
     return maxScore > 0 ? Math.min(1, score / maxScore) : 0;
 };
 
-const aliasTermsForQuery = (query: string, queryAliases: Record<string, unknown>): string[] => {
+type QueryAliasPayload = {
+    aliases?: unknown[];
+    domains?: unknown[];
+    intents?: unknown[];
+};
+
+const aliasPayloadsForQuery = (query: string, queryAliases: Record<string, unknown>): QueryAliasPayload[] => {
     const normalizedQuery = normalize(query);
-    const terms: string[] = [];
+    const payloads: QueryAliasPayload[] = [];
     for (const [key, rawPayload] of Object.entries(queryAliases)) {
-        const payload = rawPayload as { aliases?: unknown[] };
+        const payload = rawPayload as QueryAliasPayload;
         const aliases = Array.isArray(payload.aliases) ? payload.aliases.map(String) : [];
         const candidates = [key, ...aliases];
         if (candidates.some(candidate => normalize(candidate) && normalizedQuery.includes(normalize(candidate)))) {
-            terms.push(...aliases);
+            payloads.push(payload);
+        }
+    }
+    return payloads;
+};
+
+const aliasTermsFromPayloads = (payloads: QueryAliasPayload[]): string[] => {
+    const terms: string[] = [];
+    for (const payload of payloads) {
+        if (Array.isArray(payload.aliases)) {
+            terms.push(...payload.aliases.map(String));
         }
     }
     return Array.from(new Set(terms.filter(Boolean)));
+};
+
+const targetDomainsFromPayloads = (payloads: QueryAliasPayload[]): Set<string> => {
+    const domains: string[] = [];
+    for (const payload of payloads) {
+        if (Array.isArray(payload.domains)) {
+            domains.push(...payload.domains.map(String));
+        }
+    }
+    return new Set(domains.map(normalize).filter(Boolean));
 };
 
 const scoreTextMatch = (document: SearchDocument, query: string, expandedTerms: string[] = []): number => {
@@ -305,7 +331,7 @@ const sourceTypeWeight = (sourceType: SearchSourceType): number => {
         job_platform: 1.05,
         college: 1.02,
         service_unit: 1,
-        github_resource: 0.98,
+        github_resource: 0.9,
         central_news: 0.86,
         research_admin: 0.88,
         policy: 0.84,
@@ -471,7 +497,9 @@ export const rankSearchDocuments = (
             }));
     }
 
-    const expandedTerms = aliasTermsForQuery(trimmed, queryAliases);
+    const aliasPayloads = aliasPayloadsForQuery(trimmed, queryAliases);
+    const expandedTerms = aliasTermsFromPayloads(aliasPayloads);
+    const targetDomains = targetDomainsFromPayloads(aliasPayloads);
     const hybridDocuments = (hybridIndex?.documents || {}) as Record<string, { terms?: Record<string, number>, fields?: Record<string, string> }>;
 
     return documents
@@ -492,6 +520,9 @@ export const rankSearchDocuments = (
                 (0.2 * sourceWeight) +
                 (document.task_frames.length > 0 ? 0.08 : 0);
             const riskPenalty = (document.sensitive ? 0.5 : 0) + (document.review_required ? 0.25 : 0) + (document.status === 'restricted' ? 0.5 : 0);
+            const domainMatched = targetDomains.has(normalize(document.domain));
+            const officialDomainBoost = domainMatched && document.source_type !== 'github_resource' ? 1.24 : 1;
+            const resourceDomainPenalty = targetDomains.size > 0 && !domainMatched && document.source_type === 'github_resource' ? 0.76 : 1;
 
             const rawMatchScore =
                 0.26 * Math.min(1, bm25Proxy) +
@@ -515,6 +546,8 @@ export const rankSearchDocuments = (
                 lifecycleWeight(document.lifecycle) *
                 sourceTypeWeight(document.source_type) *
                 deadlineUrgencyWeight(document.deadline) *
+                officialDomainBoost *
+                resourceDomainPenalty *
                 (document.sensitive ? 0.92 : 1) : 0;
 
             return {

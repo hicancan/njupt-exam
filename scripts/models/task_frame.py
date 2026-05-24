@@ -151,6 +151,7 @@ def normalize_task_frames(
     action_type: str | None,
     action_summary: str | None,
     risk: dict[str, Any],
+    required_materials: list[str] | None = None,
     confidence: float | None = None,
 ) -> list[dict[str, Any]]:
     frames: list[TaskFrame] = []
@@ -174,6 +175,7 @@ def normalize_task_frames(
                 lifecycle=lifecycle,
                 evidence=evidence,
                 attachments=attachments,
+                required_materials=required_materials or [],
                 action_required=action_required,
                 action_type=action_type,
                 action_summary=action_summary,
@@ -204,6 +206,7 @@ def normalize_task_frames(
             lifecycle=lifecycle,
             evidence=evidence,
             attachments=attachments,
+            required_materials=required_materials or [],
             action_required=action_required,
             action_type=action_type,
             action_summary=action_summary,
@@ -228,15 +231,43 @@ def fill_task_frame_defaults(item: dict[str, Any], **context: Any) -> dict[str, 
     ]
     materials = item.get("materials")
     if not materials:
-        materials = [
-            {
-                "name": str(attachment.get("name") or "附件"),
-                "role": attachment.get("role"),
-                "required": bool(context["action_required"]),
-                "sensitive": bool(attachment.get("sensitive", False)),
-            }
+        material_names = [str(name).strip() for name in context.get("required_materials", []) if str(name).strip()]
+        material_names.extend(
+            str(attachment.get("name") or "附件").strip()
             for attachment in context["attachments"][:5]
-        ]
+            if str(attachment.get("name") or "").strip()
+        )
+        seen_materials: set[str] = set()
+        materials = []
+        for name in material_names[:6]:
+            if name in seen_materials:
+                continue
+            seen_materials.add(name)
+            materials.append({
+                "name": name,
+                "role": "材料",
+                "required": bool(context["action_required"]),
+                "sensitive": material_name_is_sensitive(name),
+            })
+        if not materials:
+            materials = [
+                {
+                    "name": str(attachment.get("name") or "附件"),
+                    "role": attachment.get("role"),
+                    "required": bool(context["action_required"]),
+                    "sensitive": bool(attachment.get("sensitive", False)),
+                }
+                for attachment in context["attachments"][:5]
+            ]
+    evidence = enrich_grounded_evidence(
+        evidence,
+        audience=context["fallback_audience"],
+        action_summary=action.get("summary") or context["action_summary"],
+        deadline=time_payload.get("deadline") or context["deadline"],
+        materials=materials,
+        location=location,
+        source_evidence=context["evidence"],
+    )
     return {
         "task_id": task_id,
         "doc_id": doc_id,
@@ -282,6 +313,78 @@ def fill_task_frame_defaults(item: dict[str, Any], **context: Any) -> dict[str, 
         },
         "confidence": float(item.get("confidence", context["confidence"] or 0.58)),
     }
+
+
+def enrich_grounded_evidence(
+    evidence: Any,
+    *,
+    audience: list[str],
+    action_summary: str | None,
+    deadline: str | None,
+    materials: list[dict[str, Any]],
+    location: dict[str, Any],
+    source_evidence: list[str],
+) -> list[dict[str, str]]:
+    normalized: list[dict[str, str]] = []
+    if isinstance(evidence, list):
+        for item in evidence:
+            if isinstance(item, dict):
+                text = str(item.get("text") or "").strip()
+                if text:
+                    normalized.append({"field": str(item.get("field") or "general"), "text": text[:180]})
+            else:
+                text = str(item).strip()
+                if text:
+                    normalized.append({"field": "general", "text": text[:180]})
+    elif isinstance(evidence, str) and evidence.strip():
+        normalized.append({"field": "general", "text": evidence.strip()[:180]})
+
+    fields = {item["field"].lower() for item in normalized}
+    source_lines = [str(line).strip() for line in source_evidence if str(line).strip()]
+
+    if audience and "audience" not in fields and source_lines:
+        append_evidence(normalized, "audience", source_lines[0])
+    if action_summary and "action" not in fields and source_lines:
+        append_evidence(normalized, "action", best_line_for(source_lines, action_summary))
+    if deadline and "deadline" not in fields and source_lines:
+        append_evidence(normalized, "deadline", best_deadline_line(source_lines))
+    if materials and "materials" not in fields:
+        material_names = "、".join(str(item.get("name") or "").strip() for item in materials if str(item.get("name") or "").strip())
+        if material_names:
+            append_evidence(normalized, "materials", f"附件/材料：{material_names[:150]}")
+    if any(location.get(key) for key in ("place", "online", "contact")) and "location" not in fields:
+        location_text = " ".join(str(location.get(key) or "").strip() for key in ("place", "online", "contact") if str(location.get(key) or "").strip())
+        if location_text:
+            append_evidence(normalized, "location", location_text[:180])
+    return normalized
+
+
+def append_evidence(items: list[dict[str, str]], field: str, text: str) -> None:
+    text = str(text or "").strip()
+    if not text:
+        return
+    if any(item["field"].lower() == field and item["text"] == text[:180] for item in items):
+        return
+    items.append({"field": field, "text": text[:180]})
+
+
+def best_line_for(lines: list[str], query: str) -> str:
+    terms = [term for term in re.split(r"[\s，。,；;：:、]+", query or "") if len(term) >= 2]
+    for line in lines:
+        if any(term in line for term in terms):
+            return line
+    return lines[0] if lines else ""
+
+
+def best_deadline_line(lines: list[str]) -> str:
+    for line in lines:
+        if re.search(r"(截止|前|至|报名|提交|\\d{1,2}月\\d{1,2}日|\\d{4}[-/.]\\d{1,2}[-/.]\\d{1,2})", line):
+            return line
+    return lines[0] if lines else ""
+
+
+def material_name_is_sensitive(name: str) -> bool:
+    return bool(re.search(r"(名单|学号|成绩|身份证|手机号|困难认定|处分)", name))
 
 
 def infer_task_type(domain: str, intent: str) -> str:

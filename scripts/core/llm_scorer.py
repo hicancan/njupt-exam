@@ -18,7 +18,7 @@ from config.indexer_config import (
 from models.semantic_model import SEARCH_DOMAINS, SEARCH_INTENTS, normalize_domain, normalize_intent
 from core.llm_task_frame import task_frame_prompt_contract
 
-LLM_SCHEMA_VERSION = "hytask-taskframe-v1"
+LLM_SCHEMA_VERSION = "hytask-taskframe-v1.2"
 GEMINI_MODEL_NAME = os.environ.get("GEMINI_MODEL", "gemini-3.1-flash-lite")
 LLM_MODEL_NAME = DEEPSEEK_MODEL
 

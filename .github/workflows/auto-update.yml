@@ -105,12 +105,14 @@ jobs:
 
       - name: Python integrity checks
         run: |
-          python -m py_compile scripts/update_search_index.py scripts/core/llm_scorer.py scripts/utils/validate_search_index.py scripts/models/semantic_model.py
+          python -m py_compile scripts/update_search_index.py scripts/core/llm_scorer.py scripts/core/rule_guard.py scripts/core/hybrid_ranker.py scripts/core/query_expander.py scripts/core/task_extractor.py scripts/models/canonical_document.py scripts/models/source_graph.py scripts/models/task_frame.py scripts/models/hybrid_index.py scripts/utils/validate_search_index.py scripts/eval/eval_search.py scripts/eval/query_smoke_test.py
           python scripts/test_llm_batching.py
 
       - name: Validate Campus Search Index
         run: |
           python scripts/utils/validate_search_index.py
+          python scripts/eval/eval_search.py --write-report
+          python scripts/eval/query_smoke_test.py
           
       - name: Check for changes
         id: git-check
@@ -118,6 +120,9 @@ jobs:
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
           git add public/data/ public/index/ config/github_search_sources.json
+          if [ -f eval/reports/latest.json ]; then
+            git add eval/reports/latest.json
+          fi
           if [ -f cache/search_llm_cache.json ]; then
             git add cache/search_llm_cache.json
           fi

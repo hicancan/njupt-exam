@@ -25,6 +25,9 @@ def fetch_top_njupt_repos():
     
     try:
         response = requests.get(url, headers=headers, timeout=15)
+        if GITHUB_TOKEN and response.status_code in {401, 403}:
+            headers.pop("Authorization", None)
+            response = requests.get(url, headers=headers, timeout=15)
         response.raise_for_status()
         data = response.json()
         return data.get("items", [])

@@ -114,7 +114,10 @@ def utility_score(document: dict[str, Any]) -> float:
     task_bonus = 0.08 if document.get("task_frames") else 0.0
     lifecycle = str(document.get("lifecycle") or "")
     lifecycle_bonus = 0.08 if lifecycle in {"active", "upcoming"} else (-0.08 if lifecycle == "expired" else 0.0)
-    return max(0.0, min(1.0, 0.42 * student + 0.30 * importance + 0.20 * source + task_bonus + lifecycle_bonus))
+    base = 0.42 * student + 0.30 * importance + 0.20 * source + task_bonus + lifecycle_bonus
+    if str(document.get("source_type")) == "github_resource":
+        base = 0.82 * base
+    return max(0.0, min(1.0, base))
 
 
 def risk_penalty_score(document: dict[str, Any]) -> float:

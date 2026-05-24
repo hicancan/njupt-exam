@@ -52,4 +52,10 @@ project_structure_utf8.txt
 project_structure_v2.txt
 *.bak
 project_files_list_utf8.txt
-/docs/
+/docs/*
+!/docs/architecture/
+!/docs/architecture/**
+!/docs/source-audit/
+!/docs/source-audit/**
+!/docs/product/
+!/docs/product/**

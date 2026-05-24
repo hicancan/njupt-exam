@@ -121,6 +121,10 @@ def main() -> None:
         with open(report_path, "w", encoding="utf-8", newline="\n") as handle:
             json.dump(payload, handle, ensure_ascii=False, indent=2)
             handle.write("\n")
+        latest_path = os.path.join(reports_dir, "latest.json")
+        with open(latest_path, "w", encoding="utf-8", newline="\n") as handle:
+            json.dump(payload, handle, ensure_ascii=False, indent=2)
+            handle.write("\n")
 
 
 def average(rows: list[dict[str, Any]], key: str) -> float:
