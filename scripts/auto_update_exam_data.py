@@ -4,6 +4,8 @@ from urllib.parse import urljoin
 import os
 import re
 import urllib3
+import zipfile
+import time
 from typing import Optional
 
 # 禁用 SSL 警告
@@ -58,19 +60,29 @@ def is_teacher_file(filename: str) -> bool:
     keywords = ["监考", "教师", "巡考", "教务员"]
     return any(kw in filename for kw in keywords)
 
-def download_file(url: str, save_path: str) -> bool:
-    try:
-        print(f"  ⬇️  下载中: {os.path.basename(save_path)} ...", end="", flush=True)
-        # verify=False is intentional: JWC often has self-signed/incomplete cert chains
-        response = requests.get(url, headers=HEADERS, verify=False, timeout=30)
-        response.raise_for_status()
-        with open(save_path, 'wb') as f:
-            f.write(response.content)
-        print(" [完成]")
-        return True
-    except Exception as e:
-        print(f" [失败] {e}")
-        return False
+def download_file(url: str, save_path: str, max_retries: int = 3) -> bool:
+    for attempt in range(1, max_retries + 1):
+        try:
+            print(f"  ⬇️  下载中: {os.path.basename(save_path)} (尝试 {attempt}/{max_retries})...", end="", flush=True)
+            # verify=False is intentional: JWC often has self-signed/incomplete cert chains
+            response = requests.get(url, headers=HEADERS, verify=False, timeout=30)
+            response.raise_for_status()
+            with open(save_path, 'wb') as f:
+                f.write(response.content)
+            
+            # 校验 Excel 文件的完整性 (xlsx 本质是 zip)
+            if save_path.lower().endswith('.xlsx'):
+                if not zipfile.is_zipfile(save_path):
+                    raise ValueError("下载的文件已损坏或不完整 (Failed Zip Check)")
+
+            print(" [完成]")
+            return True
+        except Exception as e:
+            print(f" [失败] {e}")
+            if attempt < max_retries:
+                time.sleep(2)  # 等待后重试
+            else:
+                return False
 
 def find_latest_schedule_notification() -> Optional[tuple[str, str]]:
     """遍历列表页，寻找最新的、符合逻辑的通知"""
