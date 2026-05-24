@@ -263,6 +263,7 @@ def llm_cache_key(source_id: str, url: str, content: str, attachments: list[dict
     content_digest = document_hash(content)
     provider_name = runtime_llm_provider_name()
     model_name = runtime_llm_model_name() or "rule"
+    from core.semantic_pipeline import SEMANTIC_PIPELINE_VERSION
     return document_hash(
         source_id,
         normalize_url(url),
@@ -271,6 +272,7 @@ def llm_cache_key(source_id: str, url: str, content: str, attachments: list[dict
         active_llm_schema_version(),
         provider_name,
         model_name,
+        SEMANTIC_PIPELINE_VERSION,
     )
 
 
@@ -402,146 +404,7 @@ def llm_metadata(
     }
 
 
-def derive_semantic_fields(
-    title: str,
-    content: str,
-    default_category: str,
-    source_weight: float,
-    source_type: str,
-    attachments: list[dict[str, Any]],
-    published_at: str | None,
-    now: datetime,
-    llm_result: dict[str, Any] | None,
-) -> dict[str, Any]:
-    scoring_text = f"{title} {content}"
-    rule_category = default_category if default_category in CATEGORY_KEYWORDS else infer_category(scoring_text)
-    rule_student_score = calculate_student_score(scoring_text, source_weight)
-    rule_importance_score = calculate_importance_score(scoring_text, rule_category, len(attachments), source_weight)
-    fallback_action_required, fallback_action_type, fallback_action_summary = infer_action(scoring_text)
-    fallback_deadline = infer_deadline(scoring_text, published_at, now)
-    fallback_domain = infer_domain(scoring_text, rule_category, source_type)
-    fallback_intent = infer_intent(scoring_text, fallback_action_required, len(attachments))
-    fallback_evidence = extract_evidence(
-        scoring_text,
-        [fallback_action_type or "", fallback_deadline or "", rule_category, title],
-    )
 
-    if llm_result:
-        domain = normalize_domain(llm_result.get("domain"), fallback_domain)
-        intent = normalize_intent(llm_result.get("intent"), fallback_intent)
-        category = derive_display_category(domain, intent, str(llm_result.get("category") or rule_category))
-        llm_relevance_raw = llm_result.get("student_relevance")
-        llm_relevance = float(llm_relevance_raw if llm_relevance_raw is not None else 0.5)
-        is_student_facing = llm_result.get("is_student_facing")
-        if is_student_facing if is_student_facing is not None else True:
-            student_score = clamp01(0.65 * llm_relevance + 0.35 * rule_student_score)
-        else:
-            student_score = clamp01(min(0.34, 0.65 * llm_relevance + 0.35 * rule_student_score))
-        imp_raw = llm_result.get("importance_score")
-        importance_score = clamp01(0.75 * float(imp_raw if imp_raw is not None else 0.5) + 0.25 * rule_importance_score)
-        tags = [clean_text(str(tag)) for tag in (llm_result.get("tags") or []) if clean_text(str(tag))]
-        summary = clean_text(str(llm_result.get("student_summary") or content[:180]))
-        sub_category = llm_result.get("sub_category")
-        deadline = llm_result["deadline"] if "deadline" in llm_result else fallback_deadline
-        action_required = bool(llm_result["action_required"]) if "action_required" in llm_result else fallback_action_required
-        action_type = llm_result["action_type"] if "action_type" in llm_result else fallback_action_type
-        action_summary = llm_result["action_summary"] if "action_summary" in llm_result else fallback_action_summary
-        required_materials = [clean_text(str(item)) for item in (llm_result.get("required_materials") or []) if clean_text(str(item))]
-        attachment_roles = llm_result.get("attachment_roles") or []
-        sensitive_raw = llm_result.get("sensitive")
-        sensitive = bool(sensitive_raw if sensitive_raw is not None else False)
-        sensitive_types = [clean_text(str(item)) for item in (llm_result.get("sensitive_types") or []) if clean_text(str(item))]
-        risk_flags = [clean_text(str(item)) for item in (llm_result.get("risk_flags") or []) if clean_text(str(item))]
-        evidence = [clean_text(str(item))[:180] for item in (llm_result.get("evidence") or []) if clean_text(str(item))] or fallback_evidence
-        review_required_raw = llm_result.get("review_required")
-        review_required = bool(review_required_raw if review_required_raw is not None else False)
-        conf_raw = llm_result.get("confidence")
-        confidence = float(conf_raw if conf_raw is not None else 0.5)
-        metadata = llm_metadata(
-            True,
-            confidence,
-            review_required,
-            str(llm_result.get("__llm_provider") or runtime_llm_provider_name()),
-            str(llm_result.get("__llm_model") or runtime_llm_model_name() or ""),
-        )
-    else:
-        domain = fallback_domain
-        intent = fallback_intent
-        category = rule_category
-        student_score = rule_student_score
-        importance_score = rule_importance_score
-        tags = infer_tags(scoring_text, category)
-        summary = content[:180]
-        sub_category = None
-        deadline = fallback_deadline
-        action_required = fallback_action_required
-        action_type = fallback_action_type
-        action_summary = fallback_action_summary
-        required_materials = []
-        attachment_roles = []
-        sensitive = False
-        sensitive_types = []
-        risk_flags = []
-        evidence = fallback_evidence
-        review_required = False
-        metadata = llm_metadata(False)
-
-    category = derive_display_category(domain, intent, category)
-    attachments = enrich_attachment_metadata(attachments, attachment_roles)
-    regex_sensitive, regex_sensitive_types = detect_sensitive_info(scoring_text, attachments)
-    sensitive = sensitive or regex_sensitive
-    sensitive_types = sorted(set(sensitive_types).union(regex_sensitive_types))
-    actual_sensitive_types = set(regex_sensitive_types).union(
-        item for item in sensitive_types if item not in SENSITIVE_MATERIAL_PATTERNS
-    )
-    material_only_types = set(sensitive_types).intersection(SENSITIVE_MATERIAL_PATTERNS)
-    if sensitive and material_only_types and not actual_sensitive_types:
-        sensitive = False
-        risk_flags = sorted(set(risk_flags).union({"requires_sensitive_material"}))
-    if is_low_evidence_content(content, attachments):
-        review_required = True
-        risk_flags = sorted(set(risk_flags).union({"low_evidence_content"}))
-        if not fallback_deadline:
-            action_required = False
-            action_type = None
-            action_summary = None
-        summary = "该页面正文主要是附件列表，已保留标题和附件角色，请点击原文或附件确认具体流程。"
-    if sensitive:
-        risk_flags = sorted(set(risk_flags).union({"sensitive_personal_info"}))
-        summary = metadata_only_summary()
-        content = " ".join([title, *[str(item.get("name", "")) for item in attachments]])
-
-    if category not in CATEGORY_KEYWORDS and category != "公告":
-        category = "公告"
-    if category not in tags:
-        tags = [category, *tags]
-    metadata["review_required"] = review_required
-
-    return {
-        "category": category,
-        "domain": domain,
-        "intent": intent,
-        "lifecycle": infer_lifecycle(published_at, deadline, now),
-        "evidence": evidence[:4],
-        "confidence": metadata.get("confidence"),
-        "sub_category": sub_category,
-        "deadline": deadline,
-        "action_required": action_required,
-        "action_type": action_type,
-        "action_summary": action_summary,
-        "required_materials": required_materials,
-        "sensitive": sensitive,
-        "sensitive_types": sensitive_types,
-        "review_required": review_required,
-        "risk_flags": risk_flags,
-        "content": content,
-        "summary": summary,
-        "attachments": attachments,
-        "student_score": student_score,
-        "importance_score": importance_score,
-        "tags": tags[:10],
-        "llm": metadata,
-    }
 
 
 def build_restricted_document(
@@ -836,40 +699,33 @@ def build_search_document_from_prepared(
     llm_result: dict[str, Any] | None,
     now: datetime,
 ) -> dict[str, Any]:
-    semantic = derive_semantic_fields(
-        str(entry["title"]),
-        str(entry.get("content") or entry["title"]),
-        str(entry.get("default_category") or "公告"),
-        float(entry.get("source_weight", 0.7)),
-        str(entry.get("source_type") or "central_admin"),
-        list(entry.get("attachments", [])),
-        entry.get("published_at"),
-        now,
-        llm_result,
-    )
+    guard = entry.get("rule_guard") if isinstance(entry.get("rule_guard"), dict) else {}
+    if not guard:
+        guard = evaluate_rule_guard(
+            title=str(entry.get("title", "")),
+            content=str(entry.get("content", "")),
+            attachments=list(entry.get("attachments", [])),
+            published_at=entry.get("published_at"),
+            lifecycle="active",
+            domain=entry.get("domain", "campus_life"),
+            intent=entry.get("intent", "information"),
+            source_type=entry.get("source_type"),
+        )
+        
+    from core.semantic_pipeline import route_semantic_pipeline
+    semantic = route_semantic_pipeline(entry, llm_result, guard, _RUN_CONFIG, now)
 
     min_student_score = entry.get("min_student_score")
     if min_student_score is not None:
-        semantic["student_score"] = max(float(min_student_score), float(semantic["student_score"]))
+        semantic.student_score = max(float(min_student_score), semantic.student_score)
 
     for tag in entry.get("extra_tags", []):
-        if tag and tag not in semantic["tags"]:
-            semantic["tags"].append(tag)
+        if tag and tag not in semantic.tags:
+            semantic.tags.append(tag)
 
-    lifecycle = semantic["lifecycle"]
+    lifecycle = semantic.lifecycle
     if entry.get("lifecycle_kind") == "resource":
-        lifecycle = infer_lifecycle(entry.get("published_at"), semantic["deadline"], now, "resource")
-
-    guard = entry.get("rule_guard") if isinstance(entry.get("rule_guard"), dict) else {}
-    if guard:
-        semantic["sensitive"] = bool(semantic["sensitive"] or guard.get("sensitive"))
-        semantic["sensitive_types"] = sorted(set(semantic["sensitive_types"]).union(guard.get("sensitive_types", [])))
-        semantic["review_required"] = bool(semantic["review_required"] or guard.get("review_required"))
-        semantic["risk_flags"] = sorted(set(semantic["risk_flags"]).union(guard.get("risk_flags", [])))
-        if not guard.get("allow_full_text_display", True):
-            semantic["content"] = " ".join([str(entry.get("title", "")), *[str(item.get("name", "")) for item in semantic["attachments"]]])
-            if guard.get("restricted"):
-                semantic["summary"] = restricted_summary()
+        lifecycle = infer_lifecycle(entry.get("published_at"), semantic.deadline, now, "resource")
 
     document = {
         "id": entry["id"],
@@ -882,47 +738,40 @@ def build_search_document_from_prepared(
         "source": entry["source"],
         "source_domain": entry["source_domain"],
         "source_type": normalize_source_type(entry["source_type"]),
-        "category": semantic["category"],
-        "domain": semantic["domain"],
-        "intent": semantic["intent"],
+        "category": semantic.category,
+        "domain": semantic.domain,
+        "intent": semantic.intent,
         "lifecycle": lifecycle,
-        "evidence": semantic["evidence"],
-        "confidence": semantic["confidence"],
-        "sub_category": semantic["sub_category"],
-        "deadline": semantic["deadline"],
-        "action_required": semantic["action_required"],
-        "action_type": semantic["action_type"],
-        "action_summary": semantic["action_summary"],
-        "required_materials": semantic["required_materials"],
-        "sensitive": semantic["sensitive"],
-        "sensitive_types": semantic["sensitive_types"],
-        "review_required": semantic["review_required"],
-        "risk_flags": semantic["risk_flags"],
+        "evidence": semantic.evidence,
+        "confidence": semantic.confidence,
+        "sub_category": getattr(semantic, "sub_category", None),
+        "deadline": semantic.deadline,
+        "action_required": semantic.action_required,
+        "action_type": semantic.action_type,
+        "action_summary": semantic.action_summary,
+        "required_materials": semantic.required_materials,
+        "sensitive": semantic.sensitive,
+        "sensitive_types": semantic.sensitive_types,
+        "review_required": semantic.review_required,
+        "risk_flags": semantic.risk_flags,
         "audience": list(entry.get("audience", [])),
         "published_at": entry.get("published_at"),
-        "content": semantic["content"],
-        "summary": semantic["summary"],
-        "attachments": semantic["attachments"],
-        "student_score": semantic["student_score"],
+        "content": semantic.content,
+        "summary": semantic.summary,
+        "attachments": semantic.attachments,
+        "student_score": semantic.student_score,
         "freshness_score": calculate_freshness(entry.get("published_at"), now),
-        "importance_score": semantic["importance_score"],
+        "importance_score": semantic.importance_score,
         "source_weight": entry["source_weight"],
-        "tags": semantic["tags"][:10],
+        "tags": semantic.tags[:10],
         "hash": entry["hash"],
         "cache_key": entry["cache_key"],
         "llm_schema_version": active_llm_schema_version(),
-        "llm": semantic["llm"],
+        "llm": semantic.llm,
+        "semantic_mode": semantic.semantic_mode,
+        "field_sources": semantic.field_sources,
         "canonical": entry.get("canonical", {}),
-        "rule_guard": guard or evaluate_rule_guard(
-            title=str(entry.get("title", "")),
-            content=str(entry.get("content", "")),
-            attachments=list(semantic.get("attachments", [])),
-            published_at=entry.get("published_at"),
-            lifecycle=lifecycle,
-            domain=semantic["domain"],
-            intent=semantic["intent"],
-            source_type=entry.get("source_type"),
-        ),
+        "rule_guard": guard,
     }
     document["task_frames"] = extract_task_frames(document, llm_result=llm_result, rule_guard=document["rule_guard"])
     return document
@@ -1837,10 +1686,42 @@ def main() -> None:
     source_graph = load_source_channel_graph(SOURCE_CHANNEL_CONFIG_PATH)
     evidence_coverage = calculate_evidence_coverage(task_frames)
 
+    from core.semantic_pipeline import SEMANTIC_PIPELINE_VERSION
+
+    semantic_mode_counts = {
+        "llm": sum(1 for d in all_documents if d.get("semantic_mode") == "llm"),
+        "heuristic": sum(1 for d in all_documents if d.get("semantic_mode") == "heuristic"),
+        "heuristic_degraded": sum(1 for d in all_documents if d.get("semantic_mode") == "heuristic_degraded"),
+        "guarded_metadata": sum(1 for d in all_documents if d.get("semantic_mode") == "guarded_metadata"),
+        "unprocessed": sum(1 for d in all_documents if d.get("semantic_mode") == "unprocessed"),
+    }
+    
+    field_source_counts = {
+        "deadline": {
+            "llm": sum(1 for d in all_documents if d.get("field_sources", {}).get("deadline") == "llm"),
+            "heuristic": sum(1 for d in all_documents if d.get("field_sources", {}).get("deadline") == "heuristic"),
+            "null": sum(1 for d in all_documents if d.get("deadline") is None),
+        },
+        "action_required": {
+            "llm": sum(1 for d in all_documents if d.get("field_sources", {}).get("action_required") == "llm"),
+            "heuristic": sum(1 for d in all_documents if d.get("field_sources", {}).get("action_required") == "heuristic"),
+            "rule_guard": sum(1 for d in all_documents if d.get("field_sources", {}).get("action_required") == "rule_guard"),
+        }
+    }
+    
+    training_eligible_count = sum(1 for d in all_documents if d.get("semantic_mode") == "llm" and not d.get("review_required") and float(d.get("confidence", 0) or 0) >= 0.8)
+    heuristic_degraded_count = semantic_mode_counts["heuristic_degraded"]
+    
+    # llm_purity_rate: percentage of llm mode docs that don't have heuristic field sources
+    llm_docs = [d for d in all_documents if d.get("semantic_mode") == "llm"]
+    pure_llm_docs = sum(1 for d in llm_docs if "heuristic" not in d.get("field_sources", {}).values())
+    llm_purity_rate = (pure_llm_docs / len(llm_docs)) if llm_docs else 0.0
+
     manifest = {
         "generated_at": now.isoformat(),
         "total_documents": len(all_documents),
         "strategy": "hytask-rag-source-channel-taskframe-hybrid-index-v1",
+        "semantic_pipeline_version": SEMANTIC_PIPELINE_VERSION,
         "llm_schema_version": active_llm_schema_version(),
         "llm_enabled": runtime_llm_enabled(),
         "llm_provider": runtime_llm_provider_name(),
@@ -1849,6 +1730,11 @@ def main() -> None:
         "llm_batch_max_chars": int(_RUN_CONFIG["llm_batch_max_chars"]),
         "llm_batch_max_output_tokens": effective_llm_batch_max_output_tokens(),
         "llm_stats": dict(_RUN_STATS),
+        "semantic_mode_counts": semantic_mode_counts,
+        "field_source_counts": field_source_counts,
+        "training_eligible_count": training_eligible_count,
+        "heuristic_degraded_count": heuristic_degraded_count,
+        "llm_purity_rate": llm_purity_rate,
         "source_count": len(source_graph.sources),
         "channel_count": source_graph.channel_count(),
         "audited_channel_count": source_graph.audited_channel_count(),

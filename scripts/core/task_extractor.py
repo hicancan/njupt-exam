@@ -9,7 +9,14 @@ def extract_task_frames(
     llm_result: dict[str, Any] | None,
     rule_guard: dict[str, Any],
 ) -> list[dict[str, Any]]:
-    if rule_guard.get("restricted") or rule_guard.get("sensitive"):
+    semantic_mode = document.get("semantic_mode")
+    if (
+        rule_guard.get("restricted")
+        or rule_guard.get("sensitive")
+        or rule_guard.get("low_evidence")
+        or not rule_guard.get("allow_llm", True)
+        or semantic_mode in ("guarded_metadata", "heuristic_degraded", "unprocessed")
+    ):
         return []
 
     risk = {

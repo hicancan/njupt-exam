@@ -1,0 +1,264 @@
+import json
+from datetime import datetime
+from typing import Any
+
+from scripts.models.semantic_result import SemanticResult, SemanticMode
+from scripts.core.heuristics import (
+    infer_deadline, infer_action,
+    clean_text, detect_sensitive_info, enrich_attachment_metadata,
+    metadata_only_summary, is_low_evidence_content, SENSITIVE_MATERIAL_PATTERNS
+)
+from scripts.core.indexer_scoring import infer_tags
+from scripts.config.indexer_config import CATEGORY_KEYWORDS
+from scripts.models.semantic_model import (
+    derive_display_category, extract_evidence, infer_domain, infer_intent, infer_lifecycle,
+    normalize_domain, normalize_intent
+)
+
+SEMANTIC_PIPELINE_VERSION = "semantic-router-v1"
+
+def clamp01(v: float) -> float:
+    return max(0.0, min(1.0, v))
+
+def _get_base_fields(entry: dict[str, Any], guard: dict[str, Any]) -> dict[str, Any]:
+    return {
+        "title": entry.get("title", ""),
+        "content": entry.get("canonical", {}).get("clean_text", ""),
+        "source_weight": entry.get("source_weight", 1.0),
+        "source_type": entry.get("source_type", "department"),
+        "attachments": entry.get("attachments", []),
+        "published_at": entry.get("published_at"),
+        "default_category": entry.get("category", "公告"),
+    }
+
+def _calculate_rule_scores(scoring_text: str, rule_category: str, attachment_count: int, source_weight: float) -> tuple[float, float]:
+    # Placeholder for existing scoring logic
+    from scripts.update_search_index import calculate_student_score, calculate_importance_score
+    rule_student_score = calculate_student_score(scoring_text, source_weight)
+    rule_importance_score = calculate_importance_score(scoring_text, rule_category, attachment_count, source_weight)
+    return rule_student_score, rule_importance_score
+
+def apply_safety_overrides(semantic: SemanticResult, guard: dict[str, Any]) -> SemanticResult:
+    title = semantic.content.split(" ")[0] if semantic.content else ""
+    attachments = semantic.attachments
+    
+    scoring_text = f"{title} {semantic.content}"
+    regex_sensitive, regex_sensitive_types = detect_sensitive_info(scoring_text, attachments)
+    
+    sensitive = semantic.sensitive or regex_sensitive
+    sensitive_types = sorted(set(semantic.sensitive_types).union(regex_sensitive_types))
+    actual_sensitive_types = set(regex_sensitive_types).union(
+        item for item in sensitive_types if item not in SENSITIVE_MATERIAL_PATTERNS
+    )
+    material_only_types = set(sensitive_types).intersection(SENSITIVE_MATERIAL_PATTERNS)
+    
+    if sensitive and material_only_types and not actual_sensitive_types:
+        sensitive = False
+        semantic.risk_flags = sorted(set(semantic.risk_flags).union({"requires_sensitive_material"}))
+        
+    if is_low_evidence_content(semantic.content, attachments):
+        semantic.review_required = True
+        semantic.risk_flags = sorted(set(semantic.risk_flags).union({"low_evidence_content"}))
+        if not semantic.deadline:
+            semantic.action_required = False
+            semantic.action_type = None
+            semantic.action_summary = None
+        semantic.summary = "该页面正文主要是附件列表，已保留标题和附件角色，请点击原文或附件确认具体流程。"
+        
+    if sensitive:
+        semantic.risk_flags = sorted(set(semantic.risk_flags).union({"sensitive_personal_info"}))
+        semantic.summary = metadata_only_summary()
+        semantic.content = " ".join([title, *[str(item.get("name", "")) for item in attachments]])
+        
+    semantic.sensitive = sensitive
+    semantic.sensitive_types = sensitive_types
+    
+    if semantic.category not in CATEGORY_KEYWORDS and semantic.category != "公告":
+        semantic.category = "公告"
+    if semantic.category not in semantic.tags:
+        semantic.tags = [semantic.category, *semantic.tags]
+        
+    return semantic
+
+
+def derive_semantic_fields_llm(entry: dict[str, Any], llm_result: dict[str, Any], guard: dict[str, Any], now: datetime) -> SemanticResult:
+    base = _get_base_fields(entry, guard)
+    title = base["title"]
+    content = base["content"]
+    scoring_text = f"{title} {content}"
+    
+    from scripts.update_search_index import infer_category
+    rule_category = base["default_category"] if base["default_category"] in CATEGORY_KEYWORDS else infer_category(scoring_text)
+    
+    rule_student_score, rule_importance_score = _calculate_rule_scores(
+        scoring_text, rule_category, len(base["attachments"]), base["source_weight"]
+    )
+    
+    domain = normalize_domain(llm_result.get("domain"), "campus_life")
+    intent = normalize_intent(llm_result.get("intent"), "information")
+    category = derive_display_category(domain, intent, str(llm_result.get("category") or rule_category))
+    
+    llm_relevance_raw = llm_result.get("student_relevance")
+    llm_relevance = float(llm_relevance_raw if llm_relevance_raw is not None else 0.5)
+    is_student_facing = llm_result.get("is_student_facing")
+    if is_student_facing if is_student_facing is not None else True:
+        student_score = clamp01(0.65 * llm_relevance + 0.35 * rule_student_score)
+    else:
+        student_score = clamp01(min(0.34, 0.65 * llm_relevance + 0.35 * rule_student_score))
+        
+    imp_raw = llm_result.get("importance_score")
+    importance_score = clamp01(0.75 * float(imp_raw if imp_raw is not None else 0.5) + 0.25 * rule_importance_score)
+    
+    tags = [clean_text(str(tag)) for tag in (llm_result.get("tags") or []) if clean_text(str(tag))]
+    summary = clean_text(str(llm_result.get("student_summary") or content[:180]))
+    
+    attachments = enrich_attachment_metadata(base["attachments"], llm_result.get("attachment_roles") or [])
+    
+    conf_raw = llm_result.get("confidence")
+    confidence = float(conf_raw if conf_raw is not None else 0.5)
+    
+    review_required_raw = llm_result.get("review_required")
+    review_required = bool(review_required_raw if review_required_raw is not None else False)
+    
+    sensitive_raw = llm_result.get("sensitive")
+    sensitive = bool(sensitive_raw if sensitive_raw is not None else False)
+    
+    # Strictly isolate LLM sources
+    field_sources = {
+        "category": "llm" if llm_result.get("category") else "fallback",
+        "domain": "llm" if llm_result.get("domain") else "fallback",
+        "intent": "llm" if llm_result.get("intent") else "fallback",
+        "deadline": "llm",
+        "action_required": "llm",
+        "action_summary": "llm",
+        "required_materials": "llm",
+        "summary": "llm",
+        "evidence": "llm",
+        "sensitive": "llm",
+    }
+    
+    return SemanticResult(
+        semantic_mode="llm",
+        field_sources=field_sources,
+        category=category,
+        domain=domain,
+        intent=intent,
+        lifecycle=infer_lifecycle(base["published_at"], llm_result.get("deadline"), now),
+        evidence=[clean_text(str(item))[:180] for item in (llm_result.get("evidence") or []) if clean_text(str(item))] or [],
+        confidence=confidence,
+        deadline=llm_result.get("deadline"),
+        action_required=bool(llm_result.get("action_required", False)),
+        action_type=llm_result.get("action_type"),
+        action_summary=llm_result.get("action_summary"),
+        required_materials=[clean_text(str(item)) for item in (llm_result.get("required_materials") or []) if clean_text(str(item))],
+        sensitive=sensitive,
+        sensitive_types=[clean_text(str(item)) for item in (llm_result.get("sensitive_types") or []) if clean_text(str(item))],
+        review_required=review_required,
+        risk_flags=[clean_text(str(item)) for item in (llm_result.get("risk_flags") or []) if clean_text(str(item))],
+        content=content,
+        summary=summary,
+        attachments=attachments,
+        student_score=student_score,
+        importance_score=importance_score,
+        tags=tags,
+        llm=llm_result
+    )
+
+
+def derive_semantic_fields_heuristic(entry: dict[str, Any], guard: dict[str, Any], now: datetime, mode: SemanticMode = "heuristic") -> SemanticResult:
+    base = _get_base_fields(entry, guard)
+    title = base["title"]
+    content = base["content"]
+    scoring_text = f"{title} {content}"
+    
+    from scripts.update_search_index import infer_category
+    rule_category = base["default_category"] if base["default_category"] in CATEGORY_KEYWORDS else infer_category(scoring_text)
+    rule_student_score, rule_importance_score = _calculate_rule_scores(
+        scoring_text, rule_category, len(base["attachments"]), base["source_weight"]
+    )
+    
+    fallback_action_required, fallback_action_type, fallback_action_summary = infer_action(scoring_text)
+    fallback_deadline = infer_deadline(scoring_text, base["published_at"], now)
+    fallback_domain = infer_domain(scoring_text, rule_category, base["source_type"])
+    fallback_intent = infer_intent(scoring_text, fallback_action_required, len(base["attachments"]))
+    fallback_evidence = extract_evidence(
+        scoring_text,
+        [fallback_action_type or "", fallback_deadline or "", rule_category, title],
+    )
+    
+    category = derive_display_category(fallback_domain, fallback_intent, rule_category)
+    attachments = enrich_attachment_metadata(base["attachments"], [])
+    
+    field_sources = {k: "heuristic" for k in ["category", "domain", "intent", "deadline", "action_required", "action_summary", "summary", "evidence"]}
+    
+    return SemanticResult(
+        semantic_mode=mode,
+        field_sources=field_sources,
+        category=category,
+        domain=fallback_domain,
+        intent=fallback_intent,
+        lifecycle=infer_lifecycle(base["published_at"], fallback_deadline, now),
+        evidence=fallback_evidence[:4],
+        confidence=0.35 if mode == "heuristic" else 0.2,
+        deadline=fallback_deadline,
+        action_required=fallback_action_required,
+        action_type=fallback_action_type,
+        action_summary=fallback_action_summary,
+        required_materials=[],
+        sensitive=False,
+        sensitive_types=[],
+        review_required=True,
+        risk_flags=["heuristic_semantic"] if mode == "heuristic" else ["llm_failed_heuristic_fallback"],
+        content=content,
+        summary=content[:180],
+        attachments=attachments,
+        student_score=rule_student_score,
+        importance_score=rule_importance_score,
+        tags=infer_tags(scoring_text, category),
+        llm={"used": False}
+    )
+
+
+def derive_semantic_fields_guarded(entry: dict[str, Any], guard: dict[str, Any], now: datetime) -> SemanticResult:
+    base = _get_base_fields(entry, guard)
+    field_sources = {k: "rule_guard" for k in ["category", "domain", "intent", "deadline", "action_required", "summary"]}
+    
+    return SemanticResult(
+        semantic_mode="guarded_metadata",
+        field_sources=field_sources,
+        category=base["default_category"] if base["default_category"] in CATEGORY_KEYWORDS else "公告",
+        domain="campus_life",
+        intent="information",
+        lifecycle="active",
+        evidence=[],
+        confidence=1.0,
+        deadline=None,
+        action_required=False,
+        action_type=None,
+        action_summary=None,
+        required_materials=[],
+        sensitive=guard.get("sensitive", False),
+        sensitive_types=guard.get("sensitive_types", []),
+        review_required=True,
+        risk_flags=guard.get("risk_flags", []),
+        content=base["content"],
+        summary="该页面访问受限或内容不足，请点击原文在允许的网络环境下查看。",
+        attachments=base["attachments"],
+        student_score=0.1,
+        importance_score=0.1,
+        tags=[base["default_category"]],
+        llm={"used": False}
+    )
+
+def route_semantic_pipeline(entry: dict[str, Any], llm_result: dict[str, Any] | None, guard: dict[str, Any], run_config: dict[str, Any], now: datetime) -> SemanticResult:
+    if guard.get("restricted") or guard.get("sensitive") or guard.get("low_evidence") or guard.get("administrative_noise") or not guard.get("allow_llm", True):
+        result = derive_semantic_fields_guarded(entry, guard, now)
+    elif run_config.get("no_llm"):
+        result = derive_semantic_fields_heuristic(entry, guard, now, mode="heuristic")
+    elif llm_result:
+        result = derive_semantic_fields_llm(entry, llm_result, guard, now)
+    else:
+        # LLM was supposed to run but failed or didn't return a result
+        result = derive_semantic_fields_heuristic(entry, guard, now, mode="heuristic_degraded")
+        
+    return apply_safety_overrides(result, guard)

@@ -192,6 +192,8 @@ export const SearchDocumentSchema = z.object({
     llm: SearchDocumentLLMSchema.optional(),
     canonical: z.record(z.string(), z.unknown()).optional(),
     rule_guard: z.record(z.string(), z.unknown()).optional(),
+    semantic_mode: z.string().optional(),
+    field_sources: z.record(z.string(), z.string()).optional(),
     task_frames: z.array(TaskFrameSchema).default([]),
     class_name: z.string().optional(),
     exam_id: z.string().optional()
@@ -233,6 +235,12 @@ export const SearchManifestSchema = z.object({
     llm_batch_size: z.number().optional(),
     llm_batch_max_chars: z.number().optional(),
     llm_batch_max_output_tokens: z.number().optional(),
+    semantic_pipeline_version: z.string().optional(),
+    semantic_mode_counts: z.record(z.string(), z.number()).optional(),
+    field_source_counts: z.record(z.string(), z.any()).optional(),
+    training_eligible_count: z.number().optional(),
+    heuristic_degraded_count: z.number().optional(),
+    llm_purity_rate: z.number().optional(),
     sources: z.array(SearchManifestSourceSchema)
 }).passthrough();
 export type SearchManifest = z.infer<typeof SearchManifestSchema>;

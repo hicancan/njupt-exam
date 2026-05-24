@@ -2,7 +2,7 @@ import re
 from datetime import datetime
 from typing import Any
 
-from config.indexer_config import BEIJING_TZ
+from scripts.config.indexer_config import BEIJING_TZ
 
 RESTRICTED_TEXT_PATTERNS = (
     "当前ip并非校内地址",
@@ -120,7 +120,7 @@ def infer_deadline(text: str, published_at: str | None, now: datetime) -> str | 
         return parse_deadline_candidate(int(end_year or start_year), int(month), int(day), marker, hour, minute or None)
 
     month_day_before = re.search(
-        r"(?:截止|截止时间|报名截止|申报截止|于|请.*?于)\s*"
+        r"(?:截止|截止时间|报名截止|申报截止|于|请[^。！?;；\n]{0,30}于)\s*"
         r"(\d{1,2})\s*月\s*(\d{1,2})\s*日"
         r"(?:\s*(上午|下午|中午|晚上)?\s*(\d{1,2})\s*[:：点]\s*(\d{0,2})?)?\s*前",
         text,

@@ -164,9 +164,21 @@ function SearchResultCard({ document, onOpenClass }: SearchResultCardProps) {
                 <span className="text-[#70757a] dark:text-[#9aa0a6] font-medium mr-2">{formatSearchDate(document.published_at)}</span>
                 {document.summary || document.content}
             </div>
-            {scoreReason ? (
-                <div className="mt-1 text-[12px] text-[#70757a] dark:text-[#9aa0a6]">
-                    排序依据：{scoreReason}
+            {scoreReason || document.semantic_mode ? (
+                <div className="mt-1 text-[12px] text-[#70757a] dark:text-[#9aa0a6] flex flex-wrap gap-x-3 gap-y-1">
+                    {scoreReason && <span>排序依据：{scoreReason}</span>}
+                    {document.semantic_mode && (
+                        <span>
+                            语义模式：
+                            <span className={`font-medium ${
+                                document.semantic_mode === 'llm' ? 'text-[#188038] dark:text-[#81c995]' :
+                                document.semantic_mode === 'heuristic_degraded' || document.semantic_mode === 'unprocessed' ? 'text-[#c5221f] dark:text-[#f28b82]' : 
+                                'text-[#b06000] dark:text-[#fde293]'
+                            }`}>
+                                {document.semantic_mode}
+                            </span>
+                        </span>
+                    )}
                 </div>
             ) : null}
         </Wrapper>
