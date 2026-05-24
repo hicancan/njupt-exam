@@ -96,6 +96,8 @@ export type SearchDocumentLLMMetadata = z.infer<typeof SearchDocumentLLMSchema>;
 export const TaskFrameSchema = z.object({
     task_id: z.string(),
     doc_id: z.string(),
+    source_mode: z.string().optional().default('unknown'),
+    field_sources: z.record(z.string(), z.string()).optional(),
     task_type: z.string(),
     who: z.object({
         audience: z.array(z.string()).default([]),
@@ -238,6 +240,9 @@ export const SearchManifestSchema = z.object({
     semantic_pipeline_version: z.string().optional(),
     semantic_mode_counts: z.record(z.string(), z.number()).optional(),
     field_source_counts: z.record(z.string(), z.any()).optional(),
+    task_frame_source_mode_counts: z.record(z.string(), z.number()).optional(),
+    llm_missing_field_counts: z.record(z.string(), z.number()).optional(),
+    hybrid_score_field_count: z.number().optional(),
     training_eligible_count: z.number().optional(),
     heuristic_degraded_count: z.number().optional(),
     llm_purity_rate: z.number().optional(),

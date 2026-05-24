@@ -32,6 +32,8 @@ def extract_task_frames(
         source_id=str(document.get("source_id") or ""),
         channel_id=str(document.get("channel_id") or ""),
         authority=float(document.get("source_weight", 0.7) or 0.7),
+        source_mode=str(semantic_mode or "unknown"),
+        field_sources=document.get("field_sources") or {},
         fallback_title=str(document.get("title") or ""),
         fallback_audience=list(document.get("audience") or []),
         fallback_domain=str(document.get("domain") or "news"),

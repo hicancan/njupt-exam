@@ -54,5 +54,20 @@ class TestSemanticPipeline(unittest.TestCase):
         self.assertEqual(result.field_sources["category"], "llm")
         self.assertEqual(result.field_sources["deadline"], "llm")
 
+    def test_route_semantic_pipeline_llm_missing(self):
+        guard = {"allow_llm": True}
+        run_config = {"no_llm": False}
+        llm_result = {
+            "confidence": 0.9,
+            "action_required": False
+        }
+        result = route_semantic_pipeline(self.base_entry, llm_result, guard, run_config, self.mock_now)
+        self.assertEqual(result.semantic_mode, "llm")
+        self.assertEqual(result.field_sources["category"], "display_mapping")
+        self.assertEqual(result.field_sources["deadline"], "llm_missing")
+        self.assertEqual(result.field_sources["domain"], "system_default")
+        self.assertEqual(result.domain, "unknown")
+        self.assertEqual(result.category, "公告")
+
 if __name__ == '__main__':
     unittest.main()

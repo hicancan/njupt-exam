@@ -173,6 +173,9 @@ def cache_is_current(cached: dict[str, Any] | None) -> bool:
         return False
     if _RUN_CONFIG["force_llm"] and not _RUN_CONFIG["no_llm"]:
         return False
+    from core.semantic_pipeline import SEMANTIC_PIPELINE_VERSION
+    if cached.get("semantic_pipeline_version") != SEMANTIC_PIPELINE_VERSION:
+        return False
     if cached.get("llm_schema_version") != active_llm_schema_version():
         return False
     if cache_needs_reprocessing(cached):
@@ -1696,18 +1699,29 @@ def main() -> None:
         "unprocessed": sum(1 for d in all_documents if d.get("semantic_mode") == "unprocessed"),
     }
     
-    field_source_counts = {
-        "deadline": {
-            "llm": sum(1 for d in all_documents if d.get("field_sources", {}).get("deadline") == "llm"),
-            "heuristic": sum(1 for d in all_documents if d.get("field_sources", {}).get("deadline") == "heuristic"),
-            "null": sum(1 for d in all_documents if d.get("deadline") is None),
-        },
-        "action_required": {
-            "llm": sum(1 for d in all_documents if d.get("field_sources", {}).get("action_required") == "llm"),
-            "heuristic": sum(1 for d in all_documents if d.get("field_sources", {}).get("action_required") == "heuristic"),
-            "rule_guard": sum(1 for d in all_documents if d.get("field_sources", {}).get("action_required") == "rule_guard"),
-        }
+    fields_to_track = [
+        "category", "domain", "intent", "deadline", "action_required", 
+        "action_summary", "required_materials", "summary", "evidence", 
+        "sensitive", "review_required", "student_score", "importance_score", "task_frames"
+    ]
+    field_source_counts = {field: {} for field in fields_to_track}
+    for doc in all_documents:
+        sources = doc.get("field_sources", {})
+        for field in fields_to_track:
+            src = sources.get(field, "null")
+            field_source_counts[field][src] = field_source_counts[field].get(src, 0) + 1
+            
+    llm_missing_field_counts = {
+        field: sum(1 for doc in all_documents if doc.get("field_sources", {}).get(field) == "llm_missing")
+        for field in fields_to_track
     }
+    
+    task_frame_source_mode_counts = {}
+    for frame in task_frames:
+        src_mode = frame.get("source_mode", "unknown")
+        task_frame_source_mode_counts[src_mode] = task_frame_source_mode_counts.get(src_mode, 0) + 1
+        
+    hybrid_score_field_count = sum(1 for doc in all_documents if doc.get("student_score_source") == "hybrid_rank_feature")
     
     training_eligible_count = sum(1 for d in all_documents if d.get("semantic_mode") == "llm" and not d.get("review_required") and float(d.get("confidence", 0) or 0) >= 0.8)
     heuristic_degraded_count = semantic_mode_counts["heuristic_degraded"]
@@ -1732,6 +1746,9 @@ def main() -> None:
         "llm_stats": dict(_RUN_STATS),
         "semantic_mode_counts": semantic_mode_counts,
         "field_source_counts": field_source_counts,
+        "task_frame_source_mode_counts": task_frame_source_mode_counts,
+        "llm_missing_field_counts": llm_missing_field_counts,
+        "hybrid_score_field_count": hybrid_score_field_count,
         "training_eligible_count": training_eligible_count,
         "heuristic_degraded_count": heuristic_degraded_count,
         "llm_purity_rate": llm_purity_rate,

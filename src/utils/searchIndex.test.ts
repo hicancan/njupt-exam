@@ -61,6 +61,7 @@ const baseNotice: SearchDocument = {
     task_frames: [{
         task_id: 'task-notice-1',
         doc_id: 'notice-1',
+        source_mode: 'llm',
         task_type: 'application',
         who: { audience: ['本科生'], college: [], grade: [], major: [], class_name: [] },
         what: '奖学金评选',

@@ -453,6 +453,7 @@ export const buildExamDocuments = (exams: Exam[]): SearchDocument[] => {
             task_frames: [{
                 task_id: `task-exam-${exam.id}`,
                 doc_id: `exam-${exam.id}`,
+                source_mode: 'heuristic',
                 task_type: 'schedule',
                 who: { audience: ['本科生'], college: [], grade: exam.grade ? [exam.grade] : [], major: exam.major ? [exam.major] : [], class_name: [exam.class_name] },
                 what: `${exam.course_name} 考试安排`,
@@ -685,6 +686,7 @@ export const getLearningResources = (query: string): SearchDocument[] => {
             task_frames: [{
                 task_id: 'task-resource-exam-review',
                 doc_id: 'resource-exam-review',
+                source_mode: 'heuristic',
                 task_type: 'download',
                 who: { audience: ['本科生'], college: [], grade: [], major: [], class_name: [] },
                 what: '课程期末复习与习题讲解',

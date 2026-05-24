@@ -12,10 +12,10 @@ SemanticMode = Literal[
 class SemanticResult(BaseModel):
     semantic_mode: SemanticMode
     field_sources: dict[str, str]
-    category: str
-    domain: str
-    intent: str
-    lifecycle: str
+    category: str | None
+    domain: str | None
+    intent: str | None
+    lifecycle: str | None
     evidence: list[str]
     confidence: float | None
     deadline: str | None
@@ -30,7 +30,15 @@ class SemanticResult(BaseModel):
     content: str
     summary: str
     attachments: list[dict[str, Any]]
+    
+    llm_student_relevance: float | None
+    llm_importance_score: float | None
+    rule_student_score: float | None
+    rule_importance_score: float | None
     student_score: float
     importance_score: float
+    student_score_source: str
+    importance_score_source: str
+    
     tags: list[str]
     llm: dict[str, Any]

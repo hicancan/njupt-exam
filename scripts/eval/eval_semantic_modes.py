@@ -30,6 +30,19 @@ def main():
     print(f"Degraded heuristic fallbacks: {manifest.get('heuristic_degraded_count', 0)}")
     print(f"LLM Purity Rate: {manifest.get('llm_purity_rate', 0):.2%}")
     
+    print("\n--- Task Frame Sources ---")
+    task_frames = manifest.get('task_frame_source_mode_counts', {})
+    for mode, count in task_frames.items():
+        print(f"{mode}: {count}")
+
+    print("\n--- LLM Missing Fields ---")
+    missing_fields = manifest.get('llm_missing_field_counts', {})
+    for field, count in missing_fields.items():
+        print(f"{field}: {count}")
+
+    print("\n--- Hybrid Score Coverage ---")
+    print(f"Hybrid Score Fields: {manifest.get('hybrid_score_field_count', 0)}")
+
     print("\n--- Field Sources ---")
     sources = manifest.get('field_source_counts', {})
     for field, counts in sources.items():

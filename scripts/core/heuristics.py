@@ -2,7 +2,7 @@ import re
 from datetime import datetime
 from typing import Any
 
-from scripts.config.indexer_config import BEIJING_TZ
+from config.indexer_config import BEIJING_TZ
 
 RESTRICTED_TEXT_PATTERNS = (
     "当前ip并非校内地址",

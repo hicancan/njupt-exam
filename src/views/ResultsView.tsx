@@ -174,7 +174,7 @@ function SearchResultCard({ document, onOpenClass }: SearchResultCardProps) {
                                 document.semantic_mode === 'llm' ? 'text-[#188038] dark:text-[#81c995]' :
                                 document.semantic_mode === 'heuristic_degraded' || document.semantic_mode === 'unprocessed' ? 'text-[#c5221f] dark:text-[#f28b82]' : 
                                 'text-[#b06000] dark:text-[#fde293]'
-                            }`}>
+                            }`} title={document.field_sources ? JSON.stringify(document.field_sources, null, 2) : undefined}>
                                 {document.semantic_mode}
                             </span>
                         </span>

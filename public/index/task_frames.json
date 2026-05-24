@@ -1,7 +1,20 @@
 [
   {
-    "task_id": "task-7d8c9cf8e862236dc7f6-1",
+    "task_id": "task-840bcb788552949954eb-1",
     "doc_id": "jwc-7302a28b49d7e92c069f",
+    "source_mode": "llm",
+    "field_sources": {
+      "category": "llm",
+      "domain": "llm",
+      "intent": "llm",
+      "deadline": "llm",
+      "action_required": "llm",
+      "action_summary": "llm",
+      "required_materials": "llm_missing",
+      "summary": "llm",
+      "evidence": "llm",
+      "sensitive": "llm"
+    },
     "task_type": "application",
     "who": {
       "audience": [
@@ -15,9 +28,9 @@
     "what": "在线开放课程线下考试报名",
     "action": {
       "required": true,
-      "verb": "报名",
-      "object": "在线开放课程线下考试",
-      "summary": "在教务管理系统进行在线开放课程线下考试报名"
+      "verb": "登录",
+      "object": "教务管理系统报名",
+      "summary": "在报名时间内登录教务管理系统进行在线开放课程线下考试报名"
     },
     "time": {
       "published_at": "2026-03-27T00:00:00+08:00",
@@ -93,8 +106,21 @@
     "confidence": 0.95
   },
   {
-    "task_id": "task-1b3d3062b7a29266bc2c-1",
+    "task_id": "task-3386f6394f66972f0e9b-1",
     "doc_id": "jwc-acae1866bba9bae13b2c",
+    "source_mode": "llm",
+    "field_sources": {
+      "category": "llm",
+      "domain": "llm",
+      "intent": "llm",
+      "deadline": "llm_missing",
+      "action_required": "llm",
+      "action_summary": "llm",
+      "required_materials": "llm",
+      "summary": "llm",
+      "evidence": "llm",
+      "sensitive": "llm"
+    },
     "task_type": "application",
     "who": {
       "audience": [
@@ -164,8 +190,21 @@
     "confidence": 0.95
   },
   {
-    "task_id": "task-34511a3f93891e08edfb-1",
+    "task_id": "task-2531cdceedc2cefed7af-1",
     "doc_id": "jwc-59a29f409eb78f77b1e1",
+    "source_mode": "llm",
+    "field_sources": {
+      "category": "display_mapping",
+      "domain": "llm",
+      "intent": "llm",
+      "deadline": "llm_missing",
+      "action_required": "llm",
+      "action_summary": "llm",
+      "required_materials": "llm_missing",
+      "summary": "llm",
+      "evidence": "llm",
+      "sensitive": "llm"
+    },
     "task_type": "schedule",
     "who": {
       "audience": [
@@ -232,12 +271,25 @@
       "low_evidence": false,
       "review_required": false
     },
-    "confidence": 0.9
+    "confidence": 0.95
   },
   {
-    "task_id": "task-8da0243f49b25a3f21b3-1",
+    "task_id": "task-62cf1c8ca3132ecadb16-1",
     "doc_id": "jwc-5b4427b16b11f6941a73",
-    "task_type": "schedule",
+    "source_mode": "llm",
+    "field_sources": {
+      "category": "llm",
+      "domain": "llm",
+      "intent": "llm",
+      "deadline": "llm_missing",
+      "action_required": "llm",
+      "action_summary": "llm_missing",
+      "required_materials": "llm_missing",
+      "summary": "llm",
+      "evidence": "llm",
+      "sensitive": "llm"
+    },
+    "task_type": "result_check",
     "who": {
       "audience": [
         "本科生"
@@ -249,10 +301,10 @@
     },
     "what": "查看考试安排",
     "action": {
-      "required": true,
+      "required": false,
       "verb": "查看",
       "object": "考试安排表",
-      "summary": "查看附件中的考试安排表，了解考试时间和地点"
+      "summary": "查看附件中的考试安排表，了解考试时间地点"
     },
     "time": {
       "published_at": "2026-05-22T00:00:00+08:00",
@@ -311,11 +363,24 @@
       "low_evidence": false,
       "review_required": false
     },
-    "confidence": 0.9
+    "confidence": 0.95
   },
   {
     "task_id": "task_9cb37a4cd9aeb0eb",
     "doc_id": "pg-d225c1da2add6e42ebcc",
+    "source_mode": "llm",
+    "field_sources": {
+      "category": "llm",
+      "domain": "llm",
+      "intent": "llm",
+      "deadline": "llm_missing",
+      "action_required": "llm",
+      "action_summary": "llm_missing",
+      "required_materials": "llm_missing",
+      "summary": "llm",
+      "evidence": "llm",
+      "sensitive": "llm"
+    },
     "task_type": "result_check",
     "who": {
       "audience": [
@@ -332,7 +397,7 @@
       "required": false,
       "verb": "查看",
       "object": "比赛结果",
-      "summary": "学校将根据比赛结果择优推荐参加第十届全国高校智能交通创新与创业大赛"
+      "summary": "查看第一届智能交通创新与创业大赛结果，择优推荐参加全国赛"
     },
     "time": {
       "published_at": "2026-05-08T00:00:00+08:00",
@@ -355,15 +420,15 @@
     "evidence": [
       {
         "field": "content",
-        "text": "学校将根据比赛结果择优推荐参加第十届全国高校智能交通创新与创业大赛"
+        "text": "学校将根据比赛结果择优推荐参加第十届全国高校智能交通创新与创业大赛。"
       },
       {
         "field": "audience",
-        "text": "学校将根据比赛结果择优推荐参加第十届全国高校智能交通创新与创业大赛"
+        "text": "学校将根据比赛结果择优推荐参加第十届全国高校智能交通创新与创业大赛。"
       },
       {
         "field": "action",
-        "text": "学校将根据比赛结果择优推荐参加第十届全国高校智能交通创新与创业大赛"
+        "text": "学校将根据比赛结果择优推荐参加第十届全国高校智能交通创新与创业大赛。"
       }
     ],
     "risk": {
@@ -372,11 +437,24 @@
       "low_evidence": false,
       "review_required": false
     },
-    "confidence": 0.85
+    "confidence": 0.9
   },
   {
     "task_id": "task_08ec1289b42a970c",
     "doc_id": "pg-a3ee4a62fbb1f6f27749",
+    "source_mode": "llm",
+    "field_sources": {
+      "category": "llm",
+      "domain": "llm",
+      "intent": "llm",
+      "deadline": "llm_missing",
+      "action_required": "llm",
+      "action_summary": "llm_missing",
+      "required_materials": "llm_missing",
+      "summary": "llm",
+      "evidence": "llm",
+      "sensitive": "llm"
+    },
     "task_type": "read",
     "who": {
       "audience": [
@@ -394,7 +472,7 @@
       "required": false,
       "verb": "阅读",
       "object": "培养方案",
-      "summary": "阅读南京邮电大学博士研究生培养方案（2025级）"
+      "summary": "阅读2025级博士研究生培养方案"
     },
     "time": {
       "published_at": null,
@@ -439,6 +517,19 @@
   {
     "task_id": "task_2b7ec031b383099c",
     "doc_id": "pg-6badffb9902a8d5677ac",
+    "source_mode": "llm",
+    "field_sources": {
+      "category": "llm",
+      "domain": "llm",
+      "intent": "llm",
+      "deadline": "llm_missing",
+      "action_required": "llm",
+      "action_summary": "llm_missing",
+      "required_materials": "llm_missing",
+      "summary": "llm",
+      "evidence": "llm",
+      "sensitive": "llm"
+    },
     "task_type": "read",
     "who": {
       "audience": [
@@ -456,7 +547,7 @@
       "required": false,
       "verb": "阅读",
       "object": "培养方案",
-      "summary": "阅读南京邮电大学博士研究生培养方案（2024级）"
+      "summary": "阅读2024级博士研究生培养方案"
     },
     "time": {
       "published_at": null,
@@ -501,6 +592,19 @@
   {
     "task_id": "task_bcd30c014f8bf5c3",
     "doc_id": "pg-621bbe7727e875bd50c0",
+    "source_mode": "llm",
+    "field_sources": {
+      "category": "llm",
+      "domain": "llm",
+      "intent": "llm",
+      "deadline": "llm_missing",
+      "action_required": "llm",
+      "action_summary": "llm_missing",
+      "required_materials": "llm_missing",
+      "summary": "llm",
+      "evidence": "llm",
+      "sensitive": "llm"
+    },
     "task_type": "read",
     "who": {
       "audience": [
@@ -518,7 +622,7 @@
       "required": false,
       "verb": "阅读",
       "object": "培养方案",
-      "summary": "阅读南京邮电大学博士研究生培养方案（2023级）"
+      "summary": "阅读2023级博士研究生培养方案"
     },
     "time": {
       "published_at": null,
@@ -563,6 +667,19 @@
   {
     "task_id": "task_03a1febb6e3d5a51",
     "doc_id": "pg-1c494469e4fbff955032",
+    "source_mode": "llm",
+    "field_sources": {
+      "category": "llm",
+      "domain": "llm",
+      "intent": "llm",
+      "deadline": "llm_missing",
+      "action_required": "llm",
+      "action_summary": "llm_missing",
+      "required_materials": "llm_missing",
+      "summary": "llm",
+      "evidence": "llm",
+      "sensitive": "llm"
+    },
     "task_type": "read",
     "who": {
       "audience": [
@@ -580,7 +697,7 @@
       "required": false,
       "verb": "阅读",
       "object": "培养方案",
-      "summary": "阅读南京邮电大学博士研究生培养方案（2022级）"
+      "summary": "阅读2022级博士研究生培养方案"
     },
     "time": {
       "published_at": null,
@@ -625,6 +742,19 @@
   {
     "task_id": "task_b27a88edf4f1fc86",
     "doc_id": "pg-99748de59bb6812f0ea6",
+    "source_mode": "llm",
+    "field_sources": {
+      "category": "llm",
+      "domain": "llm",
+      "intent": "llm",
+      "deadline": "llm_missing",
+      "action_required": "llm",
+      "action_summary": "llm_missing",
+      "required_materials": "llm_missing",
+      "summary": "llm",
+      "evidence": "llm",
+      "sensitive": "llm"
+    },
     "task_type": "read",
     "who": {
       "audience": [
@@ -642,7 +772,7 @@
       "required": false,
       "verb": "阅读",
       "object": "培养方案",
-      "summary": "阅读南京邮电大学博士研究生培养方案（2021级）"
+      "summary": "阅读2021级博士研究生培养方案"
     },
     "time": {
       "published_at": null,
@@ -687,6 +817,19 @@
   {
     "task_id": "task_f7c12d78b4f1723b",
     "doc_id": "pg-13092a896651146e98ff",
+    "source_mode": "llm",
+    "field_sources": {
+      "category": "llm",
+      "domain": "llm",
+      "intent": "llm",
+      "deadline": "llm_missing",
+      "action_required": "llm",
+      "action_summary": "llm_missing",
+      "required_materials": "llm_missing",
+      "summary": "llm",
+      "evidence": "llm",
+      "sensitive": "llm"
+    },
     "task_type": "read",
     "who": {
       "audience": [
@@ -702,7 +845,7 @@
       "required": false,
       "verb": "阅读",
       "object": "手册",
-      "summary": "阅读研究生个人培养计划制定说明及系统操作手册"
+      "summary": "阅读培养计划制定说明及系统操作手册"
     },
     "time": {
       "published_at": null,
@@ -745,12 +888,173 @@
     "confidence": 0.9
   },
   {
-    "task_id": "task-7",
+    "task_id": "task_e8560287c8556476",
+    "doc_id": "xsc-5ac8a7b37d2f300d28ce",
+    "source_mode": "llm",
+    "field_sources": {
+      "category": "llm",
+      "domain": "llm",
+      "intent": "llm",
+      "deadline": "llm_missing",
+      "action_required": "llm",
+      "action_summary": "llm_missing",
+      "required_materials": "llm_missing",
+      "summary": "llm",
+      "evidence": "llm",
+      "sensitive": "llm"
+    },
+    "task_type": "opportunity",
+    "who": {
+      "audience": [
+        "本科生",
+        "研究生"
+      ],
+      "college": [],
+      "grade": [],
+      "major": [],
+      "class_name": []
+    },
+    "what": "参加人才政策进高校活动",
+    "action": {
+      "required": false,
+      "verb": "参加",
+      "object": "活动",
+      "summary": "3月11日，南京市暨栖霞区市区人才政策进高校系列活动走进南京邮电大学，提供政策宣讲和招聘。"
+    },
+    "time": {
+      "published_at": "2026-03-11T00:00:00+08:00",
+      "deadline": null,
+      "lifecycle": "expired",
+      "urgency_days": null
+    },
+    "materials": [],
+    "location": {
+      "place": "仙林校区安恒青春剧场",
+      "online": null,
+      "contact": null
+    },
+    "source": {
+      "source_id": "xsc",
+      "channel_id": "xsc_dormitory",
+      "authority": 0.96,
+      "official": true
+    },
+    "evidence": [
+      {
+        "field": "action",
+        "text": "3月11日，南京市暨栖霞区市区人才政策进高校系列活动走进南京邮电大学。"
+      },
+      {
+        "field": "audience",
+        "text": "3月11日，南京市暨栖霞区市区人才政策进高校系列活动走进南京邮电大学。"
+      },
+      {
+        "field": "location",
+        "text": "仙林校区安恒青春剧场"
+      }
+    ],
+    "risk": {
+      "sensitive": false,
+      "restricted": false,
+      "low_evidence": false,
+      "review_required": false
+    },
+    "confidence": 0.85
+  },
+  {
+    "task_id": "task_1f6c3e07b19b4e86",
+    "doc_id": "xsc-9723c85480307f31f357",
+    "source_mode": "llm",
+    "field_sources": {
+      "category": "llm",
+      "domain": "llm",
+      "intent": "llm",
+      "deadline": "llm_missing",
+      "action_required": "llm",
+      "action_summary": "llm_missing",
+      "required_materials": "llm_missing",
+      "summary": "llm",
+      "evidence": "llm",
+      "sensitive": "llm"
+    },
+    "task_type": "opportunity",
+    "who": {
+      "audience": [
+        "2026届毕业生",
+        "2027届毕业生"
+      ],
+      "college": [],
+      "grade": [],
+      "major": [],
+      "class_name": []
+    },
+    "what": "参加春季综合双选会",
+    "action": {
+      "required": false,
+      "verb": "参加",
+      "object": "双选会",
+      "summary": "双选会于3月26日下午在仙林校区举行，提供超13000个岗位。"
+    },
+    "time": {
+      "published_at": "2026-03-26T00:00:00+08:00",
+      "deadline": null,
+      "lifecycle": "expired",
+      "urgency_days": null
+    },
+    "materials": [],
+    "location": {
+      "place": "仙林校区",
+      "online": null,
+      "contact": null
+    },
+    "source": {
+      "source_id": "xsc",
+      "channel_id": "xsc_dormitory",
+      "authority": 0.96,
+      "official": true
+    },
+    "evidence": [
+      {
+        "field": "action",
+        "text": "3月26日下午，“信息报国 邮你同行”江苏省2026年“春季促就业攻坚行动”暨南京邮电大学2026届毕业生春季综合双选会在仙林校区举行。"
+      },
+      {
+        "field": "audience",
+        "text": "3月26日下午，“信息报国 邮你同行”江苏省2026年“春季促就业攻坚行动”暨南京邮电大学2026届毕业生春季综合双选会在仙林校区举行。"
+      },
+      {
+        "field": "location",
+        "text": "仙林校区"
+      }
+    ],
+    "risk": {
+      "sensitive": false,
+      "restricted": false,
+      "low_evidence": false,
+      "review_required": false
+    },
+    "confidence": 0.85
+  },
+  {
+    "task_id": "task-1",
     "doc_id": "cxcy-c4132762db65faac8b56",
+    "source_mode": "llm",
+    "field_sources": {
+      "category": "llm",
+      "domain": "llm",
+      "intent": "llm",
+      "deadline": "llm_missing",
+      "action_required": "llm",
+      "action_summary": "llm",
+      "required_materials": "llm",
+      "summary": "llm",
+      "evidence": "llm",
+      "sensitive": "llm"
+    },
     "task_type": "application",
     "who": {
       "audience": [
-        "本科生"
+        "2022级本科生"
       ],
       "college": [],
       "grade": [
@@ -759,10 +1063,10 @@
       "major": [],
       "class_name": []
     },
-    "what": "2024年度大创项目网上申报",
+    "what": "2024年度大创项目创新训练项目申报",
     "action": {
       "required": true,
-      "verb": "填报",
+      "verb": "网上填报",
       "object": "项目申请表",
       "summary": "学院组织学生网上填报项目申请表，指导教师网上审阅"
     },
@@ -778,7 +1082,88 @@
         "role": "申请表",
         "required": true,
         "sensitive": false
+      }
+    ],
+    "location": {
+      "place": null,
+      "online": "https://cxcyjy.njupt.edu.cn/njupt_cx/CXCY/NJUPT",
+      "contact": null
+    },
+    "source": {
+      "source_id": "cxcy",
+      "channel_id": "cxcy_project",
+      "authority": 0.98,
+      "official": true
+    },
+    "evidence": [
+      {
+        "field": "action",
+        "text": "学院组织学生网上填报项目申请表，指导教师网上审阅"
       },
+      {
+        "field": "audience",
+        "text": "学院组织学生网上填报项目申请表，指导教师网上审阅"
+      },
+      {
+        "field": "materials",
+        "text": "附件/材料：南京邮电大学大学生创新训练计划项目立项申请表"
+      },
+      {
+        "field": "location",
+        "text": "https://cxcyjy.njupt.edu.cn/njupt_cx/CXCY/NJUPT"
+      }
+    ],
+    "risk": {
+      "sensitive": false,
+      "restricted": false,
+      "low_evidence": false,
+      "review_required": false
+    },
+    "confidence": 0.9
+  },
+  {
+    "task_id": "task-2",
+    "doc_id": "cxcy-c4132762db65faac8b56",
+    "source_mode": "llm",
+    "field_sources": {
+      "category": "llm",
+      "domain": "llm",
+      "intent": "llm",
+      "deadline": "llm_missing",
+      "action_required": "llm",
+      "action_summary": "llm",
+      "required_materials": "llm",
+      "summary": "llm",
+      "evidence": "llm",
+      "sensitive": "llm"
+    },
+    "task_type": "application",
+    "who": {
+      "audience": [
+        "在校本科生"
+      ],
+      "college": [],
+      "grade": [
+        "2021",
+        "2022"
+      ],
+      "major": [],
+      "class_name": []
+    },
+    "what": "2024年度大创项目创业训练项目申报",
+    "action": {
+      "required": true,
+      "verb": "网上填报",
+      "object": "项目申请表",
+      "summary": "学院组织学生网上填报项目申请表，指导教师网上审阅"
+    },
+    "time": {
+      "published_at": null,
+      "deadline": null,
+      "lifecycle": "upcoming",
+      "urgency_days": null
+    },
+    "materials": [
       {
         "name": "南京邮电大学大学生创业训练计划项目立项申请表",
         "role": "申请表",
@@ -808,7 +1193,7 @@
       },
       {
         "field": "materials",
-        "text": "附件/材料：南京邮电大学大学生创新训练计划项目立项申请表、南京邮电大学大学生创业训练计划项目立项申请表"
+        "text": "附件/材料：南京邮电大学大学生创业训练计划项目立项申请表"
       },
       {
         "field": "location",
@@ -824,12 +1209,25 @@
     "confidence": 0.9
   },
   {
-    "task_id": "task-3",
+    "task_id": "task-1",
     "doc_id": "cxcy-ac6a840bf5e5acb2ae47",
+    "source_mode": "llm",
+    "field_sources": {
+      "category": "llm",
+      "domain": "llm",
+      "intent": "llm",
+      "deadline": "llm_missing",
+      "action_required": "llm",
+      "action_summary": "llm",
+      "required_materials": "llm",
+      "summary": "llm",
+      "evidence": "llm",
+      "sensitive": "llm"
+    },
     "task_type": "application",
     "who": {
       "audience": [
-        "本科生"
+        "2023级本科生"
       ],
       "college": [],
       "grade": [
@@ -838,10 +1236,10 @@
       "major": [],
       "class_name": []
     },
-    "what": "2025年度大创项目网上申报",
+    "what": "2025年度大创项目创新训练项目申报",
     "action": {
       "required": true,
-      "verb": "填报",
+      "verb": "网上填报",
       "object": "项目申请表",
       "summary": "学院组织学生网上填报项目申请表，指导教师网上审阅"
     },
@@ -857,7 +1255,88 @@
         "role": "申请表",
         "required": true,
         "sensitive": false
+      }
+    ],
+    "location": {
+      "place": null,
+      "online": "https://cxcyjy.njupt.edu.cn/pt",
+      "contact": null
+    },
+    "source": {
+      "source_id": "cxcy",
+      "channel_id": "cxcy_project",
+      "authority": 0.98,
+      "official": true
+    },
+    "evidence": [
+      {
+        "field": "action",
+        "text": "学院组织学生网上填报项目申请表，指导教师网上审阅"
       },
+      {
+        "field": "audience",
+        "text": "学院组织学生网上填报项目申请表，指导教师网上审阅"
+      },
+      {
+        "field": "materials",
+        "text": "附件/材料：南京邮电大学大学生创新训练计划项目立项申请表"
+      },
+      {
+        "field": "location",
+        "text": "https://cxcyjy.njupt.edu.cn/pt"
+      }
+    ],
+    "risk": {
+      "sensitive": false,
+      "restricted": false,
+      "low_evidence": false,
+      "review_required": false
+    },
+    "confidence": 0.9
+  },
+  {
+    "task_id": "task-2",
+    "doc_id": "cxcy-ac6a840bf5e5acb2ae47",
+    "source_mode": "llm",
+    "field_sources": {
+      "category": "llm",
+      "domain": "llm",
+      "intent": "llm",
+      "deadline": "llm_missing",
+      "action_required": "llm",
+      "action_summary": "llm",
+      "required_materials": "llm",
+      "summary": "llm",
+      "evidence": "llm",
+      "sensitive": "llm"
+    },
+    "task_type": "application",
+    "who": {
+      "audience": [
+        "在校本科生"
+      ],
+      "college": [],
+      "grade": [
+        "2022",
+        "2023"
+      ],
+      "major": [],
+      "class_name": []
+    },
+    "what": "2025年度大创项目创业训练项目申报",
+    "action": {
+      "required": true,
+      "verb": "网上填报",
+      "object": "项目申请表",
+      "summary": "学院组织学生网上填报项目申请表，指导教师网上审阅"
+    },
+    "time": {
+      "published_at": "2025-08-09T00:00:00+08:00",
+      "deadline": null,
+      "lifecycle": "upcoming",
+      "urgency_days": null
+    },
+    "materials": [
       {
         "name": "南京邮电大学大学生创业训练计划项目立项申请表",
         "role": "申请表",
@@ -887,7 +1366,7 @@
       },
       {
         "field": "materials",
-        "text": "附件/材料：南京邮电大学大学生创新训练计划项目立项申请表、南京邮电大学大学生创业训练计划项目立项申请表"
+        "text": "附件/材料：南京邮电大学大学生创业训练计划项目立项申请表"
       },
       {
         "field": "location",
@@ -903,12 +1382,25 @@
     "confidence": 0.9
   },
   {
-    "task_id": "task-11",
+    "task_id": "task-1",
     "doc_id": "cxcy-18b0923654eab80cce87",
+    "source_mode": "llm",
+    "field_sources": {
+      "category": "llm",
+      "domain": "llm",
+      "intent": "llm",
+      "deadline": "llm_missing",
+      "action_required": "llm",
+      "action_summary": "llm",
+      "required_materials": "llm",
+      "summary": "llm",
+      "evidence": "llm",
+      "sensitive": "llm"
+    },
     "task_type": "application",
     "who": {
       "audience": [
-        "本科生"
+        "2021级本科生"
       ],
       "college": [],
       "grade": [
@@ -917,10 +1409,10 @@
       "major": [],
       "class_name": []
     },
-    "what": "2023年度大创项目网上申报",
+    "what": "2023年度大创项目创新训练项目申报",
     "action": {
       "required": true,
-      "verb": "填报",
+      "verb": "网上填报",
       "object": "项目申请表",
       "summary": "学院组织学生网上填报项目申请表，指导教师网上审阅"
     },
@@ -936,7 +1428,88 @@
         "role": "申请表",
         "required": true,
         "sensitive": false
+      }
+    ],
+    "location": {
+      "place": null,
+      "online": "https://cxcyjy.njupt.edu.cn/njupt_cx/CXCY/NJUPT",
+      "contact": null
+    },
+    "source": {
+      "source_id": "cxcy",
+      "channel_id": "cxcy_project",
+      "authority": 0.98,
+      "official": true
+    },
+    "evidence": [
+      {
+        "field": "action",
+        "text": "学院组织学生网上填报项目申请表，指导教师网上审阅"
       },
+      {
+        "field": "audience",
+        "text": "学院组织学生网上填报项目申请表，指导教师网上审阅"
+      },
+      {
+        "field": "materials",
+        "text": "附件/材料：南京邮电大学大学生创新训练计划项目立项申请表"
+      },
+      {
+        "field": "location",
+        "text": "https://cxcyjy.njupt.edu.cn/njupt_cx/CXCY/NJUPT"
+      }
+    ],
+    "risk": {
+      "sensitive": false,
+      "restricted": false,
+      "low_evidence": false,
+      "review_required": false
+    },
+    "confidence": 0.9
+  },
+  {
+    "task_id": "task-2",
+    "doc_id": "cxcy-18b0923654eab80cce87",
+    "source_mode": "llm",
+    "field_sources": {
+      "category": "llm",
+      "domain": "llm",
+      "intent": "llm",
+      "deadline": "llm_missing",
+      "action_required": "llm",
+      "action_summary": "llm",
+      "required_materials": "llm",
+      "summary": "llm",
+      "evidence": "llm",
+      "sensitive": "llm"
+    },
+    "task_type": "application",
+    "who": {
+      "audience": [
+        "在校本科生"
+      ],
+      "college": [],
+      "grade": [
+        "2020",
+        "2021"
+      ],
+      "major": [],
+      "class_name": []
+    },
+    "what": "2023年度大创项目创业训练项目申报",
+    "action": {
+      "required": true,
+      "verb": "网上填报",
+      "object": "项目申请表",
+      "summary": "学院组织学生网上填报项目申请表，指导教师网上审阅"
+    },
+    "time": {
+      "published_at": "2025-07-08T00:00:00+08:00",
+      "deadline": null,
+      "lifecycle": "upcoming",
+      "urgency_days": null
+    },
+    "materials": [
       {
         "name": "南京邮电大学大学生创业训练计划项目立项申请表",
         "role": "申请表",
@@ -966,7 +1539,7 @@
       },
       {
         "field": "materials",
-        "text": "附件/材料：南京邮电大学大学生创新训练计划项目立项申请表、南京邮电大学大学生创业训练计划项目立项申请表"
+        "text": "附件/材料：南京邮电大学大学生创业训练计划项目立项申请表"
       },
       {
         "field": "location",
@@ -982,12 +1555,25 @@
     "confidence": 0.9
   },
   {
-    "task_id": "task-6",
+    "task_id": "task-1",
     "doc_id": "cxcy-3dfeb8f05ac3e0d231fb",
+    "source_mode": "llm",
+    "field_sources": {
+      "category": "llm",
+      "domain": "llm",
+      "intent": "llm",
+      "deadline": "llm_missing",
+      "action_required": "llm",
+      "action_summary": "llm",
+      "required_materials": "llm",
+      "summary": "llm",
+      "evidence": "llm",
+      "sensitive": "llm"
+    },
     "task_type": "application",
     "who": {
       "audience": [
-        "项目负责人"
+        "2023年度大创项目负责人"
       ],
       "college": [],
       "grade": [],
@@ -997,9 +1583,9 @@
     "what": "2023年度大创项目结题验收网上填报",
     "action": {
       "required": true,
-      "verb": "填报",
-      "object": "项目结题情况",
-      "summary": "项目负责人网上填写项目结题情况并上传附件"
+      "verb": "网上填报",
+      "object": "项目结题情况并上传附件",
+      "summary": "项目负责人（学生）完成网上项目成果申报、网上项目结题情况填报"
     },
     "time": {
       "published_at": "2026-05-10T00:00:00+08:00",
@@ -1010,49 +1596,7 @@
     "materials": [
       {
         "name": "南京邮电大学大学生创新创业训练计划项目结题表",
-        "role": "申请表",
-        "required": true,
-        "sensitive": false
-      },
-      {
-        "name": "项目成果简介Word版",
-        "role": "支撑材料",
-        "required": true,
-        "sensitive": false
-      },
-      {
-        "name": "项目研究报告",
-        "role": "支撑材料",
-        "required": true,
-        "sensitive": false
-      },
-      {
-        "name": "学术论文Word版及录用通知扫描件",
-        "role": "支撑材料",
-        "required": true,
-        "sensitive": false
-      },
-      {
-        "name": "发明专利或软件著作权的申请书和受理书",
-        "role": "支撑材料",
-        "required": true,
-        "sensitive": false
-      },
-      {
-        "name": "竞赛获奖证书扫描件",
-        "role": "支撑材料",
-        "required": true,
-        "sensitive": false
-      },
-      {
-        "name": "结题答辩PPT",
-        "role": "支撑材料",
-        "required": true,
-        "sensitive": false
-      },
-      {
-        "name": "其它与结题相关支撑材料",
-        "role": "支撑材料",
+        "role": "结题表",
         "required": true,
         "sensitive": false
       }
@@ -1079,7 +1623,7 @@
       },
       {
         "field": "materials",
-        "text": "附件/材料：南京邮电大学大学生创新创业训练计划项目结题表、项目成果简介Word版、项目研究报告、学术论文Word版及录用通知扫描件、发明专利或软件著作权的申请书和受理书、竞赛获奖证书扫描件、结题答辩PPT、其它与结题相关支撑材料"
+        "text": "附件/材料：南京邮电大学大学生创新创业训练计划项目结题表"
       },
       {
         "field": "location",
@@ -1095,12 +1639,25 @@
     "confidence": 0.9
   },
   {
-    "task_id": "task-10",
+    "task_id": "task-1",
     "doc_id": "cxcy-437f8378c368271fb380",
+    "source_mode": "llm",
+    "field_sources": {
+      "category": "llm",
+      "domain": "llm",
+      "intent": "llm",
+      "deadline": "llm_missing",
+      "action_required": "llm",
+      "action_summary": "llm",
+      "required_materials": "llm",
+      "summary": "llm",
+      "evidence": "llm",
+      "sensitive": "llm"
+    },
     "task_type": "application",
     "who": {
       "audience": [
-        "项目负责人"
+        "2022年度大创项目负责人"
       ],
       "college": [],
       "grade": [],
@@ -1110,9 +1667,9 @@
     "what": "2022年度大创项目结题验收网上填报",
     "action": {
       "required": true,
-      "verb": "填报",
-      "object": "项目结题情况",
-      "summary": "项目负责人网上填写项目结题情况并上传附件"
+      "verb": "网上填报",
+      "object": "项目结题情况并上传附件",
+      "summary": "项目负责人（学生）完成网上项目成果申报、网上项目结题情况填报"
     },
     "time": {
       "published_at": "2025-10-11T00:00:00+08:00",
@@ -1123,49 +1680,7 @@
     "materials": [
       {
         "name": "南京邮电大学大学生创新创业训练计划项目结题表",
-        "role": "申请表",
-        "required": true,
-        "sensitive": false
-      },
-      {
-        "name": "项目成果简介Word版",
-        "role": "支撑材料",
-        "required": true,
-        "sensitive": false
-      },
-      {
-        "name": "项目研究报告",
-        "role": "支撑材料",
-        "required": true,
-        "sensitive": false
-      },
-      {
-        "name": "学术论文Word版及录用通知扫描件",
-        "role": "支撑材料",
-        "required": true,
-        "sensitive": false
-      },
-      {
-        "name": "发明专利或软件著作权的申请书和受理书",
-        "role": "支撑材料",
-        "required": true,
-        "sensitive": false
-      },
-      {
-        "name": "竞赛获奖证书扫描件",
-        "role": "支撑材料",
-        "required": true,
-        "sensitive": false
-      },
-      {
-        "name": "结题答辩PPT",
-        "role": "支撑材料",
-        "required": true,
-        "sensitive": false
-      },
-      {
-        "name": "其它与结题相关支撑材料",
-        "role": "支撑材料",
+        "role": "结题表",
         "required": true,
         "sensitive": false
       }
@@ -1192,7 +1707,7 @@
       },
       {
         "field": "materials",
-        "text": "附件/材料：南京邮电大学大学生创新创业训练计划项目结题表、项目成果简介Word版、项目研究报告、学术论文Word版及录用通知扫描件、发明专利或软件著作权的申请书和受理书、竞赛获奖证书扫描件、结题答辩PPT、其它与结题相关支撑材料"
+        "text": "附件/材料：南京邮电大学大学生创新创业训练计划项目结题表"
       },
       {
         "field": "location",
@@ -1208,12 +1723,25 @@
     "confidence": 0.9
   },
   {
-    "task_id": "task-8",
+    "task_id": "task-1",
     "doc_id": "cxcy-42c19e3bc86cd210fe17",
+    "source_mode": "llm",
+    "field_sources": {
+      "category": "llm",
+      "domain": "llm",
+      "intent": "llm",
+      "deadline": "llm_missing",
+      "action_required": "llm",
+      "action_summary": "llm",
+      "required_materials": "llm",
+      "summary": "llm",
+      "evidence": "llm",
+      "sensitive": "llm"
+    },
     "task_type": "application",
     "who": {
       "audience": [
-        "项目负责人"
+        "2023年度大创项目负责人"
       ],
       "college": [],
       "grade": [],
@@ -1225,7 +1753,7 @@
       "required": true,
       "verb": "填写",
       "object": "中期检查表",
-      "summary": "2023年度项目负责人网上填写中期检查表，指导教师网上审阅"
+      "summary": "2023年度项目负责人（学生）网上填写中期检查表，指导教师网上审阅"
     },
     "time": {
       "published_at": null,
@@ -1279,24 +1807,37 @@
     "confidence": 0.9
   },
   {
-    "task_id": "task-9",
+    "task_id": "task-2",
     "doc_id": "cxcy-42c19e3bc86cd210fe17",
+    "source_mode": "llm",
+    "field_sources": {
+      "category": "llm",
+      "domain": "llm",
+      "intent": "llm",
+      "deadline": "llm_missing",
+      "action_required": "llm",
+      "action_summary": "llm",
+      "required_materials": "llm",
+      "summary": "llm",
+      "evidence": "llm",
+      "sensitive": "llm"
+    },
     "task_type": "application",
     "who": {
       "audience": [
-        "项目负责人"
+        "2022年度延期项目负责人"
       ],
       "college": [],
       "grade": [],
       "major": [],
       "class_name": []
     },
-    "what": "2022年度延期大创项目结题验收网上填报",
+    "what": "2022年度延期项目结题验收网上填报",
     "action": {
       "required": true,
       "verb": "填写",
       "object": "结题验收表",
-      "summary": "2022年度延期项目负责人网上填写结题验收表，指导教师网上审阅"
+      "summary": "2022年度延期项目负责人（学生）网上填写结题验收表，指导教师网上审阅"
     },
     "time": {
       "published_at": null,
@@ -1350,12 +1891,25 @@
     "confidence": 0.9
   },
   {
-    "task_id": "task-4",
+    "task_id": "task-1",
     "doc_id": "cxcy-e74fc8fd1735efcc59dd",
+    "source_mode": "llm",
+    "field_sources": {
+      "category": "llm",
+      "domain": "llm",
+      "intent": "llm",
+      "deadline": "llm_missing",
+      "action_required": "llm",
+      "action_summary": "llm",
+      "required_materials": "llm",
+      "summary": "llm",
+      "evidence": "llm",
+      "sensitive": "llm"
+    },
     "task_type": "application",
     "who": {
       "audience": [
-        "项目负责人"
+        "2024年度大创项目负责人"
       ],
       "college": [],
       "grade": [],
@@ -1367,7 +1921,7 @@
       "required": true,
       "verb": "填写",
       "object": "中期检查表",
-      "summary": "2024年度项目负责人网上填写中期检查表，指导教师网上审阅"
+      "summary": "2024年度项目负责人（学生）网上填写中期检查表，指导教师网上审阅"
     },
     "time": {
       "published_at": null,
@@ -1421,24 +1975,37 @@
     "confidence": 0.9
   },
   {
-    "task_id": "task-5",
+    "task_id": "task-2",
     "doc_id": "cxcy-e74fc8fd1735efcc59dd",
+    "source_mode": "llm",
+    "field_sources": {
+      "category": "llm",
+      "domain": "llm",
+      "intent": "llm",
+      "deadline": "llm_missing",
+      "action_required": "llm",
+      "action_summary": "llm",
+      "required_materials": "llm",
+      "summary": "llm",
+      "evidence": "llm",
+      "sensitive": "llm"
+    },
     "task_type": "application",
     "who": {
       "audience": [
-        "项目负责人"
+        "2023年度延期项目负责人"
       ],
       "college": [],
       "grade": [],
       "major": [],
       "class_name": []
     },
-    "what": "2023年度延期大创项目结题验收网上填报",
+    "what": "2023年度延期项目结题验收网上填报",
     "action": {
       "required": true,
       "verb": "填写",
       "object": "结题验收表",
-      "summary": "2023年度延期项目负责人网上填写结题验收表，指导教师网上审阅"
+      "summary": "2023年度延期项目负责人（学生）网上填写结题验收表，指导教师网上审阅"
     },
     "time": {
       "published_at": null,
@@ -1494,10 +2061,24 @@
   {
     "task_id": "task-1",
     "doc_id": "cxcy-b5a6a7b49e47f0693de1",
+    "source_mode": "llm",
+    "field_sources": {
+      "category": "llm",
+      "domain": "llm",
+      "intent": "llm",
+      "deadline": "llm_missing",
+      "action_required": "llm",
+      "action_summary": "llm",
+      "required_materials": "llm",
+      "summary": "llm",
+      "evidence": "llm",
+      "sensitive": "llm"
+    },
     "task_type": "application",
     "who": {
       "audience": [
-        "项目负责人"
+        "2025年度大创项目负责人",
+        "2024年度延期项目负责人"
       ],
       "college": [],
       "grade": [],
@@ -1509,7 +2090,7 @@
       "required": true,
       "verb": "填写",
       "object": "中期检查表",
-      "summary": "项目负责人网上填写中期检查表，指导教师网上审阅"
+      "summary": "2025年度项目负责人（学生）网上填写中期检查表，指导教师网上审阅"
     },
     "time": {
       "published_at": null,
@@ -1565,22 +2146,35 @@
   {
     "task_id": "task-2",
     "doc_id": "cxcy-b5a6a7b49e47f0693de1",
+    "source_mode": "llm",
+    "field_sources": {
+      "category": "llm",
+      "domain": "llm",
+      "intent": "llm",
+      "deadline": "llm_missing",
+      "action_required": "llm",
+      "action_summary": "llm",
+      "required_materials": "llm",
+      "summary": "llm",
+      "evidence": "llm",
+      "sensitive": "llm"
+    },
     "task_type": "application",
     "who": {
       "audience": [
-        "项目负责人"
+        "2024年度延期项目负责人"
       ],
       "college": [],
       "grade": [],
       "major": [],
       "class_name": []
     },
-    "what": "2024年度延期大创项目结题验收网上填报",
+    "what": "2024年度延期项目结题验收网上填报",
     "action": {
       "required": true,
       "verb": "填写",
       "object": "结题验收表",
-      "summary": "2024年度延期项目负责人网上填写结题验收表，指导教师网上审阅"
+      "summary": "2024年度延期项目负责人（学生）网上填写结题验收表，指导教师网上审阅"
     },
     "time": {
       "published_at": null,
@@ -1636,6 +2230,19 @@
   {
     "task_id": "task_b7ad89fe73f251e9",
     "doc_id": "cxcy-969ff202985b9d4b5bac",
+    "source_mode": "llm",
+    "field_sources": {
+      "category": "llm",
+      "domain": "llm",
+      "intent": "llm",
+      "deadline": "llm_missing",
+      "action_required": "llm",
+      "action_summary": "llm_missing",
+      "required_materials": "llm_missing",
+      "summary": "llm",
+      "evidence": "llm",
+      "sensitive": "llm"
+    },
     "task_type": "result_check",
     "who": {
       "audience": [
@@ -1708,6 +2315,19 @@
   {
     "task_id": "task_6fc612c9f5c439c7",
     "doc_id": "cxcy-e3d77bcf0c6bcf712170",
+    "source_mode": "llm",
+    "field_sources": {
+      "category": "llm",
+      "domain": "llm",
+      "intent": "llm",
+      "deadline": "llm_missing",
+      "action_required": "llm",
+      "action_summary": "llm_missing",
+      "required_materials": "llm_missing",
+      "summary": "llm",
+      "evidence": "llm",
+      "sensitive": "llm"
+    },
     "task_type": "result_check",
     "who": {
       "audience": [
@@ -1780,6 +2400,19 @@
   {
     "task_id": "task_d50bdae335e2cad6",
     "doc_id": "cxcy-b0a1f1b2fd02b9bcd5f3",
+    "source_mode": "llm",
+    "field_sources": {
+      "category": "llm",
+      "domain": "llm",
+      "intent": "llm",
+      "deadline": "llm_missing",
+      "action_required": "llm",
+      "action_summary": "llm_missing",
+      "required_materials": "llm_missing",
+      "summary": "llm",
+      "evidence": "llm",
+      "sensitive": "llm"
+    },
     "task_type": "result_check",
     "who": {
       "audience": [
@@ -1850,13 +2483,27 @@
     "confidence": 0.9
   },
   {
-    "task_id": "task-742eeb7eb58f7965de97-1",
+    "task_id": "task_92f4ae05f3f595f9aad3_1",
     "doc_id": "njupt_notice-6554d92219634f721faf",
+    "source_mode": "llm",
+    "field_sources": {
+      "category": "llm",
+      "domain": "llm",
+      "intent": "llm",
+      "deadline": "llm",
+      "action_required": "llm",
+      "action_summary": "llm",
+      "required_materials": "llm",
+      "summary": "llm",
+      "evidence": "llm",
+      "sensitive": "llm"
+    },
     "task_type": "application",
     "who": {
       "audience": [
         "本科生",
-        "研究生"
+        "研究生",
+        "校友"
       ],
       "college": [],
       "grade": [],
@@ -1867,8 +2514,8 @@
     "action": {
       "required": true,
       "verb": "提交",
-      "object": "纸质和电子申报材料",
-      "summary": "申报时间2026年5月22日至6月22日，纸质材料报送至国家大学科技园7楼703办公室，电子版发送至kejiyuan@njupt.edu.cn"
+      "object": "纸质及电子申报材料",
+      "summary": "申报人于通知截止日之前将纸质申报材料一份装订成册后报送南京邮电大学国家大学科技园7楼703办公室审核，同时将电子版发送至kejiyuan@njupt.edu.cn"
     },
     "time": {
       "published_at": "2026-05-21T00:00:00+08:00",
@@ -1878,15 +2525,45 @@
     },
     "materials": [
       {
-        "name": "附件：南邮大学生优秀创业项目申报表",
-        "role": "申报表",
+        "name": "《南邮大学生优秀创业项目申报表》",
+        "role": "申请表",
         "required": true,
+        "sensitive": false
+      },
+      {
+        "name": "创办企业基本情况表",
+        "role": "申请表",
+        "required": true,
+        "sensitive": false
+      },
+      {
+        "name": "创业项目商业计划书",
+        "role": "计划书",
+        "required": true,
+        "sensitive": false
+      },
+      {
+        "name": "核心成员身份证、毕业证书（在校生提供学生证）等材料扫描件",
+        "role": "身份证明",
+        "required": true,
+        "sensitive": true
+      },
+      {
+        "name": "企业法人营业执照",
+        "role": "资质证明",
+        "required": true,
+        "sensitive": false
+      },
+      {
+        "name": "其他相关参考材料",
+        "role": "补充材料",
+        "required": false,
         "sensitive": false
       }
     ],
     "location": {
       "place": "南京邮电大学国家大学科技园7楼703办公室",
-      "online": "kejiyuan@njupt.edu.cn",
+      "online": null,
       "contact": "李老师 025-83535812"
     },
     "source": {
@@ -1901,20 +2578,20 @@
         "text": "申报时间 2026年5月22日至6月22日"
       },
       {
+        "field": "action",
+        "text": "请申报人于通知截止日之前将纸质申报材料一份装订成册后报送南京邮电大学国家大学科技园7楼703办公室审核，同时将上述材料电子版（申报人+项目名称）发送至指定邮箱：kejiyuan@njupt.edu.cn"
+      },
+      {
         "field": "audience",
         "text": "申报时间 2026年5月22日至6月22日"
       },
       {
-        "field": "action",
-        "text": "申报时间 2026年5月22日至6月22日"
-      },
-      {
         "field": "materials",
-        "text": "附件/材料：附件：南邮大学生优秀创业项目申报表"
+        "text": "附件/材料：《南邮大学生优秀创业项目申报表》、创办企业基本情况表、创业项目商业计划书、核心成员身份证、毕业证书（在校生提供学生证）等材料扫描件、企业法人营业执照、其他相关参考材料"
       },
       {
         "field": "location",
-        "text": "南京邮电大学国家大学科技园7楼703办公室 kejiyuan@njupt.edu.cn 李老师 025-83535812"
+        "text": "南京邮电大学国家大学科技园7楼703办公室 李老师 025-83535812"
       }
     ],
     "risk": {
@@ -1926,13 +2603,25 @@
     "confidence": 0.95
   },
   {
-    "task_id": "task_a0c026dbf1a0008c",
+    "task_id": "task-cc45eff36f9e00c9be0b-1",
     "doc_id": "job-cb39d4504f396ce1a5a3",
+    "source_mode": "llm",
+    "field_sources": {
+      "category": "llm",
+      "domain": "llm",
+      "intent": "llm",
+      "deadline": "llm_missing",
+      "action_required": "llm",
+      "action_summary": "llm_missing",
+      "required_materials": "llm_missing",
+      "summary": "llm",
+      "evidence": "llm",
+      "sensitive": "llm"
+    },
     "task_type": "opportunity",
     "who": {
       "audience": [
-        "本科生",
-        "研究生"
+        "全体学生"
       ],
       "college": [],
       "grade": [],
@@ -1944,7 +2633,7 @@
       "required": false,
       "verb": "参加",
       "object": "空中宣讲会",
-      "summary": "2026年4月16日18:30-20:00空中宣讲会"
+      "summary": "空中宣讲会无需提前报名，在线参加。"
     },
     "time": {
       "published_at": "2026-04-16T00:00:00+08:00",
@@ -1991,27 +2680,37 @@
     "confidence": 0.95
   },
   {
-    "task_id": "task_483e30330336edbd",
+    "task_id": "task-cef8933afe8e4faf61c6-1",
     "doc_id": "job-ce4500e0b0dad687f8d2",
+    "source_mode": "llm",
+    "field_sources": {
+      "category": "llm",
+      "domain": "llm",
+      "intent": "llm",
+      "deadline": "llm_missing",
+      "action_required": "llm",
+      "action_summary": "llm_missing",
+      "required_materials": "llm_missing",
+      "summary": "llm",
+      "evidence": "llm",
+      "sensitive": "llm"
+    },
     "task_type": "opportunity",
     "who": {
       "audience": [
-        "本科生",
-        "研究生"
+        "2026届毕业生"
       ],
       "college": [],
-      "grade": [
-        "2026届"
-      ],
+      "grade": [],
       "major": [],
       "class_name": []
     },
-    "what": "参加第五场春季专场招聘会",
+    "what": "参加第五场春季促就业专场招聘会",
     "action": {
       "required": false,
       "verb": "参加",
       "object": "招聘会",
-      "summary": "2026年5月20日14:00-16:00在仙林校区体育馆举办招聘会"
+      "summary": "招聘会无需提前报名，直接到场参加。"
     },
     "time": {
       "published_at": "2026-05-20T00:00:00+08:00",
@@ -2058,27 +2757,37 @@
     "confidence": 0.95
   },
   {
-    "task_id": "task_95a088df8efd8c81",
+    "task_id": "task-8b07efec3a8dfad049a8-1",
     "doc_id": "job-67dc85ca08fe979eb024",
+    "source_mode": "llm",
+    "field_sources": {
+      "category": "llm",
+      "domain": "llm",
+      "intent": "llm",
+      "deadline": "llm_missing",
+      "action_required": "llm",
+      "action_summary": "llm_missing",
+      "required_materials": "llm_missing",
+      "summary": "llm",
+      "evidence": "llm",
+      "sensitive": "llm"
+    },
     "task_type": "opportunity",
     "who": {
       "audience": [
-        "本科生",
-        "研究生"
+        "2026届毕业生"
       ],
       "college": [],
-      "grade": [
-        "2026届"
-      ],
+      "grade": [],
       "major": [],
       "class_name": []
     },
-    "what": "参加第四场春季专场招聘会",
+    "what": "参加第四场春季促就业专场招聘会",
     "action": {
       "required": false,
       "verb": "参加",
       "object": "招聘会",
-      "summary": "2026年5月13日14:00-16:00在仙林校区体育馆举办招聘会"
+      "summary": "招聘会无需提前报名，直接到场参加。"
     },
     "time": {
       "published_at": "2026-05-13T00:00:00+08:00",
@@ -2125,27 +2834,37 @@
     "confidence": 0.95
   },
   {
-    "task_id": "task_165df3ceb24d1c92",
+    "task_id": "task-02db1483d75bf55087f3-1",
     "doc_id": "job-b0e2b8b567544887e8c7",
+    "source_mode": "llm",
+    "field_sources": {
+      "category": "llm",
+      "domain": "llm",
+      "intent": "llm",
+      "deadline": "llm_missing",
+      "action_required": "llm",
+      "action_summary": "llm_missing",
+      "required_materials": "llm_missing",
+      "summary": "llm",
+      "evidence": "llm",
+      "sensitive": "llm"
+    },
     "task_type": "opportunity",
     "who": {
       "audience": [
-        "本科生",
-        "研究生"
+        "2026届毕业生"
       ],
       "college": [],
-      "grade": [
-        "2026届"
-      ],
+      "grade": [],
       "major": [],
       "class_name": []
     },
-    "what": "参加第三场春季专场招聘会",
+    "what": "参加第三场春季促就业专场招聘会",
     "action": {
       "required": false,
       "verb": "参加",
       "object": "招聘会",
-      "summary": "2026年4月29日14:00-16:00在仙林校区体育馆举办招聘会"
+      "summary": "招聘会无需提前报名，直接到场参加。"
     },
     "time": {
       "published_at": "2026-04-29T00:00:00+08:00",
@@ -2192,27 +2911,37 @@
     "confidence": 0.95
   },
   {
-    "task_id": "task_7a13db54bf148aa3",
+    "task_id": "task-a5acac6ec7e64f8095d2-1",
     "doc_id": "job-af73d8b77101ce20b005",
+    "source_mode": "llm",
+    "field_sources": {
+      "category": "llm",
+      "domain": "llm",
+      "intent": "llm",
+      "deadline": "llm_missing",
+      "action_required": "llm",
+      "action_summary": "llm_missing",
+      "required_materials": "llm_missing",
+      "summary": "llm",
+      "evidence": "llm",
+      "sensitive": "llm"
+    },
     "task_type": "opportunity",
     "who": {
       "audience": [
-        "本科生",
-        "研究生"
+        "2026届毕业生"
       ],
       "college": [],
-      "grade": [
-        "2026届"
-      ],
+      "grade": [],
       "major": [],
       "class_name": []
     },
-    "what": "参加第二场春季专场招聘会",
+    "what": "参加第二场春季促就业专场招聘会",
     "action": {
       "required": false,
       "verb": "参加",
       "object": "招聘会",
-      "summary": "2026年4月22日14:00-16:00在仙林校区体育馆举办招聘会"
+      "summary": "招聘会无需提前报名，直接到场参加。"
     },
     "time": {
       "published_at": "2026-04-22T00:00:00+08:00",
@@ -2259,27 +2988,37 @@
     "confidence": 0.95
   },
   {
-    "task_id": "task_2f6f4533336b01fb",
+    "task_id": "task-2581c0e556eba40cf584-1",
     "doc_id": "job-85fe09dc12906fa9d158",
+    "source_mode": "llm",
+    "field_sources": {
+      "category": "llm",
+      "domain": "llm",
+      "intent": "llm",
+      "deadline": "llm_missing",
+      "action_required": "llm",
+      "action_summary": "llm_missing",
+      "required_materials": "llm_missing",
+      "summary": "llm",
+      "evidence": "llm",
+      "sensitive": "llm"
+    },
     "task_type": "opportunity",
     "who": {
       "audience": [
-        "本科生",
-        "研究生"
+        "2026届毕业生"
       ],
       "college": [],
-      "grade": [
-        "2026届"
-      ],
+      "grade": [],
       "major": [],
       "class_name": []
     },
-    "what": "参加第一场春季专场招聘会",
+    "what": "参加第一场春季促就业专场招聘会",
     "action": {
       "required": false,
       "verb": "参加",
       "object": "招聘会",
-      "summary": "2026年4月15日14:00-16:00在仙林校区体育馆举办招聘会"
+      "summary": "招聘会无需提前报名，直接到场参加。"
     },
     "time": {
       "published_at": "2026-04-15T00:00:00+08:00",
@@ -2326,76 +3065,22 @@
     "confidence": 0.95
   },
   {
-    "task_id": "task_934ede324a4c72cd",
-    "doc_id": "job-286aa0035d13ca9a1f18",
-    "task_type": "opportunity",
-    "who": {
-      "audience": [
-        "本科生",
-        "研究生"
-      ],
-      "college": [],
-      "grade": [],
-      "major": [
-        "信息文科类"
-      ],
-      "class_name": []
+    "task_id": "task_b8edfbd6c7a081241c0b_1",
+    "doc_id": "njupt_notice-7011710a55e2cbd7660c",
+    "source_mode": "llm",
+    "field_sources": {
+      "category": "llm",
+      "domain": "llm",
+      "intent": "llm",
+      "deadline": "llm_missing",
+      "action_required": "llm",
+      "action_summary": "llm",
+      "required_materials": "llm_missing",
+      "summary": "llm",
+      "evidence": "llm",
+      "sensitive": "llm"
     },
-    "what": "参加信息文科类专业联合春季招聘会",
-    "action": {
-      "required": false,
-      "verb": "参加",
-      "object": "招聘会",
-      "summary": "2026年4月24日14:00-16:00在仙林校区体育馆举办"
-    },
-    "time": {
-      "published_at": "2026-04-24T00:00:00+08:00",
-      "deadline": null,
-      "lifecycle": "expired",
-      "urgency_days": null
-    },
-    "materials": [],
-    "location": {
-      "place": "仙林校区体育馆",
-      "online": null,
-      "contact": "王老师 025-85866867"
-    },
-    "source": {
-      "source_id": "job",
-      "channel_id": "job_talk",
-      "authority": 0.88,
-      "official": true
-    },
-    "evidence": [
-      {
-        "field": "time",
-        "text": "时间：2026-04-24 14:00:00 至 2026-04-24 16:00:00"
-      },
-      {
-        "field": "audience",
-        "text": "时间：2026-04-24 14:00:00 至 2026-04-24 16:00:00"
-      },
-      {
-        "field": "action",
-        "text": "时间：2026-04-24 14:00:00 至 2026-04-24 16:00:00"
-      },
-      {
-        "field": "location",
-        "text": "仙林校区体育馆 王老师 025-85866867"
-      }
-    ],
-    "risk": {
-      "sensitive": false,
-      "restricted": false,
-      "low_evidence": false,
-      "review_required": false
-    },
-    "confidence": 0.95
-  },
-  {
-    "task_id": "task_b454b4ffb655c1ec",
-    "doc_id": "job-742eb8e3037e85faf282",
-    "task_type": "opportunity",
+    "task_type": "schedule",
     "who": {
       "audience": [
         "本科生",
@@ -2406,47 +3091,47 @@
       "major": [],
       "class_name": []
     },
-    "what": "参加鼓楼区春季大学生专场招聘会",
+    "what": "注意教学楼封闭时间，提前取走个人物品",
     "action": {
-      "required": false,
-      "verb": "参加",
-      "object": "招聘会",
-      "summary": "2026年4月15日14:00-16:00在仙林校区体育馆举办"
+      "required": true,
+      "verb": "取走",
+      "object": "个人物品",
+      "summary": "请在涉及到的场所办公、学习的师生提前做好准备，在教学楼封闭前及时取走在教学楼内的个人物品。"
     },
     "time": {
-      "published_at": "2026-04-15T00:00:00+08:00",
-      "deadline": null,
+      "published_at": "2025-12-17T00:00:00+08:00",
+      "deadline": "2025-12-19T18:00:00+08:00",
       "lifecycle": "expired",
       "urgency_days": null
     },
     "materials": [],
     "location": {
-      "place": "仙林校区体育馆",
+      "place": "仙林校区教2、教3教学楼",
       "online": null,
-      "contact": "王老师 025-85866867"
+      "contact": null
     },
     "source": {
-      "source_id": "job",
-      "channel_id": "job_talk",
-      "authority": 0.88,
+      "source_id": "njupt_notice",
+      "channel_id": "njupt_notice_main",
+      "authority": 0.86,
       "official": true
     },
     "evidence": [
       {
-        "field": "time",
-        "text": "时间：2026-04-15 14:00:00 至 2026-04-15 16:00:00"
-      },
-      {
-        "field": "audience",
-        "text": "时间：2026-04-15 14:00:00 至 2026-04-15 16:00:00"
+        "field": "deadline",
+        "text": "封闭时间：2025年12月19日（周五）18:00至12月21日（周日）18:00"
       },
       {
         "field": "action",
-        "text": "时间：2026-04-15 14:00:00 至 2026-04-15 16:00:00"
+        "text": "请在涉及到的场所办公、学习的师生提前做好准备，在教学楼封闭前及时取走在教学楼内的个人物品。"
+      },
+      {
+        "field": "audience",
+        "text": "封闭时间：2025年12月19日（周五）18:00至12月21日（周日）18:00"
       },
       {
         "field": "location",
-        "text": "仙林校区体育馆 王老师 025-85866867"
+        "text": "仙林校区教2、教3教学楼"
       }
     ],
     "risk": {
@@ -2458,83 +3143,28 @@
     "confidence": 0.95
   },
   {
-    "task_id": "task_fc8bad8b44fe53cd",
-    "doc_id": "job-42bf10c92bb46a936b90",
-    "task_type": "opportunity",
-    "who": {
-      "audience": [
-        "本科生",
-        "研究生"
-      ],
-      "college": [],
-      "grade": [],
-      "major": [],
-      "class_name": []
-    },
-    "what": "参加江阴市春季校园招聘活动",
-    "action": {
-      "required": false,
-      "verb": "参加",
-      "object": "招聘活动",
-      "summary": "2026年4月17日10:00-12:00在仙林校区体育馆举办"
-    },
-    "time": {
-      "published_at": "2026-04-17T00:00:00+08:00",
-      "deadline": null,
-      "lifecycle": "expired",
-      "urgency_days": null
-    },
-    "materials": [],
-    "location": {
-      "place": "仙林校区体育馆",
-      "online": null,
-      "contact": "王老师 025-85866867"
-    },
-    "source": {
-      "source_id": "job",
-      "channel_id": "job_talk",
-      "authority": 0.88,
-      "official": true
-    },
-    "evidence": [
-      {
-        "field": "time",
-        "text": "时间：2026-04-17 10:00:00 至 2026-04-17 12:00:00"
-      },
-      {
-        "field": "audience",
-        "text": "时间：2026-04-17 10:00:00 至 2026-04-17 12:00:00"
-      },
-      {
-        "field": "action",
-        "text": "时间：2026-04-17 10:00:00 至 2026-04-17 12:00:00"
-      },
-      {
-        "field": "location",
-        "text": "仙林校区体育馆 王老师 025-85866867"
-      }
-    ],
-    "risk": {
-      "sensitive": false,
-      "restricted": false,
-      "low_evidence": false,
-      "review_required": false
-    },
-    "confidence": 0.95
-  },
-  {
-    "task_id": "task_dc0030c0702d7166",
+    "task_id": "task-9af710de67b7b259f114-1",
     "doc_id": "job-4f29dbeba905aef277a5",
+    "source_mode": "llm",
+    "field_sources": {
+      "category": "llm",
+      "domain": "llm",
+      "intent": "llm",
+      "deadline": "llm_missing",
+      "action_required": "llm",
+      "action_summary": "llm_missing",
+      "required_materials": "llm_missing",
+      "summary": "llm",
+      "evidence": "llm",
+      "sensitive": "llm"
+    },
     "task_type": "opportunity",
     "who": {
       "audience": [
-        "本科生",
-        "研究生"
+        "2026届毕业生"
       ],
       "college": [],
-      "grade": [
-        "2026届"
-      ],
+      "grade": [],
       "major": [],
       "class_name": []
     },
@@ -2543,7 +3173,7 @@
       "required": false,
       "verb": "参加",
       "object": "宣讲会",
-      "summary": "2026年4月16日14:00-15:30在教2-105举办宣讲+笔试，面试在教2-106"
+      "summary": "宣讲会无需提前报名，直接到场参加。"
     },
     "time": {
       "published_at": "2026-04-16T00:00:00+08:00",
@@ -2553,7 +3183,7 @@
     },
     "materials": [],
     "location": {
-      "place": "教2－105（宣讲+笔试）",
+      "place": "教2－105（宣讲+笔试）教2－106（面试）",
       "online": null,
       "contact": "徐** 150****7259"
     },
@@ -2578,7 +3208,7 @@
       },
       {
         "field": "location",
-        "text": "教2－105（宣讲+笔试） 徐** 150****7259"
+        "text": "教2－105（宣讲+笔试）教2－106（面试） 徐** 150****7259"
       }
     ],
     "risk": {
@@ -2590,18 +3220,28 @@
     "confidence": 0.95
   },
   {
-    "task_id": "task_5eae3836e048f9a8",
+    "task_id": "task-7703310f073688d6dc29-1",
     "doc_id": "job-891ec3ddc35537182931",
+    "source_mode": "llm",
+    "field_sources": {
+      "category": "llm",
+      "domain": "llm",
+      "intent": "llm",
+      "deadline": "llm_missing",
+      "action_required": "llm",
+      "action_summary": "llm_missing",
+      "required_materials": "llm_missing",
+      "summary": "llm",
+      "evidence": "llm",
+      "sensitive": "llm"
+    },
     "task_type": "opportunity",
     "who": {
       "audience": [
-        "本科生",
-        "研究生"
+        "2026届毕业生"
       ],
       "college": [],
-      "grade": [
-        "2026届"
-      ],
+      "grade": [],
       "major": [],
       "class_name": []
     },
@@ -2610,7 +3250,7 @@
       "required": false,
       "verb": "参加",
       "object": "宣讲会",
-      "summary": "2026年4月14日18:30-20:00在教3-205举办"
+      "summary": "宣讲会无需提前报名，直接到场参加。"
     },
     "time": {
       "published_at": "2026-04-14T00:00:00+08:00",
@@ -2657,28 +3297,40 @@
     "confidence": 0.95
   },
   {
-    "task_id": "task_3f4b9c10472d6799",
-    "doc_id": "job-62a10178c957016f7940",
+    "task_id": "task-2c1d380dfd0bd8b99227-1",
+    "doc_id": "job-286aa0035d13ca9a1f18",
+    "source_mode": "llm",
+    "field_sources": {
+      "category": "llm",
+      "domain": "llm",
+      "intent": "llm",
+      "deadline": "llm_missing",
+      "action_required": "llm",
+      "action_summary": "llm_missing",
+      "required_materials": "llm_missing",
+      "summary": "llm",
+      "evidence": "llm",
+      "sensitive": "llm"
+    },
     "task_type": "opportunity",
     "who": {
       "audience": [
-        "本科生",
-        "研究生"
+        "信息文科类专业学生"
       ],
       "college": [],
       "grade": [],
       "major": [],
       "class_name": []
     },
-    "what": "参加建邺区春季校园招聘活动",
+    "what": "参加信息文科类专业联合春季招聘会",
     "action": {
       "required": false,
       "verb": "参加",
-      "object": "招聘活动",
-      "summary": "2026年4月22日14:00-16:00在仙林校区体育馆举办"
+      "object": "招聘会",
+      "summary": "招聘会无需提前报名，直接到场参加。"
     },
     "time": {
-      "published_at": "2026-04-22T00:00:00+08:00",
+      "published_at": "2026-04-24T00:00:00+08:00",
       "deadline": null,
       "lifecycle": "expired",
       "urgency_days": null
@@ -2698,15 +3350,15 @@
     "evidence": [
       {
         "field": "time",
-        "text": "时间：2026-04-22 14:00:00 至 2026-04-22 16:00:00"
+        "text": "时间：2026-04-24 14:00:00 至 2026-04-24 16:00:00"
       },
       {
         "field": "audience",
-        "text": "时间：2026-04-22 14:00:00 至 2026-04-22 16:00:00"
+        "text": "时间：2026-04-24 14:00:00 至 2026-04-24 16:00:00"
       },
       {
         "field": "action",
-        "text": "时间：2026-04-22 14:00:00 至 2026-04-22 16:00:00"
+        "text": "时间：2026-04-24 14:00:00 至 2026-04-24 16:00:00"
       },
       {
         "field": "location",
@@ -2722,18 +3374,182 @@
     "confidence": 0.95
   },
   {
-    "task_id": "task_3eaeedd752cdbd0e",
-    "doc_id": "job-6b5a43035e1c693fbb4b",
+    "task_id": "task-a31990203958aa4e479a-1",
+    "doc_id": "job-742eb8e3037e85faf282",
+    "source_mode": "llm",
+    "field_sources": {
+      "category": "llm",
+      "domain": "llm",
+      "intent": "llm",
+      "deadline": "llm_missing",
+      "action_required": "llm",
+      "action_summary": "llm_missing",
+      "required_materials": "llm_missing",
+      "summary": "llm",
+      "evidence": "llm",
+      "sensitive": "llm"
+    },
     "task_type": "opportunity",
     "who": {
       "audience": [
-        "本科生",
-        "研究生"
+        "全体学生"
       ],
       "college": [],
-      "grade": [
-        "2026届"
+      "grade": [],
+      "major": [],
+      "class_name": []
+    },
+    "what": "参加鼓楼区春季大学生专场招聘会",
+    "action": {
+      "required": false,
+      "verb": "参加",
+      "object": "招聘会",
+      "summary": "招聘会无需提前报名，直接到场参加。"
+    },
+    "time": {
+      "published_at": "2026-04-15T00:00:00+08:00",
+      "deadline": null,
+      "lifecycle": "expired",
+      "urgency_days": null
+    },
+    "materials": [],
+    "location": {
+      "place": "仙林校区体育馆",
+      "online": null,
+      "contact": "王老师 025-85866867"
+    },
+    "source": {
+      "source_id": "job",
+      "channel_id": "job_talk",
+      "authority": 0.88,
+      "official": true
+    },
+    "evidence": [
+      {
+        "field": "time",
+        "text": "时间：2026-04-15 14:00:00 至 2026-04-15 16:00:00"
+      },
+      {
+        "field": "audience",
+        "text": "时间：2026-04-15 14:00:00 至 2026-04-15 16:00:00"
+      },
+      {
+        "field": "action",
+        "text": "时间：2026-04-15 14:00:00 至 2026-04-15 16:00:00"
+      },
+      {
+        "field": "location",
+        "text": "仙林校区体育馆 王老师 025-85866867"
+      }
+    ],
+    "risk": {
+      "sensitive": false,
+      "restricted": false,
+      "low_evidence": false,
+      "review_required": false
+    },
+    "confidence": 0.95
+  },
+  {
+    "task_id": "task-865f0df2d5e1d68d87eb-1",
+    "doc_id": "job-42bf10c92bb46a936b90",
+    "source_mode": "llm",
+    "field_sources": {
+      "category": "llm",
+      "domain": "llm",
+      "intent": "llm",
+      "deadline": "llm_missing",
+      "action_required": "llm",
+      "action_summary": "llm_missing",
+      "required_materials": "llm_missing",
+      "summary": "llm",
+      "evidence": "llm",
+      "sensitive": "llm"
+    },
+    "task_type": "opportunity",
+    "who": {
+      "audience": [
+        "全体学生"
       ],
+      "college": [],
+      "grade": [],
+      "major": [],
+      "class_name": []
+    },
+    "what": "参加“才聚江阴·澄就未来”2026春季校园招聘活动",
+    "action": {
+      "required": false,
+      "verb": "参加",
+      "object": "招聘活动",
+      "summary": "活动无需提前报名，直接到场参加。"
+    },
+    "time": {
+      "published_at": "2026-04-17T00:00:00+08:00",
+      "deadline": null,
+      "lifecycle": "expired",
+      "urgency_days": null
+    },
+    "materials": [],
+    "location": {
+      "place": "仙林校区体育馆",
+      "online": null,
+      "contact": "王老师 025-85866867"
+    },
+    "source": {
+      "source_id": "job",
+      "channel_id": "job_talk",
+      "authority": 0.88,
+      "official": true
+    },
+    "evidence": [
+      {
+        "field": "time",
+        "text": "时间：2026-04-17 10:00:00 至 2026-04-17 12:00:00"
+      },
+      {
+        "field": "audience",
+        "text": "时间：2026-04-17 10:00:00 至 2026-04-17 12:00:00"
+      },
+      {
+        "field": "action",
+        "text": "时间：2026-04-17 10:00:00 至 2026-04-17 12:00:00"
+      },
+      {
+        "field": "location",
+        "text": "仙林校区体育馆 王老师 025-85866867"
+      }
+    ],
+    "risk": {
+      "sensitive": false,
+      "restricted": false,
+      "low_evidence": false,
+      "review_required": false
+    },
+    "confidence": 0.95
+  },
+  {
+    "task_id": "task-02cead06612ea23375eb-1",
+    "doc_id": "job-6b5a43035e1c693fbb4b",
+    "source_mode": "llm",
+    "field_sources": {
+      "category": "llm",
+      "domain": "llm",
+      "intent": "llm",
+      "deadline": "llm_missing",
+      "action_required": "llm",
+      "action_summary": "llm_missing",
+      "required_materials": "llm_missing",
+      "summary": "llm",
+      "evidence": "llm",
+      "sensitive": "llm"
+    },
+    "task_type": "opportunity",
+    "who": {
+      "audience": [
+        "2026届毕业生"
+      ],
+      "college": [],
+      "grade": [],
       "major": [],
       "class_name": []
     },
@@ -2742,7 +3558,7 @@
       "required": false,
       "verb": "参加",
       "object": "宣讲会",
-      "summary": "2026年4月24日16:00-17:30在教2-117举办"
+      "summary": "宣讲会无需提前报名，直接到场参加。"
     },
     "time": {
       "published_at": "2026-04-24T00:00:00+08:00",
@@ -2789,25 +3605,114 @@
     "confidence": 0.95
   },
   {
-    "task_id": "task_dd40b20f51f5fe4e",
-    "doc_id": "job-5a3142ec6444de8fd876",
+    "task_id": "task-14b4c6d100ba9b8c6397-1",
+    "doc_id": "job-62a10178c957016f7940",
+    "source_mode": "llm",
+    "field_sources": {
+      "category": "llm",
+      "domain": "llm",
+      "intent": "llm",
+      "deadline": "llm_missing",
+      "action_required": "llm",
+      "action_summary": "llm_missing",
+      "required_materials": "llm_missing",
+      "summary": "llm",
+      "evidence": "llm",
+      "sensitive": "llm"
+    },
     "task_type": "opportunity",
     "who": {
       "audience": [
-        "本科生",
-        "研究生"
+        "全体学生"
       ],
       "college": [],
       "grade": [],
       "major": [],
       "class_name": []
     },
-    "what": "参加浙江新东方素养智学教师春招补录空宣",
+    "what": "参加建邺区春季校园系列活动——市内科创线",
+    "action": {
+      "required": false,
+      "verb": "参加",
+      "object": "活动",
+      "summary": "活动无需提前报名，直接到场参加。"
+    },
+    "time": {
+      "published_at": "2026-04-22T00:00:00+08:00",
+      "deadline": null,
+      "lifecycle": "expired",
+      "urgency_days": null
+    },
+    "materials": [],
+    "location": {
+      "place": "仙林校区体育馆",
+      "online": null,
+      "contact": "王老师 025-85866867"
+    },
+    "source": {
+      "source_id": "job",
+      "channel_id": "job_talk",
+      "authority": 0.88,
+      "official": true
+    },
+    "evidence": [
+      {
+        "field": "time",
+        "text": "时间：2026-04-22 14:00:00 至 2026-04-22 16:00:00"
+      },
+      {
+        "field": "audience",
+        "text": "时间：2026-04-22 14:00:00 至 2026-04-22 16:00:00"
+      },
+      {
+        "field": "action",
+        "text": "时间：2026-04-22 14:00:00 至 2026-04-22 16:00:00"
+      },
+      {
+        "field": "location",
+        "text": "仙林校区体育馆 王老师 025-85866867"
+      }
+    ],
+    "risk": {
+      "sensitive": false,
+      "restricted": false,
+      "low_evidence": false,
+      "review_required": false
+    },
+    "confidence": 0.95
+  },
+  {
+    "task_id": "task-0a3672c5959042c26045-1",
+    "doc_id": "job-5a3142ec6444de8fd876",
+    "source_mode": "llm",
+    "field_sources": {
+      "category": "llm",
+      "domain": "llm",
+      "intent": "llm",
+      "deadline": "llm_missing",
+      "action_required": "llm",
+      "action_summary": "llm_missing",
+      "required_materials": "llm_missing",
+      "summary": "llm",
+      "evidence": "llm",
+      "sensitive": "llm"
+    },
+    "task_type": "opportunity",
+    "who": {
+      "audience": [
+        "全体学生"
+      ],
+      "college": [],
+      "grade": [],
+      "major": [],
+      "class_name": []
+    },
+    "what": "参加浙江新东方素养智学教师春招补录空中宣讲会",
     "action": {
       "required": false,
       "verb": "参加",
       "object": "空中宣讲会",
-      "summary": "2026年4月14日14:30-16:30空中宣讲会"
+      "summary": "空中宣讲会无需提前报名，在线参加。"
     },
     "time": {
       "published_at": "2026-04-14T00:00:00+08:00",
@@ -2854,26 +3759,37 @@
     "confidence": 0.95
   },
   {
-    "task_id": "task_ee155d51f9e887a3",
+    "task_id": "task-9eb565d5bee4ef3d37a6-1",
     "doc_id": "job-d7f60712cb9c969a9b36",
+    "source_mode": "llm",
+    "field_sources": {
+      "category": "llm",
+      "domain": "llm",
+      "intent": "llm",
+      "deadline": "llm_missing",
+      "action_required": "llm",
+      "action_summary": "llm_missing",
+      "required_materials": "llm_missing",
+      "summary": "llm",
+      "evidence": "llm",
+      "sensitive": "llm"
+    },
     "task_type": "opportunity",
     "who": {
       "audience": [
-        "研究生"
+        "光电硕博"
       ],
       "college": [],
       "grade": [],
-      "major": [
-        "光电"
-      ],
+      "major": [],
       "class_name": []
     },
-    "what": "参加群发光芯春季校招宣讲会（光电硕博专场）",
+    "what": "参加2026群发光芯春季校招宣讲会（光电硕博专场）",
     "action": {
       "required": false,
       "verb": "参加",
       "object": "宣讲会",
-      "summary": "2026年4月15日14:00-15:30在教2-103举办"
+      "summary": "宣讲会无需提前报名，直接到场参加。"
     },
     "time": {
       "published_at": "2026-04-15T00:00:00+08:00",
@@ -2920,13 +3836,25 @@
     "confidence": 0.95
   },
   {
-    "task_id": "task_ea28d9f4de9f4320",
+    "task_id": "task-870d959643e267ee9f93-1",
     "doc_id": "job-1b00dd81ac34a9a6de73",
+    "source_mode": "llm",
+    "field_sources": {
+      "category": "llm",
+      "domain": "llm",
+      "intent": "llm",
+      "deadline": "llm_missing",
+      "action_required": "llm",
+      "action_summary": "llm_missing",
+      "required_materials": "llm_missing",
+      "summary": "llm",
+      "evidence": "llm",
+      "sensitive": "llm"
+    },
     "task_type": "opportunity",
     "who": {
       "audience": [
-        "本科生",
-        "研究生"
+        "全体学生"
       ],
       "college": [],
       "grade": [],
@@ -2938,7 +3866,7 @@
       "required": false,
       "verb": "参加",
       "object": "招聘会",
-      "summary": "2026年4月12日14:00-15:30在教2-103举办"
+      "summary": "招聘会无需提前报名，直接到场参加。"
     },
     "time": {
       "published_at": "2026-04-12T00:00:00+08:00",
@@ -2985,13 +3913,24 @@
     "confidence": 0.95
   },
   {
-    "task_id": "task_fbb0cc63cdcb1f61",
-    "doc_id": "njupt_notice-7011710a55e2cbd7660c",
-    "task_type": "schedule",
+    "task_id": "task-dc2875bd860ad6370e3a-1",
+    "doc_id": "job-e003cf1cda08ab24539e",
+    "source_mode": "llm",
+    "field_sources": {
+      "category": "llm",
+      "domain": "llm",
+      "intent": "llm",
+      "deadline": "llm_missing",
+      "action_required": "llm",
+      "action_summary": "llm_missing",
+      "required_materials": "llm_missing",
+      "summary": "llm",
+      "evidence": "llm",
+      "sensitive": "llm"
+    },
+    "task_type": "opportunity",
     "who": {
       "audience": [
-        "本科生",
-        "研究生",
         "全体学生"
       ],
       "college": [],
@@ -2999,73 +3938,12 @@
       "major": [],
       "class_name": []
     },
-    "what": "2025 12.17 关于第15周周末封闭仙林校区部分教学楼的通知",
-    "action": {
-      "required": false,
-      "verb": null,
-      "object": null,
-      "summary": null
-    },
-    "time": {
-      "published_at": "2025-12-17",
-      "deadline": null,
-      "lifecycle": "unknown",
-      "urgency_days": null
-    },
-    "materials": [],
-    "location": {
-      "place": null,
-      "online": null,
-      "contact": null
-    },
-    "source": {
-      "source_id": "njupt_notice",
-      "channel_id": "njupt_notice_main",
-      "authority": 0.86,
-      "official": true
-    },
-    "evidence": [
-      {
-        "field": "general",
-        "text": "封闭区域：教2、教3教学楼"
-      },
-      {
-        "field": "general",
-        "text": "封闭时间：2025年12月19日（周五）18:00至12月21日（周日）18:00"
-      },
-      {
-        "field": "audience",
-        "text": "封闭区域：教2、教3教学楼"
-      }
-    ],
-    "risk": {
-      "sensitive": false,
-      "restricted": false,
-      "low_evidence": false,
-      "review_required": false
-    },
-    "confidence": 0.9
-  },
-  {
-    "task_id": "task_7cece32ebaa78ac6",
-    "doc_id": "job-e003cf1cda08ab24539e",
-    "task_type": "opportunity",
-    "who": {
-      "audience": [
-        "本科生",
-        "研究生"
-      ],
-      "college": [],
-      "grade": [],
-      "major": [],
-      "class_name": []
-    },
-    "what": "参加“徐州日”招聘活动",
+    "what": "参加2026“徐州日”走进南京邮电大学活动",
     "action": {
       "required": false,
       "verb": "参加",
-      "object": "招聘活动",
-      "summary": "2026年4月24日14:30-16:30在仙林校区体育馆举办"
+      "object": "活动",
+      "summary": "活动无需提前报名，直接到场参加。"
     },
     "time": {
       "published_at": "2026-04-24T00:00:00+08:00",
@@ -3112,19 +3990,29 @@
     "confidence": 0.95
   },
   {
-    "task_id": "task_36794afa1aee5adb",
+    "task_id": "task-688ee78198b0fb04f3d1-1",
     "doc_id": "job-0e4b5b0f266a9a2866e6",
+    "source_mode": "llm",
+    "field_sources": {
+      "category": "llm",
+      "domain": "llm",
+      "intent": "llm",
+      "deadline": "llm_missing",
+      "action_required": "llm",
+      "action_summary": "llm_missing",
+      "required_materials": "llm_missing",
+      "summary": "llm",
+      "evidence": "llm",
+      "sensitive": "llm"
+    },
     "task_type": "opportunity",
     "who": {
       "audience": [
-        "本科生",
-        "研究生"
+        "艺术生"
       ],
       "college": [],
       "grade": [],
-      "major": [
-        "艺术类"
-      ],
+      "major": [],
       "class_name": []
     },
     "what": "参加艺术生就业全景图宣讲会",
@@ -3132,7 +4020,7 @@
       "required": false,
       "verb": "参加",
       "object": "宣讲会",
-      "summary": "2026年5月7日18:30-20:00在教2-106举办"
+      "summary": "宣讲会无需提前报名，直接到场参加。"
     },
     "time": {
       "published_at": "2026-05-07T00:00:00+08:00",
@@ -3179,681 +4067,21 @@
     "confidence": 0.95
   },
   {
-    "task_id": "task-425c790e54cd4ce10d82-1",
-    "doc_id": "njupt_notice-0d750d311ccda0e2154a",
-    "task_type": "application",
-    "who": {
-      "audience": [
-        "研究生",
-        "本科生"
-      ],
-      "college": [],
-      "grade": [],
-      "major": [],
-      "class_name": []
-    },
-    "what": "申报2026年学校党建与思想政治教育研究项目",
-    "action": {
-      "required": true,
-      "verb": "提交",
-      "object": "申报材料",
-      "summary": "申报时间5月22日至6月19日，各基层党组织于6月24日前将汇总表和申报书发送至sz@njupt.edu.cn"
-    },
-    "time": {
-      "published_at": "2026-05-22T00:00:00+08:00",
-      "deadline": "2026-06-19T23:59:00+08:00",
-      "lifecycle": "active",
-      "urgency_days": 26
-    },
-    "materials": [
-      {
-        "name": "附件3、4、5.zip",
-        "role": "申报材料",
-        "required": true,
-        "sensitive": false
-      }
-    ],
-    "location": {
-      "place": null,
-      "online": "sz@njupt.edu.cn",
-      "contact": "党委宣传部王老师，电话：85866566"
-    },
-    "source": {
-      "source_id": "njupt_notice",
-      "channel_id": "njupt_notice_main",
-      "authority": 0.86,
-      "official": true
-    },
-    "evidence": [
-      {
-        "field": "deadline",
-        "text": "申报时间5月22日至6月19日"
-      },
-      {
-        "field": "audience",
-        "text": "申报时间5月22日至6月19日"
-      },
-      {
-        "field": "action",
-        "text": "申报时间5月22日至6月19日"
-      },
-      {
-        "field": "materials",
-        "text": "附件/材料：附件3、4、5.zip"
-      },
-      {
-        "field": "location",
-        "text": "sz@njupt.edu.cn 党委宣传部王老师，电话：85866566"
-      }
-    ],
-    "risk": {
-      "sensitive": false,
-      "restricted": false,
-      "low_evidence": false,
-      "review_required": false
-    },
-    "confidence": 0.9
-  },
-  {
-    "task_id": "task-425c790e54cd4ce10d82-2",
-    "doc_id": "njupt_notice-0d750d311ccda0e2154a",
-    "task_type": "application",
-    "who": {
-      "audience": [
-        "研究生",
-        "本科生"
-      ],
-      "college": [],
-      "grade": [],
-      "major": [],
-      "class_name": []
-    },
-    "what": "申报红色校史挖掘专项研究项目",
-    "action": {
-      "required": true,
-      "verb": "提交",
-      "object": "申报材料",
-      "summary": "红色校史挖掘专项研究项目申报时间5月22日至6月5日，各基层党组织于6月8日前将汇总表和申报书发送至xc@njupt.edu.cn"
-    },
-    "time": {
-      "published_at": "2026-05-22T00:00:00+08:00",
-      "deadline": "2026-06-05T23:59:00+08:00",
-      "lifecycle": "active",
-      "urgency_days": 12
-    },
-    "materials": [
-      {
-        "name": "附件6、7、8.zip",
-        "role": "申报材料",
-        "required": true,
-        "sensitive": false
-      }
-    ],
-    "location": {
-      "place": null,
-      "online": "xc@njupt.edu.cn",
-      "contact": "党委宣传部徐老师，电话：85866233"
-    },
-    "source": {
-      "source_id": "njupt_notice",
-      "channel_id": "njupt_notice_main",
-      "authority": 0.86,
-      "official": true
-    },
-    "evidence": [
-      {
-        "field": "deadline",
-        "text": "申报时间5月22日至6月5日"
-      },
-      {
-        "field": "audience",
-        "text": "申报时间5月22日至6月19日"
-      },
-      {
-        "field": "action",
-        "text": "申报时间5月22日至6月19日"
-      },
-      {
-        "field": "materials",
-        "text": "附件/材料：附件6、7、8.zip"
-      },
-      {
-        "field": "location",
-        "text": "xc@njupt.edu.cn 党委宣传部徐老师，电话：85866233"
-      }
-    ],
-    "risk": {
-      "sensitive": false,
-      "restricted": false,
-      "low_evidence": false,
-      "review_required": false
-    },
-    "confidence": 0.9
-  },
-  {
-    "task_id": "task-72f7b12c8d29e5975cdc-1",
-    "doc_id": "exchange-176cb6ec00a0d59cab1e",
-    "task_type": "application",
-    "who": {
-      "audience": [
-        "本科生"
-      ],
-      "college": [],
-      "grade": [],
-      "major": [],
-      "class_name": []
-    },
-    "what": "申请香港理工大学暑假“科技创新”访学项目",
-    "action": {
-      "required": true,
-      "verb": "提交",
-      "object": "申请材料至学院",
-      "summary": "申请人向所在学院提交《南京邮电大学本科生海外访学申请表》、英语水平证明、学术科研能力证明材料、获奖证书等。"
-    },
-    "time": {
-      "published_at": null,
-      "deadline": null,
-      "lifecycle": "upcoming",
-      "urgency_days": null
-    },
-    "materials": [
-      {
-        "name": "《南京邮电大学本科生海外访学申请表》",
-        "role": "申请表",
-        "required": true,
-        "sensitive": false
-      },
-      {
-        "name": "英语水平证明及复印件",
-        "role": "语言证明",
-        "required": true,
-        "sensitive": false
-      },
-      {
-        "name": "学术科研能力证明材料及复印件",
-        "role": "能力证明",
-        "required": true,
-        "sensitive": false
-      },
-      {
-        "name": "获奖证书及复印件（校级以上奖励）",
-        "role": "获奖证明",
-        "required": true,
-        "sensitive": false
-      }
-    ],
-    "location": {
-      "place": "各学院",
-      "online": null,
-      "contact": "国际合作交流处 朱老师 85866716"
-    },
-    "source": {
-      "source_id": "exchange",
-      "channel_id": "exchange_notice",
-      "authority": 0.78,
-      "official": true
-    },
-    "evidence": [
-      {
-        "field": "action",
-        "text": "报名程序：采取'个人申请、学院推荐、专家评审、择优录取'的方式进行选拔。申请人应向所在学院提交以下材料：A. 《南京邮电大学本科生海外访学申请表》；B. 英语水平证明及复印件；C. 学术科研能力证明材料及复印件；D. 获奖证书及复印件（校级以上奖励）。"
-      },
-      {
-        "field": "audience",
-        "text": "报名及派出时间：每年5月报名，7月－8月派出。"
-      },
-      {
-        "field": "materials",
-        "text": "附件/材料：《南京邮电大学本科生海外访学申请表》、英语水平证明及复印件、学术科研能力证明材料及复印件、获奖证书及复印件（校级以上奖励）"
-      },
-      {
-        "field": "location",
-        "text": "各学院 国际合作交流处 朱老师 85866716"
-      }
-    ],
-    "risk": {
-      "sensitive": false,
-      "restricted": false,
-      "low_evidence": false,
-      "review_required": false
-    },
-    "confidence": 0.9
-  },
-  {
-    "task_id": "task-bd8e3c7429ab2021c971-1",
-    "doc_id": "exchange-8c940f9a9a38972abe4d",
-    "task_type": "application",
-    "who": {
-      "audience": [
-        "本科生",
-        "研究生"
-      ],
-      "college": [],
-      "grade": [],
-      "major": [],
-      "class_name": []
-    },
-    "what": "申请南洋理工大学寒暑假交流项目",
-    "action": {
-      "required": true,
-      "verb": "提交",
-      "object": "申请材料至学院",
-      "summary": "申请人向所在学院提交《南京邮电大学本科生海外访学申请表》、英语水平证明复印件、学术科研能力证明材料复印件、获奖证书复印件。"
-    },
-    "time": {
-      "published_at": null,
-      "deadline": null,
-      "lifecycle": "upcoming",
-      "urgency_days": null
-    },
-    "materials": [
-      {
-        "name": "《南京邮电大学本科生海外访学申请表》",
-        "role": "申请表",
-        "required": true,
-        "sensitive": false
-      },
-      {
-        "name": "英语水平证明复印件",
-        "role": "语言证明",
-        "required": true,
-        "sensitive": false
-      },
-      {
-        "name": "学术科研能力证明材料复印件",
-        "role": "能力证明",
-        "required": true,
-        "sensitive": false
-      },
-      {
-        "name": "获奖证书复印件（校级以上奖励）",
-        "role": "获奖证明",
-        "required": true,
-        "sensitive": false
-      }
-    ],
-    "location": {
-      "place": "各学院",
-      "online": null,
-      "contact": "国际合作交流处 朱老师 85866716"
-    },
-    "source": {
-      "source_id": "exchange",
-      "channel_id": "exchange_notice",
-      "authority": 0.78,
-      "official": true
-    },
-    "evidence": [
-      {
-        "field": "action",
-        "text": "报名程序：采取'个人申请、学院推荐、专家评审、择优录取'的方式进行选拔。申请人将申请材料交至各学院，申请人应向所在学院提交以下材料：（a）《南京邮电大学本科生海外访学申请表》；（b）英语水平证明复印件；（c）学术科研能力证明材料复印件；（d）获奖证书复印件（校级以上奖励）。"
-      },
-      {
-        "field": "audience",
-        "text": "报名及派出时间：每年11月报名，次年1月开课；每年4月报名，7月开课。"
-      },
-      {
-        "field": "materials",
-        "text": "附件/材料：《南京邮电大学本科生海外访学申请表》、英语水平证明复印件、学术科研能力证明材料复印件、获奖证书复印件（校级以上奖励）"
-      },
-      {
-        "field": "location",
-        "text": "各学院 国际合作交流处 朱老师 85866716"
-      }
-    ],
-    "risk": {
-      "sensitive": false,
-      "restricted": false,
-      "low_evidence": false,
-      "review_required": false
-    },
-    "confidence": 0.9
-  },
-  {
-    "task_id": "task-55873c151f5ec8ffeb19-1",
-    "doc_id": "exchange-5b8b5d43475cad50110e",
-    "task_type": "application",
-    "who": {
-      "audience": [
-        "本科生"
-      ],
-      "college": [],
-      "grade": [],
-      "major": [],
-      "class_name": []
-    },
-    "what": "申请香港大学“创新创业”赴港交流项目",
-    "action": {
-      "required": true,
-      "verb": "提交",
-      "object": "申请材料至学院",
-      "summary": "申请人向所在学院提交《南京邮电大学本科生海外访学申请表》、英语水平证明、学术科研能力证明材料、获奖证书等。"
-    },
-    "time": {
-      "published_at": null,
-      "deadline": null,
-      "lifecycle": "upcoming",
-      "urgency_days": null
-    },
-    "materials": [
-      {
-        "name": "《南京邮电大学本科生海外访学申请表》",
-        "role": "申请表",
-        "required": true,
-        "sensitive": false
-      },
-      {
-        "name": "英语水平证明及复印件",
-        "role": "语言证明",
-        "required": true,
-        "sensitive": false
-      },
-      {
-        "name": "学术科研能力证明材料及复印件",
-        "role": "能力证明",
-        "required": true,
-        "sensitive": false
-      },
-      {
-        "name": "获奖证书及复印件（校级以上奖励）",
-        "role": "获奖证明",
-        "required": true,
-        "sensitive": false
-      }
-    ],
-    "location": {
-      "place": "各学院",
-      "online": null,
-      "contact": "国际合作交流处 朱老师 85866716"
-    },
-    "source": {
-      "source_id": "exchange",
-      "channel_id": "exchange_notice",
-      "authority": 0.78,
-      "official": true
-    },
-    "evidence": [
-      {
-        "field": "action",
-        "text": "报名程序：采取'个人申请、学院推荐、专家评审、择优录取'的方式进行选拔。申请人应向所在学院提交以下材料：A. 《南京邮电大学本科生海外访学申请表》；B. 英语水平证明及复印件；C. 学术科研能力证明材料及复印件；D. 获奖证书及复印件（校级以上奖励）。"
-      },
-      {
-        "field": "audience",
-        "text": "报名及派出时间：每年5月报名，7月－8月派出。"
-      },
-      {
-        "field": "materials",
-        "text": "附件/材料：《南京邮电大学本科生海外访学申请表》、英语水平证明及复印件、学术科研能力证明材料及复印件、获奖证书及复印件（校级以上奖励）"
-      },
-      {
-        "field": "location",
-        "text": "各学院 国际合作交流处 朱老师 85866716"
-      }
-    ],
-    "risk": {
-      "sensitive": false,
-      "restricted": false,
-      "low_evidence": false,
-      "review_required": false
-    },
-    "confidence": 0.9
-  },
-  {
-    "task_id": "task-dbd1828b4261554b7b37-1",
-    "doc_id": "cs-aa700cc880aa734ce178",
-    "task_type": "application",
-    "who": {
-      "audience": [
-        "研究生"
-      ],
-      "college": [
-        "计算机学院"
-      ],
-      "grade": [],
-      "major": [
-        "电子信息（计算机技术）"
-      ],
-      "class_name": []
-    },
-    "what": "电子信息专业学位（计算机技术方向）2026年申请考核制博士研究生招生申请",
-    "action": {
-      "required": true,
-      "verb": "申请",
-      "object": "博士研究生",
-      "summary": "根据实施细则申请2026年博士研究生"
-    },
-    "time": {
-      "published_at": "2025-12-17T00:00:00+08:00",
-      "deadline": null,
-      "lifecycle": "upcoming",
-      "urgency_days": null
-    },
-    "materials": [],
-    "location": {
-      "place": null,
-      "online": null,
-      "contact": null
-    },
-    "source": {
-      "source_id": "cs",
-      "channel_id": "cs_academic",
-      "authority": 0.78,
-      "official": true
-    },
-    "evidence": [
-      {
-        "field": "title",
-        "text": "电子信息专业学位（计算机技术方向） 2026年申请考核制博士研究生招生实施细则"
-      },
-      {
-        "field": "audience",
-        "text": "电子信息专业学位（计算机技术方向） 2026年申请考核制博士研究生招生实施细则"
-      },
-      {
-        "field": "action",
-        "text": "电子信息专业学位（计算机技术方向） 2026年申请考核制博士研究生招生实施细则"
-      }
-    ],
-    "risk": {
-      "sensitive": false,
-      "restricted": false,
-      "low_evidence": false,
-      "review_required": true
-    },
-    "confidence": 0.7
-  },
-  {
-    "task_id": "task-9a41aad0491069e1ae73-1",
-    "doc_id": "cs-2310a7e236b7a19f9487",
-    "task_type": "application",
-    "who": {
-      "audience": [
-        "研究生"
-      ],
-      "college": [
-        "计算机学院"
-      ],
-      "grade": [],
-      "major": [
-        "计算机科学与技术"
-      ],
-      "class_name": []
-    },
-    "what": "计算机科学与技术一级学科2026年申请考核制博士研究生招生申请",
-    "action": {
-      "required": true,
-      "verb": "申请",
-      "object": "博士研究生",
-      "summary": "根据实施细则申请2026年博士研究生"
-    },
-    "time": {
-      "published_at": "2025-12-17T00:00:00+08:00",
-      "deadline": null,
-      "lifecycle": "upcoming",
-      "urgency_days": null
-    },
-    "materials": [],
-    "location": {
-      "place": null,
-      "online": null,
-      "contact": null
-    },
-    "source": {
-      "source_id": "cs",
-      "channel_id": "cs_academic",
-      "authority": 0.78,
-      "official": true
-    },
-    "evidence": [
-      {
-        "field": "title",
-        "text": "计算机科学与技术一级学科2026年申请考核制博士研究生招生实施细则"
-      },
-      {
-        "field": "audience",
-        "text": "计算机科学与技术一级学科2026年申请考核制博士研究生招生实施细则"
-      },
-      {
-        "field": "action",
-        "text": "计算机科学与技术一级学科2026年申请考核制博士研究生招生实施细则"
-      }
-    ],
-    "risk": {
-      "sensitive": false,
-      "restricted": false,
-      "low_evidence": false,
-      "review_required": true
-    },
-    "confidence": 0.7
-  },
-  {
-    "task_id": "task-18a5e7c03a8f1bd5bb74-1",
-    "doc_id": "cs-2606eff01f2ec2dd944f",
-    "task_type": "application",
-    "who": {
-      "audience": [
-        "研究生"
-      ],
-      "college": [
-        "计算机学院"
-      ],
-      "grade": [],
-      "major": [
-        "网络空间安全"
-      ],
-      "class_name": []
-    },
-    "what": "网络空间安全一级学科2026年申请考核制博士研究生招生申请",
-    "action": {
-      "required": true,
-      "verb": "申请",
-      "object": "博士研究生",
-      "summary": "根据实施细则申请2026年博士研究生"
-    },
-    "time": {
-      "published_at": "2025-12-17T00:00:00+08:00",
-      "deadline": null,
-      "lifecycle": "upcoming",
-      "urgency_days": null
-    },
-    "materials": [],
-    "location": {
-      "place": null,
-      "online": null,
-      "contact": null
-    },
-    "source": {
-      "source_id": "cs",
-      "channel_id": "cs_academic",
-      "authority": 0.78,
-      "official": true
-    },
-    "evidence": [
-      {
-        "field": "title",
-        "text": "网络空间安全一级学科2026年申请考核制博士研究生招生实施细则"
-      },
-      {
-        "field": "audience",
-        "text": "网络空间安全一级学科2026年申请考核制博士研究生招生实施细则"
-      },
-      {
-        "field": "action",
-        "text": "网络空间安全一级学科2026年申请考核制博士研究生招生实施细则"
-      }
-    ],
-    "risk": {
-      "sensitive": false,
-      "restricted": false,
-      "low_evidence": false,
-      "review_required": true
-    },
-    "confidence": 0.7
-  },
-  {
-    "task_id": "task_e6f118ab1df16c0c",
-    "doc_id": "lib-4e3f617c9686dacbc054",
-    "task_type": "read",
-    "who": {
-      "audience": [
-        "本科生",
-        "研究生"
-      ],
-      "college": [],
-      "grade": [],
-      "major": [],
-      "class_name": []
-    },
-    "what": "试用图书馆AI馆员“小柚”",
-    "action": {
-      "required": false,
-      "verb": "试用",
-      "object": "AI馆员",
-      "summary": "访问图书馆官网或实体终端试用AI馆员"
-    },
-    "time": {
-      "published_at": null,
-      "deadline": null,
-      "lifecycle": "evergreen",
-      "urgency_days": null
-    },
-    "materials": [],
-    "location": {
-      "place": "仙林校区图书馆二楼大厅",
-      "online": "lib.njupt.edu.cn",
-      "contact": "025-85866214 / Ltb@njupt.edu.cn"
-    },
-    "source": {
-      "source_id": "lib",
-      "channel_id": "lib_opening",
-      "authority": 0.86,
-      "official": true
-    },
-    "evidence": [
-      {
-        "field": "action",
-        "text": "访问图书馆官网（lib.njupt.edu.cn），在页面右下角边栏点击“AI馆员”头像"
-      },
-      {
-        "field": "audience",
-        "text": "AI馆员“小柚”已在图书馆官网线上和实体端同步试用"
-      },
-      {
-        "field": "location",
-        "text": "仙林校区图书馆二楼大厅 lib.njupt.edu.cn 025-85866214 / Ltb@njupt.edu.cn"
-      }
-    ],
-    "risk": {
-      "sensitive": false,
-      "restricted": false,
-      "low_evidence": false,
-      "review_required": false
-    },
-    "confidence": 0.9
-  },
-  {
-    "task_id": "task_b4b38c2ac3aedf00",
+    "task_id": "task_d69019da2fb889a4",
     "doc_id": "bwc-8954c655e732d9c8873a",
+    "source_mode": "llm",
+    "field_sources": {
+      "category": "llm",
+      "domain": "llm",
+      "intent": "llm",
+      "deadline": "llm_missing",
+      "action_required": "llm",
+      "action_summary": "llm",
+      "required_materials": "llm_missing",
+      "summary": "llm",
+      "evidence": "llm",
+      "sensitive": "llm"
+    },
     "task_type": "opportunity",
     "who": {
       "audience": [
@@ -3865,12 +4093,12 @@
       "major": [],
       "class_name": []
     },
-    "what": "参与劳动教育安全协管实践项目",
+    "what": "劳动教育课程安全协管实践项目参与",
     "action": {
       "required": true,
       "verb": "联系",
       "object": "指导老师",
-      "summary": "学生可联系保卫处安全协管实践项目指导老师薛宇飞（电话17751772076）参与实践。"
+      "summary": "学生可联系指导老师薛宇飞参与安全协管实践项目"
     },
     "time": {
       "published_at": "2026-04-14T00:00:00+08:00",
@@ -3893,7 +4121,7 @@
     "evidence": [
       {
         "field": "action",
-        "text": "保卫处安全协管实践项目指导老师：薛宇飞（联系电话17751772076）"
+        "text": "保卫处安全协管实践项目指导老师：薛宇飞（联系电话 17751772076）"
       },
       {
         "field": "audience",
@@ -3913,8 +4141,107 @@
     "confidence": 0.85
   },
   {
+    "task_id": "task_df87f45cdcdaecec",
+    "doc_id": "bwc-5adad42232259a6dbef0",
+    "source_mode": "llm",
+    "field_sources": {
+      "category": "llm",
+      "domain": "llm",
+      "intent": "llm",
+      "deadline": "llm_missing",
+      "action_required": "llm",
+      "action_summary": "llm",
+      "required_materials": "llm",
+      "summary": "llm",
+      "evidence": "llm",
+      "sensitive": "llm"
+    },
+    "task_type": "application",
+    "who": {
+      "audience": [
+        "本科生",
+        "研究生",
+        "教职工"
+      ],
+      "college": [],
+      "grade": [],
+      "major": [],
+      "class_name": []
+    },
+    "what": "自行车车贴申领与张贴",
+    "action": {
+      "required": true,
+      "verb": "申领",
+      "object": "自行车车贴",
+      "summary": "通过企业微信申办并领取车贴，张贴于自行车车身"
+    },
+    "time": {
+      "published_at": "2026-03-26T00:00:00+08:00",
+      "deadline": null,
+      "lifecycle": "evergreen",
+      "urgency_days": null
+    },
+    "materials": [
+      {
+        "name": "本人自行车清晰照片",
+        "role": "申办材料",
+        "required": true,
+        "sensitive": false
+      }
+    ],
+    "location": {
+      "place": "仙林校区图书馆东广场/三牌楼校区羽毛球馆北侧治安岗亭/锁金村校区西门门卫室",
+      "online": "企业微信",
+      "contact": "025-85866110/025-83492110/025-85483110"
+    },
+    "source": {
+      "source_id": "bwc",
+      "channel_id": "bwc_security",
+      "authority": 0.84,
+      "official": true
+    },
+    "evidence": [
+      {
+        "field": "action",
+        "text": "打开企业微信→点击工作台→进入应用中心“平安南邮”→点击“交通管理”→“车辆线上办理”→点击“添加新车辆”"
+      },
+      {
+        "field": "audience",
+        "text": "集中发放时间2026年3月26日至4月3日，09:00--17:00"
+      },
+      {
+        "field": "materials",
+        "text": "附件/材料：本人自行车清晰照片"
+      },
+      {
+        "field": "location",
+        "text": "仙林校区图书馆东广场/三牌楼校区羽毛球馆北侧治安岗亭/锁金村校区西门门卫室 企业微信 025-85866110/025-83492110/025-85483110"
+      }
+    ],
+    "risk": {
+      "sensitive": false,
+      "restricted": false,
+      "low_evidence": false,
+      "review_required": false
+    },
+    "confidence": 0.9
+  },
+  {
     "task_id": "task_4458ccb2ca72396a",
     "doc_id": "hqc-6cc6532cca3bd115388a",
+    "source_mode": "llm",
+    "field_sources": {
+      "category": "display_mapping",
+      "domain": "llm",
+      "intent": "llm",
+      "deadline": "llm_missing",
+      "action_required": "llm",
+      "action_summary": "llm_missing",
+      "required_materials": "llm_missing",
+      "summary": "llm",
+      "evidence": "llm",
+      "sensitive": "llm"
+    },
     "task_type": "schedule",
     "who": {
       "audience": [
@@ -3955,11 +4282,15 @@
     "evidence": [
       {
         "field": "general",
-        "text": "停电时间 停电范围 10月25日 0点-1点 14点-15点 教学1-5、学生宿舍（梅、兰、竹、菊）第一食堂、第二食堂"
+        "text": "10月25日0点-1点 14点-15点 教学1-5、学生宿舍（梅、兰、竹、菊）第一食堂、第二食堂"
+      },
+      {
+        "field": "general",
+        "text": "10月25日7点至12点 青教一期、青教二期"
       },
       {
         "field": "audience",
-        "text": "停电时间 停电范围 10月25日 0点-1点 14点-15点 教学1-5、学生宿舍（梅、兰、竹、菊）第一食堂、第二食堂"
+        "text": "10月25日0点-1点 14点-15点 教学1-5、学生宿舍（梅、兰、竹、菊）第一食堂、第二食堂"
       }
     ],
     "risk": {
@@ -3973,6 +4304,19 @@
   {
     "task_id": "task_a797c728d6ed8a23",
     "doc_id": "hqc-0d2ca4f4fe0d9bac05c1",
+    "source_mode": "llm",
+    "field_sources": {
+      "category": "display_mapping",
+      "domain": "llm",
+      "intent": "llm",
+      "deadline": "llm_missing",
+      "action_required": "llm",
+      "action_summary": "llm_missing",
+      "required_materials": "llm_missing",
+      "summary": "llm",
+      "evidence": "llm",
+      "sensitive": "llm"
+    },
     "task_type": "schedule",
     "who": {
       "audience": [
@@ -4031,6 +4375,19 @@
   {
     "task_id": "task_313b5bc42cbe37c4",
     "doc_id": "hqc-b279952a9f7b366cb41e",
+    "source_mode": "llm",
+    "field_sources": {
+      "category": "llm",
+      "domain": "llm",
+      "intent": "llm",
+      "deadline": "llm_missing",
+      "action_required": "llm",
+      "action_summary": "llm_missing",
+      "required_materials": "llm_missing",
+      "summary": "llm",
+      "evidence": "llm",
+      "sensitive": "llm"
+    },
     "task_type": "schedule",
     "who": {
       "audience": [
@@ -4087,8 +4444,184 @@
     "confidence": 0.9
   },
   {
-    "task_id": "task-ed5a1bab-1",
+    "task_id": "task_73739c37c0749e8b",
+    "doc_id": "hqc-44cadcfc99f71a45ed7c",
+    "source_mode": "llm",
+    "field_sources": {
+      "category": "display_mapping",
+      "domain": "llm",
+      "intent": "llm",
+      "deadline": "llm_missing",
+      "action_required": "llm",
+      "action_summary": "llm_missing",
+      "required_materials": "llm_missing",
+      "summary": "llm",
+      "evidence": "llm",
+      "sensitive": "llm"
+    },
+    "task_type": "schedule",
+    "who": {
+      "audience": [
+        "本科生",
+        "研究生",
+        "教职工"
+      ],
+      "college": [],
+      "grade": [],
+      "major": [],
+      "class_name": []
+    },
+    "what": "三牌楼校区停电通知",
+    "action": {
+      "required": false,
+      "verb": null,
+      "object": null,
+      "summary": null
+    },
+    "time": {
+      "published_at": null,
+      "deadline": null,
+      "lifecycle": "unknown",
+      "urgency_days": null
+    },
+    "materials": [],
+    "location": {
+      "place": null,
+      "online": null,
+      "contact": null
+    },
+    "source": {
+      "source_id": "hqc",
+      "channel_id": "hqc_logistics",
+      "authority": 0.88,
+      "official": true
+    },
+    "evidence": [
+      {
+        "field": "general",
+        "text": "2025年12月27日（本周六）凌晨00：00-01：00以及12月28日（本周日）凌晨00：00-01：00对三牌楼校区进行停电并切换线路"
+      },
+      {
+        "field": "audience",
+        "text": "2025年12月27日（本周六）凌晨00：00-01：00以及12月28日（本周日）凌晨00：00-01：00对三牌楼校区进行停电并切换线路"
+      }
+    ],
+    "risk": {
+      "sensitive": false,
+      "restricted": false,
+      "low_evidence": false,
+      "review_required": false
+    },
+    "confidence": 0.9
+  },
+  {
+    "task_id": "task-860f57dea8214071cc20-1",
+    "doc_id": "simp-3567f2f1c5697d1c40a5",
+    "source_mode": "llm",
+    "field_sources": {
+      "category": "display_mapping",
+      "domain": "llm",
+      "intent": "llm",
+      "deadline": "llm",
+      "action_required": "llm",
+      "action_summary": "llm",
+      "required_materials": "llm",
+      "summary": "llm",
+      "evidence": "llm",
+      "sensitive": "llm"
+    },
+    "task_type": "application",
+    "who": {
+      "audience": [
+        "本科生"
+      ],
+      "college": [],
+      "grade": [
+        "大一",
+        "大二",
+        "大三"
+      ],
+      "major": [],
+      "class_name": []
+    },
+    "what": "报名智能时空信息与大数据微专业",
+    "action": {
+      "required": true,
+      "verb": "提交",
+      "object": "申请表",
+      "summary": "需同时完成小程序报名和提交《南京邮电大学本科生微专业学习申请表》"
+    },
+    "time": {
+      "published_at": null,
+      "deadline": "2026-03-31T23:59:00+08:00",
+      "lifecycle": "upcoming",
+      "urgency_days": -54
+    },
+    "materials": [
+      {
+        "name": "《南京邮电大学本科生微专业学习申请表》",
+        "role": "申请表",
+        "required": true,
+        "sensitive": false
+      }
+    ],
+    "location": {
+      "place": "三牌楼校区行政北楼204或仙林校区南2食堂320",
+      "online": "报名邮箱bdai@njupt.edu.cn",
+      "contact": "经老师025-83492207"
+    },
+    "source": {
+      "source_id": "simp",
+      "channel_id": "simp_academic",
+      "authority": 0.68,
+      "official": true
+    },
+    "evidence": [
+      {
+        "field": "deadline",
+        "text": "报名时间：3月24日—3月31日"
+      },
+      {
+        "field": "action",
+        "text": "第一步：小程序报名...第二步：提交《南京邮电大学本科生微专业学习申请表》"
+      },
+      {
+        "field": "audience",
+        "text": "报名时间：3月24日—3月31日"
+      },
+      {
+        "field": "materials",
+        "text": "附件/材料：《南京邮电大学本科生微专业学习申请表》"
+      },
+      {
+        "field": "location",
+        "text": "三牌楼校区行政北楼204或仙林校区南2食堂320 报名邮箱bdai@njupt.edu.cn 经老师025-83492207"
+      }
+    ],
+    "risk": {
+      "sensitive": false,
+      "restricted": false,
+      "low_evidence": false,
+      "review_required": false
+    },
+    "confidence": 0.95
+  },
+  {
+    "task_id": "task-d81cb6081b4916294ba6-1",
     "doc_id": "simp-916527c5424f64b391da",
+    "source_mode": "llm",
+    "field_sources": {
+      "category": "display_mapping",
+      "domain": "llm",
+      "intent": "llm",
+      "deadline": "llm",
+      "action_required": "llm",
+      "action_summary": "llm",
+      "required_materials": "llm",
+      "summary": "llm",
+      "evidence": "llm",
+      "sensitive": "llm"
+    },
     "task_type": "schedule",
     "who": {
       "audience": [
@@ -4105,12 +4638,12 @@
       ],
       "class_name": []
     },
-    "what": "硕士研究生复试报到与资格审查",
+    "what": "参加硕士研究生复试报到和资格审查",
     "action": {
       "required": true,
-      "verb": "提交",
-      "object": "资格审查材料",
-      "summary": "3月28日上午9:00-11:00到三牌楼校区行政北楼207报到，提交相关证件原件及复印件。"
+      "verb": "报到",
+      "object": "复试资格审查",
+      "summary": "3月28日上午9:00-11:00在三牌楼校区行政北楼207报到，查验相关证件原件并提交复印件"
     },
     "time": {
       "published_at": null,
@@ -4133,7 +4666,7 @@
       },
       {
         "name": "学历学籍证明",
-        "role": "学历证明",
+        "role": "资格证明",
         "required": true,
         "sensitive": false
       },
@@ -4167,12 +4700,12 @@
         "text": "时间：3月28日上午9:00――11：00"
       },
       {
-        "field": "audience",
-        "text": "报到时间：3月28日上午9:00――11：00"
+        "field": "action",
+        "text": "考生持准考证、身份证原件在复试期间从南瑞路东门进入校园"
       },
       {
-        "field": "action",
-        "text": "报到时间：3月28日上午9:00――11：00"
+        "field": "audience",
+        "text": "时间：3月28日上午9:00――11：00"
       },
       {
         "field": "materials",
@@ -4192,8 +4725,21 @@
     "confidence": 0.95
   },
   {
-    "task_id": "task-ed5a1bab-2",
+    "task_id": "task-d81cb6081b4916294ba6-2",
     "doc_id": "simp-916527c5424f64b391da",
+    "source_mode": "llm",
+    "field_sources": {
+      "category": "display_mapping",
+      "domain": "llm",
+      "intent": "llm",
+      "deadline": "llm",
+      "action_required": "llm",
+      "action_summary": "llm",
+      "required_materials": "llm",
+      "summary": "llm",
+      "evidence": "llm",
+      "sensitive": "llm"
+    },
     "task_type": "schedule",
     "who": {
       "audience": [
@@ -4210,12 +4756,12 @@
       ],
       "class_name": []
     },
-    "what": "硕士研究生复试笔试",
+    "what": "参加硕士研究生复试笔试",
     "action": {
       "required": true,
       "verb": "参加",
       "object": "笔试",
-      "summary": "3月28日下午按专业参加笔试，需提前30分钟入场。"
+      "summary": "物流工程与管理专业3月28日13:30-14:30和15:00-17:00；电子信息、交通运输专业3月28日15:00-17:00"
     },
     "time": {
       "published_at": null,
@@ -4225,44 +4771,20 @@
     },
     "materials": [
       {
-        "name": "准考证",
-        "role": "材料",
+        "name": "初试准考证",
+        "role": "身份证明",
         "required": true,
         "sensitive": false
       },
       {
-        "name": "身份证",
-        "role": "材料",
+        "name": "居民身份证",
+        "role": "身份证明",
         "required": true,
         "sensitive": true
-      },
-      {
-        "name": "学历学籍证明",
-        "role": "材料",
-        "required": true,
-        "sensitive": false
-      },
-      {
-        "name": "个人陈述表",
-        "role": "材料",
-        "required": true,
-        "sensitive": false
-      },
-      {
-        "name": "诚信复试承诺书",
-        "role": "材料",
-        "required": true,
-        "sensitive": false
-      },
-      {
-        "name": "附件1：诚信复试承诺书.docx",
-        "role": "材料",
-        "required": true,
-        "sensitive": false
       }
     ],
     "location": {
-      "place": "三牌楼校区行政北楼（具体地点见布告栏）",
+      "place": "三牌楼校区（具体地点见布告栏）",
       "online": null,
       "contact": null
     },
@@ -4278,20 +4800,20 @@
         "text": "笔试考试时间：3月28日(周五)下午13:30——14:30，下午15:00——17:00"
       },
       {
-        "field": "audience",
-        "text": "报到时间：3月28日上午9:00――11：00"
+        "field": "action",
+        "text": "考生需持初试准考证、居民身份证提前30分钟进入考场"
       },
       {
-        "field": "action",
-        "text": "报到时间：3月28日上午9:00――11：00"
+        "field": "audience",
+        "text": "时间：3月28日上午9:00――11：00"
       },
       {
         "field": "materials",
-        "text": "附件/材料：准考证、身份证、学历学籍证明、个人陈述表、诚信复试承诺书、附件1：诚信复试承诺书.docx"
+        "text": "附件/材料：初试准考证、居民身份证"
       },
       {
         "field": "location",
-        "text": "三牌楼校区行政北楼（具体地点见布告栏）"
+        "text": "三牌楼校区（具体地点见布告栏）"
       }
     ],
     "risk": {
@@ -4303,8 +4825,21 @@
     "confidence": 0.95
   },
   {
-    "task_id": "task-ed5a1bab-3",
+    "task_id": "task-d81cb6081b4916294ba6-3",
     "doc_id": "simp-916527c5424f64b391da",
+    "source_mode": "llm",
+    "field_sources": {
+      "category": "display_mapping",
+      "domain": "llm",
+      "intent": "llm",
+      "deadline": "llm",
+      "action_required": "llm",
+      "action_summary": "llm",
+      "required_materials": "llm",
+      "summary": "llm",
+      "evidence": "llm",
+      "sensitive": "llm"
+    },
     "task_type": "schedule",
     "who": {
       "audience": [
@@ -4321,12 +4856,12 @@
       ],
       "class_name": []
     },
-    "what": "硕士研究生复试面试",
+    "what": "参加硕士研究生复试面试",
     "action": {
       "required": true,
       "verb": "参加",
       "object": "面试",
-      "summary": "3月29日上午9:00开始按分组参加综合能力测试和外国语听力口语测试。"
+      "summary": "3月29日9:00开始，按分组参加综合能力测试和外国语听力口语测试"
     },
     "time": {
       "published_at": null,
@@ -4340,10 +4875,22 @@
         "role": "成绩证明",
         "required": true,
         "sensitive": false
+      },
+      {
+        "name": "英语能力证明材料",
+        "role": "能力证明",
+        "required": false,
+        "sensitive": false
+      },
+      {
+        "name": "发表文章或相关证书原件",
+        "role": "成果证明",
+        "required": false,
+        "sensitive": false
       }
     ],
     "location": {
-      "place": "三牌楼校区行政北楼（具体地点见布告栏）",
+      "place": "三牌楼校区（具体地点见布告栏）",
       "online": null,
       "contact": null
     },
@@ -4359,20 +4906,20 @@
         "text": "3月29日(周六)9：00开始所有复试考生按照分组参加"
       },
       {
-        "field": "audience",
-        "text": "报到时间：3月28日上午9:00――11：00"
+        "field": "action",
+        "text": "面试开始时向面试小组秘书提供在校学习成绩表原件"
       },
       {
-        "field": "action",
-        "text": "报到时间：3月28日上午9:00――11：00"
+        "field": "audience",
+        "text": "时间：3月28日上午9:00――11：00"
       },
       {
         "field": "materials",
-        "text": "附件/材料：在校学习成绩表原件"
+        "text": "附件/材料：在校学习成绩表原件、英语能力证明材料、发表文章或相关证书原件"
       },
       {
         "field": "location",
-        "text": "三牌楼校区行政北楼（具体地点见布告栏）"
+        "text": "三牌楼校区（具体地点见布告栏）"
       }
     ],
     "risk": {
@@ -4384,104 +4931,38 @@
     "confidence": 0.95
   },
   {
-    "task_id": "task-66c95a80-1",
-    "doc_id": "simp-3567f2f1c5697d1c40a5",
-    "task_type": "application",
-    "who": {
-      "audience": [
-        "本科生"
-      ],
-      "college": [],
-      "grade": [
-        "大一",
-        "大二",
-        "大三"
-      ],
-      "major": [],
-      "class_name": []
-    },
-    "what": "智能时空信息与大数据微专业报名",
-    "action": {
-      "required": true,
-      "verb": "提交",
-      "object": "报名申请",
-      "summary": "扫描小程序二维码填写报名信息，并提交签字后的申请表至指定邮箱或地点。"
-    },
-    "time": {
-      "published_at": null,
-      "deadline": "2026-03-31T23:59:00+08:00",
-      "lifecycle": "upcoming",
-      "urgency_days": -54
-    },
-    "materials": [
-      {
-        "name": "南京邮电大学本科生微专业学习申请表",
-        "role": "申请表",
-        "required": true,
-        "sensitive": false
-      }
-    ],
-    "location": {
-      "place": "三牌楼校区行政北楼204或仙林校区南2食堂320",
-      "online": "bdai@njupt.edu.cn",
-      "contact": "经老师 025-83492207"
-    },
-    "source": {
-      "source_id": "simp",
-      "channel_id": "simp_academic",
-      "authority": 0.68,
-      "official": true
-    },
-    "evidence": [
-      {
-        "field": "deadline",
-        "text": "报名时间：3月24日—3月31日"
-      },
-      {
-        "field": "audience",
-        "text": "报名时间：3月24日—3月31日"
-      },
-      {
-        "field": "action",
-        "text": "报名时间：3月24日—3月31日"
-      },
-      {
-        "field": "materials",
-        "text": "附件/材料：南京邮电大学本科生微专业学习申请表"
-      },
-      {
-        "field": "location",
-        "text": "三牌楼校区行政北楼204或仙林校区南2食堂320 bdai@njupt.edu.cn 经老师 025-83492207"
-      }
-    ],
-    "risk": {
-      "sensitive": false,
-      "restricted": false,
-      "low_evidence": false,
-      "review_required": false
-    },
-    "confidence": 0.95
-  },
-  {
-    "task_id": "task-97f046848e65cd554c12-1",
+    "task_id": "task-430d243f3d8d1c831e02-1",
     "doc_id": "archives-b38698c994ad71856b52",
+    "source_mode": "llm",
+    "field_sources": {
+      "category": "display_mapping",
+      "domain": "llm",
+      "intent": "llm",
+      "deadline": "llm_missing",
+      "action_required": "llm",
+      "action_summary": "llm_missing",
+      "required_materials": "llm_missing",
+      "summary": "llm",
+      "evidence": "llm",
+      "sensitive": "llm"
+    },
     "task_type": "schedule",
     "who": {
       "audience": [
-        "教职工",
-        "学生"
+        "本科生",
+        "研究生"
       ],
       "college": [],
       "grade": [],
       "major": [],
       "class_name": []
     },
-    "what": "暑假档案查询",
+    "what": "暑假查档",
     "action": {
       "required": false,
       "verb": "前往",
-      "object": "档案馆查询档案",
-      "summary": "暑假期间隔周周四办理查档业务，具体日期为7月10日、24日、8月7日、21日、9月4日。"
+      "object": "档案馆查档",
+      "summary": "暑假期间隔周周四办理查档业务，具体日期为7月10日、7月24日、8月7日、8月21日、9月4日，上午9:00-11:30，下午13:30-16:30。"
     },
     "time": {
       "published_at": null,
@@ -4504,15 +4985,100 @@
     "evidence": [
       {
         "field": "location",
-        "text": "工作地点：仙林校区档案馆一楼"
+        "text": "工作地点：仙林校区档案馆一楼。"
       },
       {
         "field": "audience",
-        "text": "查档时间：暑假期间隔周周四办理查档业务 具体日期为：7月10日、7月24日、8月7日、8月21日、9月4日 上午9:00—11:30，下午13:30—16:30"
+        "text": "查档时间：暑假期间隔周周四办理查档业务 具体日期为：7月10日、7月24日、8月7日、8月21日、9月4日 上午9:00—11:30，下午13:30—16:30；工作地点：仙林校区档案馆一楼。"
       },
       {
         "field": "action",
-        "text": "查档时间：暑假期间隔周周四办理查档业务 具体日期为：7月10日、7月24日、8月7日、8月21日、9月4日 上午9:00—11:30，下午13:30—16:30"
+        "text": "查档时间：暑假期间隔周周四办理查档业务 具体日期为：7月10日、7月24日、8月7日、8月21日、9月4日 上午9:00—11:30，下午13:30—16:30；工作地点：仙林校区档案馆一楼。"
+      }
+    ],
+    "risk": {
+      "sensitive": false,
+      "restricted": false,
+      "low_evidence": false,
+      "review_required": false
+    },
+    "confidence": 0.9
+  },
+  {
+    "task_id": "task-430d243f3d8d1c831e02-2",
+    "doc_id": "archives-b38698c994ad71856b52",
+    "source_mode": "llm",
+    "field_sources": {
+      "category": "display_mapping",
+      "domain": "llm",
+      "intent": "llm",
+      "deadline": "llm_missing",
+      "action_required": "llm",
+      "action_summary": "llm_missing",
+      "required_materials": "llm_missing",
+      "summary": "llm",
+      "evidence": "llm",
+      "sensitive": "llm"
+    },
+    "task_type": "application",
+    "who": {
+      "audience": [
+        "本科生",
+        "研究生"
+      ],
+      "college": [],
+      "grade": [],
+      "major": [],
+      "class_name": []
+    },
+    "what": "预约参观校史馆等展馆",
+    "action": {
+      "required": true,
+      "verb": "提交",
+      "object": "参观申请单",
+      "summary": "至少提前2天提出预约参观申请，填写《南京邮电大学校史馆、通信展览馆、邮政文化馆团体参观申请单》并发送至dag6699@njupt.edu.cn。"
+    },
+    "time": {
+      "published_at": null,
+      "deadline": null,
+      "lifecycle": "evergreen",
+      "urgency_days": null
+    },
+    "materials": [
+      {
+        "name": "南京邮电大学校史馆、通信展览馆、邮政文化馆团体参观申请单",
+        "role": "申请表",
+        "required": true,
+        "sensitive": false
+      }
+    ],
+    "location": {
+      "place": null,
+      "online": null,
+      "contact": "吉老师 85866695"
+    },
+    "source": {
+      "source_id": "archives",
+      "channel_id": "archives_notice",
+      "authority": 0.62,
+      "official": true
+    },
+    "evidence": [
+      {
+        "field": "action",
+        "text": "至少提前2天提出预约参观申请，经档案馆审批后安排接待事宜。填写《南京邮电大学校史馆、通信展览馆、邮政文化馆团体参观申请单》（档案馆主页dag.njupt.edu.cn/快速通道/预约参观栏下载），将申请单电子版发送到指定邮箱（dag6699@njupt.edu.cn）。"
+      },
+      {
+        "field": "audience",
+        "text": "查档时间：暑假期间隔周周四办理查档业务 具体日期为：7月10日、7月24日、8月7日、8月21日、9月4日 上午9:00—11:30，下午13:30—16:30；工作地点：仙林校区档案馆一楼。"
+      },
+      {
+        "field": "materials",
+        "text": "附件/材料：南京邮电大学校史馆、通信展览馆、邮政文化馆团体参观申请单"
+      },
+      {
+        "field": "location",
+        "text": "吉老师 85866695"
       }
     ],
     "risk": {

@@ -68,6 +68,8 @@ class TaskRisk(BaseModel):
 class TaskFrame(BaseModel):
     task_id: str
     doc_id: str
+    source_mode: str = "unknown"
+    field_sources: dict[str, str] = Field(default_factory=dict)
     task_type: str = "read"
     who: TaskAudience = Field(default_factory=TaskAudience)
     what: str
@@ -138,6 +140,8 @@ def normalize_task_frames(
     source_id: str,
     channel_id: str,
     authority: float,
+    source_mode: str,
+    field_sources: dict[str, str],
     fallback_title: str,
     fallback_audience: list[str],
     fallback_domain: str,
@@ -166,6 +170,8 @@ def normalize_task_frames(
                 source_id=source_id,
                 channel_id=channel_id,
                 authority=authority,
+                source_mode=source_mode,
+                field_sources=field_sources,
                 fallback_title=fallback_title,
                 fallback_audience=fallback_audience,
                 fallback_domain=fallback_domain,
@@ -197,6 +203,8 @@ def normalize_task_frames(
             source_id=source_id,
             channel_id=channel_id,
             authority=authority,
+            source_mode=source_mode,
+            field_sources=field_sources,
             fallback_title=fallback_title,
             fallback_audience=fallback_audience,
             fallback_domain=fallback_domain,
@@ -271,6 +279,8 @@ def fill_task_frame_defaults(item: dict[str, Any], **context: Any) -> dict[str, 
     return {
         "task_id": task_id,
         "doc_id": doc_id,
+        "source_mode": context.get("source_mode", "unknown"),
+        "field_sources": context.get("field_sources", {}),
         "task_type": task_type,
         "who": {
             "audience": coerce_str_list(who.get("audience") or context["fallback_audience"]),
