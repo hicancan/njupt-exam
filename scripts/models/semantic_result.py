@@ -1,5 +1,5 @@
 from typing import Any, Literal
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 SemanticMode = Literal[
     "llm",
@@ -42,3 +42,5 @@ class SemanticResult(BaseModel):
     
     tags: list[str]
     llm: dict[str, Any]
+    raw_field_presence: dict[str, bool] = Field(default_factory=dict)
+    llm_failure: dict[str, Any] | None = None

@@ -689,10 +689,20 @@ def analyze_prepared_documents(prepared: list[dict[str, Any]], now: datetime) ->
             store_llm_cache_result(entry_by_cache_key[cache_key], result, now)
             _RUN_STATS["llm_reprocessed"] += 1
 
-        missing_count = len(batch_ids - set(batch_results))
-        if missing_count:
-            _RUN_STATS["llm_failed"] += missing_count
-            _RUN_STATS["llm_fallback"] += missing_count
+        missing_ids = batch_ids - set(batch_results)
+        if missing_ids:
+            _RUN_STATS["llm_failed"] += len(missing_ids)
+            _RUN_STATS["llm_fallback"] += len(missing_ids)
+            for missing_id in missing_ids:
+                if missing_id in entry_by_cache_key:
+                    results[missing_id] = {
+                        "llm_failure": {
+                            "attempted": True,
+                            "provider_attempts": provider_chain(runtime_llm_provider()),
+                            "failure_reason": "provider_error_or_dropped",
+                            "fallback_mode": "heuristic_degraded"
+                        }
+                    }
 
     return results
 

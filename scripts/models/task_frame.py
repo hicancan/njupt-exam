@@ -1,7 +1,7 @@
 import hashlib
 import re
 from datetime import datetime
-from typing import Any
+from typing import Any, Literal
 
 from pydantic import BaseModel, Field, field_validator
 
@@ -68,7 +68,15 @@ class TaskRisk(BaseModel):
 class TaskFrame(BaseModel):
     task_id: str
     doc_id: str
-    source_mode: str = "unknown"
+    source_mode: Literal[
+        "llm_raw_task_frame",
+        "generated_from_llm_fields",
+        "heuristic_rule_frame",
+        "exam_structured_data",
+        "guarded_metadata_empty",
+        "unprocessed",
+        "unknown"
+    ] = "unknown"
     field_sources: dict[str, str] = Field(default_factory=dict)
     task_type: str = "read"
     who: TaskAudience = Field(default_factory=TaskAudience)

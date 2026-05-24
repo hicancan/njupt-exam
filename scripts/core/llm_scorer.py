@@ -17,8 +17,9 @@ from config.indexer_config import (
 )
 from models.semantic_model import SEARCH_DOMAINS, SEARCH_INTENTS, normalize_domain, normalize_intent
 from core.llm_task_frame import task_frame_prompt_contract
+from core.evidence_pack import build_evidence_pack
 
-LLM_SCHEMA_VERSION = "hytask-taskframe-v1.2"
+LLM_SCHEMA_VERSION = "hytask-taskframe-v2.0"
 GEMINI_MODEL_NAME = os.environ.get("GEMINI_MODEL", "gemini-3.1-flash-lite")
 LLM_MODEL_NAME = DEEPSEEK_MODEL
 
@@ -52,30 +53,39 @@ class AttachmentRole(BaseModel):
     sensitive: bool = False
 
 
-class LLMResult(BaseModel):
-    is_student_facing: bool = True
-    student_relevance: float = Field(default=0.5, ge=0, le=1)
-    audience: list[str] = Field(default_factory=list)
-    category: SearchCategory = "公告"
-    domain: SearchDomain = "news"
-    intent: SearchIntent = "read"
+class LLMRawResult(BaseModel):
+    is_student_facing: bool | None = None
+    student_relevance: float | None = None
+    audience: list[str] | None = None
+    category: SearchCategory | None = None
+    domain: SearchDomain | None = None
+    intent: SearchIntent | None = None
     sub_category: str | None = None
-    tags: list[str] = Field(default_factory=list)
-    importance_score: float = Field(default=0.5, ge=0, le=1)
+    tags: list[str] | None = None
+    importance_score: float | None = None
     deadline: str | None = None
-    action_required: bool = False
+    deadline_missing_reason: str | None = None
+    action_required: bool | None = None
+    action_missing_reason: str | None = None
     action_type: str | None = None
     action_summary: str | None = None
-    required_materials: list[str] = Field(default_factory=list)
-    student_summary: str
-    sensitive: bool = False
-    sensitive_types: list[str] = Field(default_factory=list)
-    attachment_roles: list[AttachmentRole] = Field(default_factory=list)
-    task_frames: list[dict[str, Any]] = Field(default_factory=list)
-    risk_flags: list[str] = Field(default_factory=list)
-    evidence: list[str] = Field(default_factory=list)
-    confidence: float = Field(default=0.5, ge=0, le=1)
-    review_required: bool = False
+    required_materials: list[str] | None = None
+    materials_missing_reason: str | None = None
+    location: str | None = None
+    location_missing_reason: str | None = None
+    student_summary: str | None = None
+    semantic_queries: list[str] | None = None
+    query_phrases: list[str] | None = None
+    sensitive: bool | None = None
+    sensitive_types: list[str] | None = None
+    attachment_roles: list[AttachmentRole] | None = None
+    task_frames: list[dict[str, Any]] | None = None
+    field_confidence: dict[str, float] | None = None
+    field_evidence: dict[str, list[str]] | None = None
+    risk_flags: list[str] | None = None
+    evidence: list[str] | None = None
+    confidence: float | None = None
+    review_required: bool | None = None
 
     @field_validator("tags", "audience", "required_materials", "sensitive_types", "risk_flags", "evidence", mode="before")
     @classmethod
@@ -143,18 +153,24 @@ class LLMResult(BaseModel):
 
     @field_validator("domain", mode="before")
     @classmethod
-    def _coerce_domain(cls, value: Any) -> str:
+    def _coerce_domain(cls, value: Any) -> str | None:
+        if not value: return None
         return normalize_domain(value)
 
     @field_validator("intent", mode="before")
     @classmethod
-    def _coerce_intent(cls, value: Any) -> str:
+    def _coerce_intent(cls, value: Any) -> str | None:
+        if not value: return None
         return normalize_intent(value)
 
 
-class BatchLLMItem(LLMResult):
-    id: str
+class LLMValidatedResult(BaseModel):
+    raw: LLMRawResult
+    raw_field_presence: dict[str, bool]
+    validated: dict[str, Any]
 
+class BatchLLMItem(LLMRawResult):
+    id: str
 
 class BatchLLMResult(BaseModel):
     results: list[BatchLLMItem] = Field(default_factory=list)
@@ -252,20 +268,10 @@ def split_llm_batches(
 def _build_batch_prompt(documents: list[dict[str, Any]], schema_version: str) -> str:
     compact_documents = []
     for document in documents:
-        compact_documents.append({
-            "id": document["id"],
-            "doc_id": document.get("doc_id") or document.get("id"),
-            "source_id": document.get("source_id", ""),
-            "channel_id": document.get("channel_id", ""),
-            "title": document.get("title", ""),
-            "source": document.get("source", ""),
-            "channel": document.get("channel", ""),
-            "source_domain": document.get("source_domain", ""),
-            "published_at": document.get("published_at"),
-            "content": str(document.get("content", ""))[:4000],
-            "attachments": document.get("attachments", [])[:8],
-            "rule_guard": document.get("rule_guard", {}),
-        })
+        pack = build_evidence_pack(document)
+        pack["id"] = document["id"]
+        pack["doc_id"] = document.get("doc_id") or document["id"]
+        compact_documents.append(pack)
 
     return f"""
 你是南京邮电大学学生信息清洗助手。你的任务是把多条公开网页转成可验证的学生事务结构化数据。
@@ -302,15 +308,39 @@ intent 枚举: {'|'.join(SEARCH_INTENTS)}
   "tags": ["标签1", "标签2"],
   "importance_score": 0.85,
   "deadline": null,
+  "deadline_missing_reason": "no_explicit_deadline|ambiguous|not_applicable",
   "action_required": false,
+  "action_missing_reason": "read_only_notice|no_student_action|unclear",
   "action_type": null,
   "action_summary": null,
   "required_materials": [],
+  "materials_missing_reason": "not_applicable|not_found|unclear",
+  "location": null,
+  "location_missing_reason": "not_applicable|not_found|unclear",
   "student_summary": "一两句话概括核心信息，纯学生视角",
+  "semantic_queries": ["大创申报", "SRTP项目要求"],
+  "query_phrases": ["大学生创新训练", "项目申报"],
   "sensitive": false,
   "sensitive_types": [],
   "attachment_roles": [],
   "task_frames": [],
+  "field_confidence": {
+    "domain": 0.9,
+    "intent": 0.9,
+    "deadline": 0.0,
+    "action": 0.8,
+    "materials": 0.7,
+    "location": 0.0
+  },
+  "field_evidence": {
+    "domain": [],
+    "intent": [],
+    "deadline": [],
+    "action": [],
+    "materials": [],
+    "location": [],
+    "audience": []
+  },
   "risk_flags": [],
   "evidence": ["原文中支撑分类、截止时间或行动事项的短句"],
   "confidence": 0.86,
@@ -323,19 +353,36 @@ intent 枚举: {'|'.join(SEARCH_INTENTS)}
 
 
 def _parse_batch_response(text: str, expected_ids: set[str], provider: str, model: str) -> dict[str, dict[str, Any]]:
-    raw = json.loads(text)
-    validated = BatchLLMResult.model_validate(raw)
+    raw_json = json.loads(text)
+    validated = BatchLLMResult.model_validate(raw_json)
     results: dict[str, dict[str, Any]] = {}
     seen: set[str] = set()
+    
+    raw_items_map = {}
+    for r_item in raw_json.get("results", []):
+        if "id" in r_item:
+            raw_items_map[str(r_item["id"])] = r_item
+
     for item in validated.results:
         if item.id not in expected_ids or item.id in seen:
             continue
         seen.add(item.id)
+        
+        raw_item = raw_items_map.get(item.id, {})
+        raw_field_presence = {k: (k in raw_item) for k in LLMRawResult.model_fields.keys()}
+        
         payload = item.model_dump()
         item_id = str(payload.pop("id"))
-        payload["__llm_provider"] = provider
-        payload["__llm_model"] = model
-        results[item_id] = payload
+        
+        final_payload = {
+            "raw": payload,
+            "raw_field_presence": raw_field_presence,
+            "validated": payload,
+            "__llm_provider": provider,
+            "__llm_model": model
+        }
+        
+        results[item_id] = final_payload
     return results
 
 

@@ -120,48 +120,51 @@ def derive_semantic_fields_llm(entry: dict[str, Any], llm_result: dict[str, Any]
         scoring_text, rule_category, len(base["attachments"]), base["source_weight"]
     )
     
-    domain = llm_result.get("domain")
-    intent = llm_result.get("intent")
-    category = llm_result.get("category")
+    val = llm_result.get("validated", llm_result)
+    raw_presence = llm_result.get("raw_field_presence", {})
     
-    llm_relevance_raw = llm_result.get("student_relevance")
+    domain = val.get("domain")
+    intent = val.get("intent")
+    category = val.get("category")
+    
+    llm_relevance_raw = val.get("student_relevance")
     llm_relevance = float(llm_relevance_raw if llm_relevance_raw is not None else 0.5)
-    is_student_facing = llm_result.get("is_student_facing")
+    is_student_facing = val.get("is_student_facing")
     if is_student_facing if is_student_facing is not None else True:
         student_score = clamp01(0.65 * llm_relevance + 0.35 * rule_student_score)
     else:
         student_score = clamp01(min(0.34, 0.65 * llm_relevance + 0.35 * rule_student_score))
         
-    imp_raw = llm_result.get("importance_score")
+    imp_raw = val.get("importance_score")
     llm_importance = float(imp_raw if imp_raw is not None else 0.5)
     importance_score = clamp01(0.75 * llm_importance + 0.25 * rule_importance_score)
     
-    tags = [clean_text(str(tag)) for tag in (llm_result.get("tags") or []) if clean_text(str(tag))]
-    summary = clean_text(str(llm_result.get("student_summary") or content[:180]))
+    tags = [clean_text(str(tag)) for tag in (val.get("tags") or []) if clean_text(str(tag))]
+    summary = clean_text(str(val.get("student_summary") or content[:180]))
     
-    attachments = enrich_attachment_metadata(base["attachments"], llm_result.get("attachment_roles") or [])
+    attachments = enrich_attachment_metadata(base["attachments"], val.get("attachment_roles") or [])
     
-    conf_raw = llm_result.get("confidence")
+    conf_raw = val.get("confidence")
     confidence = float(conf_raw if conf_raw is not None else 0.5)
     
-    review_required_raw = llm_result.get("review_required")
+    review_required_raw = val.get("review_required")
     review_required = bool(review_required_raw if review_required_raw is not None else False)
     
-    sensitive_raw = llm_result.get("sensitive")
+    sensitive_raw = val.get("sensitive")
     sensitive = bool(sensitive_raw if sensitive_raw is not None else False)
     
-    # Strictly isolate LLM sources
+    # Strictly isolate LLM sources using raw_presence
     field_sources = {
-        "category": "llm" if category else "llm_missing",
-        "domain": "llm" if domain else "llm_missing",
-        "intent": "llm" if intent else "llm_missing",
-        "deadline": "llm" if llm_result.get("deadline") else "llm_missing",
-        "action_required": "llm",
-        "action_summary": "llm" if llm_result.get("action_summary") else "llm_missing",
-        "required_materials": "llm" if llm_result.get("required_materials") else "llm_missing",
-        "summary": "llm",
-        "evidence": "llm" if llm_result.get("evidence") else "llm_missing",
-        "sensitive": "llm",
+        "category": "llm" if raw_presence.get("category") else "llm_missing",
+        "domain": "llm" if raw_presence.get("domain") else "llm_missing",
+        "intent": "llm" if raw_presence.get("intent") else "llm_missing",
+        "deadline": "llm" if raw_presence.get("deadline") else "llm_missing",
+        "action_required": "llm" if raw_presence.get("action_required") else "llm_missing",
+        "action_summary": "llm" if raw_presence.get("action_summary") else "llm_missing",
+        "required_materials": "llm" if raw_presence.get("required_materials") else "llm_missing",
+        "summary": "llm" if raw_presence.get("student_summary") else "llm_missing",
+        "evidence": "llm" if raw_presence.get("evidence") else "llm_missing",
+        "sensitive": "llm" if raw_presence.get("sensitive") else "llm_missing",
     }
     
     return SemanticResult(
@@ -170,18 +173,18 @@ def derive_semantic_fields_llm(entry: dict[str, Any], llm_result: dict[str, Any]
         category=category,
         domain=domain,
         intent=intent,
-        lifecycle=infer_lifecycle(base["published_at"], llm_result.get("deadline"), now),
-        evidence=[clean_text(str(item))[:180] for item in (llm_result.get("evidence") or []) if clean_text(str(item))] or [],
+        lifecycle=infer_lifecycle(base["published_at"], val.get("deadline"), now),
+        evidence=[clean_text(str(item))[:180] for item in (val.get("evidence") or []) if clean_text(str(item))] or [],
         confidence=confidence,
-        deadline=llm_result.get("deadline"),
-        action_required=bool(llm_result.get("action_required", False)),
-        action_type=llm_result.get("action_type"),
-        action_summary=llm_result.get("action_summary"),
-        required_materials=[clean_text(str(item)) for item in (llm_result.get("required_materials") or []) if clean_text(str(item))],
+        deadline=val.get("deadline"),
+        action_required=bool(val.get("action_required", False)),
+        action_type=val.get("action_type"),
+        action_summary=val.get("action_summary"),
+        required_materials=[clean_text(str(item)) for item in (val.get("required_materials") or []) if clean_text(str(item))],
         sensitive=sensitive,
-        sensitive_types=[clean_text(str(item)) for item in (llm_result.get("sensitive_types") or []) if clean_text(str(item))],
+        sensitive_types=[clean_text(str(item)) for item in (val.get("sensitive_types") or []) if clean_text(str(item))],
         review_required=review_required,
-        risk_flags=[clean_text(str(item)) for item in (llm_result.get("risk_flags") or []) if clean_text(str(item))],
+        risk_flags=[clean_text(str(item)) for item in (val.get("risk_flags") or []) if clean_text(str(item))],
         content=content,
         summary=summary,
         attachments=attachments,
@@ -194,7 +197,8 @@ def derive_semantic_fields_llm(entry: dict[str, Any], llm_result: dict[str, Any]
         student_score_source="hybrid_rank_feature",
         importance_score_source="hybrid_rank_feature",
         tags=tags,
-        llm=llm_result
+        llm=val,
+        raw_field_presence=raw_presence
     )
 
 
@@ -300,10 +304,12 @@ def route_semantic_pipeline(entry: dict[str, Any], llm_result: dict[str, Any] | 
         result = derive_semantic_fields_guarded(entry, guard, now)
     elif run_config.get("no_llm"):
         result = derive_semantic_fields_heuristic(entry, guard, now, mode="heuristic")
-    elif llm_result:
+    elif llm_result and not llm_result.get("llm_failure"):
         result = derive_semantic_fields_llm(entry, llm_result, guard, now)
     else:
         # LLM was supposed to run but failed or didn't return a result
         result = derive_semantic_fields_heuristic(entry, guard, now, mode="heuristic_degraded")
-        
+        if llm_result and "llm_failure" in llm_result:
+            result.llm_failure = llm_result["llm_failure"]
+            
     return apply_display_overrides(apply_safety_overrides(result, guard))
