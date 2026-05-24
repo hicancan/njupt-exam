@@ -2,6 +2,7 @@ import { useMemo, useState, useEffect } from 'react';
 import { AlertTriangle, CalendarDays, Clock, FileText, GraduationCap, LockKeyhole } from 'lucide-react';
 import { ExamList } from '@/components/ExamList';
 import { ExamDetail } from '@/components/ExamDetail';
+import { ResultsSkeleton } from '@/components/ResultsSkeleton';
 import { RankedSearchDocument, SearchDocument, SearchDomain, SearchIntent, SearchResult } from '@/types';
 import {
     formatSearchDate,
@@ -168,6 +169,7 @@ function SearchResultCard({ document, onOpenClass }: SearchResultCardProps) {
 }
 
 interface ResultsViewProps {
+    isLoading?: boolean;
     query: string;
     results: RankedSearchDocument[];
     resources: SearchDocument[];
@@ -184,6 +186,7 @@ interface ResultsViewProps {
 }
 
 export function ResultsView({
+    isLoading,
     query,
     results,
     resources,
@@ -233,6 +236,9 @@ export function ResultsView({
 
     return (
         <main className="max-w-6xl w-full mx-auto px-4 py-6">
+            {isLoading ? (
+                <ResultsSkeleton />
+            ) : (
             <div className="w-full">
                 {classMode.mode === 'LIST' ? (
                     <section className="mt-6">
@@ -348,6 +354,7 @@ export function ResultsView({
                     </section>
                 )}
             </div>
+            )}
         </main>
     );
 }

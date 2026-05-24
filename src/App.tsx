@@ -11,7 +11,6 @@ import { useUrlState } from '@/hooks/useUrlState';
 import { useSearchEngine } from '@/hooks/useSearchEngine';
 
 import { Header } from '@/components/Header';
-import { LoadingScreen } from '@/components/LoadingScreen';
 import { HomeView } from '@/views/HomeView';
 import { ResultsView } from '@/views/ResultsView';
 
@@ -88,10 +87,6 @@ function App() {
 
     const isLoading = examLoading || searchLoading;
 
-    if (isLoading) {
-        return <LoadingScreen />;
-    }
-
     if (examError && searchError) {
         return (
             <div className="min-h-screen flex items-center justify-center bg-[#f8fafc] dark:bg-[#171717] text-[#202124] dark:text-[#e8eaed] px-4">
@@ -127,6 +122,7 @@ function App() {
                 />
             ) : (
                 <ResultsView
+                    isLoading={isLoading}
                     query={searchQuery}
                     results={rankedResults}
                     resources={learningResources}
