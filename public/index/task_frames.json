@@ -2773,6 +2773,63 @@
     "confidence": 0.85
   },
   {
+    "task_id": "task_185d824f869f0049",
+    "doc_id": "github-hicancan-njupt-net-7f980de7a96003335a87",
+    "task_type": "download",
+    "who": {
+      "audience": [
+        "本科生",
+        "研究生"
+      ],
+      "college": [],
+      "grade": [],
+      "major": [],
+      "class_name": []
+    },
+    "what": "njupt-net 校园网络工具 · njupt-net",
+    "action": {
+      "required": false,
+      "verb": null,
+      "object": null,
+      "summary": null
+    },
+    "time": {
+      "published_at": "2026-05-12",
+      "deadline": null,
+      "lifecycle": "evergreen",
+      "urgency_days": null
+    },
+    "materials": [],
+    "location": {
+      "place": null,
+      "online": null,
+      "contact": null
+    },
+    "source": {
+      "source_id": "github:hicancan/njupt-net",
+      "channel_id": "github:hicancan/njupt-net:resource",
+      "authority": 0.74,
+      "official": true
+    },
+    "evidence": [
+      {
+        "field": "general",
+        "text": "njupt-net 校园网络工具"
+      },
+      {
+        "field": "general",
+        "text": "One Go binary for everything painful about NJUPT campus networking"
+      }
+    ],
+    "risk": {
+      "sensitive": false,
+      "restricted": false,
+      "low_evidence": false,
+      "review_required": false
+    },
+    "confidence": 0.7
+  },
+  {
     "task_id": "task_4458ccb2ca72396a",
     "doc_id": "hqc-6cc6532cca3bd115388a",
     "task_type": "schedule",
@@ -3516,5 +3573,1011 @@
       "review_required": true
     },
     "confidence": 0.5
+  },
+  {
+    "task_id": "task_ab7e9a4e82712da3",
+    "doc_id": "github-NJUPTFreeExams-NJUPT-CST-Free-Exams-6169d0395e43fe5cb864",
+    "task_type": "download",
+    "who": {
+      "audience": [
+        "本科生",
+        "研究生"
+      ],
+      "college": [],
+      "grade": [],
+      "major": [],
+      "class_name": []
+    },
+    "what": "【Deprecated】南京邮电大学计算机科学与技术专业历年... · NJUPT-CS-Free-Exams",
+    "action": {
+      "required": false,
+      "verb": null,
+      "object": null,
+      "summary": null
+    },
+    "time": {
+      "published_at": "2021-08-29",
+      "deadline": null,
+      "lifecycle": "evergreen",
+      "urgency_days": null
+    },
+    "materials": [],
+    "location": {
+      "place": null,
+      "online": null,
+      "contact": null
+    },
+    "source": {
+      "source_id": "github:NJUPTFreeExams/NJUPT-CST-Free-Exams",
+      "channel_id": "github:NJUPTFreeExams/NJUPT-CST-Free-Exams:resource",
+      "authority": 0.5,
+      "official": true
+    },
+    "evidence": [
+      {
+        "field": "general",
+        "text": "南京邮电大学计算机科学与技术专业历年考试资料。"
+      },
+      {
+        "field": "general",
+        "text": "所有的资料已迁移至 NJUPT-CS-FREE https://github.com/NJUPTFreeExams/NJUPT-CS-FREE"
+      }
+    ],
+    "risk": {
+      "sensitive": false,
+      "restricted": false,
+      "low_evidence": false,
+      "review_required": false
+    },
+    "confidence": 0.95
+  },
+  {
+    "task_id": "e66500af396e72245244-download",
+    "doc_id": "github-NJUPTFreeExams-NJUPT-CS-FREE-2c2417a9008388b2e50e",
+    "task_type": "download",
+    "who": {
+      "audience": [
+        "本科生",
+        "研究生"
+      ],
+      "college": [
+        "计算机学院",
+        "软件学院",
+        "网络空间安全学院"
+      ],
+      "grade": [],
+      "major": [],
+      "class_name": []
+    },
+    "what": "下载南京邮电大学计算机相关专业历年考试资料",
+    "action": {
+      "required": false,
+      "verb": "下载",
+      "object": "考试资料",
+      "summary": "访问GitHub仓库NJUPT-CS-FREE下载历年考试资料"
+    },
+    "time": {
+      "published_at": "2026-01-20T00:00:00+08:00",
+      "deadline": null,
+      "lifecycle": "evergreen",
+      "urgency_days": null
+    },
+    "materials": [],
+    "location": {
+      "place": null,
+      "online": "https://github.com/NJUPTFreeExams/NJUPT-CS-FREE",
+      "contact": null
+    },
+    "source": {
+      "source_id": "github:NJUPTFreeExams/NJUPT-CS-FREE",
+      "channel_id": "github:NJUPTFreeExams/NJUPT-CS-FREE:resource",
+      "authority": 0.5,
+      "official": true
+    },
+    "evidence": [
+      {
+        "field": "action",
+        "text": "NJUPT-CS-FREE 项目的计算机相关专业资料分仓库"
+      }
+    ],
+    "risk": {
+      "sensitive": false,
+      "restricted": false,
+      "low_evidence": false,
+      "review_required": false
+    },
+    "confidence": 0.9
+  },
+  {
+    "task_id": "78e4f90f079e2e5f8674-download",
+    "doc_id": "github-NJUPTFreeExams-NJUPT-TE-Free-Exams-5a117bb9af20dfd99981",
+    "task_type": "download",
+    "who": {
+      "audience": [
+        "本科生",
+        "研究生"
+      ],
+      "college": [],
+      "grade": [],
+      "major": [
+        "通信工程"
+      ],
+      "class_name": []
+    },
+    "what": "下载通信工程专业历年考试资料",
+    "action": {
+      "required": false,
+      "verb": "下载",
+      "object": "考试资料",
+      "summary": "从GitHub仓库下载NJUPT-TE-Free-Exams资料"
+    },
+    "time": {
+      "published_at": "2024-11-26T00:00:00+08:00",
+      "deadline": null,
+      "lifecycle": "evergreen",
+      "urgency_days": null
+    },
+    "materials": [],
+    "location": {
+      "place": null,
+      "online": "https://github.com/NJUPTFreeExams/NJUPT-TE-Free-Exams",
+      "contact": null
+    },
+    "source": {
+      "source_id": "github:NJUPTFreeExams/NJUPT-TE-Free-Exams",
+      "channel_id": "github:NJUPTFreeExams/NJUPT-TE-Free-Exams:resource",
+      "authority": 0.5,
+      "official": true
+    },
+    "evidence": [
+      {
+        "field": "action",
+        "text": "NJUPTFreeExams 是由南京邮电大学计算机学院学生建立的一个 GitHub 组织，旨在收集校内历年资料造福后人。"
+      }
+    ],
+    "risk": {
+      "sensitive": false,
+      "restricted": false,
+      "low_evidence": false,
+      "review_required": false
+    },
+    "confidence": 0.88
+  },
+  {
+    "task_id": "fbc006b62db8e1dd2315-download",
+    "doc_id": "github-NJUPTFreeExams-NJUPT-AUTO-Free-Exams-75ccdaeaf3facc3ffdbd",
+    "task_type": "download",
+    "who": {
+      "audience": [
+        "本科生",
+        "研究生"
+      ],
+      "college": [
+        "自动化学院"
+      ],
+      "grade": [],
+      "major": [
+        "自动化"
+      ],
+      "class_name": []
+    },
+    "what": "下载自动化专业历年考试资料",
+    "action": {
+      "required": false,
+      "verb": "下载",
+      "object": "自动化专业历年考试资料",
+      "summary": "访问GitHub仓库NJUPT-AUTO-Free-Exams下载资料"
+    },
+    "time": {
+      "published_at": "2024-11-27T00:00:00+08:00",
+      "deadline": null,
+      "lifecycle": "evergreen",
+      "urgency_days": null
+    },
+    "materials": [],
+    "location": {
+      "place": null,
+      "online": "https://github.com/NJUPTFreeExams/NJUPT-AUTO-Free-Exams",
+      "contact": null
+    },
+    "source": {
+      "source_id": "github:NJUPTFreeExams/NJUPT-AUTO-Free-Exams",
+      "channel_id": "github:NJUPTFreeExams/NJUPT-AUTO-Free-Exams:resource",
+      "authority": 0.5,
+      "official": true
+    },
+    "evidence": [
+      {
+        "field": "action",
+        "text": "NJUPT-AUTO-Free-Exams 项目的 自动化专业 资料分仓库。"
+      }
+    ],
+    "risk": {
+      "sensitive": false,
+      "restricted": false,
+      "low_evidence": false,
+      "review_required": false
+    },
+    "confidence": 0.88
+  },
+  {
+    "task_id": "task_fb55fba947594c56",
+    "doc_id": "github-NJUPTFreeExams-NJUPT-InfoSec-Free-Exams-e6e8024e7e61b78b68d8",
+    "task_type": "download",
+    "who": {
+      "audience": [
+        "本科生",
+        "研究生"
+      ],
+      "college": [],
+      "grade": [],
+      "major": [],
+      "class_name": []
+    },
+    "what": "【Deprecated】南京邮电大学信息安全专业历年考试资料... · NJUPT_InfoSec_Free_Exams",
+    "action": {
+      "required": false,
+      "verb": null,
+      "object": null,
+      "summary": null
+    },
+    "time": {
+      "published_at": "2021-08-29",
+      "deadline": null,
+      "lifecycle": "evergreen",
+      "urgency_days": null
+    },
+    "materials": [],
+    "location": {
+      "place": null,
+      "online": null,
+      "contact": null
+    },
+    "source": {
+      "source_id": "github:NJUPTFreeExams/NJUPT-InfoSec-Free-Exams",
+      "channel_id": "github:NJUPTFreeExams/NJUPT-InfoSec-Free-Exams:resource",
+      "authority": 0.5,
+      "official": true
+    },
+    "evidence": [
+      {
+        "field": "general",
+        "text": "南京邮电大学信息安全专业历年考试资料"
+      },
+      {
+        "field": "general",
+        "text": "所有的资料已迁移至 NJUPT-CS-FREE"
+      }
+    ],
+    "risk": {
+      "sensitive": false,
+      "restricted": false,
+      "low_evidence": false,
+      "review_required": false
+    },
+    "confidence": 0.85
+  },
+  {
+    "task_id": "task_32f69df7b10a5e9f",
+    "doc_id": "github-dhiyu-NJUPT-Bachelor-6c0dfd18c09b68d15b36",
+    "task_type": "download",
+    "who": {
+      "audience": [
+        "本科生",
+        "研究生"
+      ],
+      "college": [],
+      "grade": [],
+      "major": [],
+      "class_name": []
+    },
+    "what": "南京邮电大学本科生毕业设计Latex模板 · 南京邮电大学本科毕业设计Latex模板",
+    "action": {
+      "required": false,
+      "verb": null,
+      "object": null,
+      "summary": null
+    },
+    "time": {
+      "published_at": "2024-06-05",
+      "deadline": null,
+      "lifecycle": "evergreen",
+      "urgency_days": null
+    },
+    "materials": [],
+    "location": {
+      "place": null,
+      "online": null,
+      "contact": null
+    },
+    "source": {
+      "source_id": "github:dhiyu/NJUPT-Bachelor",
+      "channel_id": "github:dhiyu/NJUPT-Bachelor:resource",
+      "authority": 0.5,
+      "official": true
+    },
+    "evidence": [
+      {
+        "field": "general",
+        "text": "南京邮电大学本科毕业设计Latex模板"
+      },
+      {
+        "field": "general",
+        "text": "本模板是南京邮电大学本科生 理工艺教类 毕业设计的Latex模板"
+      }
+    ],
+    "risk": {
+      "sensitive": false,
+      "restricted": false,
+      "low_evidence": false,
+      "review_required": false
+    },
+    "confidence": 0.9
+  },
+  {
+    "task_id": "task_e4f51fbea127a69e",
+    "doc_id": "github-gzr-lgtm-NJUPThesis-Bachelor-afd91b3fbe9d32896279",
+    "task_type": "download",
+    "who": {
+      "audience": [
+        "本科生",
+        "研究生"
+      ],
+      "college": [],
+      "grade": [],
+      "major": [],
+      "class_name": []
+    },
+    "what": "LaTeX template for NJUPT Under... · NUPThesis",
+    "action": {
+      "required": false,
+      "verb": null,
+      "object": null,
+      "summary": null
+    },
+    "time": {
+      "published_at": "2022-05-02",
+      "deadline": null,
+      "lifecycle": "evergreen",
+      "urgency_days": null
+    },
+    "materials": [],
+    "location": {
+      "place": null,
+      "online": null,
+      "contact": null
+    },
+    "source": {
+      "source_id": "github:gzr-lgtm/NJUPThesis-Bachelor",
+      "channel_id": "github:gzr-lgtm/NJUPThesis-Bachelor:resource",
+      "authority": 0.5,
+      "official": true
+    },
+    "evidence": [
+      {
+        "field": "general",
+        "text": "南京邮电大学毕业论文 LaTex 模版"
+      },
+      {
+        "field": "general",
+        "text": "本模版基于电子科技大学 ThesisUETSC 模版二次开发而成"
+      }
+    ],
+    "risk": {
+      "sensitive": false,
+      "restricted": false,
+      "low_evidence": false,
+      "review_required": false
+    },
+    "confidence": 0.9
+  },
+  {
+    "task_id": "1f5208afd6641fecb1a3-1",
+    "doc_id": "github-ace-trump-tech-NJUPT-Graduation-thesis-45f54f0688c8a8d0c82d",
+    "task_type": "download",
+    "who": {
+      "audience": [
+        "本科生",
+        "研究生"
+      ],
+      "college": [],
+      "grade": [],
+      "major": [],
+      "class_name": []
+    },
+    "what": "下载毕业论文模板",
+    "action": {
+      "required": false,
+      "verb": "下载",
+      "object": "毕业论文模板",
+      "summary": "从GitHub Releases下载最新模板文件压缩包"
+    },
+    "time": {
+      "published_at": "2025-05-13T00:00:00+08:00",
+      "deadline": null,
+      "lifecycle": "evergreen",
+      "urgency_days": null
+    },
+    "materials": [],
+    "location": {
+      "place": null,
+      "online": "https://github.com/ace-trump-tech/NJUPT-Thesis/releases",
+      "contact": null
+    },
+    "source": {
+      "source_id": "github:ace-trump-tech/NJUPT-Graduation-thesis",
+      "channel_id": "github:ace-trump-tech/NJUPT-Graduation-thesis:resource",
+      "authority": 0.5,
+      "official": true
+    },
+    "evidence": [
+      {
+        "field": "action",
+        "text": "下载模板：点击 Releases 下载最新的模板文件压缩包。"
+      }
+    ],
+    "risk": {
+      "sensitive": false,
+      "restricted": false,
+      "low_evidence": false,
+      "review_required": false
+    },
+    "confidence": 0.9
+  },
+  {
+    "task_id": "task_b3cbb6766c82e138",
+    "doc_id": "github-GreenPomelo-Undergraduate-1328d4737a1ed6714c87",
+    "task_type": "opportunity",
+    "who": {
+      "audience": [
+        "本科生"
+      ],
+      "college": [],
+      "grade": [
+        "大二",
+        "大三",
+        "大一"
+      ],
+      "major": [],
+      "class_name": []
+    },
+    "what": "青柚工作室招新",
+    "action": {
+      "required": true,
+      "verb": "投递",
+      "object": "简历",
+      "summary": "青柚工作室持续招新，对象为南京邮电大学全日制本科生，主要以大二大三在校学生为主，大一能力强者亦可。希望有兴趣的同学能投递简历至 qingyou@njupt.edu.cn"
+    },
+    "time": {
+      "published_at": "2020-01-11T00:00:00+08:00",
+      "deadline": null,
+      "lifecycle": "evergreen",
+      "urgency_days": null
+    },
+    "materials": [
+      {
+        "name": "简历",
+        "role": "申请材料",
+        "required": true,
+        "sensitive": false
+      }
+    ],
+    "location": {
+      "place": null,
+      "online": "qingyou@njupt.edu.cn",
+      "contact": "qingyou@njupt.edu.cn"
+    },
+    "source": {
+      "source_id": "github:GreenPomelo/Undergraduate",
+      "channel_id": "github:GreenPomelo/Undergraduate:resource",
+      "authority": 0.5,
+      "official": true
+    },
+    "evidence": [
+      {
+        "field": "action",
+        "text": "希望有兴趣的同学能投递简历至 qingyou@njupt.edu.cn"
+      }
+    ],
+    "risk": {
+      "sensitive": false,
+      "restricted": false,
+      "low_evidence": false,
+      "review_required": false
+    },
+    "confidence": 0.7
+  },
+  {
+    "task_id": "task_dc58d10ca0976caa",
+    "doc_id": "github-love98ooo-ZhengFangJiaoWuSystemTampermonkeyScript-b704201def39004c085e",
+    "task_type": "download",
+    "who": {
+      "audience": [
+        "本科生",
+        "研究生"
+      ],
+      "college": [],
+      "grade": [],
+      "major": [],
+      "class_name": []
+    },
+    "what": "南京邮电大学正方教务系统油猴脚本，主要用于查询平时分和卷面分 · ZhengFangJiaoWuSystemTampermonkeyScript",
+    "action": {
+      "required": false,
+      "verb": null,
+      "object": null,
+      "summary": null
+    },
+    "time": {
+      "published_at": "2024-01-10",
+      "deadline": null,
+      "lifecycle": "evergreen",
+      "urgency_days": null
+    },
+    "materials": [],
+    "location": {
+      "place": null,
+      "online": null,
+      "contact": null
+    },
+    "source": {
+      "source_id": "github:love98ooo/ZhengFangJiaoWuSystemTampermonkeyScript",
+      "channel_id": "github:love98ooo/ZhengFangJiaoWuSystemTampermonkeyScript:resource",
+      "authority": 0.5,
+      "official": true
+    },
+    "evidence": [
+      {
+        "field": "general",
+        "text": "南京邮电大学正方教务系统油猴脚本，主要用于查询平时分和卷面分"
+      },
+      {
+        "field": "general",
+        "text": "脚本不稳定"
+      }
+    ],
+    "risk": {
+      "sensitive": false,
+      "restricted": false,
+      "low_evidence": false,
+      "review_required": false
+    },
+    "confidence": 0.7
+  },
+  {
+    "task_id": "task_165af783f32fbed8",
+    "doc_id": "github-renyuanzhe-NJUPT-CS-Courses-89624db7d227f3a5ec71",
+    "task_type": "download",
+    "who": {
+      "audience": [
+        "本科生",
+        "研究生"
+      ],
+      "college": [],
+      "grade": [],
+      "major": [],
+      "class_name": []
+    },
+    "what": "NJUPT南京邮电大学,计算机相关课程的实验报告，大作业以及... · NJUPT-CS-Courses",
+    "action": {
+      "required": false,
+      "verb": null,
+      "object": null,
+      "summary": null
+    },
+    "time": {
+      "published_at": "2023-06-28",
+      "deadline": null,
+      "lifecycle": "evergreen",
+      "urgency_days": null
+    },
+    "materials": [],
+    "location": {
+      "place": null,
+      "online": null,
+      "contact": null
+    },
+    "source": {
+      "source_id": "github:renyuanzhe/NJUPT-CS-Courses",
+      "channel_id": "github:renyuanzhe/NJUPT-CS-Courses:resource",
+      "authority": 0.5,
+      "official": true
+    },
+    "evidence": [
+      {
+        "field": "general",
+        "text": "此仓库包含了南京邮电大学计算机专业多门课程的的学习资料，实验报告以及大作业。有需要的自取"
+      }
+    ],
+    "risk": {
+      "sensitive": false,
+      "restricted": false,
+      "low_evidence": false,
+      "review_required": false
+    },
+    "confidence": 0.7
+  },
+  {
+    "task_id": "task_339736211b6c6fe8",
+    "doc_id": "github-xiafanglongfei-NJUPT-auto-evaluate-cb1e0dbaa0cca5ce421e",
+    "task_type": "download",
+    "who": {
+      "audience": [
+        "本科生",
+        "研究生"
+      ],
+      "college": [],
+      "grade": [],
+      "major": [],
+      "class_name": []
+    },
+    "what": "🐶 南邮本科生学生评教活动的一键自动评价脚本 #南邮# #一... · NJUPT-auto-evaluate",
+    "action": {
+      "required": false,
+      "verb": null,
+      "object": null,
+      "summary": null
+    },
+    "time": {
+      "published_at": "2022-01-19",
+      "deadline": null,
+      "lifecycle": "evergreen",
+      "urgency_days": null
+    },
+    "materials": [],
+    "location": {
+      "place": null,
+      "online": null,
+      "contact": null
+    },
+    "source": {
+      "source_id": "github:xiafanglongfei/NJUPT-auto-evaluate",
+      "channel_id": "github:xiafanglongfei/NJUPT-auto-evaluate:resource",
+      "authority": 0.5,
+      "official": true
+    },
+    "evidence": [
+      {
+        "field": "general",
+        "text": "南邮每学期都有一个本科生学生评教的活动"
+      },
+      {
+        "field": "general",
+        "text": "脚本能够一次完成一整项评价"
+      }
+    ],
+    "risk": {
+      "sensitive": false,
+      "restricted": false,
+      "low_evidence": false,
+      "review_required": false
+    },
+    "confidence": 0.7
+  },
+  {
+    "task_id": "task_f588f1d5c7f9c333",
+    "doc_id": "github-yosunpeng-postgraduate_test_njupt-b65d2cfa1c598600bc07",
+    "task_type": "result_check",
+    "who": {
+      "audience": [
+        "本科生",
+        "研究生"
+      ],
+      "college": [],
+      "grade": [],
+      "major": [],
+      "class_name": []
+    },
+    "what": "南京邮电大学研究生期末考试复习资料 · postgraduate\\_test\\_njupt",
+    "action": {
+      "required": false,
+      "verb": null,
+      "object": null,
+      "summary": null
+    },
+    "time": {
+      "published_at": "2019-05-26",
+      "deadline": null,
+      "lifecycle": "evergreen",
+      "urgency_days": null
+    },
+    "materials": [],
+    "location": {
+      "place": null,
+      "online": null,
+      "contact": null
+    },
+    "source": {
+      "source_id": "github:yosunpeng/postgraduate_test_njupt",
+      "channel_id": "github:yosunpeng/postgraduate_test_njupt:resource",
+      "authority": 0.5,
+      "official": true
+    },
+    "evidence": [
+      {
+        "field": "general",
+        "text": "南京邮电大学研究生期末考试复习资料 · postgraduate\\_test\\_njupt postgraduate\\ test\\ njupt 南京邮电大学研究生期末考试复习资料 查看文件中的README.pdf 我用latex不用markdown, 所以我想说的都在那里面."
+      }
+    ],
+    "risk": {
+      "sensitive": false,
+      "restricted": false,
+      "low_evidence": false,
+      "review_required": false
+    },
+    "confidence": 0.58
+  },
+  {
+    "task_id": "task_5a23a9679b45e700",
+    "doc_id": "github-s235784-NJUPT_AutoLogin-3bfbad0bf26507d2f64a",
+    "task_type": "download",
+    "who": {
+      "audience": [
+        "本科生",
+        "研究生"
+      ],
+      "college": [],
+      "grade": [],
+      "major": [],
+      "class_name": []
+    },
+    "what": "南京邮电大学校园网自动登录脚本，支持Linux（OpenWR... · NJUPT_AutoLogin",
+    "action": {
+      "required": false,
+      "verb": null,
+      "object": null,
+      "summary": null
+    },
+    "time": {
+      "published_at": "2025-09-09",
+      "deadline": null,
+      "lifecycle": "evergreen",
+      "urgency_days": null
+    },
+    "materials": [],
+    "location": {
+      "place": null,
+      "online": null,
+      "contact": null
+    },
+    "source": {
+      "source_id": "github:s235784/NJUPT_AutoLogin",
+      "channel_id": "github:s235784/NJUPT_AutoLogin:resource",
+      "authority": 0.5,
+      "official": true
+    },
+    "evidence": [
+      {
+        "field": "general",
+        "text": "NJUPT AutoLogin 南京邮电大学校园网自动登录脚本，支持 macOS、Linux（如 OpenWRT）和 MikroTik RouterOS 平台。"
+      }
+    ],
+    "risk": {
+      "sensitive": false,
+      "restricted": false,
+      "low_evidence": false,
+      "review_required": false
+    },
+    "confidence": 0.7
+  },
+  {
+    "task_id": "task_0ff2d8c6af470fe0",
+    "doc_id": "github-lux-QAQ-NJUPT_Fastlogin-761863a2a7039f75e0eb",
+    "task_type": "download",
+    "who": {
+      "audience": [
+        "本科生",
+        "研究生"
+      ],
+      "college": [],
+      "grade": [],
+      "major": [],
+      "class_name": []
+    },
+    "what": "南京邮电大学校园网最快登录脚本 for Android Wi... · NJUPT_Fastlogin",
+    "action": {
+      "required": false,
+      "verb": null,
+      "object": null,
+      "summary": null
+    },
+    "time": {
+      "published_at": "2025-12-29",
+      "deadline": null,
+      "lifecycle": "evergreen",
+      "urgency_days": null
+    },
+    "materials": [],
+    "location": {
+      "place": null,
+      "online": null,
+      "contact": null
+    },
+    "source": {
+      "source_id": "github:lux-QAQ/NJUPT_Fastlogin",
+      "channel_id": "github:lux-QAQ/NJUPT_Fastlogin:resource",
+      "authority": 0.5,
+      "official": true
+    },
+    "evidence": [
+      {
+        "field": "general",
+        "text": "NJUPT Fastlogin 由于之前使用python写的南邮校园网登录脚本速度太慢了"
+      },
+      {
+        "field": "general",
+        "text": "Android 直接去下 Release版本 开箱即用"
+      }
+    ],
+    "risk": {
+      "sensitive": false,
+      "restricted": false,
+      "low_evidence": false,
+      "review_required": false
+    },
+    "confidence": 0.7
+  },
+  {
+    "task_id": "task_9337e2ea186918e2",
+    "doc_id": "github-Freedomisgood-NjuptCmcc-2e4d2ee54922589eb084",
+    "task_type": "download",
+    "who": {
+      "audience": [
+        "本科生",
+        "研究生"
+      ],
+      "college": [],
+      "grade": [],
+      "major": [],
+      "class_name": []
+    },
+    "what": "校园网一键上网脚本 · 说明：",
+    "action": {
+      "required": false,
+      "verb": null,
+      "object": null,
+      "summary": null
+    },
+    "time": {
+      "published_at": "2021-08-15",
+      "deadline": null,
+      "lifecycle": "evergreen",
+      "urgency_days": null
+    },
+    "materials": [],
+    "location": {
+      "place": null,
+      "online": null,
+      "contact": null
+    },
+    "source": {
+      "source_id": "github:Freedomisgood/NjuptCmcc",
+      "channel_id": "github:Freedomisgood/NjuptCmcc:resource",
+      "authority": 0.5,
+      "official": true
+    },
+    "evidence": [
+      {
+        "field": "general",
+        "text": "校园网一键上网脚本"
+      },
+      {
+        "field": "general",
+        "text": "下载 V2.0.1 蓝奏云下载链接"
+      }
+    ],
+    "risk": {
+      "sensitive": false,
+      "restricted": false,
+      "low_evidence": false,
+      "review_required": false
+    },
+    "confidence": 0.7
+  },
+  {
+    "task_id": "task_6fd84756891cad0f",
+    "doc_id": "github-s235784-NJUPT_AutoLogin-69c4f1af6f3b914fa34c",
+    "task_type": "download",
+    "who": {
+      "audience": [
+        "本科生",
+        "研究生"
+      ],
+      "college": [],
+      "grade": [],
+      "major": [],
+      "class_name": []
+    },
+    "what": "南京邮电大学校园网自动登录脚本，支持Linux（OpenWR... · NJUPT_AutoLogin RouterOS",
+    "action": {
+      "required": false,
+      "verb": null,
+      "object": null,
+      "summary": null
+    },
+    "time": {
+      "published_at": "2025-09-09",
+      "deadline": null,
+      "lifecycle": "evergreen",
+      "urgency_days": null
+    },
+    "materials": [],
+    "location": {
+      "place": null,
+      "online": null,
+      "contact": null
+    },
+    "source": {
+      "source_id": "github:s235784/NJUPT_AutoLogin",
+      "channel_id": "github:s235784/NJUPT_AutoLogin:resource",
+      "authority": 0.5,
+      "official": true
+    },
+    "evidence": [
+      {
+        "field": "general",
+        "text": "NJUPT AutoLogin RouterOS 适用于 RouterOS v7.11.2 及以上版本"
+      }
+    ],
+    "risk": {
+      "sensitive": false,
+      "restricted": false,
+      "low_evidence": false,
+      "review_required": false
+    },
+    "confidence": 0.7
+  },
+  {
+    "task_id": "task_b270f1aeb905d228",
+    "doc_id": "github-NJUPT-CG-NCTF2018-cc514192c7ef53998319",
+    "task_type": "download",
+    "who": {
+      "audience": [
+        "本科生",
+        "研究生"
+      ],
+      "college": [],
+      "grade": [],
+      "major": [],
+      "class_name": []
+    },
+    "what": "Official repository of NJUPT C... · NCTF2018",
+    "action": {
+      "required": false,
+      "verb": null,
+      "object": null,
+      "summary": null
+    },
+    "time": {
+      "published_at": "2018-11-29",
+      "deadline": null,
+      "lifecycle": "evergreen",
+      "urgency_days": null
+    },
+    "materials": [],
+    "location": {
+      "place": null,
+      "online": null,
+      "contact": null
+    },
+    "source": {
+      "source_id": "github:NJUPT-CG/NCTF2018",
+      "channel_id": "github:NJUPT-CG/NCTF2018:resource",
+      "authority": 0.5,
+      "official": true
+    },
+    "evidence": [
+      {
+        "field": "general",
+        "text": "NCTF2018 Official repository of NJUPT CTF 2018"
+      }
+    ],
+    "risk": {
+      "sensitive": false,
+      "restricted": false,
+      "low_evidence": false,
+      "review_required": false
+    },
+    "confidence": 0.7
   }
 ]

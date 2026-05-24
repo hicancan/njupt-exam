@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-05-24T20:25:18.708583+08:00",
-  "total_documents": 155,
+  "generated_at": "2026-05-24T21:05:39.996909+08:00",
+  "total_documents": 197,
   "strategy": "hytask-rag-source-channel-taskframe-hybrid-index-v1",
   "llm_schema_version": "hytask-taskframe-v1",
   "llm_enabled": true,
@@ -10,42 +10,42 @@
   "llm_batch_max_chars": 250000,
   "llm_batch_max_output_tokens": 60000,
   "llm_stats": {
-    "cache_reused": 124,
-    "llm_reused": 227,
-    "llm_attempted": 0,
+    "cache_reused": 123,
+    "llm_reused": 250,
+    "llm_attempted": 1,
     "llm_reprocessed": 0,
-    "llm_failed": 0,
-    "llm_fallback": 44,
+    "llm_failed": 1,
+    "llm_fallback": 52,
     "llm_skipped_by_limit": 0,
-    "llm_batches_attempted": 0,
-    "llm_batch_docs_attempted": 0,
-    "candidate_llm_cache_reused": 103,
-    "restricted": 0
+    "llm_batches_attempted": 1,
+    "llm_batch_docs_attempted": 1,
+    "candidate_llm_cache_reused": 127,
+    "restricted": 10
   },
   "source_count": 30,
   "channel_count": 30,
   "audited_channel_count": 30,
   "production_channel_count": 30,
   "failed_channel_count": 0,
-  "task_frame_count": 58,
-  "documents_with_task_frame": 54,
+  "task_frame_count": 77,
+  "documents_with_task_frame": 73,
   "evidence_coverage": {
     "audience": 1.0,
-    "action": 0.8276,
-    "deadline": 0.2586,
+    "action": 0.6883,
+    "deadline": 0.1948,
     "materials": 0.0,
-    "location": 0.3793,
+    "location": 0.2857,
     "sensitive": 0.0,
-    "overall": 0.4109
+    "overall": 0.3615
   },
-  "review_required_count": 43,
+  "review_required_count": 52,
   "low_evidence_count": 8,
-  "restricted_count": 0,
-  "sensitive_count": 29,
+  "restricted_count": 2,
+  "sensitive_count": 36,
   "hybrid_index": {
-    "doc_count": 155,
-    "task_frame_count": 58,
-    "avg_doc_len": 512.7742
+    "doc_count": 197,
+    "task_frame_count": 77,
+    "avg_doc_len": 535.3249
   },
   "sources": [
     {
@@ -64,20 +64,15 @@
           "priority": 1.0,
           "student_value": 1.0,
           "audit_status": "manual_seeded",
-          "status": "warning",
+          "status": "ok",
           "documents": 14,
           "candidates": 36,
-          "list_errors": [
-            "https://jwc.njupt.edu.cn/1690/list4.htm: 502 Server Error: Bad Gateway for url: https://jwc.njupt.edu.cn/1690/list4.htm"
-          ]
+          "list_errors": []
         }
       ],
       "status": "ok",
       "documents": 13,
-      "last_fetch_at": "2026-05-24T20:25:18.708583+08:00",
-      "list_errors": [
-        "https://jwc.njupt.edu.cn/1690/list4.htm: 502 Server Error: Bad Gateway for url: https://jwc.njupt.edu.cn/1690/list4.htm"
-      ],
+      "last_fetch_at": "2026-05-24T21:05:39.996909+08:00",
       "candidates": 14,
       "filtered_out": 1
     },
@@ -105,7 +100,7 @@
       ],
       "status": "ok",
       "documents": 7,
-      "last_fetch_at": "2026-05-24T20:25:18.708583+08:00",
+      "last_fetch_at": "2026-05-24T21:05:39.996909+08:00",
       "candidates": 14,
       "filtered_out": 7
     },
@@ -133,7 +128,7 @@
       ],
       "status": "ok",
       "documents": 9,
-      "last_fetch_at": "2026-05-24T20:25:18.708583+08:00",
+      "last_fetch_at": "2026-05-24T21:05:39.996909+08:00",
       "candidates": 14,
       "filtered_out": 5
     },
@@ -161,7 +156,7 @@
       ],
       "status": "ok",
       "documents": 9,
-      "last_fetch_at": "2026-05-24T20:25:18.708583+08:00",
+      "last_fetch_at": "2026-05-24T21:05:39.996909+08:00",
       "candidates": 14,
       "filtered_out": 5
     },
@@ -189,7 +184,7 @@
       ],
       "status": "ok",
       "documents": 7,
-      "last_fetch_at": "2026-05-24T20:25:18.708583+08:00",
+      "last_fetch_at": "2026-05-24T21:05:39.996909+08:00",
       "candidates": 14,
       "filtered_out": 7
     },
@@ -217,7 +212,7 @@
       ],
       "status": "ok",
       "documents": 10,
-      "last_fetch_at": "2026-05-24T20:25:18.708583+08:00",
+      "last_fetch_at": "2026-05-24T21:05:39.996909+08:00",
       "candidates": 13,
       "filtered_out": 3
     },
@@ -243,7 +238,7 @@
       ],
       "status": "ok",
       "documents": 18,
-      "last_fetch_at": "2026-05-24T20:25:18.708583+08:00"
+      "last_fetch_at": "2026-05-24T21:05:39.996909+08:00"
     },
     {
       "id": "lib",
@@ -269,7 +264,7 @@
       ],
       "status": "ok",
       "documents": 11,
-      "last_fetch_at": "2026-05-24T20:25:18.708583+08:00",
+      "last_fetch_at": "2026-05-24T21:05:39.996909+08:00",
       "candidates": 14,
       "filtered_out": 3
     },
@@ -297,7 +292,7 @@
       ],
       "status": "ok",
       "documents": 2,
-      "last_fetch_at": "2026-05-24T20:25:18.708583+08:00",
+      "last_fetch_at": "2026-05-24T21:05:39.996909+08:00",
       "candidates": 12,
       "filtered_out": 10
     },
@@ -325,7 +320,7 @@
       ],
       "status": "ok",
       "documents": 8,
-      "last_fetch_at": "2026-05-24T20:25:18.708583+08:00",
+      "last_fetch_at": "2026-05-24T21:05:39.996909+08:00",
       "candidates": 14,
       "filtered_out": 6
     },
@@ -353,7 +348,7 @@
       ],
       "status": "ok",
       "documents": 4,
-      "last_fetch_at": "2026-05-24T20:25:18.708583+08:00",
+      "last_fetch_at": "2026-05-24T21:05:39.996909+08:00",
       "candidates": 14,
       "filtered_out": 10
     },
@@ -381,7 +376,7 @@
       ],
       "status": "ok",
       "documents": 8,
-      "last_fetch_at": "2026-05-24T20:25:18.708583+08:00",
+      "last_fetch_at": "2026-05-24T21:05:39.996909+08:00",
       "candidates": 14,
       "filtered_out": 6
     },
@@ -409,7 +404,7 @@
       ],
       "status": "ok",
       "documents": 0,
-      "last_fetch_at": "2026-05-24T20:25:18.708583+08:00",
+      "last_fetch_at": "2026-05-24T21:05:39.996909+08:00",
       "candidates": 2,
       "filtered_out": 2
     },
@@ -437,7 +432,7 @@
       ],
       "status": "ok",
       "documents": 6,
-      "last_fetch_at": "2026-05-24T20:25:18.708583+08:00",
+      "last_fetch_at": "2026-05-24T21:05:39.996909+08:00",
       "candidates": 14,
       "filtered_out": 8
     },
@@ -465,7 +460,7 @@
       ],
       "status": "ok",
       "documents": 14,
-      "last_fetch_at": "2026-05-24T20:25:18.708583+08:00",
+      "last_fetch_at": "2026-05-24T21:05:39.996909+08:00",
       "candidates": 14,
       "filtered_out": 0
     },
@@ -489,15 +484,15 @@
           "documents": 0,
           "candidates": 0,
           "list_errors": [
-            "https://nic.njupt.edu.cn/: HTTPSConnectionPool(host='nic.njupt.edu.cn', port=443): Max retries exceeded with url: / (Caused by NameResolutionError(\"HTTPSConnection(host='nic.njupt.edu.cn', port=443): Failed to resolve 'nic.njupt.edu.cn' ([Errno 11001] getaddrinfo failed)\"))"
+            "https://nic.njupt.edu.cn/: HTTPSConnectionPool(host='nic.njupt.edu.cn', port=443): Max retries exceeded with url: / (Caused by NameResolutionError(\"HTTPSConnection(host='nic.njupt.edu.cn', port=443): Failed to resolve 'nic.njupt.edu.cn' ([Errno -2] Name or service not known)\"))"
           ]
         }
       ],
       "status": "ok",
       "documents": 0,
-      "last_fetch_at": "2026-05-24T20:25:18.708583+08:00",
+      "last_fetch_at": "2026-05-24T21:05:39.996909+08:00",
       "list_errors": [
-        "https://nic.njupt.edu.cn/: HTTPSConnectionPool(host='nic.njupt.edu.cn', port=443): Max retries exceeded with url: / (Caused by NameResolutionError(\"HTTPSConnection(host='nic.njupt.edu.cn', port=443): Failed to resolve 'nic.njupt.edu.cn' ([Errno 11001] getaddrinfo failed)\"))"
+        "https://nic.njupt.edu.cn/: HTTPSConnectionPool(host='nic.njupt.edu.cn', port=443): Max retries exceeded with url: / (Caused by NameResolutionError(\"HTTPSConnection(host='nic.njupt.edu.cn', port=443): Failed to resolve 'nic.njupt.edu.cn' ([Errno -2] Name or service not known)\"))"
       ],
       "candidates": 0,
       "filtered_out": 0
@@ -525,10 +520,10 @@
         }
       ],
       "status": "ok",
-      "documents": 1,
-      "last_fetch_at": "2026-05-24T20:25:18.708583+08:00",
+      "documents": 3,
+      "last_fetch_at": "2026-05-24T21:05:39.996909+08:00",
       "candidates": 13,
-      "filtered_out": 12
+      "filtered_out": 10
     },
     {
       "id": "archives",
@@ -554,7 +549,7 @@
       ],
       "status": "ok",
       "documents": 3,
-      "last_fetch_at": "2026-05-24T20:25:18.708583+08:00",
+      "last_fetch_at": "2026-05-24T21:05:39.996909+08:00",
       "candidates": 14,
       "filtered_out": 11
     },
@@ -582,7 +577,7 @@
       ],
       "status": "ok",
       "documents": 6,
-      "last_fetch_at": "2026-05-24T20:25:18.708583+08:00",
+      "last_fetch_at": "2026-05-24T21:05:39.996909+08:00",
       "candidates": 14,
       "filtered_out": 8
     },
@@ -610,7 +605,7 @@
       ],
       "status": "ok",
       "documents": 3,
-      "last_fetch_at": "2026-05-24T20:25:18.708583+08:00",
+      "last_fetch_at": "2026-05-24T21:05:39.996909+08:00",
       "candidates": 4,
       "filtered_out": 1
     },
@@ -638,7 +633,7 @@
       ],
       "status": "ok",
       "documents": 0,
-      "last_fetch_at": "2026-05-24T20:25:18.708583+08:00",
+      "last_fetch_at": "2026-05-24T21:05:39.996909+08:00",
       "candidates": 0,
       "filtered_out": 0
     },
@@ -666,7 +661,7 @@
       ],
       "status": "ok",
       "documents": 0,
-      "last_fetch_at": "2026-05-24T20:25:18.708583+08:00",
+      "last_fetch_at": "2026-05-24T21:05:39.996909+08:00",
       "candidates": 0,
       "filtered_out": 0
     },
@@ -694,7 +689,7 @@
       ],
       "status": "ok",
       "documents": 0,
-      "last_fetch_at": "2026-05-24T20:25:18.708583+08:00",
+      "last_fetch_at": "2026-05-24T21:05:39.996909+08:00",
       "candidates": 0,
       "filtered_out": 0
     },
@@ -722,7 +717,7 @@
       ],
       "status": "ok",
       "documents": 0,
-      "last_fetch_at": "2026-05-24T20:25:18.708583+08:00",
+      "last_fetch_at": "2026-05-24T21:05:39.996909+08:00",
       "candidates": 0,
       "filtered_out": 0
     },
@@ -750,7 +745,7 @@
       ],
       "status": "ok",
       "documents": 0,
-      "last_fetch_at": "2026-05-24T20:25:18.708583+08:00",
+      "last_fetch_at": "2026-05-24T21:05:39.996909+08:00",
       "candidates": 0,
       "filtered_out": 0
     },
@@ -778,7 +773,7 @@
       ],
       "status": "ok",
       "documents": 0,
-      "last_fetch_at": "2026-05-24T20:25:18.708583+08:00",
+      "last_fetch_at": "2026-05-24T21:05:39.996909+08:00",
       "candidates": 0,
       "filtered_out": 0
     },
@@ -806,7 +801,7 @@
       ],
       "status": "ok",
       "documents": 0,
-      "last_fetch_at": "2026-05-24T20:25:18.708583+08:00",
+      "last_fetch_at": "2026-05-24T21:05:39.996909+08:00",
       "candidates": 0,
       "filtered_out": 0
     },
@@ -834,7 +829,7 @@
       ],
       "status": "ok",
       "documents": 10,
-      "last_fetch_at": "2026-05-24T20:25:18.708583+08:00",
+      "last_fetch_at": "2026-05-24T21:05:39.996909+08:00",
       "candidates": 13,
       "filtered_out": 3
     },
@@ -862,7 +857,7 @@
       ],
       "status": "ok",
       "documents": 8,
-      "last_fetch_at": "2026-05-24T20:25:18.708583+08:00",
+      "last_fetch_at": "2026-05-24T21:05:39.996909+08:00",
       "candidates": 14,
       "filtered_out": 6
     },
@@ -890,7 +885,7 @@
       ],
       "status": "ok",
       "documents": 0,
-      "last_fetch_at": "2026-05-24T20:25:18.708583+08:00",
+      "last_fetch_at": "2026-05-24T21:05:39.996909+08:00",
       "candidates": 0,
       "filtered_out": 0
     },
@@ -899,320 +894,320 @@
       "name": "njupt-net 校园网络工具",
       "domain": "github.com",
       "source_type": "github_resource",
-      "status": "error",
-      "documents": 0,
-      "last_fetch_at": "2026-05-24T20:25:18.708583+08:00",
-      "error": "401 Client Error: Unauthorized for url: https://api.github.com/repos/hicancan/njupt-net"
+      "status": "ok",
+      "documents": 2,
+      "last_fetch_at": "2026-05-24T21:05:39.996909+08:00",
+      "candidates": 2
     },
     {
       "id": "github:hicancan/njupt-jwxt-assistant",
       "name": "教务助手资料",
       "domain": "github.com",
       "source_type": "github_resource",
-      "status": "error",
-      "documents": 0,
-      "last_fetch_at": "2026-05-24T20:25:18.708583+08:00",
-      "error": "401 Client Error: Unauthorized for url: https://api.github.com/repos/hicancan/njupt-jwxt-assistant"
+      "status": "ok",
+      "documents": 1,
+      "last_fetch_at": "2026-05-24T21:05:39.996909+08:00",
+      "candidates": 1
     },
     {
       "id": "github:ZsgsDesign/NOJ",
       "name": "⚡ The most advanced open-sourc...",
       "domain": "github.com",
       "source_type": "github_resource",
-      "status": "error",
-      "documents": 0,
-      "last_fetch_at": "2026-05-24T20:25:18.708583+08:00",
-      "error": "401 Client Error: Unauthorized for url: https://api.github.com/repos/ZsgsDesign/NOJ"
+      "status": "ok",
+      "documents": 5,
+      "last_fetch_at": "2026-05-24T21:05:39.996909+08:00",
+      "candidates": 5
     },
     {
       "id": "github:NJUPTFreeExams/NJUPT-General-Free-Exams",
       "name": "南京邮电大学课程资源共享平台，此仓库包括门户网站和通识类课程...",
       "domain": "github.com",
       "source_type": "github_resource",
-      "status": "error",
-      "documents": 0,
-      "last_fetch_at": "2026-05-24T20:25:18.708583+08:00",
-      "error": "401 Client Error: Unauthorized for url: https://api.github.com/repos/NJUPTFreeExams/NJUPT-General-Free-Exams"
+      "status": "ok",
+      "documents": 1,
+      "last_fetch_at": "2026-05-24T21:05:39.996909+08:00",
+      "candidates": 1
     },
     {
       "id": "github:NJUPTFreeExams/NJUPT-CST-Free-Exams",
       "name": "【Deprecated】南京邮电大学计算机科学与技术专业历年...",
       "domain": "github.com",
       "source_type": "github_resource",
-      "status": "error",
-      "documents": 0,
-      "last_fetch_at": "2026-05-24T20:25:18.708583+08:00",
-      "error": "401 Client Error: Unauthorized for url: https://api.github.com/repos/NJUPTFreeExams/NJUPT-CST-Free-Exams"
+      "status": "ok",
+      "documents": 1,
+      "last_fetch_at": "2026-05-24T21:05:39.996909+08:00",
+      "candidates": 1
     },
     {
       "id": "github:NJUPTFreeExams/NJUPT-CS-FREE",
       "name": "南京邮电大学计算机相关专业历年考试资料",
       "domain": "github.com",
       "source_type": "github_resource",
-      "status": "error",
-      "documents": 0,
-      "last_fetch_at": "2026-05-24T20:25:18.708583+08:00",
-      "error": "401 Client Error: Unauthorized for url: https://api.github.com/repos/NJUPTFreeExams/NJUPT-CS-FREE"
+      "status": "ok",
+      "documents": 1,
+      "last_fetch_at": "2026-05-24T21:05:39.996909+08:00",
+      "candidates": 1
     },
     {
       "id": "github:bmxbmx3/cn_sort",
       "name": "中文排序：按拼音/笔顺快速排序简体中文词组（百万数量级，可含...",
       "domain": "github.com",
       "source_type": "github_resource",
-      "status": "error",
-      "documents": 0,
-      "last_fetch_at": "2026-05-24T20:25:18.708583+08:00",
-      "error": "401 Client Error: Unauthorized for url: https://api.github.com/repos/bmxbmx3/cn_sort"
+      "status": "ok",
+      "documents": 1,
+      "last_fetch_at": "2026-05-24T21:05:39.996909+08:00",
+      "candidates": 1
     },
     {
       "id": "github:leftjs/StudentGradesManageSystem",
       "name": "student grades manage system, ...",
       "domain": "github.com",
       "source_type": "github_resource",
-      "status": "error",
-      "documents": 0,
-      "last_fetch_at": "2026-05-24T20:25:18.708583+08:00",
-      "error": "401 Client Error: Unauthorized for url: https://api.github.com/repos/leftjs/StudentGradesManageSystem"
+      "status": "ok",
+      "documents": 1,
+      "last_fetch_at": "2026-05-24T21:05:39.996909+08:00",
+      "candidates": 1
     },
     {
       "id": "github:renyuanzhe/NJUPT-CS-Courses",
       "name": "NJUPT南京邮电大学,计算机相关课程的实验报告，大作业以及...",
       "domain": "github.com",
       "source_type": "github_resource",
-      "status": "error",
-      "documents": 0,
-      "last_fetch_at": "2026-05-24T20:25:18.708583+08:00",
-      "error": "401 Client Error: Unauthorized for url: https://api.github.com/repos/renyuanzhe/NJUPT-CS-Courses"
+      "status": "ok",
+      "documents": 1,
+      "last_fetch_at": "2026-05-24T21:05:39.996909+08:00",
+      "candidates": 1
     },
     {
       "id": "github:Wonz5130/NJUPT-Yellow-Page",
       "name": ":yum:南京邮电大学黄页",
       "domain": "github.com",
       "source_type": "github_resource",
-      "status": "error",
-      "documents": 0,
-      "last_fetch_at": "2026-05-24T20:25:18.708583+08:00",
-      "error": "401 Client Error: Unauthorized for url: https://api.github.com/repos/Wonz5130/NJUPT-Yellow-Page"
+      "status": "ok",
+      "documents": 1,
+      "last_fetch_at": "2026-05-24T21:05:39.996909+08:00",
+      "candidates": 1
     },
     {
       "id": "github:GreenPomelo/Undergraduate",
       "name": "🔧mini program of NJUPT | 南京邮电大...",
       "domain": "github.com",
       "source_type": "github_resource",
-      "status": "error",
-      "documents": 0,
-      "last_fetch_at": "2026-05-24T20:25:18.708583+08:00",
-      "error": "401 Client Error: Unauthorized for url: https://api.github.com/repos/GreenPomelo/Undergraduate"
+      "status": "ok",
+      "documents": 3,
+      "last_fetch_at": "2026-05-24T21:05:39.996909+08:00",
+      "candidates": 3
     },
     {
       "id": "github:NJUPTFreeExams/NJUPT-AUTO-Free-Exams",
       "name": "南京邮电大学自动化专业历年考试资料",
       "domain": "github.com",
       "source_type": "github_resource",
-      "status": "error",
-      "documents": 0,
-      "last_fetch_at": "2026-05-24T20:25:18.708583+08:00",
-      "error": "401 Client Error: Unauthorized for url: https://api.github.com/repos/NJUPTFreeExams/NJUPT-AUTO-Free-Exams"
+      "status": "ok",
+      "documents": 1,
+      "last_fetch_at": "2026-05-24T21:05:39.996909+08:00",
+      "candidates": 1
     },
     {
       "id": "github:NJUPT-CG/NCTF2018",
       "name": "Official repository of NJUPT C...",
       "domain": "github.com",
       "source_type": "github_resource",
-      "status": "error",
-      "documents": 0,
-      "last_fetch_at": "2026-05-24T20:25:18.708583+08:00",
-      "error": "401 Client Error: Unauthorized for url: https://api.github.com/repos/NJUPT-CG/NCTF2018"
+      "status": "ok",
+      "documents": 1,
+      "last_fetch_at": "2026-05-24T21:05:39.996909+08:00",
+      "candidates": 1
     },
     {
       "id": "github:gzr-lgtm/NJUPThesis-Bachelor",
       "name": "LaTeX template for NJUPT Under...",
       "domain": "github.com",
       "source_type": "github_resource",
-      "status": "error",
-      "documents": 0,
-      "last_fetch_at": "2026-05-24T20:25:18.708583+08:00",
-      "error": "401 Client Error: Unauthorized for url: https://api.github.com/repos/gzr-lgtm/NJUPThesis-Bachelor"
+      "status": "ok",
+      "documents": 1,
+      "last_fetch_at": "2026-05-24T21:05:39.996909+08:00",
+      "candidates": 1
     },
     {
       "id": "github:gaoliang/NJUPT-API",
       "name": "Python API Wrappers for NJUPT....",
       "domain": "github.com",
       "source_type": "github_resource",
-      "status": "error",
-      "documents": 0,
-      "last_fetch_at": "2026-05-24T20:25:18.708583+08:00",
-      "error": "401 Client Error: Unauthorized for url: https://api.github.com/repos/gaoliang/NJUPT-API"
+      "status": "ok",
+      "documents": 1,
+      "last_fetch_at": "2026-05-24T21:05:39.996909+08:00",
+      "candidates": 1
     },
     {
       "id": "github:xiafanglongfei/NJUPT-auto-evaluate",
       "name": "🐶 南邮本科生学生评教活动的一键自动评价脚本 #南邮# #一...",
       "domain": "github.com",
       "source_type": "github_resource",
-      "status": "error",
-      "documents": 0,
-      "last_fetch_at": "2026-05-24T20:25:18.708583+08:00",
-      "error": "401 Client Error: Unauthorized for url: https://api.github.com/repos/xiafanglongfei/NJUPT-auto-evaluate"
+      "status": "ok",
+      "documents": 1,
+      "last_fetch_at": "2026-05-24T21:05:39.996909+08:00",
+      "candidates": 1
     },
     {
       "id": "github:NJUPTFreeExams/NJUPT-TE-Free-Exams",
       "name": "南京邮电大学通信工程专业历年考试资料",
       "domain": "github.com",
       "source_type": "github_resource",
-      "status": "error",
-      "documents": 0,
-      "last_fetch_at": "2026-05-24T20:25:18.708583+08:00",
-      "error": "401 Client Error: Unauthorized for url: https://api.github.com/repos/NJUPTFreeExams/NJUPT-TE-Free-Exams"
+      "status": "ok",
+      "documents": 1,
+      "last_fetch_at": "2026-05-24T21:05:39.996909+08:00",
+      "candidates": 1
     },
     {
       "id": "github:kaijy91/NJUPT_NET",
       "name": "南京邮电大学_校园网/电信宽带/移动宽带_路由器共享WiFi...",
       "domain": "github.com",
       "source_type": "github_resource",
-      "status": "error",
-      "documents": 0,
-      "last_fetch_at": "2026-05-24T20:25:18.708583+08:00",
-      "error": "401 Client Error: Unauthorized for url: https://api.github.com/repos/kaijy91/NJUPT_NET"
+      "status": "ok",
+      "documents": 1,
+      "last_fetch_at": "2026-05-24T21:05:39.996909+08:00",
+      "candidates": 1
     },
     {
       "id": "github:s235784/NJUPT_AutoLogin",
       "name": "南京邮电大学校园网自动登录脚本，支持Linux（OpenWR...",
       "domain": "github.com",
       "source_type": "github_resource",
-      "status": "error",
-      "documents": 0,
-      "last_fetch_at": "2026-05-24T20:25:18.708583+08:00",
-      "error": "401 Client Error: Unauthorized for url: https://api.github.com/repos/s235784/NJUPT_AutoLogin"
+      "status": "ok",
+      "documents": 2,
+      "last_fetch_at": "2026-05-24T21:05:39.996909+08:00",
+      "candidates": 2
     },
     {
       "id": "github:Freedomisgood/NjuptCmcc",
       "name": "校园网一键上网脚本",
       "domain": "github.com",
       "source_type": "github_resource",
-      "status": "error",
-      "documents": 0,
-      "last_fetch_at": "2026-05-24T20:25:18.708583+08:00",
-      "error": "401 Client Error: Unauthorized for url: https://api.github.com/repos/Freedomisgood/NjuptCmcc"
+      "status": "ok",
+      "documents": 1,
+      "last_fetch_at": "2026-05-24T21:05:39.996909+08:00",
+      "candidates": 1
     },
     {
       "id": "github:love98ooo/ZhengFangJiaoWuSystemTampermonkeyScript",
       "name": "南京邮电大学正方教务系统油猴脚本，主要用于查询平时分和卷面分",
       "domain": "github.com",
       "source_type": "github_resource",
-      "status": "error",
-      "documents": 0,
-      "last_fetch_at": "2026-05-24T20:25:18.708583+08:00",
-      "error": "401 Client Error: Unauthorized for url: https://api.github.com/repos/love98ooo/ZhengFangJiaoWuSystemTampermonkeyScript"
+      "status": "ok",
+      "documents": 1,
+      "last_fetch_at": "2026-05-24T21:05:39.996909+08:00",
+      "candidates": 1
     },
     {
       "id": "github:NJUPT-NAVI/NJUPT-Survival-Guide",
       "name": "南京邮电大学生存指南，用于导航和整合各种公开的资源和信息，减...",
       "domain": "github.com",
       "source_type": "github_resource",
-      "status": "error",
-      "documents": 0,
-      "last_fetch_at": "2026-05-24T20:25:18.708583+08:00",
-      "error": "401 Client Error: Unauthorized for url: https://api.github.com/repos/NJUPT-NAVI/NJUPT-Survival-Guide"
+      "status": "ok",
+      "documents": 2,
+      "last_fetch_at": "2026-05-24T21:05:39.996909+08:00",
+      "candidates": 2
     },
     {
       "id": "github:bmxbmx3/finger_vein_recognition",
       "name": "A python software used to reco...",
       "domain": "github.com",
       "source_type": "github_resource",
-      "status": "error",
-      "documents": 0,
-      "last_fetch_at": "2026-05-24T20:25:18.708583+08:00",
-      "error": "401 Client Error: Unauthorized for url: https://api.github.com/repos/bmxbmx3/finger_vein_recognition"
+      "status": "ok",
+      "documents": 1,
+      "last_fetch_at": "2026-05-24T21:05:39.996909+08:00",
+      "candidates": 1
     },
     {
       "id": "github:lux-QAQ/NJUPT_Fastlogin",
       "name": "南京邮电大学校园网最快登录脚本 for Android Wi...",
       "domain": "github.com",
       "source_type": "github_resource",
-      "status": "error",
-      "documents": 0,
-      "last_fetch_at": "2026-05-24T20:25:18.708583+08:00",
-      "error": "401 Client Error: Unauthorized for url: https://api.github.com/repos/lux-QAQ/NJUPT_Fastlogin"
+      "status": "ok",
+      "documents": 1,
+      "last_fetch_at": "2026-05-24T21:05:39.996909+08:00",
+      "candidates": 1
     },
     {
       "id": "github:NJUPTFreeExams/njuptfreeexams.github.io",
       "name": "NJUPTFreeExams 官方文档，现已迁移至 Netl...",
       "domain": "github.com",
       "source_type": "github_resource",
-      "status": "error",
-      "documents": 0,
-      "last_fetch_at": "2026-05-24T20:25:18.708583+08:00",
-      "error": "401 Client Error: Unauthorized for url: https://api.github.com/repos/NJUPTFreeExams/njuptfreeexams.github.io"
+      "status": "ok",
+      "documents": 1,
+      "last_fetch_at": "2026-05-24T21:05:39.996909+08:00",
+      "candidates": 1
     },
     {
       "id": "github:dhiyu/NJUPT-Bachelor",
       "name": "南京邮电大学本科生毕业设计Latex模板",
       "domain": "github.com",
       "source_type": "github_resource",
-      "status": "error",
-      "documents": 0,
-      "last_fetch_at": "2026-05-24T20:25:18.708583+08:00",
-      "error": "401 Client Error: Unauthorized for url: https://api.github.com/repos/dhiyu/NJUPT-Bachelor"
+      "status": "ok",
+      "documents": 1,
+      "last_fetch_at": "2026-05-24T21:05:39.996909+08:00",
+      "candidates": 1
     },
     {
       "id": "github:yosunpeng/postgraduate_test_njupt",
       "name": "南京邮电大学研究生期末考试复习资料",
       "domain": "github.com",
       "source_type": "github_resource",
-      "status": "error",
-      "documents": 0,
-      "last_fetch_at": "2026-05-24T20:25:18.708583+08:00",
-      "error": "401 Client Error: Unauthorized for url: https://api.github.com/repos/yosunpeng/postgraduate_test_njupt"
+      "status": "ok",
+      "documents": 1,
+      "last_fetch_at": "2026-05-24T21:05:39.996909+08:00",
+      "candidates": 1
     },
     {
       "id": "github:NJUPTFreeExams/NJUPT-InfoSec-Free-Exams",
       "name": "【Deprecated】南京邮电大学信息安全专业历年考试资料...",
       "domain": "github.com",
       "source_type": "github_resource",
-      "status": "error",
-      "documents": 0,
-      "last_fetch_at": "2026-05-24T20:25:18.708583+08:00",
-      "error": "401 Client Error: Unauthorized for url: https://api.github.com/repos/NJUPTFreeExams/NJUPT-InfoSec-Free-Exams"
+      "status": "ok",
+      "documents": 1,
+      "last_fetch_at": "2026-05-24T21:05:39.996909+08:00",
+      "candidates": 1
     },
     {
       "id": "github:ace-trump-tech/NJUPT-Graduation-thesis",
       "name": "南京邮电大学毕业论文模板（能毕业就行，有时间多回去陪陪家人）",
       "domain": "github.com",
       "source_type": "github_resource",
-      "status": "error",
-      "documents": 0,
-      "last_fetch_at": "2026-05-24T20:25:18.708583+08:00",
-      "error": "401 Client Error: Unauthorized for url: https://api.github.com/repos/ace-trump-tech/NJUPT-Graduation-thesis"
+      "status": "ok",
+      "documents": 1,
+      "last_fetch_at": "2026-05-24T21:05:39.996909+08:00",
+      "candidates": 1
     },
     {
       "id": "github:Yolumia/NJUPT-NETWORK",
       "name": "南京邮电大学校园网登录脚本-windows&ios&安卓",
       "domain": "github.com",
       "source_type": "github_resource",
-      "status": "error",
-      "documents": 0,
-      "last_fetch_at": "2026-05-24T20:25:18.708583+08:00",
-      "error": "401 Client Error: Unauthorized for url: https://api.github.com/repos/Yolumia/NJUPT-NETWORK"
+      "status": "ok",
+      "documents": 1,
+      "last_fetch_at": "2026-05-24T21:05:39.996909+08:00",
+      "candidates": 1
     },
     {
       "id": "github:Moonike1217/NJUPTExamICSBuilder",
       "name": "一个将南京邮电大学考试时间文件转换为ics文件的工具",
       "domain": "github.com",
       "source_type": "github_resource",
-      "status": "error",
-      "documents": 0,
-      "last_fetch_at": "2026-05-24T20:25:18.708583+08:00",
-      "error": "401 Client Error: Unauthorized for url: https://api.github.com/repos/Moonike1217/NJUPTExamICSBuilder"
+      "status": "ok",
+      "documents": 1,
+      "last_fetch_at": "2026-05-24T21:05:39.996909+08:00",
+      "candidates": 1
     },
     {
       "id": "github:musnows/Njupt-Wifi-Login",
       "name": "路由器(刷机) 实现自动连接南京邮电大学校园网",
       "domain": "github.com",
       "source_type": "github_resource",
-      "status": "error",
-      "documents": 0,
-      "last_fetch_at": "2026-05-24T20:25:18.708583+08:00",
-      "error": "401 Client Error: Unauthorized for url: https://api.github.com/repos/musnows/Njupt-Wifi-Login"
+      "status": "ok",
+      "documents": 1,
+      "last_fetch_at": "2026-05-24T21:05:39.996909+08:00",
+      "candidates": 1
     }
   ]
 }
