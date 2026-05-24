@@ -430,27 +430,33 @@ def derive_semantic_fields(
         domain = normalize_domain(llm_result.get("domain"), fallback_domain)
         intent = normalize_intent(llm_result.get("intent"), fallback_intent)
         category = derive_display_category(domain, intent, str(llm_result.get("category") or rule_category))
-        llm_relevance = float(llm_result.get("student_relevance", 0.5))
-        if llm_result.get("is_student_facing", True):
+        llm_relevance_raw = llm_result.get("student_relevance")
+        llm_relevance = float(llm_relevance_raw if llm_relevance_raw is not None else 0.5)
+        is_student_facing = llm_result.get("is_student_facing")
+        if is_student_facing if is_student_facing is not None else True:
             student_score = clamp01(0.65 * llm_relevance + 0.35 * rule_student_score)
         else:
             student_score = clamp01(min(0.34, 0.65 * llm_relevance + 0.35 * rule_student_score))
-        importance_score = clamp01(0.75 * float(llm_result.get("importance_score", 0.5)) + 0.25 * rule_importance_score)
-        tags = [clean_text(str(tag)) for tag in llm_result.get("tags", []) if clean_text(str(tag))]
+        imp_raw = llm_result.get("importance_score")
+        importance_score = clamp01(0.75 * float(imp_raw if imp_raw is not None else 0.5) + 0.25 * rule_importance_score)
+        tags = [clean_text(str(tag)) for tag in (llm_result.get("tags") or []) if clean_text(str(tag))]
         summary = clean_text(str(llm_result.get("student_summary") or content[:180]))
         sub_category = llm_result.get("sub_category")
         deadline = llm_result["deadline"] if "deadline" in llm_result else fallback_deadline
         action_required = bool(llm_result["action_required"]) if "action_required" in llm_result else fallback_action_required
         action_type = llm_result["action_type"] if "action_type" in llm_result else fallback_action_type
         action_summary = llm_result["action_summary"] if "action_summary" in llm_result else fallback_action_summary
-        required_materials = [clean_text(str(item)) for item in llm_result.get("required_materials", []) if clean_text(str(item))]
-        attachment_roles = llm_result.get("attachment_roles", [])
-        sensitive = bool(llm_result.get("sensitive", False))
-        sensitive_types = [clean_text(str(item)) for item in llm_result.get("sensitive_types", []) if clean_text(str(item))]
-        risk_flags = [clean_text(str(item)) for item in llm_result.get("risk_flags", []) if clean_text(str(item))]
-        evidence = [clean_text(str(item))[:180] for item in llm_result.get("evidence", []) if clean_text(str(item))] or fallback_evidence
-        review_required = bool(llm_result.get("review_required", False))
-        confidence = float(llm_result.get("confidence", 0.5))
+        required_materials = [clean_text(str(item)) for item in (llm_result.get("required_materials") or []) if clean_text(str(item))]
+        attachment_roles = llm_result.get("attachment_roles") or []
+        sensitive_raw = llm_result.get("sensitive")
+        sensitive = bool(sensitive_raw if sensitive_raw is not None else False)
+        sensitive_types = [clean_text(str(item)) for item in (llm_result.get("sensitive_types") or []) if clean_text(str(item))]
+        risk_flags = [clean_text(str(item)) for item in (llm_result.get("risk_flags") or []) if clean_text(str(item))]
+        evidence = [clean_text(str(item))[:180] for item in (llm_result.get("evidence") or []) if clean_text(str(item))] or fallback_evidence
+        review_required_raw = llm_result.get("review_required")
+        review_required = bool(review_required_raw if review_required_raw is not None else False)
+        conf_raw = llm_result.get("confidence")
+        confidence = float(conf_raw if conf_raw is not None else 0.5)
         metadata = llm_metadata(
             True,
             confidence,

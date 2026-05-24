@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-05-24T20:18:01.064232+08:00",
-  "total_documents": 156,
+  "generated_at": "2026-05-24T20:25:18.708583+08:00",
+  "total_documents": 155,
   "strategy": "hytask-rag-source-channel-taskframe-hybrid-index-v1",
   "llm_schema_version": "hytask-taskframe-v1",
   "llm_enabled": true,
@@ -10,16 +10,16 @@
   "llm_batch_max_chars": 250000,
   "llm_batch_max_output_tokens": 60000,
   "llm_stats": {
-    "cache_reused": 0,
-    "llm_reused": 226,
-    "llm_attempted": 1,
-    "llm_reprocessed": 1,
+    "cache_reused": 124,
+    "llm_reused": 227,
+    "llm_attempted": 0,
+    "llm_reprocessed": 0,
     "llm_failed": 0,
     "llm_fallback": 44,
     "llm_skipped_by_limit": 0,
-    "llm_batches_attempted": 1,
-    "llm_batch_docs_attempted": 1,
-    "candidate_llm_cache_reused": 226,
+    "llm_batches_attempted": 0,
+    "llm_batch_docs_attempted": 0,
+    "candidate_llm_cache_reused": 103,
     "restricted": 0
   },
   "source_count": 30,
@@ -27,25 +27,25 @@
   "audited_channel_count": 30,
   "production_channel_count": 30,
   "failed_channel_count": 0,
-  "task_frame_count": 59,
-  "documents_with_task_frame": 55,
+  "task_frame_count": 58,
+  "documents_with_task_frame": 54,
   "evidence_coverage": {
     "audience": 1.0,
-    "action": 0.8305,
-    "deadline": 0.2542,
+    "action": 0.8276,
+    "deadline": 0.2586,
     "materials": 0.0,
-    "location": 0.3729,
+    "location": 0.3793,
     "sensitive": 0.0,
-    "overall": 0.4096
+    "overall": 0.4109
   },
-  "review_required_count": 44,
+  "review_required_count": 43,
   "low_evidence_count": 8,
   "restricted_count": 0,
   "sensitive_count": 29,
   "hybrid_index": {
-    "doc_count": 156,
-    "task_frame_count": 59,
-    "avg_doc_len": 510.391
+    "doc_count": 155,
+    "task_frame_count": 58,
+    "avg_doc_len": 512.7742
   },
   "sources": [
     {
@@ -64,15 +64,20 @@
           "priority": 1.0,
           "student_value": 1.0,
           "audit_status": "manual_seeded",
-          "status": "ok",
+          "status": "warning",
           "documents": 14,
           "candidates": 36,
-          "list_errors": []
+          "list_errors": [
+            "https://jwc.njupt.edu.cn/1690/list4.htm: 502 Server Error: Bad Gateway for url: https://jwc.njupt.edu.cn/1690/list4.htm"
+          ]
         }
       ],
       "status": "ok",
       "documents": 13,
-      "last_fetch_at": "2026-05-24T20:18:01.064232+08:00",
+      "last_fetch_at": "2026-05-24T20:25:18.708583+08:00",
+      "list_errors": [
+        "https://jwc.njupt.edu.cn/1690/list4.htm: 502 Server Error: Bad Gateway for url: https://jwc.njupt.edu.cn/1690/list4.htm"
+      ],
       "candidates": 14,
       "filtered_out": 1
     },
@@ -100,7 +105,7 @@
       ],
       "status": "ok",
       "documents": 7,
-      "last_fetch_at": "2026-05-24T20:18:01.064232+08:00",
+      "last_fetch_at": "2026-05-24T20:25:18.708583+08:00",
       "candidates": 14,
       "filtered_out": 7
     },
@@ -128,7 +133,7 @@
       ],
       "status": "ok",
       "documents": 9,
-      "last_fetch_at": "2026-05-24T20:18:01.064232+08:00",
+      "last_fetch_at": "2026-05-24T20:25:18.708583+08:00",
       "candidates": 14,
       "filtered_out": 5
     },
@@ -156,7 +161,7 @@
       ],
       "status": "ok",
       "documents": 9,
-      "last_fetch_at": "2026-05-24T20:18:01.064232+08:00",
+      "last_fetch_at": "2026-05-24T20:25:18.708583+08:00",
       "candidates": 14,
       "filtered_out": 5
     },
@@ -184,7 +189,7 @@
       ],
       "status": "ok",
       "documents": 7,
-      "last_fetch_at": "2026-05-24T20:18:01.064232+08:00",
+      "last_fetch_at": "2026-05-24T20:25:18.708583+08:00",
       "candidates": 14,
       "filtered_out": 7
     },
@@ -212,7 +217,7 @@
       ],
       "status": "ok",
       "documents": 10,
-      "last_fetch_at": "2026-05-24T20:18:01.064232+08:00",
+      "last_fetch_at": "2026-05-24T20:25:18.708583+08:00",
       "candidates": 13,
       "filtered_out": 3
     },
@@ -238,7 +243,7 @@
       ],
       "status": "ok",
       "documents": 18,
-      "last_fetch_at": "2026-05-24T20:18:01.064232+08:00"
+      "last_fetch_at": "2026-05-24T20:25:18.708583+08:00"
     },
     {
       "id": "lib",
@@ -264,7 +269,7 @@
       ],
       "status": "ok",
       "documents": 11,
-      "last_fetch_at": "2026-05-24T20:18:01.064232+08:00",
+      "last_fetch_at": "2026-05-24T20:25:18.708583+08:00",
       "candidates": 14,
       "filtered_out": 3
     },
@@ -292,7 +297,7 @@
       ],
       "status": "ok",
       "documents": 2,
-      "last_fetch_at": "2026-05-24T20:18:01.064232+08:00",
+      "last_fetch_at": "2026-05-24T20:25:18.708583+08:00",
       "candidates": 12,
       "filtered_out": 10
     },
@@ -320,7 +325,7 @@
       ],
       "status": "ok",
       "documents": 8,
-      "last_fetch_at": "2026-05-24T20:18:01.064232+08:00",
+      "last_fetch_at": "2026-05-24T20:25:18.708583+08:00",
       "candidates": 14,
       "filtered_out": 6
     },
@@ -348,7 +353,7 @@
       ],
       "status": "ok",
       "documents": 4,
-      "last_fetch_at": "2026-05-24T20:18:01.064232+08:00",
+      "last_fetch_at": "2026-05-24T20:25:18.708583+08:00",
       "candidates": 14,
       "filtered_out": 10
     },
@@ -376,7 +381,7 @@
       ],
       "status": "ok",
       "documents": 8,
-      "last_fetch_at": "2026-05-24T20:18:01.064232+08:00",
+      "last_fetch_at": "2026-05-24T20:25:18.708583+08:00",
       "candidates": 14,
       "filtered_out": 6
     },
@@ -404,7 +409,7 @@
       ],
       "status": "ok",
       "documents": 0,
-      "last_fetch_at": "2026-05-24T20:18:01.064232+08:00",
+      "last_fetch_at": "2026-05-24T20:25:18.708583+08:00",
       "candidates": 2,
       "filtered_out": 2
     },
@@ -431,10 +436,10 @@
         }
       ],
       "status": "ok",
-      "documents": 7,
-      "last_fetch_at": "2026-05-24T20:18:01.064232+08:00",
+      "documents": 6,
+      "last_fetch_at": "2026-05-24T20:25:18.708583+08:00",
       "candidates": 14,
-      "filtered_out": 7
+      "filtered_out": 8
     },
     {
       "id": "yzb",
@@ -460,7 +465,7 @@
       ],
       "status": "ok",
       "documents": 14,
-      "last_fetch_at": "2026-05-24T20:18:01.064232+08:00",
+      "last_fetch_at": "2026-05-24T20:25:18.708583+08:00",
       "candidates": 14,
       "filtered_out": 0
     },
@@ -490,7 +495,7 @@
       ],
       "status": "ok",
       "documents": 0,
-      "last_fetch_at": "2026-05-24T20:18:01.064232+08:00",
+      "last_fetch_at": "2026-05-24T20:25:18.708583+08:00",
       "list_errors": [
         "https://nic.njupt.edu.cn/: HTTPSConnectionPool(host='nic.njupt.edu.cn', port=443): Max retries exceeded with url: / (Caused by NameResolutionError(\"HTTPSConnection(host='nic.njupt.edu.cn', port=443): Failed to resolve 'nic.njupt.edu.cn' ([Errno 11001] getaddrinfo failed)\"))"
       ],
@@ -521,7 +526,7 @@
       ],
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-24T20:18:01.064232+08:00",
+      "last_fetch_at": "2026-05-24T20:25:18.708583+08:00",
       "candidates": 13,
       "filtered_out": 12
     },
@@ -549,7 +554,7 @@
       ],
       "status": "ok",
       "documents": 3,
-      "last_fetch_at": "2026-05-24T20:18:01.064232+08:00",
+      "last_fetch_at": "2026-05-24T20:25:18.708583+08:00",
       "candidates": 14,
       "filtered_out": 11
     },
@@ -577,7 +582,7 @@
       ],
       "status": "ok",
       "documents": 6,
-      "last_fetch_at": "2026-05-24T20:18:01.064232+08:00",
+      "last_fetch_at": "2026-05-24T20:25:18.708583+08:00",
       "candidates": 14,
       "filtered_out": 8
     },
@@ -605,7 +610,7 @@
       ],
       "status": "ok",
       "documents": 3,
-      "last_fetch_at": "2026-05-24T20:18:01.064232+08:00",
+      "last_fetch_at": "2026-05-24T20:25:18.708583+08:00",
       "candidates": 4,
       "filtered_out": 1
     },
@@ -633,7 +638,7 @@
       ],
       "status": "ok",
       "documents": 0,
-      "last_fetch_at": "2026-05-24T20:18:01.064232+08:00",
+      "last_fetch_at": "2026-05-24T20:25:18.708583+08:00",
       "candidates": 0,
       "filtered_out": 0
     },
@@ -661,7 +666,7 @@
       ],
       "status": "ok",
       "documents": 0,
-      "last_fetch_at": "2026-05-24T20:18:01.064232+08:00",
+      "last_fetch_at": "2026-05-24T20:25:18.708583+08:00",
       "candidates": 0,
       "filtered_out": 0
     },
@@ -689,7 +694,7 @@
       ],
       "status": "ok",
       "documents": 0,
-      "last_fetch_at": "2026-05-24T20:18:01.064232+08:00",
+      "last_fetch_at": "2026-05-24T20:25:18.708583+08:00",
       "candidates": 0,
       "filtered_out": 0
     },
@@ -717,7 +722,7 @@
       ],
       "status": "ok",
       "documents": 0,
-      "last_fetch_at": "2026-05-24T20:18:01.064232+08:00",
+      "last_fetch_at": "2026-05-24T20:25:18.708583+08:00",
       "candidates": 0,
       "filtered_out": 0
     },
@@ -745,7 +750,7 @@
       ],
       "status": "ok",
       "documents": 0,
-      "last_fetch_at": "2026-05-24T20:18:01.064232+08:00",
+      "last_fetch_at": "2026-05-24T20:25:18.708583+08:00",
       "candidates": 0,
       "filtered_out": 0
     },
@@ -773,7 +778,7 @@
       ],
       "status": "ok",
       "documents": 0,
-      "last_fetch_at": "2026-05-24T20:18:01.064232+08:00",
+      "last_fetch_at": "2026-05-24T20:25:18.708583+08:00",
       "candidates": 0,
       "filtered_out": 0
     },
@@ -801,7 +806,7 @@
       ],
       "status": "ok",
       "documents": 0,
-      "last_fetch_at": "2026-05-24T20:18:01.064232+08:00",
+      "last_fetch_at": "2026-05-24T20:25:18.708583+08:00",
       "candidates": 0,
       "filtered_out": 0
     },
@@ -829,7 +834,7 @@
       ],
       "status": "ok",
       "documents": 10,
-      "last_fetch_at": "2026-05-24T20:18:01.064232+08:00",
+      "last_fetch_at": "2026-05-24T20:25:18.708583+08:00",
       "candidates": 13,
       "filtered_out": 3
     },
@@ -857,7 +862,7 @@
       ],
       "status": "ok",
       "documents": 8,
-      "last_fetch_at": "2026-05-24T20:18:01.064232+08:00",
+      "last_fetch_at": "2026-05-24T20:25:18.708583+08:00",
       "candidates": 14,
       "filtered_out": 6
     },
@@ -885,7 +890,7 @@
       ],
       "status": "ok",
       "documents": 0,
-      "last_fetch_at": "2026-05-24T20:18:01.064232+08:00",
+      "last_fetch_at": "2026-05-24T20:25:18.708583+08:00",
       "candidates": 0,
       "filtered_out": 0
     },
@@ -896,7 +901,7 @@
       "source_type": "github_resource",
       "status": "error",
       "documents": 0,
-      "last_fetch_at": "2026-05-24T20:18:01.064232+08:00",
+      "last_fetch_at": "2026-05-24T20:25:18.708583+08:00",
       "error": "401 Client Error: Unauthorized for url: https://api.github.com/repos/hicancan/njupt-net"
     },
     {
@@ -906,7 +911,7 @@
       "source_type": "github_resource",
       "status": "error",
       "documents": 0,
-      "last_fetch_at": "2026-05-24T20:18:01.064232+08:00",
+      "last_fetch_at": "2026-05-24T20:25:18.708583+08:00",
       "error": "401 Client Error: Unauthorized for url: https://api.github.com/repos/hicancan/njupt-jwxt-assistant"
     },
     {
@@ -916,7 +921,7 @@
       "source_type": "github_resource",
       "status": "error",
       "documents": 0,
-      "last_fetch_at": "2026-05-24T20:18:01.064232+08:00",
+      "last_fetch_at": "2026-05-24T20:25:18.708583+08:00",
       "error": "401 Client Error: Unauthorized for url: https://api.github.com/repos/ZsgsDesign/NOJ"
     },
     {
@@ -926,7 +931,7 @@
       "source_type": "github_resource",
       "status": "error",
       "documents": 0,
-      "last_fetch_at": "2026-05-24T20:18:01.064232+08:00",
+      "last_fetch_at": "2026-05-24T20:25:18.708583+08:00",
       "error": "401 Client Error: Unauthorized for url: https://api.github.com/repos/NJUPTFreeExams/NJUPT-General-Free-Exams"
     },
     {
@@ -936,7 +941,7 @@
       "source_type": "github_resource",
       "status": "error",
       "documents": 0,
-      "last_fetch_at": "2026-05-24T20:18:01.064232+08:00",
+      "last_fetch_at": "2026-05-24T20:25:18.708583+08:00",
       "error": "401 Client Error: Unauthorized for url: https://api.github.com/repos/NJUPTFreeExams/NJUPT-CST-Free-Exams"
     },
     {
@@ -946,7 +951,7 @@
       "source_type": "github_resource",
       "status": "error",
       "documents": 0,
-      "last_fetch_at": "2026-05-24T20:18:01.064232+08:00",
+      "last_fetch_at": "2026-05-24T20:25:18.708583+08:00",
       "error": "401 Client Error: Unauthorized for url: https://api.github.com/repos/NJUPTFreeExams/NJUPT-CS-FREE"
     },
     {
@@ -956,7 +961,7 @@
       "source_type": "github_resource",
       "status": "error",
       "documents": 0,
-      "last_fetch_at": "2026-05-24T20:18:01.064232+08:00",
+      "last_fetch_at": "2026-05-24T20:25:18.708583+08:00",
       "error": "401 Client Error: Unauthorized for url: https://api.github.com/repos/bmxbmx3/cn_sort"
     },
     {
@@ -966,7 +971,7 @@
       "source_type": "github_resource",
       "status": "error",
       "documents": 0,
-      "last_fetch_at": "2026-05-24T20:18:01.064232+08:00",
+      "last_fetch_at": "2026-05-24T20:25:18.708583+08:00",
       "error": "401 Client Error: Unauthorized for url: https://api.github.com/repos/leftjs/StudentGradesManageSystem"
     },
     {
@@ -976,7 +981,7 @@
       "source_type": "github_resource",
       "status": "error",
       "documents": 0,
-      "last_fetch_at": "2026-05-24T20:18:01.064232+08:00",
+      "last_fetch_at": "2026-05-24T20:25:18.708583+08:00",
       "error": "401 Client Error: Unauthorized for url: https://api.github.com/repos/renyuanzhe/NJUPT-CS-Courses"
     },
     {
@@ -986,7 +991,7 @@
       "source_type": "github_resource",
       "status": "error",
       "documents": 0,
-      "last_fetch_at": "2026-05-24T20:18:01.064232+08:00",
+      "last_fetch_at": "2026-05-24T20:25:18.708583+08:00",
       "error": "401 Client Error: Unauthorized for url: https://api.github.com/repos/Wonz5130/NJUPT-Yellow-Page"
     },
     {
@@ -996,7 +1001,7 @@
       "source_type": "github_resource",
       "status": "error",
       "documents": 0,
-      "last_fetch_at": "2026-05-24T20:18:01.064232+08:00",
+      "last_fetch_at": "2026-05-24T20:25:18.708583+08:00",
       "error": "401 Client Error: Unauthorized for url: https://api.github.com/repos/GreenPomelo/Undergraduate"
     },
     {
@@ -1006,7 +1011,7 @@
       "source_type": "github_resource",
       "status": "error",
       "documents": 0,
-      "last_fetch_at": "2026-05-24T20:18:01.064232+08:00",
+      "last_fetch_at": "2026-05-24T20:25:18.708583+08:00",
       "error": "401 Client Error: Unauthorized for url: https://api.github.com/repos/NJUPTFreeExams/NJUPT-AUTO-Free-Exams"
     },
     {
@@ -1016,7 +1021,7 @@
       "source_type": "github_resource",
       "status": "error",
       "documents": 0,
-      "last_fetch_at": "2026-05-24T20:18:01.064232+08:00",
+      "last_fetch_at": "2026-05-24T20:25:18.708583+08:00",
       "error": "401 Client Error: Unauthorized for url: https://api.github.com/repos/NJUPT-CG/NCTF2018"
     },
     {
@@ -1026,7 +1031,7 @@
       "source_type": "github_resource",
       "status": "error",
       "documents": 0,
-      "last_fetch_at": "2026-05-24T20:18:01.064232+08:00",
+      "last_fetch_at": "2026-05-24T20:25:18.708583+08:00",
       "error": "401 Client Error: Unauthorized for url: https://api.github.com/repos/gzr-lgtm/NJUPThesis-Bachelor"
     },
     {
@@ -1036,7 +1041,7 @@
       "source_type": "github_resource",
       "status": "error",
       "documents": 0,
-      "last_fetch_at": "2026-05-24T20:18:01.064232+08:00",
+      "last_fetch_at": "2026-05-24T20:25:18.708583+08:00",
       "error": "401 Client Error: Unauthorized for url: https://api.github.com/repos/gaoliang/NJUPT-API"
     },
     {
@@ -1046,7 +1051,7 @@
       "source_type": "github_resource",
       "status": "error",
       "documents": 0,
-      "last_fetch_at": "2026-05-24T20:18:01.064232+08:00",
+      "last_fetch_at": "2026-05-24T20:25:18.708583+08:00",
       "error": "401 Client Error: Unauthorized for url: https://api.github.com/repos/xiafanglongfei/NJUPT-auto-evaluate"
     },
     {
@@ -1056,7 +1061,7 @@
       "source_type": "github_resource",
       "status": "error",
       "documents": 0,
-      "last_fetch_at": "2026-05-24T20:18:01.064232+08:00",
+      "last_fetch_at": "2026-05-24T20:25:18.708583+08:00",
       "error": "401 Client Error: Unauthorized for url: https://api.github.com/repos/NJUPTFreeExams/NJUPT-TE-Free-Exams"
     },
     {
@@ -1066,7 +1071,7 @@
       "source_type": "github_resource",
       "status": "error",
       "documents": 0,
-      "last_fetch_at": "2026-05-24T20:18:01.064232+08:00",
+      "last_fetch_at": "2026-05-24T20:25:18.708583+08:00",
       "error": "401 Client Error: Unauthorized for url: https://api.github.com/repos/kaijy91/NJUPT_NET"
     },
     {
@@ -1076,7 +1081,7 @@
       "source_type": "github_resource",
       "status": "error",
       "documents": 0,
-      "last_fetch_at": "2026-05-24T20:18:01.064232+08:00",
+      "last_fetch_at": "2026-05-24T20:25:18.708583+08:00",
       "error": "401 Client Error: Unauthorized for url: https://api.github.com/repos/s235784/NJUPT_AutoLogin"
     },
     {
@@ -1086,7 +1091,7 @@
       "source_type": "github_resource",
       "status": "error",
       "documents": 0,
-      "last_fetch_at": "2026-05-24T20:18:01.064232+08:00",
+      "last_fetch_at": "2026-05-24T20:25:18.708583+08:00",
       "error": "401 Client Error: Unauthorized for url: https://api.github.com/repos/Freedomisgood/NjuptCmcc"
     },
     {
@@ -1096,7 +1101,7 @@
       "source_type": "github_resource",
       "status": "error",
       "documents": 0,
-      "last_fetch_at": "2026-05-24T20:18:01.064232+08:00",
+      "last_fetch_at": "2026-05-24T20:25:18.708583+08:00",
       "error": "401 Client Error: Unauthorized for url: https://api.github.com/repos/love98ooo/ZhengFangJiaoWuSystemTampermonkeyScript"
     },
     {
@@ -1106,7 +1111,7 @@
       "source_type": "github_resource",
       "status": "error",
       "documents": 0,
-      "last_fetch_at": "2026-05-24T20:18:01.064232+08:00",
+      "last_fetch_at": "2026-05-24T20:25:18.708583+08:00",
       "error": "401 Client Error: Unauthorized for url: https://api.github.com/repos/NJUPT-NAVI/NJUPT-Survival-Guide"
     },
     {
@@ -1116,7 +1121,7 @@
       "source_type": "github_resource",
       "status": "error",
       "documents": 0,
-      "last_fetch_at": "2026-05-24T20:18:01.064232+08:00",
+      "last_fetch_at": "2026-05-24T20:25:18.708583+08:00",
       "error": "401 Client Error: Unauthorized for url: https://api.github.com/repos/bmxbmx3/finger_vein_recognition"
     },
     {
@@ -1126,7 +1131,7 @@
       "source_type": "github_resource",
       "status": "error",
       "documents": 0,
-      "last_fetch_at": "2026-05-24T20:18:01.064232+08:00",
+      "last_fetch_at": "2026-05-24T20:25:18.708583+08:00",
       "error": "401 Client Error: Unauthorized for url: https://api.github.com/repos/lux-QAQ/NJUPT_Fastlogin"
     },
     {
@@ -1136,7 +1141,7 @@
       "source_type": "github_resource",
       "status": "error",
       "documents": 0,
-      "last_fetch_at": "2026-05-24T20:18:01.064232+08:00",
+      "last_fetch_at": "2026-05-24T20:25:18.708583+08:00",
       "error": "401 Client Error: Unauthorized for url: https://api.github.com/repos/NJUPTFreeExams/njuptfreeexams.github.io"
     },
     {
@@ -1146,7 +1151,7 @@
       "source_type": "github_resource",
       "status": "error",
       "documents": 0,
-      "last_fetch_at": "2026-05-24T20:18:01.064232+08:00",
+      "last_fetch_at": "2026-05-24T20:25:18.708583+08:00",
       "error": "401 Client Error: Unauthorized for url: https://api.github.com/repos/dhiyu/NJUPT-Bachelor"
     },
     {
@@ -1156,7 +1161,7 @@
       "source_type": "github_resource",
       "status": "error",
       "documents": 0,
-      "last_fetch_at": "2026-05-24T20:18:01.064232+08:00",
+      "last_fetch_at": "2026-05-24T20:25:18.708583+08:00",
       "error": "401 Client Error: Unauthorized for url: https://api.github.com/repos/yosunpeng/postgraduate_test_njupt"
     },
     {
@@ -1166,7 +1171,7 @@
       "source_type": "github_resource",
       "status": "error",
       "documents": 0,
-      "last_fetch_at": "2026-05-24T20:18:01.064232+08:00",
+      "last_fetch_at": "2026-05-24T20:25:18.708583+08:00",
       "error": "401 Client Error: Unauthorized for url: https://api.github.com/repos/NJUPTFreeExams/NJUPT-InfoSec-Free-Exams"
     },
     {
@@ -1176,7 +1181,7 @@
       "source_type": "github_resource",
       "status": "error",
       "documents": 0,
-      "last_fetch_at": "2026-05-24T20:18:01.064232+08:00",
+      "last_fetch_at": "2026-05-24T20:25:18.708583+08:00",
       "error": "401 Client Error: Unauthorized for url: https://api.github.com/repos/ace-trump-tech/NJUPT-Graduation-thesis"
     },
     {
@@ -1186,7 +1191,7 @@
       "source_type": "github_resource",
       "status": "error",
       "documents": 0,
-      "last_fetch_at": "2026-05-24T20:18:01.064232+08:00",
+      "last_fetch_at": "2026-05-24T20:25:18.708583+08:00",
       "error": "401 Client Error: Unauthorized for url: https://api.github.com/repos/Yolumia/NJUPT-NETWORK"
     },
     {
@@ -1196,7 +1201,7 @@
       "source_type": "github_resource",
       "status": "error",
       "documents": 0,
-      "last_fetch_at": "2026-05-24T20:18:01.064232+08:00",
+      "last_fetch_at": "2026-05-24T20:25:18.708583+08:00",
       "error": "401 Client Error: Unauthorized for url: https://api.github.com/repos/Moonike1217/NJUPTExamICSBuilder"
     },
     {
@@ -1206,7 +1211,7 @@
       "source_type": "github_resource",
       "status": "error",
       "documents": 0,
-      "last_fetch_at": "2026-05-24T20:18:01.064232+08:00",
+      "last_fetch_at": "2026-05-24T20:25:18.708583+08:00",
       "error": "401 Client Error: Unauthorized for url: https://api.github.com/repos/musnows/Njupt-Wifi-Login"
     }
   ]

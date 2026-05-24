@@ -2147,59 +2147,6 @@
     "confidence": 0.9
   },
   {
-    "task_id": "task-eac62c6dc9b33be972cb-1",
-    "doc_id": "exchange-2493ebd286eb4ad7f645",
-    "task_type": "application",
-    "who": {
-      "audience": [
-        "本科生",
-        "研究生"
-      ],
-      "college": [],
-      "grade": [],
-      "major": [],
-      "class_name": []
-    },
-    "what": "申报2026年度国际青年人才来华交流项目",
-    "action": {
-      "required": true,
-      "verb": "申报",
-      "object": "2026年度国际青年人才来华交流项目",
-      "summary": "根据通知，需要申报该项目。"
-    },
-    "time": {
-      "published_at": null,
-      "deadline": null,
-      "lifecycle": "upcoming",
-      "urgency_days": null
-    },
-    "materials": [],
-    "location": {
-      "place": null,
-      "online": null,
-      "contact": null
-    },
-    "source": {
-      "source_id": "exchange",
-      "channel_id": "exchange_notice",
-      "authority": 0.8,
-      "official": true
-    },
-    "evidence": [
-      {
-        "field": "action",
-        "text": "关于申报2026年度国际青年人才来华交流项目的通知"
-      }
-    ],
-    "risk": {
-      "sensitive": false,
-      "restricted": false,
-      "low_evidence": false,
-      "review_required": true
-    },
-    "confidence": 0.6
-  },
-  {
     "task_id": "task-3a4f831a8d9bccc11145-1",
     "doc_id": "cs-aa700cc880aa734ce178",
     "task_type": "application",

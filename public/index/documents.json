@@ -145,7 +145,7 @@
       "dedupe_key": "40c404d77dc666604255",
       "language": "zh",
       "status": "ok",
-      "fetched_at": "2026-05-24T20:18:01.064232+08:00",
+      "fetched_at": "2026-05-24T20:25:18.708583+08:00",
       "http_status": 200
     },
     "rule_guard": {
@@ -165,7 +165,7 @@
       "allow_llm": false,
       "allow_full_text_display": false,
       "review_required": true,
-      "evaluated_at": "2026-05-24T12:18:01.892497Z"
+      "evaluated_at": "2026-05-24T12:25:19.589884Z"
     },
     "task_frames": []
   },
@@ -317,7 +317,7 @@
       "dedupe_key": "d49538e92761155200e7",
       "language": "zh",
       "status": "ok",
-      "fetched_at": "2026-05-24T20:18:01.064232+08:00",
+      "fetched_at": "2026-05-24T20:25:18.708583+08:00",
       "http_status": 200
     },
     "rule_guard": {
@@ -339,7 +339,7 @@
       "allow_llm": false,
       "allow_full_text_display": false,
       "review_required": true,
-      "evaluated_at": "2026-05-24T12:18:05.033979Z"
+      "evaluated_at": "2026-05-24T12:25:22.868684Z"
     },
     "task_frames": []
   },
@@ -421,7 +421,7 @@
       "dedupe_key": "21cd3576e4672c9392bd",
       "language": "zh",
       "status": "ok",
-      "fetched_at": "2026-05-24T20:18:01.064232+08:00",
+      "fetched_at": "2026-05-24T20:25:18.708583+08:00",
       "http_status": 200
     },
     "rule_guard": {
@@ -442,7 +442,7 @@
       "allow_llm": false,
       "allow_full_text_display": false,
       "review_required": true,
-      "evaluated_at": "2026-05-24T12:18:04.819641Z"
+      "evaluated_at": "2026-05-24T12:25:22.639635Z"
     },
     "task_frames": []
   },
@@ -526,7 +526,7 @@
       "dedupe_key": "d030136cceedee9b74b3",
       "language": "zh",
       "status": "ok",
-      "fetched_at": "2026-05-24T20:18:01.064232+08:00",
+      "fetched_at": "2026-05-24T20:25:18.708583+08:00",
       "http_status": 200
     },
     "rule_guard": {
@@ -547,7 +547,7 @@
       "allow_llm": false,
       "allow_full_text_display": false,
       "review_required": true,
-      "evaluated_at": "2026-05-24T12:18:05.096285Z"
+      "evaluated_at": "2026-05-24T12:25:22.931936Z"
     },
     "task_frames": []
   },
@@ -631,7 +631,7 @@
       "dedupe_key": "743d992b050c0f6ad168",
       "language": "zh",
       "status": "ok",
-      "fetched_at": "2026-05-24T20:18:01.064232+08:00",
+      "fetched_at": "2026-05-24T20:25:18.708583+08:00",
       "http_status": 200
     },
     "rule_guard": {
@@ -652,7 +652,7 @@
       "allow_llm": false,
       "allow_full_text_display": false,
       "review_required": true,
-      "evaluated_at": "2026-05-24T12:18:08.925083Z"
+      "evaluated_at": "2026-05-24T12:25:26.808736Z"
     },
     "task_frames": []
   },
@@ -736,7 +736,7 @@
       "dedupe_key": "e7e55f93e1374e0f9f47",
       "language": "zh",
       "status": "ok",
-      "fetched_at": "2026-05-24T20:18:01.064232+08:00",
+      "fetched_at": "2026-05-24T20:25:18.708583+08:00",
       "http_status": 200
     },
     "rule_guard": {
@@ -757,7 +757,7 @@
       "allow_llm": false,
       "allow_full_text_display": false,
       "review_required": true,
-      "evaluated_at": "2026-05-24T12:18:04.914586Z"
+      "evaluated_at": "2026-05-24T12:25:22.760807Z"
     },
     "task_frames": []
   },
@@ -840,7 +840,7 @@
       "dedupe_key": "28d080d208cca72e681b",
       "language": "zh",
       "status": "ok",
-      "fetched_at": "2026-05-24T20:18:01.064232+08:00",
+      "fetched_at": "2026-05-24T20:25:18.708583+08:00",
       "http_status": 200
     },
     "rule_guard": {
@@ -861,7 +861,7 @@
       "allow_llm": false,
       "allow_full_text_display": false,
       "review_required": true,
-      "evaluated_at": "2026-05-24T12:18:04.973419Z"
+      "evaluated_at": "2026-05-24T12:25:22.822964Z"
     },
     "task_frames": []
   },
@@ -946,7 +946,7 @@
       "dedupe_key": "95db128ac8541481b53e",
       "language": "zh",
       "status": "ok",
-      "fetched_at": "2026-05-24T20:18:01.064232+08:00",
+      "fetched_at": "2026-05-24T20:25:18.708583+08:00",
       "http_status": 200
     },
     "rule_guard": {
@@ -966,7 +966,7 @@
       "allow_llm": false,
       "allow_full_text_display": false,
       "review_required": true,
-      "evaluated_at": "2026-05-24T12:18:25.736397Z"
+      "evaluated_at": "2026-05-24T12:25:39.312243Z"
     },
     "task_frames": []
   },
@@ -1053,7 +1053,7 @@
       "dedupe_key": "c769466f90ab0a6f0f1d",
       "language": "zh",
       "status": "ok",
-      "fetched_at": "2026-05-24T20:18:01.064232+08:00",
+      "fetched_at": "2026-05-24T20:25:18.708583+08:00",
       "http_status": 200
     },
     "rule_guard": {
@@ -1074,7 +1074,7 @@
       "allow_llm": false,
       "allow_full_text_display": false,
       "review_required": true,
-      "evaluated_at": "2026-05-24T12:18:26.226318Z"
+      "evaluated_at": "2026-05-24T12:25:39.805033Z"
     },
     "task_frames": []
   },
@@ -1158,7 +1158,7 @@
       "dedupe_key": "ee60a913479ef3537eca",
       "language": "zh",
       "status": "ok",
-      "fetched_at": "2026-05-24T20:18:01.064232+08:00",
+      "fetched_at": "2026-05-24T20:25:18.708583+08:00",
       "http_status": 200
     },
     "rule_guard": {
@@ -1179,7 +1179,7 @@
       "allow_llm": false,
       "allow_full_text_display": false,
       "review_required": true,
-      "evaluated_at": "2026-05-24T12:18:26.518309Z"
+      "evaluated_at": "2026-05-24T12:25:40.073240Z"
     },
     "task_frames": []
   },
@@ -4994,7 +4994,7 @@
       "dedupe_key": "25c78db5ee8a9ce3d568",
       "language": "zh",
       "status": "ok",
-      "fetched_at": "2026-05-24T20:18:01.064232+08:00",
+      "fetched_at": "2026-05-24T20:25:18.708583+08:00",
       "http_status": 200
     },
     "rule_guard": {
@@ -5015,7 +5015,7 @@
       "allow_llm": false,
       "allow_full_text_display": false,
       "review_required": true,
-      "evaluated_at": "2026-05-24T12:18:09.038803Z"
+      "evaluated_at": "2026-05-24T12:25:26.925199Z"
     },
     "task_frames": []
   },
@@ -6510,7 +6510,7 @@
       "dedupe_key": "5e01d70d08dcf466bcc0",
       "language": "zh",
       "status": "ok",
-      "fetched_at": "2026-05-24T20:18:01.064232+08:00",
+      "fetched_at": "2026-05-24T20:25:18.708583+08:00",
       "http_status": 200
     },
     "rule_guard": {
@@ -6530,7 +6530,7 @@
       "allow_llm": false,
       "allow_full_text_display": false,
       "review_required": true,
-      "evaluated_at": "2026-05-24T12:18:12.676518Z"
+      "evaluated_at": "2026-05-24T12:25:30.466045Z"
     },
     "task_frames": []
   },
@@ -6850,7 +6850,7 @@
       "dedupe_key": "7acc4f7e93031b9d86d0",
       "language": "zh",
       "status": "ok",
-      "fetched_at": "2026-05-24T20:18:01.064232+08:00",
+      "fetched_at": "2026-05-24T20:25:18.708583+08:00",
       "http_status": 200
     },
     "rule_guard": {
@@ -6871,7 +6871,7 @@
       "allow_llm": false,
       "allow_full_text_display": false,
       "review_required": true,
-      "evaluated_at": "2026-05-24T12:18:05.299836Z"
+      "evaluated_at": "2026-05-24T12:25:23.158422Z"
     },
     "task_frames": []
   },
@@ -6953,7 +6953,7 @@
       "dedupe_key": "db1c80229a93ddfc6a2a",
       "language": "zh",
       "status": "ok",
-      "fetched_at": "2026-05-24T20:18:01.064232+08:00",
+      "fetched_at": "2026-05-24T20:25:18.708583+08:00",
       "http_status": 200
     },
     "rule_guard": {
@@ -6974,7 +6974,7 @@
       "allow_llm": false,
       "allow_full_text_display": false,
       "review_required": true,
-      "evaluated_at": "2026-05-24T12:18:09.094550Z"
+      "evaluated_at": "2026-05-24T12:25:26.983719Z"
     },
     "task_frames": []
   },
@@ -7120,7 +7120,7 @@
       "dedupe_key": "ee16689f9d3bcd1d3445",
       "language": "zh",
       "status": "ok",
-      "fetched_at": "2026-05-24T20:18:01.064232+08:00",
+      "fetched_at": "2026-05-24T20:25:18.708583+08:00",
       "http_status": 200
     },
     "rule_guard": {
@@ -7142,7 +7142,7 @@
       "allow_llm": false,
       "allow_full_text_display": false,
       "review_required": true,
-      "evaluated_at": "2026-05-24T12:18:02.199144Z"
+      "evaluated_at": "2026-05-24T12:25:19.873188Z"
     },
     "task_frames": []
   },
@@ -7410,7 +7410,7 @@
       "dedupe_key": "a92ae53189abb26300e1",
       "language": "zh",
       "status": "ok",
-      "fetched_at": "2026-05-24T20:18:01.064232+08:00",
+      "fetched_at": "2026-05-24T20:25:18.708583+08:00",
       "http_status": 200
     },
     "rule_guard": {
@@ -7430,7 +7430,7 @@
       "allow_llm": false,
       "allow_full_text_display": false,
       "review_required": true,
-      "evaluated_at": "2026-05-24T12:18:06.247214Z"
+      "evaluated_at": "2026-05-24T12:25:24.109977Z"
     },
     "task_frames": []
   },
@@ -9660,7 +9660,7 @@
       "dedupe_key": "fe393a5478f9cac244fd",
       "language": "zh",
       "status": "ok",
-      "fetched_at": "2026-05-24T20:18:01.064232+08:00",
+      "fetched_at": "2026-05-24T20:25:18.708583+08:00",
       "http_status": 200
     },
     "rule_guard": {
@@ -9681,7 +9681,7 @@
       "allow_llm": false,
       "allow_full_text_display": false,
       "review_required": true,
-      "evaluated_at": "2026-05-24T12:18:20.452161Z"
+      "evaluated_at": "2026-05-24T12:25:34.141060Z"
     },
     "task_frames": []
   },
@@ -12226,7 +12226,7 @@
       "dedupe_key": "1e219d21b7eaba4d521c",
       "language": "zh",
       "status": "ok",
-      "fetched_at": "2026-05-24T20:18:01.064232+08:00",
+      "fetched_at": "2026-05-24T20:25:18.708583+08:00",
       "http_status": 200
     },
     "rule_guard": {
@@ -12247,7 +12247,7 @@
       "allow_llm": false,
       "allow_full_text_display": false,
       "review_required": true,
-      "evaluated_at": "2026-05-24T12:18:24.058230Z"
+      "evaluated_at": "2026-05-24T12:25:37.797200Z"
     },
     "task_frames": []
   },
@@ -13228,7 +13228,7 @@
       "dedupe_key": "210d97d8b3fa6a04ee17",
       "language": "zh",
       "status": "ok",
-      "fetched_at": "2026-05-24T20:18:01.064232+08:00",
+      "fetched_at": "2026-05-24T20:25:18.708583+08:00",
       "http_status": 200
     },
     "rule_guard": {
@@ -13246,7 +13246,7 @@
       "allow_llm": false,
       "allow_full_text_display": true,
       "review_required": true,
-      "evaluated_at": "2026-05-24T12:18:02.674963Z"
+      "evaluated_at": "2026-05-24T12:25:20.489695Z"
     },
     "task_frames": []
   },
@@ -14474,154 +14474,6 @@
     ]
   },
   {
-    "id": "exchange-2493ebd286eb4ad7f645",
-    "kind": "notice",
-    "source_id": "exchange",
-    "channel_id": "exchange_notice",
-    "channel": "国际交流通知",
-    "title": "关于申报2026年度国际青年人才来华交流项目的通知",
-    "url": "https://exchange.njupt.edu.cn/2026/0320/c7442a298116/page.htm",
-    "source": "国际合作交流处",
-    "source_domain": "exchange.njupt.edu.cn",
-    "source_type": "central_admin",
-    "category": "项目",
-    "domain": "international",
-    "intent": "apply",
-    "lifecycle": "unknown",
-    "evidence": [
-      "关于申报2026年度国际青年人才来华交流项目的通知"
-    ],
-    "confidence": 0.6,
-    "sub_category": null,
-    "deadline": null,
-    "action_required": true,
-    "action_type": "申报",
-    "action_summary": "申报2026年度国际青年人才来华交流项目",
-    "required_materials": [],
-    "sensitive": false,
-    "sensitive_types": [],
-    "review_required": true,
-    "risk_flags": [
-      "low_evidence"
-    ],
-    "audience": [
-      "本科生",
-      "研究生",
-      "国际学生"
-    ],
-    "published_at": null,
-    "content": "关于申报2026年度国际青年人才来华交流项目的通知",
-    "summary": "国际合作交流处发布关于申报2026年度国际青年人才来华交流项目的通知，学生可申报该项目。",
-    "attachments": [],
-    "student_score": 0.7789,
-    "freshness_score": 0.45,
-    "importance_score": 0.8285,
-    "source_weight": 0.8,
-    "tags": [
-      "项目",
-      "国际交流",
-      "青年人才",
-      "来华项目"
-    ],
-    "hash": "2493ebd286eb4ad7f645",
-    "cache_key": "eac62c6dc9b33be972cb",
-    "llm_schema_version": "hytask-taskframe-v1",
-    "llm": {
-      "used": true,
-      "provider": "deepseek",
-      "model": "deepseek-v4-flash",
-      "prompt_version": "hytask-taskframe-v1",
-      "confidence": 0.6,
-      "review_required": true
-    },
-    "canonical": {
-      "doc_id": "exchange-2493ebd286eb4ad7f645",
-      "source_id": "exchange",
-      "channel_id": "exchange_notice",
-      "title": "关于申报2026年度国际青年人才来华交流项目的通知",
-      "canonical_url": "https://exchange.njupt.edu.cn/2026/0320/c7442a298116/page.htm",
-      "published_at": null,
-      "clean_text": "关于申报2026年度国际青年人才来华交流项目的通知",
-      "attachments": [],
-      "content_hash": "86244f33aa34257e796f",
-      "dedupe_key": "fd60cdc1ff1c4ba876ec",
-      "language": "zh",
-      "status": "ok",
-      "fetched_at": "2026-05-24T20:18:01.064232+08:00",
-      "http_status": 200
-    },
-    "rule_guard": {
-      "restricted": false,
-      "sensitive": false,
-      "sensitive_types": [],
-      "low_evidence": false,
-      "duplicate": false,
-      "expired": false,
-      "evergreen": false,
-      "administrative_noise": false,
-      "risk_flags": [],
-      "allow_llm": true,
-      "allow_full_text_display": true,
-      "review_required": false,
-      "evaluated_at": "2026-05-24T12:18:15.542032Z"
-    },
-    "task_frames": [
-      {
-        "task_id": "task-eac62c6dc9b33be972cb-1",
-        "doc_id": "exchange-2493ebd286eb4ad7f645",
-        "task_type": "application",
-        "who": {
-          "audience": [
-            "本科生",
-            "研究生"
-          ],
-          "college": [],
-          "grade": [],
-          "major": [],
-          "class_name": []
-        },
-        "what": "申报2026年度国际青年人才来华交流项目",
-        "action": {
-          "required": true,
-          "verb": "申报",
-          "object": "2026年度国际青年人才来华交流项目",
-          "summary": "根据通知，需要申报该项目。"
-        },
-        "time": {
-          "published_at": null,
-          "deadline": null,
-          "lifecycle": "upcoming",
-          "urgency_days": null
-        },
-        "materials": [],
-        "location": {
-          "place": null,
-          "online": null,
-          "contact": null
-        },
-        "source": {
-          "source_id": "exchange",
-          "channel_id": "exchange_notice",
-          "authority": 0.8,
-          "official": true
-        },
-        "evidence": [
-          {
-            "field": "action",
-            "text": "关于申报2026年度国际青年人才来华交流项目的通知"
-          }
-        ],
-        "risk": {
-          "sensitive": false,
-          "restricted": false,
-          "low_evidence": false,
-          "review_required": true
-        },
-        "confidence": 0.6
-      }
-    ]
-  },
-  {
     "id": "bc-b23f8a63ff78f1eaa837",
     "kind": "notice",
     "source_id": "bc",
@@ -15121,7 +14973,7 @@
       "dedupe_key": "b8d1ae146238902ef0bc",
       "language": "zh",
       "status": "ok",
-      "fetched_at": "2026-05-24T20:18:01.064232+08:00",
+      "fetched_at": "2026-05-24T20:25:18.708583+08:00",
       "http_status": 200
     },
     "rule_guard": {
@@ -15141,7 +14993,7 @@
       "allow_llm": false,
       "allow_full_text_display": false,
       "review_required": true,
-      "evaluated_at": "2026-05-24T12:18:15.408771Z"
+      "evaluated_at": "2026-05-24T12:25:33.164057Z"
     },
     "task_frames": []
   },
@@ -15402,7 +15254,7 @@
       "dedupe_key": "f3675d58c55b67497e6a",
       "language": "zh",
       "status": "ok",
-      "fetched_at": "2026-05-24T20:18:01.064232+08:00",
+      "fetched_at": "2026-05-24T20:25:18.708583+08:00",
       "http_status": 200
     },
     "rule_guard": {
@@ -15423,7 +15275,7 @@
       "allow_llm": false,
       "allow_full_text_display": false,
       "review_required": true,
-      "evaluated_at": "2026-05-24T12:18:24.125962Z"
+      "evaluated_at": "2026-05-24T12:25:37.856181Z"
     },
     "task_frames": []
   },
@@ -16124,7 +15976,7 @@
       "dedupe_key": "a79575f543fea332fd4c",
       "language": "zh",
       "status": "ok",
-      "fetched_at": "2026-05-24T20:18:01.064232+08:00",
+      "fetched_at": "2026-05-24T20:25:18.708583+08:00",
       "http_status": 200
     },
     "rule_guard": {
@@ -16145,7 +15997,7 @@
       "allow_llm": false,
       "allow_full_text_display": false,
       "review_required": true,
-      "evaluated_at": "2026-05-24T12:18:04.001877Z"
+      "evaluated_at": "2026-05-24T12:25:21.826116Z"
     },
     "task_frames": []
   },
@@ -16410,7 +16262,7 @@
       "dedupe_key": "f4ac6224a346a908838b",
       "language": "zh",
       "status": "ok",
-      "fetched_at": "2026-05-24T20:18:01.064232+08:00",
+      "fetched_at": "2026-05-24T20:25:18.708583+08:00",
       "http_status": 200
     },
     "rule_guard": {
@@ -16431,7 +16283,7 @@
       "allow_llm": false,
       "allow_full_text_display": false,
       "review_required": true,
-      "evaluated_at": "2026-05-24T12:18:27.181611Z"
+      "evaluated_at": "2026-05-24T12:25:40.738409Z"
     },
     "task_frames": []
   },
@@ -17623,7 +17475,7 @@
       "dedupe_key": "fc595a56c637ec838fd1",
       "language": "zh",
       "status": "ok",
-      "fetched_at": "2026-05-24T20:18:01.064232+08:00",
+      "fetched_at": "2026-05-24T20:25:18.708583+08:00",
       "http_status": 200
     },
     "rule_guard": {
@@ -17644,7 +17496,7 @@
       "allow_llm": false,
       "allow_full_text_display": false,
       "review_required": true,
-      "evaluated_at": "2026-05-24T12:18:23.177662Z"
+      "evaluated_at": "2026-05-24T12:25:36.949753Z"
     },
     "task_frames": []
   },
@@ -18179,7 +18031,7 @@
       "dedupe_key": "73924076d1e30e5d0353",
       "language": "zh",
       "status": "ok",
-      "fetched_at": "2026-05-24T20:18:01.064232+08:00",
+      "fetched_at": "2026-05-24T20:25:18.708583+08:00",
       "http_status": 200
     },
     "rule_guard": {
@@ -18197,7 +18049,7 @@
       "allow_llm": false,
       "allow_full_text_display": true,
       "review_required": true,
-      "evaluated_at": "2026-05-24T12:18:25.589318Z"
+      "evaluated_at": "2026-05-24T12:25:39.171448Z"
     },
     "task_frames": []
   },
@@ -18478,7 +18330,7 @@
       "dedupe_key": "caa017fee84ce5e73e63",
       "language": "zh",
       "status": "ok",
-      "fetched_at": "2026-05-24T20:18:01.064232+08:00",
+      "fetched_at": "2026-05-24T20:25:18.708583+08:00",
       "http_status": 200
     },
     "rule_guard": {
@@ -18497,7 +18349,7 @@
       "allow_llm": false,
       "allow_full_text_display": true,
       "review_required": true,
-      "evaluated_at": "2026-05-24T12:18:26.032991Z"
+      "evaluated_at": "2026-05-24T12:25:39.615423Z"
     },
     "task_frames": [
       {
@@ -18837,7 +18689,7 @@
       "dedupe_key": "bedf5be7ecfe7461263d",
       "language": "zh",
       "status": "ok",
-      "fetched_at": "2026-05-24T20:18:01.064232+08:00",
+      "fetched_at": "2026-05-24T20:25:18.708583+08:00",
       "http_status": 200
     },
     "rule_guard": {
@@ -18855,7 +18707,7 @@
       "allow_llm": false,
       "allow_full_text_display": true,
       "review_required": true,
-      "evaluated_at": "2026-05-24T12:18:02.735904Z"
+      "evaluated_at": "2026-05-24T12:25:20.532233Z"
     },
     "task_frames": []
   },
@@ -18985,7 +18837,7 @@
       "dedupe_key": "0f5de39bd7c774a2fb99",
       "language": "zh",
       "status": "ok",
-      "fetched_at": "2026-05-24T20:18:01.064232+08:00",
+      "fetched_at": "2026-05-24T20:25:18.708583+08:00",
       "http_status": 200
     },
     "rule_guard": {
@@ -19004,7 +18856,7 @@
       "allow_llm": false,
       "allow_full_text_display": true,
       "review_required": true,
-      "evaluated_at": "2026-05-24T12:18:25.804379Z"
+      "evaluated_at": "2026-05-24T12:25:39.389467Z"
     },
     "task_frames": []
   },
@@ -19189,7 +19041,7 @@
       "dedupe_key": "b62ef744ff6019eb9209",
       "language": "zh",
       "status": "ok",
-      "fetched_at": "2026-05-24T20:18:01.064232+08:00",
+      "fetched_at": "2026-05-24T20:25:18.708583+08:00",
       "http_status": 200
     },
     "rule_guard": {
@@ -19207,7 +19059,7 @@
       "allow_llm": false,
       "allow_full_text_display": true,
       "review_required": true,
-      "evaluated_at": "2026-05-24T12:18:10.518028Z"
+      "evaluated_at": "2026-05-24T12:25:28.304980Z"
     },
     "task_frames": [
       {
@@ -19347,7 +19199,7 @@
       "dedupe_key": "5531f228aff3bbcbab60",
       "language": "zh",
       "status": "ok",
-      "fetched_at": "2026-05-24T20:18:01.064232+08:00",
+      "fetched_at": "2026-05-24T20:25:18.708583+08:00",
       "http_status": 200
     },
     "rule_guard": {
@@ -19367,7 +19219,7 @@
       "allow_llm": false,
       "allow_full_text_display": false,
       "review_required": true,
-      "evaluated_at": "2026-05-24T12:18:12.994003Z"
+      "evaluated_at": "2026-05-24T12:25:30.789564Z"
     },
     "task_frames": []
   },
@@ -19718,7 +19570,7 @@
       "dedupe_key": "39ce435d8d517b7260dd",
       "language": "zh",
       "status": "ok",
-      "fetched_at": "2026-05-24T20:18:01.064232+08:00",
+      "fetched_at": "2026-05-24T20:25:18.708583+08:00",
       "http_status": 200
     },
     "rule_guard": {
@@ -19739,7 +19591,7 @@
       "allow_llm": false,
       "allow_full_text_display": false,
       "review_required": true,
-      "evaluated_at": "2026-05-24T12:18:23.486438Z"
+      "evaluated_at": "2026-05-24T12:25:37.253355Z"
     },
     "task_frames": []
   }
