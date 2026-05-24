@@ -1,0 +1,75 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://njupt.hicancan.top/schema/source_channels.schema.json",
+  "title": "njupt-search Source-Channel Graph",
+  "type": "object",
+  "required": ["version", "sources"],
+  "properties": {
+    "version": {"type": "integer"},
+    "sources": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/source"}
+    }
+  },
+  "$defs": {
+    "source": {
+      "type": "object",
+      "required": ["id", "name", "base_url", "source_type", "authority", "default_audience", "access_level", "audit_status", "channels"],
+      "properties": {
+        "id": {"type": "string", "minLength": 1},
+        "name": {"type": "string", "minLength": 1},
+        "base_url": {"type": "string", "format": "uri"},
+        "source_type": {"type": "string"},
+        "authority": {"type": "number", "minimum": 0, "maximum": 1},
+        "default_audience": {"type": "array", "items": {"type": "string"}},
+        "access_level": {"type": "string"},
+        "audit_status": {"type": "string"},
+        "enabled": {"type": "boolean"},
+        "adapter_kind": {"type": "string"},
+        "include_patterns": {"type": "array", "items": {"type": "string"}},
+        "exclude_patterns": {"type": "array", "items": {"type": "string"}},
+        "notes": {"type": "string"},
+        "channels": {"type": "array", "items": {"$ref": "#/$defs/channel"}}
+      }
+    },
+    "channel": {
+      "type": "object",
+      "required": ["id", "source_id", "name", "list_urls", "student_value", "expected_domains", "expected_intents", "priority", "crawl_depth", "pagination", "selectors", "audit_status"],
+      "properties": {
+        "id": {"type": "string", "minLength": 1},
+        "source_id": {"type": "string", "minLength": 1},
+        "name": {"type": "string", "minLength": 1},
+        "list_urls": {"type": "array", "items": {"type": "string", "format": "uri"}},
+        "student_value": {"type": "number", "minimum": 0, "maximum": 1},
+        "expected_domains": {"type": "array", "items": {"type": "string"}},
+        "expected_intents": {"type": "array", "items": {"type": "string"}},
+        "priority": {"type": "number", "minimum": 0, "maximum": 1},
+        "crawl_depth": {"type": "integer", "minimum": 1, "maximum": 5},
+        "pagination": {
+          "type": "object",
+          "properties": {
+            "type": {"type": "string"},
+            "pattern": {"type": ["string", "null"]}
+          }
+        },
+        "selectors": {
+          "type": "object",
+          "properties": {
+            "list_item": {"type": ["string", "null"]},
+            "title": {"type": ["string", "null"]},
+            "date": {"type": ["string", "null"]},
+            "link": {"type": ["string", "null"]},
+            "content": {"type": ["string", "null"]},
+            "attachments": {"type": ["string", "null"]}
+          }
+        },
+        "sensitive_risks": {"type": "array", "items": {"type": "string"}},
+        "positive_keywords": {"type": "array", "items": {"type": "string"}},
+        "negative_keywords": {"type": "array", "items": {"type": "string"}},
+        "audit_status": {"type": "string"},
+        "production_enabled": {"type": "boolean"},
+        "notes": {"type": "string"}
+      }
+    }
+  }
+}

@@ -24,6 +24,8 @@ interface SearchResultCardProps {
 function SearchResultCard({ document, onOpenClass }: SearchResultCardProps) {
     const isExam = document.kind === 'exam' && document.class_name;
     const isRestricted = document.status === 'restricted';
+    const primaryTask = document.task_frames[0];
+    const scoreReason = (document as Partial<RankedSearchDocument>).score_reason || '';
     const attachmentChips = document.attachments
         .filter(attachment => attachment.role || attachment.sensitive)
         .slice(0, 3);
@@ -43,6 +45,8 @@ function SearchResultCard({ document, onOpenClass }: SearchResultCardProps) {
         <Wrapper {...wrapperProps} className={`block w-full text-left py-4 group ${document.action_required ? 'border-l-[3px] border-[#f29900] pl-4 bg-[#fef7e0]/30 dark:bg-[#f29900]/10 rounded-r-md mb-2' : ''}`}>
             <div className="flex items-center gap-2 text-[14px] text-[#202124] dark:text-[#bdc1c6] mb-1">
                 <span className="font-medium">{document.source}</span>
+                <span className="text-[#70757a] dark:text-[#9aa0a6]">›</span>
+                <span className="text-[#70757a] dark:text-[#9aa0a6] truncate">{document.channel}</span>
                 <span className="text-[#70757a] dark:text-[#9aa0a6]">›</span>
                 <span className="text-[#70757a] dark:text-[#9aa0a6] truncate">
                     {getDomainLabel(document.domain)} · {getIntentLabel(document.intent)}{document.sub_category ? ` · ${document.sub_category}` : ''}
@@ -66,10 +70,39 @@ function SearchResultCard({ document, onOpenClass }: SearchResultCardProps) {
                         校内访问
                     </span>
                 )}
+                {document.review_required && !isRestricted ? (
+                    <span className="inline-flex items-center justify-center h-5 px-2 rounded text-[11px] bg-[#fff4e5] text-[#8c4d00] dark:bg-[#42341c] dark:text-[#fde293] shrink-0">
+                        需复核
+                    </span>
+                ) : null}
             </div>
             <h3 className="text-[20px] leading-snug font-medium text-[#1a0dab] dark:text-[#8ab4f8] group-hover:underline break-words">
                 {document.title}
             </h3>
+
+            {primaryTask ? (
+                <div className="mt-3 border border-[#dadce0] dark:border-[#3c4043] rounded-md p-3 bg-white dark:bg-[#202124]">
+                    <div className="grid gap-2 text-[13px] text-[#3c4043] dark:text-[#d2d5da]">
+                        <div className="flex flex-wrap gap-x-4 gap-y-1">
+                            <span><span className="text-[#70757a] dark:text-[#9aa0a6]">对象：</span>{primaryTask.who.audience.join('、') || '对象待确认'}</span>
+                            <span><span className="text-[#70757a] dark:text-[#9aa0a6]">任务：</span>{primaryTask.what}</span>
+                        </div>
+                        <div className="flex flex-wrap gap-x-4 gap-y-1">
+                            <span><span className="text-[#70757a] dark:text-[#9aa0a6]">动作：</span>{primaryTask.action.summary || primaryTask.action.verb || (primaryTask.action.required ? '需要处理' : '查看信息')}</span>
+                            <span><span className="text-[#70757a] dark:text-[#9aa0a6]">状态：</span>{primaryTask.time.lifecycle || document.lifecycle}</span>
+                            {primaryTask.time.deadline ? (
+                                <span className="text-[#c5221f] dark:text-[#f28b82]"><span className="text-[#70757a] dark:text-[#9aa0a6]">截止：</span>{primaryTask.time.deadline.substring(0, 16).replace('T', ' ')}</span>
+                            ) : null}
+                        </div>
+                        {primaryTask.materials.length > 0 ? (
+                            <div><span className="text-[#70757a] dark:text-[#9aa0a6]">材料：</span>{primaryTask.materials.slice(0, 3).map(item => item.name).join('、')}</div>
+                        ) : null}
+                        {primaryTask.evidence.length > 0 ? (
+                            <div className="line-clamp-2"><span className="text-[#70757a] dark:text-[#9aa0a6]">证据：</span>{primaryTask.evidence[0]?.text || ''}</div>
+                        ) : null}
+                    </div>
+                </div>
+            ) : null}
 
             <div className="mt-2 flex flex-wrap gap-1.5 text-[12px]">
                 <span className="inline-flex items-center h-6 px-2 rounded bg-[#e8f0fe] text-[#1967d2] dark:bg-[#263850] dark:text-[#8ab4f8]">
@@ -125,6 +158,11 @@ function SearchResultCard({ document, onOpenClass }: SearchResultCardProps) {
                 <span className="text-[#70757a] dark:text-[#9aa0a6] font-medium mr-2">{formatSearchDate(document.published_at)}</span>
                 {document.summary || document.content}
             </div>
+            {scoreReason ? (
+                <div className="mt-1 text-[12px] text-[#70757a] dark:text-[#9aa0a6]">
+                    排序依据：{scoreReason}
+                </div>
+            ) : null}
         </Wrapper>
     );
 }

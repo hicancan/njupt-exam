@@ -1,28 +1,52 @@
 {
-  "generated_at": "2026-05-24T10:33:57.590290+08:00",
-  "total_documents": 223,
-  "strategy": "phase3-source-registry-multiaxis-student-radar",
-  "llm_schema_version": "llm-v5",
-  "llm_enabled": true,
-  "llm_provider": "deepseek",
-  "llm_model": "deepseek-v4-flash",
+  "generated_at": "2026-05-24T15:55:34.626004+08:00",
+  "total_documents": 224,
+  "strategy": "hytask-rag-source-channel-taskframe-hybrid-index-v1",
+  "llm_schema_version": "hytask-taskframe-v1",
+  "llm_enabled": false,
+  "llm_provider": "none",
+  "llm_model": null,
   "llm_batch_size": 32,
   "llm_batch_max_chars": 250000,
   "llm_batch_max_output_tokens": 60000,
   "llm_stats": {
-    "cache_reused": 203,
-    "llm_reused": 379,
+    "cache_reused": 0,
+    "llm_reused": 0,
     "llm_attempted": 0,
     "llm_reprocessed": 0,
     "llm_failed": 0,
-    "llm_fallback": 12,
+    "llm_fallback": 295,
     "llm_skipped_by_limit": 0,
     "llm_batches_attempted": 0,
     "llm_batch_docs_attempted": 0,
-    "candidate_llm_cache_reused": 176,
-    "restricted": 26
+    "candidate_llm_cache_reused": 0,
+    "restricted": 0
   },
-  "source_count": 62,
+  "source_count": 30,
+  "channel_count": 30,
+  "audited_channel_count": 30,
+  "production_channel_count": 30,
+  "failed_channel_count": 0,
+  "task_frame_count": 89,
+  "documents_with_task_frame": 89,
+  "evidence_coverage": {
+    "audience": 1.0,
+    "action": 0.4494,
+    "deadline": 0.0562,
+    "materials": 0.0,
+    "location": 0.0,
+    "sensitive": 0.0,
+    "overall": 0.2509
+  },
+  "review_required_count": 35,
+  "low_evidence_count": 8,
+  "restricted_count": 0,
+  "sensitive_count": 36,
+  "hybrid_index": {
+    "doc_count": 224,
+    "task_frame_count": 89,
+    "avg_doc_len": 681.308
+  },
   "sources": [
     {
       "id": "jwc",
@@ -31,10 +55,24 @@
       "source_type": "central_admin",
       "adapter_kind": "njupt_wp",
       "priority": 1.0,
-      "requires_devtools_audit": true,
+      "requires_devtools_audit": false,
+      "channel_count": 1,
+      "channels": [
+        {
+          "id": "jwc_notice",
+          "name": "通知公告",
+          "priority": 1.0,
+          "student_value": 1.0,
+          "audit_status": "manual_seeded",
+          "status": "ok",
+          "documents": 14,
+          "candidates": 36,
+          "list_errors": []
+        }
+      ],
       "status": "ok",
       "documents": 13,
-      "last_fetch_at": "2026-05-24T10:33:57.590290+08:00",
+      "last_fetch_at": "2026-05-24T15:55:34.626004+08:00",
       "candidates": 14,
       "filtered_out": 1
     },
@@ -45,12 +83,26 @@
       "source_type": "central_admin",
       "adapter_kind": "njupt_wp",
       "priority": 0.96,
-      "requires_devtools_audit": true,
+      "requires_devtools_audit": false,
+      "channel_count": 1,
+      "channels": [
+        {
+          "id": "xsc_notice",
+          "name": "学生工作通知",
+          "priority": 0.96,
+          "student_value": 0.98,
+          "audit_status": "manual_seeded",
+          "status": "ok",
+          "documents": 14,
+          "candidates": 25,
+          "list_errors": []
+        }
+      ],
       "status": "ok",
-      "documents": 7,
-      "last_fetch_at": "2026-05-24T10:33:57.590290+08:00",
+      "documents": 12,
+      "last_fetch_at": "2026-05-24T15:55:34.626004+08:00",
       "candidates": 14,
-      "filtered_out": 7
+      "filtered_out": 2
     },
     {
       "id": "pg",
@@ -59,12 +111,26 @@
       "source_type": "central_admin",
       "adapter_kind": "njupt_wp",
       "priority": 0.96,
-      "requires_devtools_audit": true,
+      "requires_devtools_audit": false,
+      "channel_count": 1,
+      "channels": [
+        {
+          "id": "pg_notice",
+          "name": "培养与学位通知",
+          "priority": 0.96,
+          "student_value": 0.96,
+          "audit_status": "manual_seeded",
+          "status": "ok",
+          "documents": 14,
+          "candidates": 36,
+          "list_errors": []
+        }
+      ],
       "status": "ok",
-      "documents": 11,
-      "last_fetch_at": "2026-05-24T10:33:57.590290+08:00",
+      "documents": 13,
+      "last_fetch_at": "2026-05-24T15:55:34.626004+08:00",
       "candidates": 14,
-      "filtered_out": 3
+      "filtered_out": 1
     },
     {
       "id": "ygb",
@@ -73,12 +139,26 @@
       "source_type": "central_admin",
       "adapter_kind": "njupt_wp",
       "priority": 0.92,
-      "requires_devtools_audit": true,
+      "requires_devtools_audit": false,
+      "channel_count": 1,
+      "channels": [
+        {
+          "id": "ygb_notice",
+          "name": "研工通知",
+          "priority": 0.92,
+          "student_value": 0.92,
+          "audit_status": "manual_seeded",
+          "status": "ok",
+          "documents": 14,
+          "candidates": 36,
+          "list_errors": []
+        }
+      ],
       "status": "ok",
-      "documents": 11,
-      "last_fetch_at": "2026-05-24T10:33:57.590290+08:00",
+      "documents": 13,
+      "last_fetch_at": "2026-05-24T15:55:34.626004+08:00",
       "candidates": 14,
-      "filtered_out": 3
+      "filtered_out": 1
     },
     {
       "id": "youth",
@@ -87,12 +167,26 @@
       "source_type": "central_admin",
       "adapter_kind": "njupt_wp",
       "priority": 0.9,
-      "requires_devtools_audit": true,
+      "requires_devtools_audit": false,
+      "channel_count": 1,
+      "channels": [
+        {
+          "id": "youth_notice",
+          "name": "团学通知",
+          "priority": 0.9,
+          "student_value": 0.9,
+          "audit_status": "manual_seeded",
+          "status": "ok",
+          "documents": 14,
+          "candidates": 36,
+          "list_errors": []
+        }
+      ],
       "status": "ok",
-      "documents": 8,
-      "last_fetch_at": "2026-05-24T10:33:57.590290+08:00",
+      "documents": 9,
+      "last_fetch_at": "2026-05-24T15:55:34.626004+08:00",
       "candidates": 14,
-      "filtered_out": 6
+      "filtered_out": 5
     },
     {
       "id": "cxcy",
@@ -101,12 +195,26 @@
       "source_type": "central_admin",
       "adapter_kind": "njupt_wp",
       "priority": 0.9,
-      "requires_devtools_audit": true,
+      "requires_devtools_audit": false,
+      "channel_count": 1,
+      "channels": [
+        {
+          "id": "cxcy_notice",
+          "name": "创新创业通知",
+          "priority": 0.9,
+          "student_value": 0.95,
+          "audit_status": "manual_seeded",
+          "status": "ok",
+          "documents": 13,
+          "candidates": 36,
+          "list_errors": []
+        }
+      ],
       "status": "ok",
-      "documents": 10,
-      "last_fetch_at": "2026-05-24T10:33:57.590290+08:00",
+      "documents": 13,
+      "last_fetch_at": "2026-05-24T15:55:34.626004+08:00",
       "candidates": 13,
-      "filtered_out": 3
+      "filtered_out": 0
     },
     {
       "id": "job",
@@ -116,9 +224,21 @@
       "adapter_kind": "job_api",
       "priority": 0.88,
       "requires_devtools_audit": false,
+      "channel_count": 1,
+      "channels": [
+        {
+          "id": "job_fair",
+          "name": "宣讲会与招聘会",
+          "priority": 0.88,
+          "student_value": 0.9,
+          "audit_status": "manual_seeded",
+          "status": "ok",
+          "documents": 0
+        }
+      ],
       "status": "ok",
       "documents": 18,
-      "last_fetch_at": "2026-05-24T10:33:57.590290+08:00"
+      "last_fetch_at": "2026-05-24T15:55:34.626004+08:00"
     },
     {
       "id": "lib",
@@ -127,12 +247,26 @@
       "source_type": "service_unit",
       "adapter_kind": "njupt_wp",
       "priority": 0.82,
-      "requires_devtools_audit": true,
+      "requires_devtools_audit": false,
+      "channel_count": 1,
+      "channels": [
+        {
+          "id": "lib_notice",
+          "name": "图书馆通知",
+          "priority": 0.82,
+          "student_value": 0.84,
+          "audit_status": "manual_seeded",
+          "status": "ok",
+          "documents": 14,
+          "candidates": 14,
+          "list_errors": []
+        }
+      ],
       "status": "ok",
-      "documents": 11,
-      "last_fetch_at": "2026-05-24T10:33:57.590290+08:00",
+      "documents": 12,
+      "last_fetch_at": "2026-05-24T15:55:34.626004+08:00",
       "candidates": 14,
-      "filtered_out": 3
+      "filtered_out": 2
     },
     {
       "id": "bwc",
@@ -141,12 +275,26 @@
       "source_type": "service_unit",
       "adapter_kind": "njupt_wp",
       "priority": 0.8,
-      "requires_devtools_audit": true,
+      "requires_devtools_audit": false,
+      "channel_count": 1,
+      "channels": [
+        {
+          "id": "bwc_notice",
+          "name": "安全与交通通知",
+          "priority": 0.8,
+          "student_value": 0.8,
+          "audit_status": "manual_seeded",
+          "status": "ok",
+          "documents": 12,
+          "candidates": 16,
+          "list_errors": []
+        }
+      ],
       "status": "ok",
-      "documents": 1,
-      "last_fetch_at": "2026-05-24T10:33:57.590290+08:00",
-      "candidates": 11,
-      "filtered_out": 10
+      "documents": 3,
+      "last_fetch_at": "2026-05-24T15:55:34.626004+08:00",
+      "candidates": 12,
+      "filtered_out": 9
     },
     {
       "id": "hqc",
@@ -155,11 +303,25 @@
       "source_type": "service_unit",
       "adapter_kind": "njupt_wp",
       "priority": 0.8,
-      "requires_devtools_audit": true,
+      "requires_devtools_audit": false,
+      "channel_count": 1,
+      "channels": [
+        {
+          "id": "hqc_notice",
+          "name": "后勤服务通知",
+          "priority": 0.8,
+          "student_value": 0.82,
+          "audit_status": "manual_seeded",
+          "status": "ok",
+          "documents": 14,
+          "candidates": 36,
+          "list_errors": []
+        }
+      ],
       "status": "ok",
-      "documents": 6,
-      "last_fetch_at": "2026-05-24T10:33:57.590290+08:00",
-      "candidates": 12,
+      "documents": 8,
+      "last_fetch_at": "2026-05-24T15:55:34.626004+08:00",
+      "candidates": 14,
       "filtered_out": 6
     },
     {
@@ -169,26 +331,26 @@
       "source_type": "central_notice",
       "adapter_kind": "njupt_wp",
       "priority": 0.86,
-      "requires_devtools_audit": true,
+      "requires_devtools_audit": false,
+      "channel_count": 1,
+      "channels": [
+        {
+          "id": "njupt_notice_main",
+          "name": "通知通告",
+          "priority": 0.86,
+          "student_value": 0.86,
+          "audit_status": "manual_seeded",
+          "status": "ok",
+          "documents": 14,
+          "candidates": 36,
+          "list_errors": []
+        }
+      ],
       "status": "ok",
-      "documents": 7,
-      "last_fetch_at": "2026-05-24T10:33:57.590290+08:00",
+      "documents": 5,
+      "last_fetch_at": "2026-05-24T15:55:34.626004+08:00",
       "candidates": 14,
-      "filtered_out": 7
-    },
-    {
-      "id": "njupt_home",
-      "name": "南邮官网首页",
-      "domain": "www.njupt.edu.cn",
-      "source_type": "central_news",
-      "adapter_kind": "njupt_wp",
-      "priority": 0.68,
-      "requires_devtools_audit": true,
-      "status": "ok",
-      "documents": 2,
-      "last_fetch_at": "2026-05-24T10:33:57.590290+08:00",
-      "candidates": 14,
-      "filtered_out": 12
+      "filtered_out": 9
     },
     {
       "id": "news",
@@ -197,12 +359,26 @@
       "source_type": "central_news",
       "adapter_kind": "njupt_wp",
       "priority": 0.62,
-      "requires_devtools_audit": true,
+      "requires_devtools_audit": false,
+      "channel_count": 1,
+      "channels": [
+        {
+          "id": "news_campus",
+          "name": "校园新闻",
+          "priority": 0.62,
+          "student_value": 0.55,
+          "audit_status": "manual_seeded",
+          "status": "ok",
+          "documents": 14,
+          "candidates": 36,
+          "list_errors": []
+        }
+      ],
       "status": "ok",
-      "documents": 8,
-      "last_fetch_at": "2026-05-24T10:33:57.590290+08:00",
+      "documents": 10,
+      "last_fetch_at": "2026-05-24T15:55:34.626004+08:00",
       "candidates": 14,
-      "filtered_out": 6
+      "filtered_out": 4
     },
     {
       "id": "xxgk",
@@ -211,10 +387,24 @@
       "source_type": "policy",
       "adapter_kind": "njupt_wp",
       "priority": 0.58,
-      "requires_devtools_audit": true,
+      "requires_devtools_audit": false,
+      "channel_count": 1,
+      "channels": [
+        {
+          "id": "xxgk_policy",
+          "name": "信息公开与制度",
+          "priority": 0.58,
+          "student_value": 0.58,
+          "audit_status": "manual_seeded",
+          "status": "ok",
+          "documents": 2,
+          "candidates": 2,
+          "list_errors": []
+        }
+      ],
       "status": "ok",
       "documents": 0,
-      "last_fetch_at": "2026-05-24T10:33:57.590290+08:00",
+      "last_fetch_at": "2026-05-24T15:55:34.626004+08:00",
       "candidates": 2,
       "filtered_out": 2
     },
@@ -225,12 +415,171 @@
       "source_type": "central_admin",
       "adapter_kind": "njupt_wp",
       "priority": 0.78,
-      "requires_devtools_audit": true,
+      "requires_devtools_audit": false,
+      "channel_count": 1,
+      "channels": [
+        {
+          "id": "exchange_notice",
+          "name": "国际交流通知",
+          "priority": 0.78,
+          "student_value": 0.8,
+          "audit_status": "manual_seeded",
+          "status": "ok",
+          "documents": 14,
+          "candidates": 26,
+          "list_errors": []
+        }
+      ],
       "status": "ok",
-      "documents": 7,
-      "last_fetch_at": "2026-05-24T10:33:57.590290+08:00",
+      "documents": 8,
+      "last_fetch_at": "2026-05-24T15:55:34.626004+08:00",
       "candidates": 14,
-      "filtered_out": 7
+      "filtered_out": 6
+    },
+    {
+      "id": "yzb",
+      "name": "研究生招生",
+      "domain": "yzb.njupt.edu.cn",
+      "source_type": "central_admin",
+      "adapter_kind": "njupt_wp",
+      "priority": 0.74,
+      "requires_devtools_audit": false,
+      "channel_count": 1,
+      "channels": [
+        {
+          "id": "yzb_notice",
+          "name": "招生通知",
+          "priority": 0.74,
+          "student_value": 0.62,
+          "audit_status": "planned",
+          "status": "ok",
+          "documents": 14,
+          "candidates": 23,
+          "list_errors": []
+        }
+      ],
+      "status": "ok",
+      "documents": 14,
+      "last_fetch_at": "2026-05-24T15:55:34.626004+08:00",
+      "candidates": 14,
+      "filtered_out": 0
+    },
+    {
+      "id": "nic",
+      "name": "信息化建设与管理办公室",
+      "domain": "nic.njupt.edu.cn",
+      "source_type": "service_unit",
+      "adapter_kind": "njupt_wp",
+      "priority": 0.72,
+      "requires_devtools_audit": false,
+      "channel_count": 1,
+      "channels": [
+        {
+          "id": "nic_service",
+          "name": "信息化服务通知",
+          "priority": 0.72,
+          "student_value": 0.78,
+          "audit_status": "planned",
+          "status": "warning",
+          "documents": 0,
+          "candidates": 0,
+          "list_errors": [
+            "https://nic.njupt.edu.cn/: HTTPSConnectionPool(host='nic.njupt.edu.cn', port=443): Max retries exceeded with url: / (Caused by NameResolutionError(\"HTTPSConnection(host='nic.njupt.edu.cn', port=443): Failed to resolve 'nic.njupt.edu.cn' ([Errno 11001] getaddrinfo failed)\"))"
+          ]
+        }
+      ],
+      "status": "ok",
+      "documents": 0,
+      "last_fetch_at": "2026-05-24T15:55:34.626004+08:00",
+      "list_errors": [
+        "https://nic.njupt.edu.cn/: HTTPSConnectionPool(host='nic.njupt.edu.cn', port=443): Max retries exceeded with url: / (Caused by NameResolutionError(\"HTTPSConnection(host='nic.njupt.edu.cn', port=443): Failed to resolve 'nic.njupt.edu.cn' ([Errno 11001] getaddrinfo failed)\"))"
+      ],
+      "candidates": 0,
+      "filtered_out": 0
+    },
+    {
+      "id": "cwc",
+      "name": "财务处",
+      "domain": "cwc.njupt.edu.cn",
+      "source_type": "service_unit",
+      "adapter_kind": "njupt_wp",
+      "priority": 0.62,
+      "requires_devtools_audit": false,
+      "channel_count": 1,
+      "channels": [
+        {
+          "id": "cwc_notice",
+          "name": "财务服务通知",
+          "priority": 0.62,
+          "student_value": 0.58,
+          "audit_status": "planned",
+          "status": "ok",
+          "documents": 13,
+          "candidates": 22,
+          "list_errors": []
+        }
+      ],
+      "status": "ok",
+      "documents": 0,
+      "last_fetch_at": "2026-05-24T15:55:34.626004+08:00",
+      "candidates": 13,
+      "filtered_out": 13
+    },
+    {
+      "id": "archives",
+      "name": "档案馆",
+      "domain": "dag.njupt.edu.cn",
+      "source_type": "service_unit",
+      "adapter_kind": "njupt_wp",
+      "priority": 0.62,
+      "requires_devtools_audit": false,
+      "channel_count": 1,
+      "channels": [
+        {
+          "id": "archives_guide",
+          "name": "档案服务",
+          "priority": 0.62,
+          "student_value": 0.62,
+          "audit_status": "planned",
+          "status": "ok",
+          "documents": 14,
+          "candidates": 25,
+          "list_errors": []
+        }
+      ],
+      "status": "ok",
+      "documents": 5,
+      "last_fetch_at": "2026-05-24T15:55:34.626004+08:00",
+      "candidates": 14,
+      "filtered_out": 9
+    },
+    {
+      "id": "pe",
+      "name": "体育部",
+      "domain": "tyb.njupt.edu.cn",
+      "source_type": "service_unit",
+      "adapter_kind": "njupt_wp",
+      "priority": 0.58,
+      "requires_devtools_audit": false,
+      "channel_count": 1,
+      "channels": [
+        {
+          "id": "pe_notice",
+          "name": "体育通知",
+          "priority": 0.58,
+          "student_value": 0.58,
+          "audit_status": "planned",
+          "status": "ok",
+          "documents": 14,
+          "candidates": 36,
+          "list_errors": []
+        }
+      ],
+      "status": "ok",
+      "documents": 4,
+      "last_fetch_at": "2026-05-24T15:55:34.626004+08:00",
+      "candidates": 14,
+      "filtered_out": 10
     },
     {
       "id": "cs",
@@ -239,10 +588,24 @@
       "source_type": "college",
       "adapter_kind": "njupt_wp",
       "priority": 0.78,
-      "requires_devtools_audit": true,
+      "requires_devtools_audit": false,
+      "channel_count": 1,
+      "channels": [
+        {
+          "id": "cs_notice",
+          "name": "学院通知公告",
+          "priority": 0.78,
+          "student_value": 0.78,
+          "audit_status": "manual_seeded",
+          "status": "ok",
+          "documents": 4,
+          "candidates": 4,
+          "list_errors": []
+        }
+      ],
       "status": "ok",
       "documents": 4,
-      "last_fetch_at": "2026-05-24T10:33:57.590290+08:00",
+      "last_fetch_at": "2026-05-24T15:55:34.626004+08:00",
       "candidates": 4,
       "filtered_out": 0
     },
@@ -253,12 +616,26 @@
       "source_type": "college",
       "adapter_kind": "njupt_wp",
       "priority": 0.76,
-      "requires_devtools_audit": true,
+      "requires_devtools_audit": false,
+      "channel_count": 1,
+      "channels": [
+        {
+          "id": "scie_notice",
+          "name": "学院通知公告",
+          "priority": 0.76,
+          "student_value": 0.76,
+          "audit_status": "manual_seeded",
+          "status": "ok",
+          "documents": 0,
+          "candidates": 0,
+          "list_errors": []
+        }
+      ],
       "status": "ok",
-      "documents": 4,
-      "last_fetch_at": "2026-05-24T10:33:57.590290+08:00",
-      "candidates": 14,
-      "filtered_out": 10
+      "documents": 0,
+      "last_fetch_at": "2026-05-24T15:55:34.626004+08:00",
+      "candidates": 0,
+      "filtered_out": 0
     },
     {
       "id": "eoe",
@@ -267,12 +644,26 @@
       "source_type": "college",
       "adapter_kind": "njupt_wp",
       "priority": 0.74,
-      "requires_devtools_audit": true,
+      "requires_devtools_audit": false,
+      "channel_count": 1,
+      "channels": [
+        {
+          "id": "eoe_notice",
+          "name": "学院通知公告",
+          "priority": 0.74,
+          "student_value": 0.74,
+          "audit_status": "manual_seeded",
+          "status": "ok",
+          "documents": 0,
+          "candidates": 0,
+          "list_errors": []
+        }
+      ],
       "status": "ok",
-      "documents": 6,
-      "last_fetch_at": "2026-05-24T10:33:57.590290+08:00",
-      "candidates": 14,
-      "filtered_out": 8
+      "documents": 0,
+      "last_fetch_at": "2026-05-24T15:55:34.626004+08:00",
+      "candidates": 0,
+      "filtered_out": 0
     },
     {
       "id": "ic",
@@ -281,12 +672,26 @@
       "source_type": "college",
       "adapter_kind": "njupt_wp",
       "priority": 0.74,
-      "requires_devtools_audit": true,
+      "requires_devtools_audit": false,
+      "channel_count": 1,
+      "channels": [
+        {
+          "id": "ic_notice",
+          "name": "学院通知公告",
+          "priority": 0.74,
+          "student_value": 0.74,
+          "audit_status": "manual_seeded",
+          "status": "ok",
+          "documents": 0,
+          "candidates": 0,
+          "list_errors": []
+        }
+      ],
       "status": "ok",
-      "documents": 5,
-      "last_fetch_at": "2026-05-24T10:33:57.590290+08:00",
-      "candidates": 14,
-      "filtered_out": 9
+      "documents": 0,
+      "last_fetch_at": "2026-05-24T15:55:34.626004+08:00",
+      "candidates": 0,
+      "filtered_out": 0
     },
     {
       "id": "coa",
@@ -295,12 +700,26 @@
       "source_type": "college",
       "adapter_kind": "njupt_wp",
       "priority": 0.72,
-      "requires_devtools_audit": true,
+      "requires_devtools_audit": false,
+      "channel_count": 1,
+      "channels": [
+        {
+          "id": "coa_notice",
+          "name": "学院通知公告",
+          "priority": 0.72,
+          "student_value": 0.72,
+          "audit_status": "manual_seeded",
+          "status": "ok",
+          "documents": 0,
+          "candidates": 0,
+          "list_errors": []
+        }
+      ],
       "status": "ok",
-      "documents": 7,
-      "last_fetch_at": "2026-05-24T10:33:57.590290+08:00",
-      "candidates": 14,
-      "filtered_out": 7
+      "documents": 0,
+      "last_fetch_at": "2026-05-24T15:55:34.626004+08:00",
+      "candidates": 0,
+      "filtered_out": 0
     },
     {
       "id": "ai",
@@ -309,12 +728,26 @@
       "source_type": "college",
       "adapter_kind": "njupt_wp",
       "priority": 0.72,
-      "requires_devtools_audit": true,
+      "requires_devtools_audit": false,
+      "channel_count": 1,
+      "channels": [
+        {
+          "id": "ai_notice",
+          "name": "学院通知公告",
+          "priority": 0.72,
+          "student_value": 0.72,
+          "audit_status": "manual_seeded",
+          "status": "ok",
+          "documents": 0,
+          "candidates": 0,
+          "list_errors": []
+        }
+      ],
       "status": "ok",
-      "documents": 11,
-      "last_fetch_at": "2026-05-24T10:33:57.590290+08:00",
-      "candidates": 14,
-      "filtered_out": 3
+      "documents": 0,
+      "last_fetch_at": "2026-05-24T15:55:34.626004+08:00",
+      "candidates": 0,
+      "filtered_out": 0
     },
     {
       "id": "ciot",
@@ -323,12 +756,26 @@
       "source_type": "college",
       "adapter_kind": "njupt_wp",
       "priority": 0.72,
-      "requires_devtools_audit": true,
+      "requires_devtools_audit": false,
+      "channel_count": 1,
+      "channels": [
+        {
+          "id": "ciot_notice",
+          "name": "学院通知公告",
+          "priority": 0.72,
+          "student_value": 0.72,
+          "audit_status": "manual_seeded",
+          "status": "ok",
+          "documents": 0,
+          "candidates": 0,
+          "list_errors": []
+        }
+      ],
       "status": "ok",
-      "documents": 4,
-      "last_fetch_at": "2026-05-24T10:33:57.590290+08:00",
-      "candidates": 14,
-      "filtered_out": 10
+      "documents": 0,
+      "last_fetch_at": "2026-05-24T15:55:34.626004+08:00",
+      "candidates": 0,
+      "filtered_out": 0
     },
     {
       "id": "lxy",
@@ -337,10 +784,24 @@
       "source_type": "college",
       "adapter_kind": "njupt_wp",
       "priority": 0.68,
-      "requires_devtools_audit": true,
+      "requires_devtools_audit": false,
+      "channel_count": 1,
+      "channels": [
+        {
+          "id": "lxy_notice",
+          "name": "学院通知公告",
+          "priority": 0.68,
+          "student_value": 0.68,
+          "audit_status": "manual_seeded",
+          "status": "ok",
+          "documents": 0,
+          "candidates": 0,
+          "list_errors": []
+        }
+      ],
       "status": "ok",
       "documents": 0,
-      "last_fetch_at": "2026-05-24T10:33:57.590290+08:00",
+      "last_fetch_at": "2026-05-24T15:55:34.626004+08:00",
       "candidates": 0,
       "filtered_out": 0
     },
@@ -351,12 +812,26 @@
       "source_type": "college",
       "adapter_kind": "njupt_wp",
       "priority": 0.68,
-      "requires_devtools_audit": true,
+      "requires_devtools_audit": false,
+      "channel_count": 1,
+      "channels": [
+        {
+          "id": "simp_notice",
+          "name": "学院通知公告",
+          "priority": 0.68,
+          "student_value": 0.68,
+          "audit_status": "manual_seeded",
+          "status": "ok",
+          "documents": 13,
+          "candidates": 36,
+          "list_errors": []
+        }
+      ],
       "status": "ok",
-      "documents": 10,
-      "last_fetch_at": "2026-05-24T10:33:57.590290+08:00",
+      "documents": 11,
+      "last_fetch_at": "2026-05-24T15:55:34.626004+08:00",
       "candidates": 13,
-      "filtered_out": 3
+      "filtered_out": 2
     },
     {
       "id": "bc",
@@ -365,12 +840,26 @@
       "source_type": "college",
       "adapter_kind": "njupt_wp",
       "priority": 0.66,
-      "requires_devtools_audit": true,
+      "requires_devtools_audit": false,
+      "channel_count": 1,
+      "channels": [
+        {
+          "id": "bc_notice",
+          "name": "学院通知公告",
+          "priority": 0.66,
+          "student_value": 0.66,
+          "audit_status": "manual_seeded",
+          "status": "ok",
+          "documents": 14,
+          "candidates": 26,
+          "list_errors": []
+        }
+      ],
       "status": "ok",
-      "documents": 5,
-      "last_fetch_at": "2026-05-24T10:33:57.590290+08:00",
+      "documents": 14,
+      "last_fetch_at": "2026-05-24T15:55:34.626004+08:00",
       "candidates": 14,
-      "filtered_out": 9
+      "filtered_out": 0
     },
     {
       "id": "jjxy",
@@ -379,68 +868,26 @@
       "source_type": "college",
       "adapter_kind": "njupt_wp",
       "priority": 0.66,
-      "requires_devtools_audit": true,
-      "status": "ok",
-      "documents": 7,
-      "last_fetch_at": "2026-05-24T10:33:57.590290+08:00",
-      "candidates": 14,
-      "filtered_out": 7
-    },
-    {
-      "id": "kxjsc",
-      "name": "科学技术处",
-      "domain": "kxjsc.njupt.edu.cn",
-      "source_type": "research_admin",
-      "adapter_kind": "njupt_wp",
-      "priority": 0.54,
-      "requires_devtools_audit": true,
-      "status": "ok",
-      "documents": 2,
-      "last_fetch_at": "2026-05-24T10:33:57.590290+08:00",
-      "candidates": 14,
-      "filtered_out": 12
-    },
-    {
-      "id": "skc",
-      "name": "社会科学处",
-      "domain": "skc.njupt.edu.cn",
-      "source_type": "research_admin",
-      "adapter_kind": "njupt_wp",
-      "priority": 0.52,
-      "requires_devtools_audit": true,
+      "requires_devtools_audit": false,
+      "channel_count": 1,
+      "channels": [
+        {
+          "id": "jjxy_notice",
+          "name": "学院通知公告",
+          "priority": 0.66,
+          "student_value": 0.66,
+          "audit_status": "manual_seeded",
+          "status": "ok",
+          "documents": 0,
+          "candidates": 0,
+          "list_errors": []
+        }
+      ],
       "status": "ok",
       "documents": 0,
-      "last_fetch_at": "2026-05-24T10:33:57.590290+08:00",
-      "candidates": 13,
-      "filtered_out": 13
-    },
-    {
-      "id": "xkb",
-      "name": "学科建设办公室",
-      "domain": "xkb.njupt.edu.cn",
-      "source_type": "research_admin",
-      "adapter_kind": "njupt_wp",
-      "priority": 0.5,
-      "requires_devtools_audit": true,
-      "status": "ok",
-      "documents": 0,
-      "last_fetch_at": "2026-05-24T10:33:57.590290+08:00",
-      "candidates": 10,
-      "filtered_out": 10
-    },
-    {
-      "id": "cxy",
-      "name": "产业合作处",
-      "domain": "cxy.njupt.edu.cn",
-      "source_type": "research_admin",
-      "adapter_kind": "njupt_wp",
-      "priority": 0.52,
-      "requires_devtools_audit": true,
-      "status": "ok",
-      "documents": 0,
-      "last_fetch_at": "2026-05-24T10:33:57.590290+08:00",
-      "candidates": 14,
-      "filtered_out": 14
+      "last_fetch_at": "2026-05-24T15:55:34.626004+08:00",
+      "candidates": 0,
+      "filtered_out": 0
     },
     {
       "id": "github:hicancan/njupt-net",
@@ -449,7 +896,7 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 2,
-      "last_fetch_at": "2026-05-24T10:33:57.590290+08:00",
+      "last_fetch_at": "2026-05-24T15:55:34.626004+08:00",
       "candidates": 2
     },
     {
@@ -459,7 +906,7 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-24T10:33:57.590290+08:00",
+      "last_fetch_at": "2026-05-24T15:55:34.626004+08:00",
       "candidates": 1
     },
     {
@@ -469,7 +916,7 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 5,
-      "last_fetch_at": "2026-05-24T10:33:57.590290+08:00",
+      "last_fetch_at": "2026-05-24T15:55:34.626004+08:00",
       "candidates": 5
     },
     {
@@ -479,7 +926,7 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-24T10:33:57.590290+08:00",
+      "last_fetch_at": "2026-05-24T15:55:34.626004+08:00",
       "candidates": 1
     },
     {
@@ -489,7 +936,7 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-24T10:33:57.590290+08:00",
+      "last_fetch_at": "2026-05-24T15:55:34.626004+08:00",
       "candidates": 1
     },
     {
@@ -499,7 +946,7 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-24T10:33:57.590290+08:00",
+      "last_fetch_at": "2026-05-24T15:55:34.626004+08:00",
       "candidates": 1
     },
     {
@@ -509,7 +956,7 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-24T10:33:57.590290+08:00",
+      "last_fetch_at": "2026-05-24T15:55:34.626004+08:00",
       "candidates": 1
     },
     {
@@ -519,7 +966,7 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-24T10:33:57.590290+08:00",
+      "last_fetch_at": "2026-05-24T15:55:34.626004+08:00",
       "candidates": 1
     },
     {
@@ -529,7 +976,7 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-24T10:33:57.590290+08:00",
+      "last_fetch_at": "2026-05-24T15:55:34.626004+08:00",
       "candidates": 1
     },
     {
@@ -539,7 +986,7 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-24T10:33:57.590290+08:00",
+      "last_fetch_at": "2026-05-24T15:55:34.626004+08:00",
       "candidates": 1
     },
     {
@@ -549,7 +996,7 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 3,
-      "last_fetch_at": "2026-05-24T10:33:57.590290+08:00",
+      "last_fetch_at": "2026-05-24T15:55:34.626004+08:00",
       "candidates": 3
     },
     {
@@ -559,7 +1006,7 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-24T10:33:57.590290+08:00",
+      "last_fetch_at": "2026-05-24T15:55:34.626004+08:00",
       "candidates": 1
     },
     {
@@ -569,7 +1016,7 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-24T10:33:57.590290+08:00",
+      "last_fetch_at": "2026-05-24T15:55:34.626004+08:00",
       "candidates": 1
     },
     {
@@ -579,7 +1026,7 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-24T10:33:57.590290+08:00",
+      "last_fetch_at": "2026-05-24T15:55:34.626004+08:00",
       "candidates": 1
     },
     {
@@ -589,7 +1036,7 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-24T10:33:57.590290+08:00",
+      "last_fetch_at": "2026-05-24T15:55:34.626004+08:00",
       "candidates": 1
     },
     {
@@ -599,7 +1046,7 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-24T10:33:57.590290+08:00",
+      "last_fetch_at": "2026-05-24T15:55:34.626004+08:00",
       "candidates": 1
     },
     {
@@ -609,7 +1056,7 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-24T10:33:57.590290+08:00",
+      "last_fetch_at": "2026-05-24T15:55:34.626004+08:00",
       "candidates": 1
     },
     {
@@ -619,8 +1066,8 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-24T10:33:57.590290+08:00",
-      "candidates": 1
+      "last_fetch_at": "2026-05-24T15:55:34.626004+08:00",
+      "warning": "GitHub fetch failed; reused stale cached documents: 403 Client Error: rate limit exceeded for url: https://api.github.com/repos/kaijy91/NJUPT_NET/contents/README.md?ref=master"
     },
     {
       "id": "github:s235784/NJUPT_AutoLogin",
@@ -629,8 +1076,8 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 2,
-      "last_fetch_at": "2026-05-24T10:33:57.590290+08:00",
-      "candidates": 2
+      "last_fetch_at": "2026-05-24T15:55:34.626004+08:00",
+      "warning": "GitHub fetch failed; reused stale cached documents: 403 Client Error: rate limit exceeded for url: https://api.github.com/repos/s235784/NJUPT_AutoLogin"
     },
     {
       "id": "github:Freedomisgood/NjuptCmcc",
@@ -639,8 +1086,8 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-24T10:33:57.590290+08:00",
-      "candidates": 1
+      "last_fetch_at": "2026-05-24T15:55:34.626004+08:00",
+      "warning": "GitHub fetch failed; reused stale cached documents: 403 Client Error: rate limit exceeded for url: https://api.github.com/repos/Freedomisgood/NjuptCmcc"
     },
     {
       "id": "github:love98ooo/ZhengFangJiaoWuSystemTampermonkeyScript",
@@ -649,8 +1096,8 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-24T10:33:57.590290+08:00",
-      "candidates": 1
+      "last_fetch_at": "2026-05-24T15:55:34.626004+08:00",
+      "warning": "GitHub fetch failed; reused stale cached documents: 403 Client Error: rate limit exceeded for url: https://api.github.com/repos/love98ooo/ZhengFangJiaoWuSystemTampermonkeyScript"
     },
     {
       "id": "github:NJUPT-NAVI/NJUPT-Survival-Guide",
@@ -659,8 +1106,8 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 2,
-      "last_fetch_at": "2026-05-24T10:33:57.590290+08:00",
-      "candidates": 2
+      "last_fetch_at": "2026-05-24T15:55:34.626004+08:00",
+      "warning": "GitHub fetch failed; reused stale cached documents: 403 Client Error: rate limit exceeded for url: https://api.github.com/repos/NJUPT-NAVI/NJUPT-Survival-Guide"
     },
     {
       "id": "github:bmxbmx3/finger_vein_recognition",
@@ -669,8 +1116,8 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-24T10:33:57.590290+08:00",
-      "candidates": 1
+      "last_fetch_at": "2026-05-24T15:55:34.626004+08:00",
+      "warning": "GitHub fetch failed; reused stale cached documents: 403 Client Error: rate limit exceeded for url: https://api.github.com/repos/bmxbmx3/finger_vein_recognition"
     },
     {
       "id": "github:lux-QAQ/NJUPT_Fastlogin",
@@ -679,8 +1126,8 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-24T10:33:57.590290+08:00",
-      "candidates": 1
+      "last_fetch_at": "2026-05-24T15:55:34.626004+08:00",
+      "warning": "GitHub fetch failed; reused stale cached documents: 403 Client Error: rate limit exceeded for url: https://api.github.com/repos/lux-QAQ/NJUPT_Fastlogin"
     },
     {
       "id": "github:NJUPTFreeExams/njuptfreeexams.github.io",
@@ -689,8 +1136,8 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-24T10:33:57.590290+08:00",
-      "candidates": 1
+      "last_fetch_at": "2026-05-24T15:55:34.626004+08:00",
+      "warning": "GitHub fetch failed; reused stale cached documents: 403 Client Error: rate limit exceeded for url: https://api.github.com/repos/NJUPTFreeExams/njuptfreeexams.github.io"
     },
     {
       "id": "github:dhiyu/NJUPT-Bachelor",
@@ -699,8 +1146,8 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-24T10:33:57.590290+08:00",
-      "candidates": 1
+      "last_fetch_at": "2026-05-24T15:55:34.626004+08:00",
+      "warning": "GitHub fetch failed; reused stale cached documents: 403 Client Error: rate limit exceeded for url: https://api.github.com/repos/dhiyu/NJUPT-Bachelor"
     },
     {
       "id": "github:yosunpeng/postgraduate_test_njupt",
@@ -709,8 +1156,8 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-24T10:33:57.590290+08:00",
-      "candidates": 1
+      "last_fetch_at": "2026-05-24T15:55:34.626004+08:00",
+      "warning": "GitHub fetch failed; reused stale cached documents: 403 Client Error: rate limit exceeded for url: https://api.github.com/repos/yosunpeng/postgraduate_test_njupt"
     },
     {
       "id": "github:NJUPTFreeExams/NJUPT-InfoSec-Free-Exams",
@@ -719,8 +1166,8 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-24T10:33:57.590290+08:00",
-      "candidates": 1
+      "last_fetch_at": "2026-05-24T15:55:34.626004+08:00",
+      "warning": "GitHub fetch failed; reused stale cached documents: 403 Client Error: rate limit exceeded for url: https://api.github.com/repos/NJUPTFreeExams/NJUPT-InfoSec-Free-Exams"
     },
     {
       "id": "github:ace-trump-tech/NJUPT-Graduation-thesis",
@@ -729,8 +1176,8 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-24T10:33:57.590290+08:00",
-      "candidates": 1
+      "last_fetch_at": "2026-05-24T15:55:34.626004+08:00",
+      "warning": "GitHub fetch failed; reused stale cached documents: 403 Client Error: rate limit exceeded for url: https://api.github.com/repos/ace-trump-tech/NJUPT-Graduation-thesis"
     },
     {
       "id": "github:Yolumia/NJUPT-NETWORK",
@@ -739,8 +1186,8 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-24T10:33:57.590290+08:00",
-      "candidates": 1
+      "last_fetch_at": "2026-05-24T15:55:34.626004+08:00",
+      "warning": "GitHub fetch failed; reused stale cached documents: 403 Client Error: rate limit exceeded for url: https://api.github.com/repos/Yolumia/NJUPT-NETWORK"
     },
     {
       "id": "github:Moonike1217/NJUPTExamICSBuilder",
@@ -749,8 +1196,8 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-24T10:33:57.590290+08:00",
-      "candidates": 1
+      "last_fetch_at": "2026-05-24T15:55:34.626004+08:00",
+      "warning": "GitHub fetch failed; reused stale cached documents: 403 Client Error: rate limit exceeded for url: https://api.github.com/repos/Moonike1217/NJUPTExamICSBuilder"
     },
     {
       "id": "github:musnows/Njupt-Wifi-Login",
@@ -759,8 +1206,8 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-24T10:33:57.590290+08:00",
-      "candidates": 1
+      "last_fetch_at": "2026-05-24T15:55:34.626004+08:00",
+      "warning": "GitHub fetch failed; reused stale cached documents: 403 Client Error: rate limit exceeded for url: https://api.github.com/repos/musnows/Njupt-Wifi-Login"
     }
   ]
 }

@@ -1,0 +1,52 @@
+{
+  "保研": {
+    "aliases": ["推免", "推荐免试", "免试研究生"],
+    "domains": ["degree", "academic"],
+    "intents": ["apply", "publicity", "check_result"]
+  },
+  "大创": {
+    "aliases": ["大学生创新创业训练计划", "创新创业项目申报", "创新训练项目"],
+    "domains": ["project", "innovation_project"],
+    "intents": ["apply", "submit"]
+  },
+  "奖学金": {
+    "aliases": ["评奖评优", "奖助", "优秀学生奖学金"],
+    "domains": ["scholarship"],
+    "intents": ["apply", "publicity"]
+  },
+  "助学金": {
+    "aliases": ["困难认定", "资助", "贫困补助"],
+    "domains": ["subsidy", "scholarship"],
+    "intents": ["apply", "submit"]
+  },
+  "找工作": {
+    "aliases": ["就业", "宣讲会", "招聘会", "双选会", "实习"],
+    "domains": ["employment"],
+    "intents": ["attend", "register"]
+  },
+  "停电": {
+    "aliases": ["停水停电", "后勤通知", "电力检修"],
+    "domains": ["logistics"],
+    "intents": ["alert", "read"]
+  },
+  "校园网": {
+    "aliases": ["VPN", "统一身份认证", "邮箱", "信息化"],
+    "domains": ["campus_network"],
+    "intents": ["read", "download"]
+  },
+  "四六级": {
+    "aliases": ["CET", "英语四级", "英语六级", "大学英语四六级"],
+    "domains": ["exam"],
+    "intents": ["schedule", "register", "check_result"]
+  },
+  "补考": {
+    "aliases": ["重修考试", "缓考", "补缓考"],
+    "domains": ["exam", "course"],
+    "intents": ["schedule", "check_result"]
+  },
+  "宣讲会": {
+    "aliases": ["招聘宣讲", "校园招聘", "双选会"],
+    "domains": ["employment"],
+    "intents": ["attend", "register"]
+  }
+}

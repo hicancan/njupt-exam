@@ -15,8 +15,9 @@ from config.indexer_config import (
     REQUEST_TIMEOUT,
 )
 from models.semantic_model import SEARCH_DOMAINS, SEARCH_INTENTS, normalize_domain, normalize_intent
+from core.llm_task_frame import task_frame_prompt_contract
 
-LLM_SCHEMA_VERSION = "llm-v5"
+LLM_SCHEMA_VERSION = "hytask-taskframe-v1"
 GEMINI_MODEL_NAME = os.environ.get("GEMINI_MODEL", "gemini-3.1-flash-lite")
 LLM_MODEL_NAME = DEEPSEEK_MODEL
 
@@ -33,12 +34,13 @@ _current_gemini_key_index = 0
 SearchCategory = Literal["考试", "选课", "竞赛", "奖助", "就业", "讲座", "生活", "研究生", "学院", "项目", "资料", "公告"]
 SearchDomain = Literal[
     "academic", "exam", "course", "degree", "scholarship", "employment", "competition",
-    "project", "international", "life", "library", "security", "logistics", "lecture",
+    "project", "innovation_project", "international", "life", "library", "security", "logistics",
+    "campus_network", "subsidy", "medical_insurance", "archive", "lecture",
     "research", "resource", "news", "policy"
 ]
 SearchIntent = Literal[
     "apply", "register", "submit", "attend", "check_result", "publicity", "download",
-    "read", "schedule", "alert"
+    "read", "schedule", "alert", "pay", "contact", "export"
 ]
 
 
@@ -68,6 +70,7 @@ class LLMResult(BaseModel):
     sensitive: bool = False
     sensitive_types: list[str] = Field(default_factory=list)
     attachment_roles: list[AttachmentRole] = Field(default_factory=list)
+    task_frames: list[dict[str, Any]] = Field(default_factory=list)
     risk_flags: list[str] = Field(default_factory=list)
     evidence: list[str] = Field(default_factory=list)
     confidence: float = Field(default=0.5, ge=0, le=1)
@@ -112,6 +115,15 @@ class LLMResult(BaseModel):
                 if text:
                     roles.append({"role": text})
             return roles
+        return []
+
+    @field_validator("task_frames", mode="before")
+    @classmethod
+    def _coerce_task_frames(cls, value: Any) -> list[dict[str, Any]]:
+        if value is None:
+            return []
+        if isinstance(value, list):
+            return [item for item in value if isinstance(item, dict)]
         return []
 
     @field_validator("domain", mode="before")
@@ -227,12 +239,17 @@ def _build_batch_prompt(documents: list[dict[str, Any]], schema_version: str) ->
     for document in documents:
         compact_documents.append({
             "id": document["id"],
+            "doc_id": document.get("doc_id") or document.get("id"),
+            "source_id": document.get("source_id", ""),
+            "channel_id": document.get("channel_id", ""),
             "title": document.get("title", ""),
             "source": document.get("source", ""),
+            "channel": document.get("channel", ""),
             "source_domain": document.get("source_domain", ""),
             "published_at": document.get("published_at"),
             "content": str(document.get("content", ""))[:4000],
             "attachments": document.get("attachments", [])[:8],
+            "rule_guard": document.get("rule_guard", {}),
         })
 
     return f"""
@@ -247,6 +264,10 @@ def _build_batch_prompt(documents: list[dict[str, Any]], schema_version: str) ->
 6. 分类只能使用给定枚举。竞赛只用于真实比赛/赛事/获奖/校赛；海外访学、创业基金、科研训练、交流项目优先归“项目”；奖助只用于奖学金、助学金、资助、评优，不要因为普通“公示”就归奖助。
 7. 若含姓名、学号、手机号、身份证、名单、考生名单、获奖名单、参赛队员等个人信息风险，sensitive=true 并说明 sensitive_types。
 8. domain 和 intent 必须从给定英文枚举中选择；evidence 必须摘自原文，不得编造。
+9. Rule Guard 优先于 LLM。若 rule_guard.allow_llm=false 或 restricted/sensitive/low_evidence=true，不得生成具体 task_frames。
+10. 访问受限页面 summary 只能表达访问受限，不得推断正文任务；敏感页面不得展开敏感正文。
+
+{task_frame_prompt_contract()}
 
 Schema 版本: {schema_version}
 category 枚举: 考试|选课|竞赛|奖助|就业|讲座|生活|研究生|学院|项目|资料|公告
@@ -274,6 +295,7 @@ intent 枚举: {'|'.join(SEARCH_INTENTS)}
   "sensitive": false,
   "sensitive_types": [],
   "attachment_roles": [],
+  "task_frames": [],
   "risk_flags": [],
   "evidence": ["原文中支撑分类、截止时间或行动事项的短句"],
   "confidence": 0.86,

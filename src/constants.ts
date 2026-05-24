@@ -10,7 +10,10 @@ export const APP_CONFIG = {
         EXAMS: 'data/all_exams.json',
         SUMMARY: 'data/data_summary.json',
         SEARCH_INDEX: 'index/documents.json',
-        SEARCH_MANIFEST: 'index/manifest.json'
+        SEARCH_MANIFEST: 'index/manifest.json',
+        HYBRID_INDEX: 'index/hybrid_index.json',
+        QUERY_ALIASES: 'index/query_aliases.json',
+        ONTOLOGY: 'index/ontology.json'
     },
     UPDATE_CHANNEL: 'search-data-update-channel',
     START_TIME_DEFAULT: '2025-12-15T00:00:00',

@@ -17,7 +17,7 @@ import { ResultsView } from '@/views/ResultsView';
 
 function App() {
     const { exams: allExams, loading: examLoading, error: examError, sourceUrl, sourceTitle, generatedAt, totalRecords } = useExamData();
-    const { documents: noticeDocuments, loading: searchLoading, error: searchError } = useSearchIndex();
+    const { documents: noticeDocuments, hybridIndex, queryAliases, loading: searchLoading, error: searchError } = useSearchIndex();
     const { newDataAvailable, reloadToUpdate } = useDataUpdateNotifier();
 
     const { classParam, qParam, navigate } = useUrlState();
@@ -30,7 +30,7 @@ function App() {
     const searchQuery = initialQuery;
     const manualSelection = classParam;
 
-    const { rankedResults, learningResources } = useSearchEngine(noticeDocuments, allExams, qParam || '');
+    const { rankedResults, learningResources } = useSearchEngine(noticeDocuments, allExams, qParam || '', hybridIndex, queryAliases);
     const classSearchResult = useClassSearch(allExams, initialQuery, manualSelection);
     const currentClass = classSearchResult.mode === 'DETAIL' ? classSearchResult.classes[0] || null : null;
     const { selectedIds, toggleExamSelection } = useSelectedExamIds(currentClass, classSearchResult.exams);
@@ -162,6 +162,7 @@ function App() {
                         </a>
                     </div>
                     <div className="flex flex-wrap items-center gap-3 text-xs sm:text-sm">
+                        <span>本项目为非官方工具，请以官网原文为准。</span>
                         <UptimeDisplay />
                     </div>
                 </div>

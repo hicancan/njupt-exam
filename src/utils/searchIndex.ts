@@ -28,11 +28,16 @@ const DOMAIN_LABELS: Record<SearchDomain, string> = {
     employment: '就业实习',
     competition: '竞赛活动',
     project: '项目机会',
+    innovation_project: '大创项目',
     international: '国际交流',
     life: '校园生活',
     library: '图书馆',
     security: '安全保卫',
     logistics: '后勤服务',
+    campus_network: '校园网络',
+    subsidy: '资助补助',
+    medical_insurance: '医保体检',
+    archive: '档案服务',
     lecture: '讲座活动',
     research: '科研事务',
     resource: '学习资料',
@@ -50,7 +55,10 @@ const INTENT_LABELS: Record<SearchIntent, string> = {
     download: '下载',
     read: '阅读',
     schedule: '安排',
-    alert: '提醒'
+    alert: '提醒',
+    pay: '缴费',
+    contact: '联系',
+    export: '导出'
 };
 
 const SOURCE_TYPE_LABELS: Record<SearchSourceType, string> = {
@@ -141,12 +149,69 @@ const dateSortValue = (dateLike: string | null | undefined): number => {
     return Number.isNaN(date.getTime()) ? 0 : date.getTime();
 };
 
-const scoreTextMatch = (document: SearchDocument, query: string): number => {
-    const tokens = tokenize(query);
+const overlapScore = (query: string, text: string): number => {
+    const queryTokens = new Set(tokenize(query).map(normalize).filter(Boolean));
+    if (queryTokens.size === 0) return 0;
+    const candidate = normalize(text);
+    let hits = 0;
+    for (const token of queryTokens) {
+        if (candidate.includes(token)) hits += 1;
+    }
+    return hits / queryTokens.size;
+};
+
+const scoreHybridTerms = (terms: Record<string, number>, query: string): number => {
+    const tokens = tokenize(query).map(normalize).filter(Boolean);
+    if (tokens.length === 0) return 0;
+    let score = 0;
+    for (const token of tokens) {
+        score += Number(terms[token] || 0);
+    }
+    return Math.min(1, score / Math.max(12, tokens.length * 3));
+};
+
+const scoreHybridFields = (fields: Record<string, string>, query: string): number => {
+    const weights: Record<string, number> = {
+        title: 4,
+        tags: 3,
+        'task.what': 3,
+        'task.action.summary': 2.8,
+        evidence: 2.5,
+        'materials.name': 2,
+        source: 1.5,
+        content: 1,
+    };
+    let score = 0;
+    let maxScore = 0;
+    for (const [field, value] of Object.entries(fields)) {
+        const weight = weights[field] ?? 1;
+        maxScore += weight;
+        score += weight * overlapScore(query, String(value));
+    }
+    return maxScore > 0 ? Math.min(1, score / maxScore) : 0;
+};
+
+const aliasTermsForQuery = (query: string, queryAliases: Record<string, unknown>): string[] => {
+    const normalizedQuery = normalize(query);
+    const terms: string[] = [];
+    for (const [key, rawPayload] of Object.entries(queryAliases)) {
+        const payload = rawPayload as { aliases?: unknown[] };
+        const aliases = Array.isArray(payload.aliases) ? payload.aliases.map(String) : [];
+        const candidates = [key, ...aliases];
+        if (candidates.some(candidate => normalize(candidate) && normalizedQuery.includes(normalize(candidate)))) {
+            terms.push(...aliases);
+        }
+    }
+    return Array.from(new Set(terms.filter(Boolean)));
+};
+
+const scoreTextMatch = (document: SearchDocument, query: string, expandedTerms: string[] = []): number => {
+    const tokens = tokenize([query, ...expandedTerms].join(' '));
     if (tokens.length === 0) return 0;
 
     const title = normalize(document.title);
     const content = normalize(document.content);
+    const channel = normalize(document.channel);
     const source = normalize(document.source);
     const domain = normalize(DOMAIN_LABELS[document.domain] || document.domain);
     const intent = normalize(INTENT_LABELS[document.intent] || document.intent);
@@ -154,6 +219,14 @@ const scoreTextMatch = (document: SearchDocument, query: string): number => {
     const tags = normalize(document.tags.join(' '));
     const evidence = normalize((document.evidence || []).join(' '));
     const className = normalize(document.class_name || '');
+    const taskText = normalize(document.task_frames.map(frame => [
+        frame.what,
+        frame.action.summary,
+        frame.action.verb,
+        frame.time.deadline,
+        ...frame.materials.map(material => material.name),
+        ...frame.evidence.map(item => item.text)
+    ].filter(Boolean).join(' ')).join(' '));
 
     let score = 0;
     const normalizedQuery = normalize(query);
@@ -170,8 +243,10 @@ const scoreTextMatch = (document: SearchDocument, query: string): number => {
         if (domain.includes(normalizedToken)) score += 4;
         if (intent.includes(normalizedToken)) score += 3;
         if (sourceType.includes(normalizedToken)) score += 2;
+        if (channel.includes(normalizedToken)) score += 3;
         if (source.includes(normalizedToken)) score += 3;
         if (evidence.includes(normalizedToken)) score += 2;
+        if (taskText.includes(normalizedToken)) score += 5;
         if (content.includes(normalizedToken)) score += 1.5;
         if (className.includes(normalizedToken)) score += 8;
     }
@@ -182,7 +257,8 @@ const scoreTextMatch = (document: SearchDocument, query: string): number => {
 const buildScoreReason = (document: SearchDocument): string => {
     const parts = [
         DOMAIN_LABELS[document.domain] || document.domain,
-        INTENT_LABELS[document.intent] || document.intent
+        INTENT_LABELS[document.intent] || document.intent,
+        document.channel
     ];
 
     if (document.attachments.length > 0) {
@@ -203,7 +279,10 @@ const intentWeight = (intent: SearchIntent): number => {
         alert: 1.08,
         attend: 1.04,
         download: 0.98,
-        read: 0.9
+        read: 0.9,
+        pay: 1.05,
+        contact: 0.96,
+        export: 0.98
     };
     return weights[intent] ?? 1;
 };
@@ -292,6 +371,9 @@ export const buildExamDocuments = (exams: Exam[]): SearchDocument[] => {
         return {
             id: `exam-${exam.id}`,
             kind: 'exam',
+            source_id: 'exam_vertical',
+            channel_id: 'exam_schedule',
+            channel: '考试安排',
             title,
             url: `?class=${encodeURIComponent(exam.class_name)}`,
             source: '考试垂直频道',
@@ -324,6 +406,39 @@ export const buildExamDocuments = (exams: Exam[]): SearchDocument[] => {
             source_weight: 1,
             tags: ['考试', '期末', exam.class_name, exam.course_name, exam.campus || '', exam.major || ''].filter(Boolean),
             hash: exam.id,
+            canonical: {
+                doc_id: `exam-${exam.id}`,
+                canonical_url: `?class=${encodeURIComponent(exam.class_name)}`,
+                content_hash: exam.id,
+                dedupe_key: `exam-${exam.id}`
+            },
+            rule_guard: {
+                restricted: false,
+                sensitive: false,
+                low_evidence: false,
+                duplicate: false,
+                expired: false,
+                evergreen: false,
+                risk_flags: [],
+                allow_llm: false,
+                allow_full_text_display: true,
+                review_required: false
+            },
+            task_frames: [{
+                task_id: `task-exam-${exam.id}`,
+                doc_id: `exam-${exam.id}`,
+                task_type: 'schedule',
+                who: { audience: ['本科生'], college: [], grade: exam.grade ? [exam.grade] : [], major: exam.major ? [exam.major] : [], class_name: [exam.class_name] },
+                what: `${exam.course_name} 考试安排`,
+                action: { required: false, verb: '查看', object: '考试时间地点', summary: `${exam.raw_time || '时间待确认'} · ${exam.location || '地点待确认'}` },
+                time: { published_at: exam.date || exam.start_timestamp, deadline: exam.start_timestamp, lifecycle: 'active', urgency_days: null },
+                materials: [],
+                location: { place: exam.location || null, online: null, contact: exam.teacher || null },
+                source: { source_id: 'exam_vertical', channel_id: 'exam_schedule', authority: 1, official: true },
+                evidence: [{ field: 'schedule', text: exam.raw_time || exam.location || title }],
+                risk: { sensitive: false, restricted: false, low_evidence: false, review_required: false },
+                confidence: exam.parse_error ? 0.6 : 0.98
+            }],
             class_name: exam.class_name,
             exam_id: exam.id
         };
@@ -332,7 +447,9 @@ export const buildExamDocuments = (exams: Exam[]): SearchDocument[] => {
 
 export const rankSearchDocuments = (
     documents: SearchDocument[],
-    query: string
+    query: string,
+    hybridIndex: Record<string, unknown> | null = null,
+    queryAliases: Record<string, unknown> = {}
 ): RankedSearchDocument[] => {
     const trimmed = query.trim();
 
@@ -354,11 +471,36 @@ export const rankSearchDocuments = (
             }));
     }
 
+    const expandedTerms = aliasTermsForQuery(trimmed, queryAliases);
+    const hybridDocuments = (hybridIndex?.documents || {}) as Record<string, { terms?: Record<string, number>, fields?: Record<string, string> }>;
+
     return documents
         .map(document => {
-            const textScore = scoreTextMatch(document, trimmed);
+            const textScore = scoreTextMatch(document, trimmed, expandedTerms);
+            const hybridPayload = hybridDocuments[document.id];
+            const bm25Proxy = hybridPayload?.terms ? scoreHybridTerms(hybridPayload.terms, [trimmed, ...expandedTerms].join(' ')) : textScore / 24;
+            const fieldScore = hybridPayload?.fields ? scoreHybridFields(hybridPayload.fields, [trimmed, ...expandedTerms].join(' ')) : Math.min(1, textScore / 24);
+            const tagScore = overlapScore([trimmed, ...expandedTerms].join(' '), document.tags.join(' '));
+            const taskFrameScore = document.task_frames.length > 0 ? overlapScore(
+                [trimmed, ...expandedTerms].join(' '),
+                document.task_frames.map(frame => `${frame.what} ${frame.action.summary || ''} ${frame.evidence.map(item => item.text).join(' ')}`).join(' ')
+            ) : 0;
             const sourceWeight = document.source_weight ?? 0.8;
-            const weightedScore = textScore *
+            const utilityScore =
+                (0.42 * document.student_score) +
+                (0.3 * document.importance_score) +
+                (0.2 * sourceWeight) +
+                (document.task_frames.length > 0 ? 0.08 : 0);
+            const riskPenalty = (document.sensitive ? 0.5 : 0) + (document.review_required ? 0.25 : 0) + (document.status === 'restricted' ? 0.5 : 0);
+            const hybridScore =
+                0.26 * Math.min(1, bm25Proxy) +
+                0.22 * fieldScore +
+                0.15 * tagScore +
+                0.1 * Math.max(Number(document.domain.includes(trimmed) || document.intent.includes(trimmed)), overlapScore(trimmed, document.source)) +
+                0.12 * Math.max(taskFrameScore, overlapScore(expandedTerms.join(' '), document.content)) +
+                0.2 * Math.min(1, utilityScore) -
+                0.05 * Math.min(1, riskPenalty);
+            const weightedScore = (textScore + hybridScore * 32) *
                 (0.55 + document.student_score * 0.45) *
                 (0.72 + document.freshness_score * 0.28) *
                 (0.7 + document.importance_score * 0.3) *
@@ -372,7 +514,15 @@ export const rankSearchDocuments = (
             return {
                 ...document,
                 score: Number(weightedScore.toFixed(4)),
-                score_reason: buildScoreReason(document)
+                score_reason: buildScoreReason(document),
+                score_components: {
+                    bm25: Number(Math.min(1, bm25Proxy).toFixed(4)),
+                    field: Number(fieldScore.toFixed(4)),
+                    tag: Number(tagScore.toFixed(4)),
+                    task_frame: Number(taskFrameScore.toFixed(4)),
+                    utility: Number(Math.min(1, utilityScore).toFixed(4)),
+                    risk_penalty: Number(Math.min(1, riskPenalty).toFixed(4))
+                }
             };
         })
         .filter(document => document.score > 0)
@@ -440,6 +590,9 @@ export const getLearningResources = (query: string): SearchDocument[] => {
         {
             id: 'resource-exam-review',
             kind: 'resource',
+            source_id: 'learning_resource',
+            channel_id: 'learning_resource_video',
+            channel: '学习资源',
             title: '课程期末复习与习题讲解入口',
             url: 'https://space.bilibili.com/1144561698',
             source: 'hicancan 学习资源',
@@ -471,7 +624,40 @@ export const getLearningResources = (query: string): SearchDocument[] => {
             importance_score: 0.74,
             source_weight: 0.68,
             tags: ['复习', '习题', '视频', '课程资料'],
-            hash: 'resource-exam-review'
+            hash: 'resource-exam-review',
+            canonical: {
+                doc_id: 'resource-exam-review',
+                canonical_url: 'https://space.bilibili.com/1144561698',
+                content_hash: 'resource-exam-review',
+                dedupe_key: 'resource-exam-review'
+            },
+            rule_guard: {
+                restricted: false,
+                sensitive: false,
+                low_evidence: false,
+                duplicate: false,
+                expired: false,
+                evergreen: true,
+                risk_flags: ['evergreen'],
+                allow_llm: false,
+                allow_full_text_display: true,
+                review_required: false
+            },
+            task_frames: [{
+                task_id: 'task-resource-exam-review',
+                doc_id: 'resource-exam-review',
+                task_type: 'download',
+                who: { audience: ['本科生'], college: [], grade: [], major: [], class_name: [] },
+                what: '课程期末复习与习题讲解',
+                action: { required: false, verb: '查看', object: '复习资源', summary: '按课程名匹配复习与习题讲解资源。' },
+                time: { published_at: null, deadline: null, lifecycle: 'evergreen', urgency_days: null },
+                materials: [],
+                location: { place: null, online: 'https://space.bilibili.com/1144561698', contact: null },
+                source: { source_id: 'learning_resource', channel_id: 'learning_resource_video', authority: 0.68, official: false },
+                evidence: [{ field: 'materials', text: '高数 C语言 数据结构 电路 物理 期末 复习 习题 讲解 视频' }],
+                risk: { sensitive: false, restricted: false, low_evidence: false, review_required: false },
+                confidence: 0.72
+            }]
         }
     ];
 

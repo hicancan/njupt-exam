@@ -17,11 +17,11 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 from config.indexer_config import (
     BASE_DIR, PUBLIC_DIR, INDEX_DIR, DOCUMENTS_PATH, MANIFEST_PATH, GITHUB_SOURCE_CONFIG_PATH,
-    LLM_CACHE_PATH,
+    LLM_CACHE_PATH, QUERY_ALIASES_PATH, ONTOLOGY_PATH, RANKING_WEIGHTS_PATH, SOURCE_CHANNEL_CONFIG_PATH,
     BEIJING_TZ, HEADERS, MAX_DOCS_PER_SOURCE, DETAIL_FETCH_LIMIT_PER_SOURCE, REQUEST_TIMEOUT,
     MIN_STUDENT_SCORE, GITHUB_TOKEN_ENV, GITHUB_API_BASE, GITHUB_FILE_SIZE_LIMIT_BYTES,
     NEGATIVE_KEYWORDS, SourceConfig, GitHubSourceConfig, SOURCES,
-    JOB_API_BASE, JOB_STATION_CODE, CATEGORY_KEYWORDS,
+    ChannelConfig, JOB_API_BASE, JOB_STATION_CODE, CATEGORY_KEYWORDS,
     NAV_TITLES, STATIC_EXTENSIONS, ATTACHMENT_EXTENSIONS, POSITIVE_KEYWORDS
 )
 from core.llm_scorer import (
@@ -66,9 +66,14 @@ from core.heuristics import (
     detect_sensitive_info, is_low_evidence_content, metadata_only_summary
 )
 from models.semantic_model import (
-    derive_legacy_category, extract_evidence, infer_domain, infer_intent, infer_lifecycle,
+    derive_display_category, extract_evidence, infer_domain, infer_intent, infer_lifecycle,
     normalize_domain, normalize_intent, normalize_source_type
 )
+from models.canonical_document import RawDocument, canonicalize_raw_document
+from models.hybrid_index import build_hybrid_index
+from models.source_graph import load_source_channel_graph
+from core.rule_guard import evaluate_rule_guard, restricted_summary
+from core.task_extractor import extract_task_frames
 
 SOURCE_PRIORITY = {
     "本科生院 / 教务处": 1.0,
@@ -82,6 +87,19 @@ SOURCE_PRIORITY = {
     "保卫处": 0.72,
     "后勤管理处": 0.72,
 }
+
+TASK_FRAMES_PATH = os.path.join(INDEX_DIR, "task_frames.json")
+HYBRID_INDEX_PATH = os.path.join(INDEX_DIR, "hybrid_index.json")
+PUBLIC_QUERY_ALIASES_PATH = os.path.join(INDEX_DIR, "query_aliases.json")
+PUBLIC_ONTOLOGY_PATH = os.path.join(INDEX_DIR, "ontology.json")
+
+
+def read_json_file(path: str, fallback: Any) -> Any:
+    try:
+        with open(path, "r", encoding="utf-8") as handle:
+            return json.load(handle)
+    except Exception:
+        return fallback
 
 def load_document_cache() -> None:
     global _DOC_CACHE
@@ -411,7 +429,7 @@ def derive_semantic_fields(
     if llm_result:
         domain = normalize_domain(llm_result.get("domain"), fallback_domain)
         intent = normalize_intent(llm_result.get("intent"), fallback_intent)
-        category = derive_legacy_category(domain, intent, str(llm_result.get("category") or rule_category))
+        category = derive_display_category(domain, intent, str(llm_result.get("category") or rule_category))
         llm_relevance = float(llm_result.get("student_relevance", 0.5))
         if llm_result.get("is_student_facing", True):
             student_score = clamp01(0.65 * llm_relevance + 0.35 * rule_student_score)
@@ -462,7 +480,7 @@ def derive_semantic_fields(
         review_required = False
         metadata = llm_metadata(False)
 
-    category = derive_legacy_category(domain, intent, category)
+    category = derive_display_category(domain, intent, category)
     attachments = enrich_attachment_metadata(attachments, attachment_roles)
     regex_sensitive, regex_sensitive_types = detect_sensitive_info(scoring_text, attachments)
     sensitive = sensitive or regex_sensitive
@@ -522,6 +540,7 @@ def derive_semantic_fields(
 
 def build_restricted_document(
     source: SourceConfig,
+    channel: ChannelConfig,
     title: str,
     url: str,
     published_at: str | None,
@@ -539,6 +558,9 @@ def build_restricted_document(
         "id": f"{source.id}-{digest}",
         "kind": "notice",
         "status": "restricted",
+        "source_id": source.id,
+        "channel_id": channel.id,
+        "channel": channel.name,
         "title": title,
         "url": url,
         "source": source.name,
@@ -563,7 +585,7 @@ def build_restricted_document(
         "audience": list(source.audience),
         "published_at": published_at,
         "content": title,
-        "summary": "该页面正文仅校内 IP 或登录后可访问，当前索引只保留标题和来源，请点击原文查看。",
+        "summary": restricted_summary(),
         "attachments": [],
         "student_score": student_score,
         "freshness_score": calculate_freshness(published_at, now),
@@ -574,6 +596,25 @@ def build_restricted_document(
         "cache_key": llm_cache_key(source.id, url, content, []),
         "llm_schema_version": active_llm_schema_version(),
         "llm": llm_metadata(False, review_required=True),
+        "canonical": {
+            "doc_id": f"{source.id}-{digest}",
+            "canonical_url": normalize_url(url),
+            "content_hash": document_hash(title),
+            "dedupe_key": document_hash(source.id, channel.id, title),
+        },
+        "rule_guard": {
+            "restricted": True,
+            "sensitive": False,
+            "low_evidence": False,
+            "duplicate": False,
+            "expired": False,
+            "evergreen": False,
+            "risk_flags": ["restricted_content"],
+            "allow_llm": False,
+            "allow_full_text_display": False,
+            "review_required": True,
+        },
+        "task_frames": [],
     }
 
 
@@ -678,18 +719,30 @@ def store_llm_cache_result(entry: dict[str, Any], result: dict[str, Any], now: d
 
 
 def llm_payload_from_entry(entry: dict[str, Any]) -> dict[str, Any]:
+    guard = entry.get("rule_guard") if isinstance(entry.get("rule_guard"), dict) else {}
+    content = entry.get("content", "")
+    if not guard.get("allow_full_text_display", True):
+        content = " ".join([str(entry.get("title", "")), *[str(item.get("name", "")) for item in entry.get("attachments", [])]])
     return {
         "id": str(entry["cache_key"]),
+        "doc_id": str(entry.get("id", "")),
+        "source_id": entry.get("source_id", ""),
+        "channel_id": entry.get("channel_id", ""),
         "title": entry.get("title", ""),
         "source": entry.get("source", ""),
+        "channel": entry.get("channel", ""),
         "source_domain": entry.get("source_domain", ""),
         "published_at": entry.get("published_at"),
-        "content": entry.get("content", ""),
+        "content": content,
         "attachments": entry.get("attachments", []),
+        "rule_guard": guard,
     }
 
 
 def should_skip_llm_entry(entry: dict[str, Any]) -> bool:
+    guard = entry.get("rule_guard") if isinstance(entry.get("rule_guard"), dict) else {}
+    if guard and not guard.get("allow_llm", True):
+        return True
     if str(entry.get("source_type")) in {"github_resource", "job_platform"}:
         return False
     content = str(entry.get("content", ""))
@@ -801,9 +854,23 @@ def build_search_document_from_prepared(
     if entry.get("lifecycle_kind") == "resource":
         lifecycle = infer_lifecycle(entry.get("published_at"), semantic["deadline"], now, "resource")
 
-    return {
+    guard = entry.get("rule_guard") if isinstance(entry.get("rule_guard"), dict) else {}
+    if guard:
+        semantic["sensitive"] = bool(semantic["sensitive"] or guard.get("sensitive"))
+        semantic["sensitive_types"] = sorted(set(semantic["sensitive_types"]).union(guard.get("sensitive_types", [])))
+        semantic["review_required"] = bool(semantic["review_required"] or guard.get("review_required"))
+        semantic["risk_flags"] = sorted(set(semantic["risk_flags"]).union(guard.get("risk_flags", [])))
+        if not guard.get("allow_full_text_display", True):
+            semantic["content"] = " ".join([str(entry.get("title", "")), *[str(item.get("name", "")) for item in semantic["attachments"]]])
+            if guard.get("restricted"):
+                semantic["summary"] = restricted_summary()
+
+    document = {
         "id": entry["id"],
         "kind": entry["kind"],
+        "source_id": entry.get("source_id", ""),
+        "channel_id": entry.get("channel_id", ""),
+        "channel": entry.get("channel", ""),
         "title": entry["title"],
         "url": entry["url"],
         "source": entry["source"],
@@ -839,11 +906,25 @@ def build_search_document_from_prepared(
         "cache_key": entry["cache_key"],
         "llm_schema_version": active_llm_schema_version(),
         "llm": semantic["llm"],
+        "canonical": entry.get("canonical", {}),
+        "rule_guard": guard or evaluate_rule_guard(
+            title=str(entry.get("title", "")),
+            content=str(entry.get("content", "")),
+            attachments=list(semantic.get("attachments", [])),
+            published_at=entry.get("published_at"),
+            lifecycle=lifecycle,
+            domain=semantic["domain"],
+            intent=semantic["intent"],
+            source_type=entry.get("source_type"),
+        ),
     }
+    document["task_frames"] = extract_task_frames(document, llm_result=llm_result, rule_guard=document["rule_guard"])
+    return document
 
 
 def prepare_notice_candidate(
     source: SourceConfig,
+    channel: ChannelConfig,
     candidate: dict[str, str | None],
     now: datetime,
 ) -> dict[str, Any] | None:
@@ -875,7 +956,7 @@ def prepare_notice_candidate(
         return None
 
     if is_restricted_content(content):
-        return {"ready_document": build_restricted_document(source, title, url, published_at, content, now)}
+        return {"ready_document": build_restricted_document(source, channel, title, url, published_at, content, now)}
 
     digest = document_hash(title, url, content, attachments)
     cache_key = llm_cache_key(source.id, url, content, attachments)
@@ -883,10 +964,37 @@ def prepare_notice_candidate(
     if cache_is_current(cached):
         return {"ready_document": cached_with_freshness(cached, published_at, now)}
 
+    raw = RawDocument(
+        raw_id=f"{source.id}-{digest}",
+        source_id=source.id,
+        channel_id=channel.id,
+        url=url,
+        title=title,
+        raw_text=content,
+        fetched_at=now.isoformat(),
+        http_status=200,
+        published_at=published_at,
+        attachments=attachments,
+    )
+    canonical = canonicalize_raw_document(raw, base_url=source.base_url)
+    provisional_domain = infer_domain(f"{title} {content}", infer_category(f"{title} {content}"), source.source_type)
+    provisional_intent = infer_intent(f"{title} {content}", False, len(attachments))
+    rule_guard = evaluate_rule_guard(
+        title=title,
+        content=content,
+        attachments=attachments,
+        published_at=published_at,
+        domain=provisional_domain,
+        intent=provisional_intent,
+        source_type=source.source_type,
+    )
+
     return {
         "id": f"{source.id}-{digest}",
         "kind": "notice",
         "source_id": source.id,
+        "channel_id": channel.id,
+        "channel": channel.name,
         "title": title,
         "url": url,
         "source": source.name,
@@ -897,20 +1005,24 @@ def prepare_notice_candidate(
         "content": content,
         "attachments": attachments,
         "default_category": infer_category(f"{title} {content}"),
-        "source_weight": source.source_weight,
+        "source_weight": max(source.source_weight, channel.priority, channel.student_value),
+        "channel_priority": channel.priority,
+        "channel_student_value": channel.student_value,
         "hash": digest,
         "cache_key": cache_key,
         "lifecycle_kind": "notice",
+        "canonical": canonical.model_dump(),
+        "rule_guard": rule_guard,
     }
 
 
-def collect_candidates(source: SourceConfig, now: datetime) -> tuple[list[dict[str, str | None]], list[str]]:
+def collect_candidates(source: SourceConfig, channel: ChannelConfig, now: datetime) -> tuple[list[dict[str, str | None]], list[str]]:
     candidates: list[dict[str, str | None]] = []
     seen: set[str] = set()
     list_errors: list[str] = []
-    pending = list(source.list_urls)
+    pending = list(channel.list_urls or source.list_urls)
     visited_list_urls: set[str] = set()
-    max_list_pages = max(1, len(source.list_urls) * source.max_pages)
+    max_list_pages = max(1, len(pending) * max(source.max_pages, channel.crawl_depth))
 
     while pending and len(visited_list_urls) < max_list_pages:
         list_url = pending.pop(0)
@@ -950,6 +1062,10 @@ def collect_candidates(source: SourceConfig, now: datetime) -> tuple[list[dict[s
             parent_text = clean_text(anchor.parent.get_text(" ", strip=True)) if anchor.parent else title
             if not looks_like_notice_link(title, parent_text, absolute_url, now):
                 continue
+            channel_text = f"{title} {parent_text}"
+            if any(keyword and keyword in channel_text for keyword in channel.negative_keywords):
+                if not any(keyword and keyword in channel_text for keyword in channel.positive_keywords):
+                    continue
 
             seen.add(absolute_url)
             date_text = " ".join([title, parent_text, absolute_url])
@@ -974,6 +1090,7 @@ def collect_candidates(source: SourceConfig, now: datetime) -> tuple[list[dict[s
 
 def prepare_job_entry(
     source: SourceConfig,
+    channel: ChannelConfig,
     external_id: str,
     title: str,
     url: str,
@@ -994,6 +1111,8 @@ def prepare_job_entry(
         "id": f"{source.id}-{digest}",
         "kind": "notice",
         "source_id": source.id,
+        "channel_id": channel.id,
+        "channel": channel.name,
         "title": title,
         "url": url,
         "source": source.name,
@@ -1005,16 +1124,47 @@ def prepare_job_entry(
         "attachments": [],
         "default_category": category,
         "source_weight": source.source_weight,
+        "channel_priority": channel.priority,
+        "channel_student_value": channel.student_value,
         "hash": digest,
         "cache_key": cache_key,
         "lifecycle_kind": "notice",
         "min_student_score": 0.68,
+        "canonical": canonicalize_raw_document(RawDocument(
+            raw_id=f"{source.id}-{digest}",
+            source_id=source.id,
+            channel_id=channel.id,
+            url=url,
+            title=title,
+            raw_text=content or title,
+            fetched_at=now.isoformat(),
+            http_status=200,
+            published_at=published_at,
+            attachments=[],
+        ), base_url=source.base_url).model_dump(),
+        "rule_guard": evaluate_rule_guard(
+            title=title,
+            content=content or title,
+            attachments=[],
+            published_at=published_at,
+            domain="employment",
+            intent="attend",
+            source_type=source.source_type,
+        ),
     }
 
 
 def crawl_job_source(source: SourceConfig, now: datetime) -> list[dict[str, Any]]:
     documents: list[dict[str, Any]] = []
     prepared: list[dict[str, Any]] = []
+    channel = source.channels[0] if source.channels else ChannelConfig(
+        id=f"{source.id}_job",
+        source_id=source.id,
+        name="就业信息",
+        list_urls=source.list_urls,
+        student_value=source.source_weight,
+        priority=source.source_weight,
+    )
 
     meeting_body = {
         "current": 1,
@@ -1042,7 +1192,7 @@ def crawl_job_source(source: SourceConfig, now: datetime) -> list[dict[str, Any]
         ]))
         external_id = str(item.get("zphid", ""))
         url = f"https://njupt.91job.org.cn/sub-station/recruitmentDetail?zphid={external_id}&xxdm={JOB_STATION_CODE}"
-        entry = prepare_job_entry(source, external_id, title, url, start_time[:10] or None, content, "就业", now)
+        entry = prepare_job_entry(source, channel, external_id, title, url, start_time[:10] or None, content, "就业", now)
         if entry:
             if entry.get("ready_document"):
                 documents.append(entry["ready_document"])
@@ -1077,7 +1227,7 @@ def crawl_job_source(source: SourceConfig, now: datetime) -> list[dict[str, Any]
         ]))
         external_id = str(item.get("xjhid", ""))
         url = f"https://njupt.91job.org.cn/sub-station/lectureDetail?xjhid={external_id}&xxdm={JOB_STATION_CODE}"
-        entry = prepare_job_entry(source, external_id, title, url, date or None, content, "就业", now)
+        entry = prepare_job_entry(source, channel, external_id, title, url, date or None, content, "就业", now)
         if entry:
             if entry.get("ready_document"):
                 documents.append(entry["ready_document"])
@@ -1227,6 +1377,8 @@ def prepare_github_entry(
         "id": f"github-{source.repo.replace('/', '-')}-{digest}",
         "kind": "resource",
         "source_id": f"github:{source.repo}",
+        "channel_id": f"github:{source.repo}:resource",
+        "channel": "GitHub 资源",
         "title": title,
         "url": f"https://github.com/{source.repo}/blob/{quote(branch, safe='')}/{quote(path, safe='/')}",
         "source": source.label,
@@ -1243,6 +1395,28 @@ def prepare_github_entry(
         "lifecycle_kind": "resource",
         "min_student_score": 0.55,
         "extra_tags": ["GitHub资料"],
+        "canonical": canonicalize_raw_document(RawDocument(
+            raw_id=f"github-{source.repo.replace('/', '-')}-{digest}",
+            source_id=f"github:{source.repo}",
+            channel_id=f"github:{source.repo}:resource",
+            url=f"https://github.com/{source.repo}/blob/{quote(branch, safe='')}/{quote(path, safe='/')}",
+            title=title,
+            raw_text=content,
+            fetched_at=now.isoformat(),
+            http_status=200,
+            published_at=published_at,
+            attachments=[],
+        ), base_url=f"https://github.com/{source.repo}/").model_dump(),
+        "rule_guard": evaluate_rule_guard(
+            title=title,
+            content=content,
+            attachments=[],
+            published_at=published_at,
+            lifecycle="evergreen",
+            domain="resource",
+            intent="read",
+            source_type="github_resource",
+        ),
     }
 
 
@@ -1310,6 +1484,19 @@ def crawl_source(source: SourceConfig, now: datetime) -> tuple[list[dict[str, An
         "adapter_kind": source.adapter_kind,
         "priority": source.source_weight,
         "requires_devtools_audit": source.requires_devtools_audit,
+        "channel_count": len(source.channels),
+        "channels": [
+            {
+                "id": channel.id,
+                "name": channel.name,
+                "priority": channel.priority,
+                "student_value": channel.student_value,
+                "audit_status": channel.audit_status,
+                "status": "ok",
+                "documents": 0,
+            }
+            for channel in source.channels
+        ],
         "status": "ok",
         "documents": 0,
         "last_fetch_at": now.isoformat(),
@@ -1321,17 +1508,30 @@ def crawl_source(source: SourceConfig, now: datetime) -> tuple[list[dict[str, An
             manifest_entry["documents"] = len(documents)
             return documents, manifest_entry
 
-        candidates, list_errors = collect_candidates(source, now)
+        candidates: list[dict[str, Any]] = []
+        list_errors: list[str] = []
+        channel_stats: dict[str, dict[str, Any]] = {}
+        for channel in source.channels:
+            channel_candidates, channel_errors = collect_candidates(source, channel, now)
+            for candidate in channel_candidates:
+                candidate["channel_id"] = channel.id
+                candidate["channel_name"] = channel.name
+            candidates.extend(channel_candidates)
+            list_errors.extend(channel_errors)
+            channel_stats[channel.id] = {"candidates": len(channel_candidates), "list_errors": channel_errors[:3], "documents": 0}
         if list_errors:
-            manifest_entry["list_errors"] = list_errors
+            manifest_entry["list_errors"] = list_errors[:8]
         enriched: list[dict[str, Any]] = []
         prepared: list[dict[str, Any]] = []
         for candidate in candidates[:DETAIL_FETCH_LIMIT_PER_SOURCE]:
-            entry = prepare_notice_candidate(source, candidate, now)
+            channel_id = str(candidate.get("channel_id") or "")
+            channel = next((item for item in source.channels if item.id == channel_id), source.channels[0])
+            entry = prepare_notice_candidate(source, channel, candidate, now)
             if not entry:
                 continue
             if entry.get("ready_document"):
                 enriched.append(entry["ready_document"])
+                channel_stats.setdefault(channel.id, {"candidates": 0, "list_errors": [], "documents": 0})["documents"] += 1
             else:
                 prepared.append(entry)
 
@@ -1340,6 +1540,7 @@ def crawl_source(source: SourceConfig, now: datetime) -> tuple[list[dict[str, An
             doc = build_search_document_from_prepared(entry, llm_results.get(str(entry["cache_key"])), now)
             if doc:
                 enriched.append(doc)
+                channel_stats.setdefault(str(doc.get("channel_id")), {"candidates": 0, "list_errors": [], "documents": 0})["documents"] += 1
 
         filtered = [document for document in enriched if is_student_facing_document(document)]
         enriched.sort(
@@ -1364,6 +1565,14 @@ def crawl_source(source: SourceConfig, now: datetime) -> tuple[list[dict[str, An
         manifest_entry["candidates"] = len(enriched)
         manifest_entry["filtered_out"] = len(enriched) - len(filtered)
         manifest_entry["documents"] = len(documents)
+        manifest_entry["channels"] = [
+            {
+                **channel_entry,
+                **channel_stats.get(channel_entry["id"], {}),
+                "status": "ok" if not channel_stats.get(channel_entry["id"], {}).get("list_errors") else "warning",
+            }
+            for channel_entry in manifest_entry["channels"]
+        ]
         return documents, manifest_entry
     except Exception as exc:
         manifest_entry["status"] = "error"
@@ -1415,6 +1624,94 @@ def write_json_if_changed(path: str, payload: Any) -> bool:
         output.write(serialized)
         output.write("\n")
     return True
+
+
+def finalize_hytask_documents(documents: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    finalized: list[dict[str, Any]] = []
+    seen_dedupe: set[str] = set()
+    for document in documents:
+        doc = dict(document)
+        if not doc.get("source_id"):
+            doc["source_id"] = infer_source_id_from_document(doc)
+        if not doc.get("channel_id"):
+            doc["channel_id"] = f"{doc['source_id']}_default"
+        if not doc.get("channel"):
+            doc["channel"] = "默认公开栏目"
+        if not doc.get("canonical"):
+            canonical = canonicalize_raw_document(RawDocument(
+                raw_id=str(doc.get("id")),
+                source_id=str(doc.get("source_id")),
+                channel_id=str(doc.get("channel_id")),
+                url=str(doc.get("url")),
+                title=str(doc.get("title")),
+                raw_text=str(doc.get("content") or doc.get("summary") or doc.get("title")),
+                fetched_at=get_beijing_time().isoformat(),
+                http_status=200,
+                published_at=doc.get("published_at"),
+                attachments=list(doc.get("attachments") or []),
+            ), base_url=str(doc.get("url") or ""))
+            doc["canonical"] = canonical.model_dump()
+        if not doc.get("rule_guard"):
+            doc["rule_guard"] = evaluate_rule_guard(
+                title=str(doc.get("title", "")),
+                content=str(doc.get("content", "")),
+                attachments=list(doc.get("attachments") or []),
+                published_at=doc.get("published_at"),
+                lifecycle=doc.get("lifecycle"),
+                domain=doc.get("domain"),
+                intent=doc.get("intent"),
+                source_type=doc.get("source_type"),
+            )
+        dedupe_key = str((doc.get("canonical") or {}).get("dedupe_key") or doc.get("hash") or doc.get("id"))
+        duplicate = dedupe_key in seen_dedupe
+        seen_dedupe.add(dedupe_key)
+        if duplicate:
+            doc["rule_guard"]["duplicate"] = True
+            doc["rule_guard"]["risk_flags"] = sorted(set(doc["rule_guard"].get("risk_flags", []) + ["duplicate"]))
+        doc["review_required"] = bool(doc.get("review_required") or doc["rule_guard"].get("review_required"))
+        doc["sensitive"] = bool(doc.get("sensitive") or doc["rule_guard"].get("sensitive"))
+        doc["risk_flags"] = sorted(set(list(doc.get("risk_flags") or []) + list(doc["rule_guard"].get("risk_flags") or [])))
+        if doc["rule_guard"].get("restricted"):
+            doc["status"] = "restricted"
+            doc["action_required"] = False
+            doc["summary"] = restricted_summary()
+        if not doc.get("task_frames"):
+            doc["task_frames"] = extract_task_frames(doc, llm_result=None, rule_guard=doc["rule_guard"])
+        finalized.append(doc)
+    return finalized
+
+
+def infer_source_id_from_document(document: dict[str, Any]) -> str:
+    source_domain = str(document.get("source_domain") or "")
+    source = str(document.get("source") or "")
+    for candidate in SOURCES:
+        if candidate.id in source or candidate.name == source or urlparse(candidate.base_url).netloc == source_domain:
+            return candidate.id
+    if str(document.get("source_type")) == "github_resource":
+        return f"github:{source}"
+    return "unknown"
+
+
+def calculate_evidence_coverage(task_frames: list[dict[str, Any]]) -> dict[str, Any]:
+    fields = ["audience", "action", "deadline", "materials", "location", "sensitive"]
+    if not task_frames:
+        return {"overall": 0, **{field: 0 for field in fields}}
+    coverage: dict[str, float] = {}
+    for field in fields:
+        count = 0
+        for frame in task_frames:
+            evidence = frame.get("evidence") if isinstance(frame.get("evidence"), list) else []
+            if any(isinstance(item, dict) and str(item.get("field", "")).lower() == field for item in evidence):
+                count += 1
+            elif field == "action" and (frame.get("action") or {}).get("summary") and evidence:
+                count += 1
+            elif field == "deadline" and (frame.get("time") or {}).get("deadline") and evidence:
+                count += 1
+            elif field == "audience" and (frame.get("who") or {}).get("audience") and evidence:
+                count += 1
+        coverage[field] = round(count / len(task_frames), 4)
+    coverage["overall"] = round(sum(coverage.values()) / len(fields), 4)
+    return coverage
 
 
 def parse_args() -> argparse.Namespace:
@@ -1472,6 +1769,8 @@ def main() -> None:
             source_entries.append(manifest_entry)
 
     all_documents = deduplicate_documents(all_documents)
+    all_documents = finalize_hytask_documents(all_documents)
+    task_frames = [frame for document in all_documents for frame in document.get("task_frames", [])]
     all_documents.sort(
         key=lambda item: (
             item["student_score"],
@@ -1481,11 +1780,23 @@ def main() -> None:
         ),
         reverse=True,
     )
+    query_aliases = read_json_file(QUERY_ALIASES_PATH, {})
+    ontology = read_json_file(ONTOLOGY_PATH, {})
+    ranking_weights = read_json_file(RANKING_WEIGHTS_PATH, {})
+    hybrid_index = build_hybrid_index(
+        all_documents,
+        task_frames,
+        ranking_weights=ranking_weights,
+        query_aliases=query_aliases,
+        ontology=ontology,
+    )
+    source_graph = load_source_channel_graph(SOURCE_CHANNEL_CONFIG_PATH)
+    evidence_coverage = calculate_evidence_coverage(task_frames)
 
     manifest = {
         "generated_at": now.isoformat(),
         "total_documents": len(all_documents),
-        "strategy": "phase3-source-registry-multiaxis-student-radar",
+        "strategy": "hytask-rag-source-channel-taskframe-hybrid-index-v1",
         "llm_schema_version": active_llm_schema_version(),
         "llm_enabled": runtime_llm_enabled(),
         "llm_provider": runtime_llm_provider_name(),
@@ -1494,7 +1805,23 @@ def main() -> None:
         "llm_batch_max_chars": int(_RUN_CONFIG["llm_batch_max_chars"]),
         "llm_batch_max_output_tokens": effective_llm_batch_max_output_tokens(),
         "llm_stats": dict(_RUN_STATS),
-        "source_count": len(source_entries),
+        "source_count": len(source_graph.sources),
+        "channel_count": source_graph.channel_count(),
+        "audited_channel_count": source_graph.audited_channel_count(),
+        "production_channel_count": source_graph.production_channel_count(),
+        "failed_channel_count": source_graph.failed_channel_count(),
+        "task_frame_count": len(task_frames),
+        "documents_with_task_frame": sum(1 for document in all_documents if document.get("task_frames")),
+        "evidence_coverage": evidence_coverage,
+        "review_required_count": sum(1 for document in all_documents if document.get("review_required")),
+        "low_evidence_count": sum(1 for document in all_documents if (document.get("rule_guard") or {}).get("low_evidence")),
+        "restricted_count": sum(1 for document in all_documents if document.get("status") == "restricted" or (document.get("rule_guard") or {}).get("restricted")),
+        "sensitive_count": sum(1 for document in all_documents if document.get("sensitive") or (document.get("rule_guard") or {}).get("sensitive")),
+        "hybrid_index": {
+            "doc_count": hybrid_index.get("doc_count"),
+            "task_frame_count": hybrid_index.get("task_frame_count"),
+            "avg_doc_len": hybrid_index.get("avg_doc_len"),
+        },
         "sources": source_entries,
     }
 
@@ -1506,15 +1833,23 @@ def main() -> None:
             "llm_model": runtime_llm_model_name(),
             "llm_batch_size": effective_llm_batch_size(),
             "llm_stats": _RUN_STATS,
+            "task_frame_count": len(task_frames),
+            "channel_count": manifest["channel_count"],
+            "evidence_coverage": evidence_coverage,
             "sources": source_entries,
         }, ensure_ascii=False, indent=2))
         return
 
     docs_changed = write_json_if_changed(DOCUMENTS_PATH, all_documents)
+    tasks_changed = write_json_if_changed(TASK_FRAMES_PATH, task_frames)
+    hybrid_changed = write_json_if_changed(HYBRID_INDEX_PATH, hybrid_index)
+    aliases_changed = write_json_if_changed(PUBLIC_QUERY_ALIASES_PATH, query_aliases)
+    ontology_changed = write_json_if_changed(PUBLIC_ONTOLOGY_PATH, ontology)
     manifest_changed = write_json_if_changed(MANIFEST_PATH, manifest)
     llm_cache_changed = save_llm_cache(now)
     print(f"Generated {len(all_documents)} search documents")
-    print(f"documents.json changed: {docs_changed}; manifest.json changed: {manifest_changed}; LLM cache changed: {llm_cache_changed}")
+    print(f"Generated {len(task_frames)} task frames")
+    print(f"documents.json changed: {docs_changed}; task_frames.json changed: {tasks_changed}; hybrid_index.json changed: {hybrid_changed}; query_aliases.json changed: {aliases_changed}; ontology.json changed: {ontology_changed}; manifest.json changed: {manifest_changed}; LLM cache changed: {llm_cache_changed}")
 
 
 if __name__ == "__main__":

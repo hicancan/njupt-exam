@@ -14,7 +14,10 @@ PUBLIC_DIR = os.path.join(BASE_DIR, "public")
 INDEX_DIR = os.path.join(PUBLIC_DIR, "index")
 DOCUMENTS_PATH = os.path.join(INDEX_DIR, "documents.json")
 MANIFEST_PATH = os.path.join(INDEX_DIR, "manifest.json")
-CAMPUS_SOURCE_CONFIG_PATH = os.path.join(BASE_DIR, "config", "campus_sources.json")
+SOURCE_CHANNEL_CONFIG_PATH = os.path.join(BASE_DIR, "config", "source_channels.json")
+QUERY_ALIASES_PATH = os.path.join(BASE_DIR, "config", "query_aliases.json")
+ONTOLOGY_PATH = os.path.join(BASE_DIR, "config", "ontology.json")
+RANKING_WEIGHTS_PATH = os.path.join(BASE_DIR, "config", "ranking_weights.json")
 GITHUB_SOURCE_CONFIG_PATH = os.path.join(BASE_DIR, "config", "github_search_sources.json")
 LLM_CACHE_PATH = os.path.join(BASE_DIR, "cache", "search_llm_cache.json")
 
@@ -92,6 +95,27 @@ NEGATIVE_KEYWORDS = [
 ]
 
 @dataclass(frozen=True)
+class ChannelConfig:
+    id: str
+    source_id: str
+    name: str
+    list_urls: tuple[str, ...]
+    student_value: float
+    expected_domains: tuple[str, ...] = ()
+    expected_intents: tuple[str, ...] = ()
+    priority: float = 0.7
+    crawl_depth: int = 1
+    pagination_type: str = "none"
+    pagination_pattern: str | None = None
+    sensitive_risks: tuple[str, ...] = ()
+    positive_keywords: tuple[str, ...] = ()
+    negative_keywords: tuple[str, ...] = ()
+    audit_status: str = "manual_seeded"
+    production_enabled: bool = True
+    notes: str = ""
+
+
+@dataclass(frozen=True)
 class SourceConfig:
     id: str
     name: str
@@ -107,6 +131,7 @@ class SourceConfig:
     requires_devtools_audit: bool = False
     max_pages: int = 1
     notes: str = ""
+    channels: tuple[ChannelConfig, ...] = ()
 
 @dataclass(frozen=True)
 class GitHubSourceConfig:
@@ -120,20 +145,6 @@ class GitHubSourceConfig:
     source_weight: float
     enabled: bool
 
-DEFAULT_SOURCES: tuple[SourceConfig, ...] = (
-    SourceConfig("jwc", "本科生院 / 教务处", "https://jwc.njupt.edu.cn/", ("https://jwc.njupt.edu.cn/1594/list.htm",), ("本科生",), 1.0),
-    SourceConfig("xsc", "学生工作处", "https://xsc.njupt.edu.cn/", ("https://xsc.njupt.edu.cn/",), ("本科生",), 0.96),
-    SourceConfig("pg", "研究生院", "https://pg.njupt.edu.cn/", ("https://pg.njupt.edu.cn/",), ("研究生",), 0.96),
-    SourceConfig("ygb", "研究生工作部", "https://ygb.njupt.edu.cn/", ("https://ygb.njupt.edu.cn/",), ("研究生",), 0.92),
-    SourceConfig("youth", "团委 / 青春南邮", "https://youth.njupt.edu.cn/", ("https://youth.njupt.edu.cn/",), ("本科生", "研究生"), 0.9),
-    SourceConfig("cxcy", "创新创业教育学院", "https://cxcy.njupt.edu.cn/", ("https://cxcy.njupt.edu.cn/",), ("本科生", "研究生"), 0.9),
-    SourceConfig("job", "就业信息网", "https://njupt.91job.org.cn/", ("https://njupt.91job.org.cn/",), ("本科生", "研究生"), 0.88, "job_platform", "job_api"),
-    SourceConfig("lib", "图书馆", "https://lib.njupt.edu.cn/", ("https://lib.njupt.edu.cn/",), ("本科生", "研究生", "教职工"), 0.82, "service_unit"),
-    SourceConfig("bwc", "保卫处", "https://bwc.njupt.edu.cn/", ("https://bwc.njupt.edu.cn/",), ("本科生", "研究生", "教职工"), 0.8, "service_unit"),
-    SourceConfig("hqc", "后勤管理处", "https://hqc.njupt.edu.cn/", ("https://hqc.njupt.edu.cn/",), ("本科生", "研究生", "教职工"), 0.8, "service_unit"),
-)
-
-
 def _coerce_string_tuple(value: object) -> tuple[str, ...]:
     if value is None:
         return ()
@@ -144,14 +155,71 @@ def _coerce_string_tuple(value: object) -> tuple[str, ...]:
     return ()
 
 
-def read_campus_source_configs(path: str = CAMPUS_SOURCE_CONFIG_PATH) -> tuple[SourceConfig, ...]:
+def _read_source_channel_payload(path: str = SOURCE_CHANNEL_CONFIG_PATH) -> list[dict]:
     if not os.path.exists(path):
-        return DEFAULT_SOURCES
-
+        raise FileNotFoundError(f"source-channel graph is required: {path}")
     with open(path, "r", encoding="utf-8") as config_file:
         payload = json.load(config_file)
-
     raw_sources = payload.get("sources", []) if isinstance(payload, dict) else []
+    sources = [item for item in raw_sources if isinstance(item, dict) and bool(item.get("enabled", True))]
+    if not sources:
+        raise ValueError(f"source-channel graph has no enabled sources: {path}")
+    return sources
+
+
+def _channel_configs_from_item(source_id: str, source_priority: float, raw_channels: object) -> tuple[ChannelConfig, ...]:
+    channels: list[ChannelConfig] = []
+    if not isinstance(raw_channels, list):
+        return ()
+    for raw in raw_channels:
+        if not isinstance(raw, dict) or not bool(raw.get("production_enabled", True)):
+            continue
+        channel_id = str(raw.get("id", "")).strip()
+        name = str(raw.get("name", "")).strip()
+        list_urls = _coerce_string_tuple(raw.get("list_urls"))
+        if not channel_id or not name or not list_urls:
+            continue
+        try:
+            priority = max(0.05, min(1.0, float(raw.get("priority", source_priority))))
+        except (TypeError, ValueError):
+            priority = source_priority
+        try:
+            student_value = max(0.05, min(1.0, float(raw.get("student_value", priority))))
+        except (TypeError, ValueError):
+            student_value = priority
+        pagination = raw.get("pagination") if isinstance(raw.get("pagination"), dict) else {}
+        try:
+            crawl_depth = max(1, min(int(raw.get("crawl_depth", 1)), 5))
+        except (TypeError, ValueError):
+            crawl_depth = 1
+        channels.append(
+            ChannelConfig(
+                id=channel_id,
+                source_id=str(raw.get("source_id") or source_id),
+                name=name,
+                list_urls=list_urls,
+                student_value=student_value,
+                expected_domains=_coerce_string_tuple(raw.get("expected_domains")),
+                expected_intents=_coerce_string_tuple(raw.get("expected_intents")),
+                priority=priority,
+                crawl_depth=crawl_depth,
+                pagination_type=str(pagination.get("type") or "none"),
+                pagination_pattern=pagination.get("pattern"),
+                sensitive_risks=_coerce_string_tuple(raw.get("sensitive_risks")),
+                positive_keywords=_coerce_string_tuple(raw.get("positive_keywords")),
+                negative_keywords=_coerce_string_tuple(raw.get("negative_keywords")),
+                audit_status=str(raw.get("audit_status") or "manual_seeded"),
+                production_enabled=True,
+                notes=str(raw.get("notes") or "").strip(),
+            )
+        )
+    return tuple(channels)
+
+
+def read_campus_source_configs(path: str = SOURCE_CHANNEL_CONFIG_PATH) -> tuple[SourceConfig, ...]:
+    channel_sources = _read_source_channel_payload(path)
+    raw_sources = channel_sources
+
     sources: list[SourceConfig] = []
     for item in raw_sources:
         if not isinstance(item, dict) or not bool(item.get("enabled", True)):
@@ -160,18 +228,19 @@ def read_campus_source_configs(path: str = CAMPUS_SOURCE_CONFIG_PATH) -> tuple[S
         source_id = str(item.get("id", "")).strip()
         name = str(item.get("name", "")).strip()
         base_url = str(item.get("base_url", "")).strip()
-        list_urls = _coerce_string_tuple(item.get("list_urls"))
-        audience = _coerce_string_tuple(item.get("audience_hint") or item.get("audience"))
-        if not source_id or not name or not base_url or not list_urls:
-            continue
-
         try:
-            priority = float(item.get("priority", item.get("source_weight", 0.72)))
+            priority = float(item.get("authority", item.get("priority", item.get("source_weight", 0.72))))
         except (TypeError, ValueError):
             priority = 0.72
 
+        channels = _channel_configs_from_item(source_id, priority, item.get("channels"))
+        list_urls = tuple(dict.fromkeys(url for channel in channels for url in channel.list_urls))
+        audience = _coerce_string_tuple(item.get("default_audience") or item.get("audience_hint") or item.get("audience"))
+        if not source_id or not name or not base_url or not channels or not list_urls:
+            continue
+
         try:
-            max_pages = max(1, min(int(item.get("max_pages", 1)), 3))
+            max_pages = max(1, min(int(item.get("max_pages", max(channel.crawl_depth for channel in channels))), 5))
         except (TypeError, ValueError):
             max_pages = 1
 
@@ -191,10 +260,13 @@ def read_campus_source_configs(path: str = CAMPUS_SOURCE_CONFIG_PATH) -> tuple[S
                 requires_devtools_audit=bool(item.get("requires_devtools_audit", False)),
                 max_pages=max_pages,
                 notes=str(item.get("notes") or "").strip(),
+                channels=channels,
             )
         )
 
-    return tuple(sources) or DEFAULT_SOURCES
+    if not sources:
+        raise ValueError(f"no valid source-channel sources loaded from {path}")
+    return tuple(sources)
 
 
 SOURCES: tuple[SourceConfig, ...] = read_campus_source_configs()

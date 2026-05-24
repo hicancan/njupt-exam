@@ -2,13 +2,19 @@ import json
 import os
 import sys
 from datetime import datetime
-from urllib.parse import urlparse
 
 SCRIPTS_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 if SCRIPTS_DIR not in sys.path:
     sys.path.insert(0, SCRIPTS_DIR)
 
-from config.indexer_config import BASE_DIR, CAMPUS_SOURCE_CONFIG_PATH, DOCUMENTS_PATH, MANIFEST_PATH
+from config.indexer_config import (
+    BASE_DIR,
+    DOCUMENTS_PATH,
+    MANIFEST_PATH,
+    SOURCE_CHANNEL_CONFIG_PATH,
+    QUERY_ALIASES_PATH,
+    ONTOLOGY_PATH,
+)
 from core.llm_scorer import BatchLLMResult, LLMResult
 from models.semantic_model import SEARCH_DOMAINS, SEARCH_INTENTS, SEARCH_LIFECYCLES, SEARCH_SOURCE_TYPES
 
@@ -16,6 +22,9 @@ from models.semantic_model import SEARCH_DOMAINS, SEARCH_INTENTS, SEARCH_LIFECYC
 REQUIRED_DOCUMENT_FIELDS = {
     "id",
     "kind",
+    "source_id",
+    "channel_id",
+    "channel",
     "title",
     "url",
     "source",
@@ -34,7 +43,14 @@ REQUIRED_DOCUMENT_FIELDS = {
     "importance_score",
     "tags",
     "hash",
+    "canonical",
+    "rule_guard",
+    "task_frames",
 }
+TASK_FRAMES_PATH = os.path.join(BASE_DIR, "public", "index", "task_frames.json")
+HYBRID_INDEX_PATH = os.path.join(BASE_DIR, "public", "index", "hybrid_index.json")
+PUBLIC_QUERY_ALIASES_PATH = os.path.join(BASE_DIR, "public", "index", "query_aliases.json")
+PUBLIC_ONTOLOGY_PATH = os.path.join(BASE_DIR, "public", "index", "ontology.json")
 
 MIN_EXPECTED_DOCUMENTS = 120
 MAX_ERROR_SOURCE_RATIO = 0.1
@@ -52,36 +68,38 @@ def fail(message: str) -> None:
     raise SystemExit(1)
 
 
-def validate_campus_sources() -> None:
-    payload = read_json(CAMPUS_SOURCE_CONFIG_PATH)
+def validate_source_channels() -> None:
+    payload = read_json(SOURCE_CHANNEL_CONFIG_PATH)
     sources = payload.get("sources")
     if not isinstance(sources, list) or not sources:
-        fail("config/campus_sources.json must contain a non-empty sources array")
-
-    seen: set[str] = set()
-    for index, source in enumerate(sources):
+        fail("config/source_channels.json must contain sources")
+    source_ids: set[str] = set()
+    channel_ids: set[str] = set()
+    for source in sources:
         if not isinstance(source, dict):
-            fail(f"campus source #{index} is not an object")
+            fail("source_channels contains non-object source")
         source_id = str(source.get("id", "")).strip()
         if not source_id:
-            fail(f"campus source #{index} has no id")
-        if source_id in seen:
-            fail(f"duplicate campus source id: {source_id}")
-        seen.add(source_id)
-
-        for field in ("name", "base_url", "list_urls", "source_type", "priority", "audience_hint", "adapter_kind"):
-            if field not in source:
-                fail(f"campus source {source_id} missing field {field}")
-
-        parsed = urlparse(str(source["base_url"]))
-        if parsed.scheme not in {"http", "https"} or not parsed.netloc:
-            fail(f"campus source {source_id} has invalid base_url")
-        if source["source_type"] not in SEARCH_SOURCE_TYPES:
-            fail(f"campus source {source_id} has invalid source_type {source['source_type']}")
-        if not isinstance(source["list_urls"], list) or not source["list_urls"]:
-            fail(f"campus source {source_id} must have at least one list_url")
-        if not isinstance(source["audience_hint"], list) or not source["audience_hint"]:
-            fail(f"campus source {source_id} must have audience_hint")
+            fail("source_channels source missing id")
+        if source_id in source_ids:
+            fail(f"duplicate source_channels source id: {source_id}")
+        source_ids.add(source_id)
+        channels = source.get("channels")
+        if not isinstance(channels, list) or not channels:
+            fail(f"source {source_id} must contain at least one channel")
+        for channel in channels:
+            if not isinstance(channel, dict):
+                fail(f"source {source_id} contains non-object channel")
+            channel_id = str(channel.get("id", "")).strip()
+            if not channel_id:
+                fail(f"source {source_id} channel missing id")
+            if channel_id in channel_ids:
+                fail(f"duplicate channel id: {channel_id}")
+            channel_ids.add(channel_id)
+            if channel.get("source_id") != source_id:
+                fail(f"channel {channel_id} source_id does not match source {source_id}")
+            if not isinstance(channel.get("list_urls"), list) or not channel["list_urls"]:
+                fail(f"channel {channel_id} must have list_urls")
 
 
 def validate_llm_fixture() -> None:
@@ -104,6 +122,7 @@ def validate_llm_fixture() -> None:
         "sensitive": False,
         "sensitive_types": [],
         "attachment_roles": [],
+        "task_frames": [],
         "risk_flags": [],
         "evidence": ["需在截止前提交申请材料。"],
         "confidence": 0.86,
@@ -140,6 +159,17 @@ def validate_documents() -> None:
             fail(f"document {doc_id} has invalid source_type {document['source_type']}")
         if document["lifecycle"] not in SEARCH_LIFECYCLES:
             fail(f"document {doc_id} has invalid lifecycle {document['lifecycle']}")
+        if not isinstance(document.get("canonical"), dict):
+            fail(f"document {doc_id} has invalid canonical object")
+        if not isinstance(document.get("rule_guard"), dict):
+            fail(f"document {doc_id} has invalid rule_guard object")
+        if not isinstance(document.get("task_frames"), list):
+            fail(f"document {doc_id} has invalid task_frames")
+        if document.get("status") == "restricted":
+            if document.get("action_required"):
+                fail(f"restricted document {doc_id} must not require action")
+            if document.get("task_frames"):
+                fail(f"restricted document {doc_id} must not have task_frames")
         for field in ("student_score", "freshness_score", "importance_score"):
             value = document[field]
             if not isinstance(value, (int, float)) or not 0 <= float(value) <= 1:
@@ -166,6 +196,20 @@ def validate_manifest() -> None:
         fail(f"manifest has suspiciously few documents: {total_documents} < {MIN_EXPECTED_DOCUMENTS}")
     if not manifest.get("llm_schema_version"):
         fail("manifest missing llm_schema_version")
+    for field in (
+        "source_count",
+        "channel_count",
+        "audited_channel_count",
+        "production_channel_count",
+        "failed_channel_count",
+        "task_frame_count",
+        "documents_with_task_frame",
+        "evidence_coverage",
+        "review_required_count",
+        "low_evidence_count",
+    ):
+        if field not in manifest:
+            fail(f"manifest missing {field}")
     sources = manifest.get("sources")
     if not isinstance(sources, list) or not sources:
         fail("manifest has no sources")
@@ -182,12 +226,33 @@ def validate_manifest() -> None:
         fail(f"core sources failed: {', '.join(sorted(broken_core_sources))}")
 
 
+def validate_task_frames_and_hybrid_index() -> None:
+    for path in (TASK_FRAMES_PATH, HYBRID_INDEX_PATH, PUBLIC_QUERY_ALIASES_PATH, PUBLIC_ONTOLOGY_PATH):
+        if not os.path.exists(path):
+            fail(f"required public index artifact missing: {path}")
+    task_frames = read_json(TASK_FRAMES_PATH)
+    if not isinstance(task_frames, list):
+        fail("task_frames.json must be a list")
+    for frame in task_frames:
+        if not isinstance(frame, dict):
+            fail("task_frames.json contains non-object frame")
+        for field in ("task_id", "doc_id", "task_type", "who", "what", "action", "time", "source", "evidence", "risk"):
+            if field not in frame:
+                fail(f"task frame missing field {field}")
+    hybrid = read_json(HYBRID_INDEX_PATH)
+    if not isinstance(hybrid, dict) or hybrid.get("version") != "hytask-hybrid-index-v1":
+        fail("hybrid_index.json has invalid version")
+    if int(hybrid.get("doc_count", 0) or 0) <= 0:
+        fail("hybrid_index has no documents")
+
+
 def main() -> None:
     os.chdir(BASE_DIR)
-    validate_campus_sources()
+    validate_source_channels()
     validate_llm_fixture()
     validate_documents()
     validate_manifest()
+    validate_task_frames_and_hybrid_index()
     print("[validate_search_index] ok")
 
 

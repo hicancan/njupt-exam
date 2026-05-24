@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "weights": {
+    "bm25": 0.26,
+    "field": 0.22,
+    "tag": 0.15,
+    "entity": 0.10,
+    "semantic_expansion": 0.12,
+    "utility": 0.20,
+    "risk_penalty": 0.05
+  },
+  "field_weights": {
+    "title": 4.0,
+    "tags": 3.0,
+    "task.what": 3.0,
+    "task.action.summary": 2.8,
+    "evidence": 2.5,
+    "materials.name": 2.0,
+    "source": 1.5,
+    "content": 1.0
+  }
+}

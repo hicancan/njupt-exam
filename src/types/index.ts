@@ -52,14 +52,15 @@ export type SearchCategory = z.infer<typeof SearchCategorySchema>;
 
 export const SearchDomainSchema = z.enum([
     'academic', 'exam', 'course', 'degree', 'scholarship', 'employment', 'competition',
-    'project', 'international', 'life', 'library', 'security', 'logistics', 'lecture',
+    'project', 'innovation_project', 'international', 'life', 'library', 'security', 'logistics',
+    'campus_network', 'subsidy', 'medical_insurance', 'archive', 'lecture',
     'research', 'resource', 'news', 'policy'
 ]).catch('news');
 export type SearchDomain = z.infer<typeof SearchDomainSchema>;
 
 export const SearchIntentSchema = z.enum([
     'apply', 'register', 'submit', 'attend', 'check_result', 'publicity', 'download',
-    'read', 'schedule', 'alert'
+    'read', 'schedule', 'alert', 'pay', 'contact', 'export'
 ]).catch('read');
 export type SearchIntent = z.infer<typeof SearchIntentSchema>;
 
@@ -92,10 +93,68 @@ export const SearchDocumentLLMSchema = z.object({
 }).passthrough();
 export type SearchDocumentLLMMetadata = z.infer<typeof SearchDocumentLLMSchema>;
 
+export const TaskFrameSchema = z.object({
+    task_id: z.string(),
+    doc_id: z.string(),
+    task_type: z.string(),
+    who: z.object({
+        audience: z.array(z.string()).default([]),
+        college: z.array(z.string()).default([]),
+        grade: z.array(z.string()).default([]),
+        major: z.array(z.string()).default([]),
+        class_name: z.array(z.string()).default([])
+    }).default({ audience: [], college: [], grade: [], major: [], class_name: [] }),
+    what: z.string(),
+    action: z.object({
+        required: z.boolean().default(false),
+        verb: z.string().nullable().optional(),
+        object: z.string().nullable().optional(),
+        summary: z.string().nullable().optional()
+    }).default({ required: false }),
+    time: z.object({
+        published_at: z.string().nullable().optional(),
+        deadline: z.string().nullable().optional(),
+        lifecycle: z.string().default('unknown'),
+        urgency_days: z.number().nullable().optional()
+    }).default({ lifecycle: 'unknown' }),
+    materials: z.array(z.object({
+        name: z.string(),
+        role: z.string().nullable().optional(),
+        required: z.boolean().default(false),
+        sensitive: z.boolean().default(false)
+    })).default([]),
+    location: z.object({
+        place: z.string().nullable().optional(),
+        online: z.string().nullable().optional(),
+        contact: z.string().nullable().optional()
+    }).default({}),
+    source: z.object({
+        source_id: z.string(),
+        channel_id: z.string(),
+        authority: z.number().default(0.7),
+        official: z.boolean().default(true)
+    }).default({ source_id: '', channel_id: '', authority: 0.7, official: true }),
+    evidence: z.array(z.object({
+        field: z.string(),
+        text: z.string()
+    })).default([]),
+    risk: z.object({
+        sensitive: z.boolean().default(false),
+        restricted: z.boolean().default(false),
+        low_evidence: z.boolean().default(false),
+        review_required: z.boolean().default(false)
+    }).default({ sensitive: false, restricted: false, low_evidence: false, review_required: false }),
+    confidence: z.number().optional()
+}).passthrough();
+export type TaskFrame = z.infer<typeof TaskFrameSchema>;
+
 export const SearchDocumentSchema = z.object({
     id: z.string().min(1),
     kind: SearchDocumentKindSchema,
     status: z.string().optional(),
+    source_id: z.string().min(1),
+    channel_id: z.string().min(1),
+    channel: z.string().min(1),
     title: z.string().min(1),
     url: z.string().min(1),
     source: z.string().min(1),
@@ -131,6 +190,9 @@ export const SearchDocumentSchema = z.object({
     cache_key: z.string().optional(),
     llm_schema_version: z.string().optional(),
     llm: SearchDocumentLLMSchema.optional(),
+    canonical: z.record(z.string(), z.unknown()).optional(),
+    rule_guard: z.record(z.string(), z.unknown()).optional(),
+    task_frames: z.array(TaskFrameSchema).default([]),
     class_name: z.string().optional(),
     exam_id: z.string().optional()
 }).passthrough();
@@ -139,6 +201,7 @@ export type SearchDocument = z.infer<typeof SearchDocumentSchema>;
 export interface RankedSearchDocument extends SearchDocument {
     score: number;
     score_reason: string;
+    score_components?: Record<string, number>;
 }
 
 export const SearchManifestSourceSchema = z.object({

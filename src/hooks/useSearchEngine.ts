@@ -5,7 +5,9 @@ import { buildExamDocuments, rankSearchDocuments, getLearningResources } from '@
 export function useSearchEngine(
     noticeDocuments: SearchDocument[],
     allExams: Exam[],
-    searchQuery: string
+    searchQuery: string,
+    hybridIndex: Record<string, unknown> | null,
+    queryAliases: Record<string, unknown>
 ) {
     const examDocuments = useMemo(() => buildExamDocuments(allExams), [allExams]);
     const allDocuments = useMemo(() => [...noticeDocuments, ...examDocuments], [noticeDocuments, examDocuments]);
@@ -14,9 +16,9 @@ export function useSearchEngine(
         () => {
             const trimmed = searchQuery.trim();
             if (trimmed.length < 2) return [];
-            return rankSearchDocuments(allDocuments, searchQuery);
+            return rankSearchDocuments(allDocuments, searchQuery, hybridIndex, queryAliases);
         },
-        [allDocuments, searchQuery]
+        [allDocuments, searchQuery, hybridIndex, queryAliases]
     );
     
     const learningResources = useMemo(() => getLearningResources(searchQuery), [searchQuery]);

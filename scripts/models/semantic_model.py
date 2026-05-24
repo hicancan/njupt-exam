@@ -11,11 +11,16 @@ SEARCH_DOMAINS = (
     "employment",
     "competition",
     "project",
+    "innovation_project",
     "international",
     "life",
     "library",
     "security",
     "logistics",
+    "campus_network",
+    "subsidy",
+    "medical_insurance",
+    "archive",
     "lecture",
     "research",
     "resource",
@@ -34,6 +39,9 @@ SEARCH_INTENTS = (
     "read",
     "schedule",
     "alert",
+    "pay",
+    "contact",
+    "export",
 )
 
 SEARCH_SOURCE_TYPES = (
@@ -60,9 +68,14 @@ DOMAIN_KEYWORDS = {
     "competition": ("竞赛", "挑战杯", "互联网+", "校赛", "获奖", "创新大赛", "数学建模"),
     "international": ("海外", "境外", "国际", "交换", "访学", "留学", "港澳台", "外方"),
     "project": ("项目", "大创", "创业基金", "科创", "申报", "训练计划", "实验室招新"),
+    "innovation_project": ("大创", "大学生创新创业训练计划", "创新创业项目", "创新训练"),
     "library": ("图书馆", "数据库", "研读室", "馆藏", "借阅", "开放时间"),
     "security": ("保卫", "交通管制", "消防", "安全", "户籍", "车贴", "通行"),
     "logistics": ("后勤", "停水", "停电", "维修", "洗浴", "医保", "班车", "体检"),
+    "campus_network": ("校园网", "VPN", "统一身份认证", "邮箱", "信息化"),
+    "subsidy": ("助学金", "困难认定", "资助", "贫困补助"),
+    "medical_insurance": ("医保", "医疗保险", "体检"),
+    "archive": ("档案", "证明", "成绩单", "归档"),
     "lecture": ("讲座", "报告", "论坛", "沙龙", "学术活动", "培训"),
     "research": ("科研", "课题", "基金", "专利", "成果转化", "论文", "自然科学"),
     "resource": ("资料", "下载", "手册", "指南", "流程", "表格", "模板"),
@@ -82,10 +95,13 @@ INTENT_KEYWORDS = {
     "download": ("下载", "附件", "表格", "模板", "手册", "指南"),
     "schedule": ("安排", "时间", "开放", "校历", "日程", "考试安排", "班车"),
     "alert": ("停水", "停电", "管制", "封闭", "提醒", "预警", "安全"),
+    "pay": ("缴费", "支付", "学费", "收费"),
+    "contact": ("联系", "咨询", "联系人", "电话", "邮箱"),
+    "export": ("导出", "日历", "ics", "下载日程"),
     "read": ("通知", "公告", "新闻", "报道", "说明"),
 }
 
-LEGACY_CATEGORY_BY_DOMAIN = {
+DISPLAY_CATEGORY_BY_DOMAIN = {
     "exam": "考试",
     "course": "选课",
     "degree": "研究生",
@@ -94,9 +110,14 @@ LEGACY_CATEGORY_BY_DOMAIN = {
     "competition": "竞赛",
     "international": "项目",
     "project": "项目",
+    "innovation_project": "项目",
     "library": "生活",
     "security": "生活",
     "logistics": "生活",
+    "campus_network": "生活",
+    "subsidy": "奖助",
+    "medical_insurance": "生活",
+    "archive": "资料",
     "lecture": "讲座",
     "research": "项目",
     "resource": "资料",
@@ -120,6 +141,10 @@ DOMAIN_LABELS = {
     "library": "图书馆",
     "security": "安全保卫",
     "logistics": "后勤服务",
+    "campus_network": "校园网络",
+    "subsidy": "资助补助",
+    "medical_insurance": "医保体检",
+    "archive": "档案服务",
     "lecture": "讲座活动",
     "research": "科研事务",
     "resource": "学习资料",
@@ -138,6 +163,9 @@ INTENT_LABELS = {
     "read": "阅读",
     "schedule": "安排",
     "alert": "提醒",
+    "pay": "缴费",
+    "contact": "联系",
+    "export": "导出",
 }
 
 SOURCE_TYPE_LABELS = {
@@ -235,10 +263,10 @@ def infer_intent(text: str, action_required: bool = False, attachments_count: in
     return "read"
 
 
-def derive_legacy_category(domain: str, intent: str, fallback: str = "公告") -> str:
+def derive_display_category(domain: str, intent: str, fallback: str = "公告") -> str:
     if intent == "publicity" and domain in {"scholarship", "competition", "degree"}:
-        return LEGACY_CATEGORY_BY_DOMAIN.get(domain, fallback)
-    return LEGACY_CATEGORY_BY_DOMAIN.get(domain, fallback if fallback else "公告")
+        return DISPLAY_CATEGORY_BY_DOMAIN.get(domain, fallback)
+    return DISPLAY_CATEGORY_BY_DOMAIN.get(domain, fallback if fallback else "公告")
 
 
 def infer_lifecycle(published_at: str | None, deadline: str | None, now: datetime, kind: str = "notice") -> str:
