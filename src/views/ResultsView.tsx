@@ -211,9 +211,18 @@ export function ResultsView({
         return results.filter(document => {
             if (domainFilter !== '全部' && document.domain !== domainFilter) return false;
             if (intentFilter !== '全部' && document.intent !== intentFilter) return false;
+
+            // Deduplicate exams that are already visible in the calendar at the top
+            if (classMode.mode === 'DETAIL' && classMode.classes.length > 0) {
+                const currentClass = classMode.classes[0];
+                if (document.kind === 'exam' && document.class_name === currentClass) {
+                    return false;
+                }
+            }
+
             return true;
         });
-    }, [domainFilter, intentFilter, results]);
+    }, [domainFilter, intentFilter, results, classMode]);
     const [visibleCount, setVisibleCount] = useState(20);
     useEffect(() => {
         // eslint-disable-next-line react-hooks/set-state-in-effect

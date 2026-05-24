@@ -30,7 +30,7 @@ function App() {
     const searchQuery = initialQuery;
     const manualSelection = classParam;
 
-    const { rankedResults, learningResources } = useSearchEngine(noticeDocuments, allExams, qParam || '', hybridIndex, queryAliases);
+    const { rankedResults, learningResources } = useSearchEngine(noticeDocuments, allExams, searchQuery, hybridIndex, queryAliases);
     const classSearchResult = useClassSearch(allExams, initialQuery, manualSelection);
     const currentClass = classSearchResult.mode === 'DETAIL' ? classSearchResult.classes[0] || null : null;
     const { selectedIds, toggleExamSelection } = useSelectedExamIds(currentClass, classSearchResult.exams);
