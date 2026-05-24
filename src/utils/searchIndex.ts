@@ -492,15 +492,21 @@ export const rankSearchDocuments = (
                 (0.2 * sourceWeight) +
                 (document.task_frames.length > 0 ? 0.08 : 0);
             const riskPenalty = (document.sensitive ? 0.5 : 0) + (document.review_required ? 0.25 : 0) + (document.status === 'restricted' ? 0.5 : 0);
-            const hybridScore =
+
+            const rawMatchScore =
                 0.26 * Math.min(1, bm25Proxy) +
                 0.22 * fieldScore +
                 0.15 * tagScore +
                 0.1 * Math.max(Number(document.domain.includes(trimmed) || document.intent.includes(trimmed)), overlapScore(trimmed, document.source)) +
-                0.12 * Math.max(taskFrameScore, overlapScore(expandedTerms.join(' '), document.content)) +
-                0.2 * Math.min(1, utilityScore) -
-                0.05 * Math.min(1, riskPenalty);
-            const weightedScore = (textScore + hybridScore * 32) *
+                0.12 * Math.max(taskFrameScore, overlapScore(expandedTerms.join(' '), document.content));
+
+            const hasMatch = textScore > 0 || rawMatchScore > 0;
+            
+            const hybridScore = hasMatch 
+                ? rawMatchScore + 0.2 * Math.min(1, utilityScore) - 0.05 * Math.min(1, riskPenalty)
+                : 0;
+
+            const weightedScore = hasMatch ? (textScore + hybridScore * 32) *
                 (0.55 + document.student_score * 0.45) *
                 (0.72 + document.freshness_score * 0.28) *
                 (0.7 + document.importance_score * 0.3) *
@@ -509,7 +515,7 @@ export const rankSearchDocuments = (
                 lifecycleWeight(document.lifecycle) *
                 sourceTypeWeight(document.source_type) *
                 deadlineUrgencyWeight(document.deadline) *
-                (document.sensitive ? 0.92 : 1);
+                (document.sensitive ? 0.92 : 1) : 0;
 
             return {
                 ...document,
