@@ -211,6 +211,14 @@ const aliasPayloadsForQuery = (query: string, queryAliases: Record<string, unkno
     return payloads;
 };
 
+const inferQueryType = (query: string, domains: Set<string>, intents: Set<string>): 'exam' | 'resource' | 'task' | 'general' => {
+    const q = query.toLowerCase();
+    if (q.includes('考试') || domains.has('exam') || intents.has('schedule')) return 'exam';
+    if (['资料', '题', '复习', '卷', '课件'].some(t => q.includes(t)) || domains.has('resource')) return 'resource';
+    if (['报名', '申请', '提交', '参加'].some(t => q.includes(t)) || ['apply', 'register', 'submit', 'attend'].some(i => intents.has(i))) return 'task';
+    return 'general';
+};
+
 const aliasTermsFromPayloads = (payloads: QueryAliasPayload[]): string[] => {
     const terms: string[] = [];
     for (const payload of payloads) {
@@ -229,6 +237,16 @@ const targetDomainsFromPayloads = (payloads: QueryAliasPayload[]): Set<string> =
         }
     }
     return new Set(domains.map(normalize).filter(Boolean));
+};
+
+const targetIntentsFromPayloads = (payloads: QueryAliasPayload[]): Set<string> => {
+    const intents: string[] = [];
+    for (const payload of payloads) {
+        if (Array.isArray(payload.intents)) {
+            intents.push(...payload.intents.map(String));
+        }
+    }
+    return new Set(intents.map(normalize).filter(Boolean));
 };
 
 const scoreTextMatch = (document: SearchDocument, query: string, expandedTerms: string[] = []): number => {
@@ -280,7 +298,7 @@ const scoreTextMatch = (document: SearchDocument, query: string, expandedTerms: 
     return score;
 };
 
-const buildScoreReason = (document: SearchDocument): string => {
+const buildScoreReason = (document: SearchDocument, components?: Record<string, number>): string => {
     const parts = [
         DOMAIN_LABELS[document.domain] || document.domain,
         INTENT_LABELS[document.intent] || document.intent,
@@ -288,10 +306,20 @@ const buildScoreReason = (document: SearchDocument): string => {
     ];
 
     if (document.attachments.length > 0) {
-        parts.push(`${document.attachments.length} 个附件`);
+        parts.push(`${document.attachments.length}附件`);
     }
 
-    return parts.join(' · ');
+    const lead = parts.join('·');
+    if (!components) return lead;
+
+    const ranked = Object.entries(components)
+        .filter(([_, value]) => value > 0.01)
+        .sort((a, b) => b[1] - a[1])
+        .slice(0, 3)
+        .map(([name, value]) => `${name}:${value.toFixed(2)}`);
+
+    const detail = ranked.join(' / ');
+    return detail ? `${lead} · ${detail}` : lead;
 };
 
 const intentWeight = (intent: SearchIntent): number => {
@@ -501,6 +529,8 @@ export const rankSearchDocuments = (
     const aliasPayloads = aliasPayloadsForQuery(trimmed, queryAliases);
     const expandedTerms = aliasTermsFromPayloads(aliasPayloads);
     const targetDomains = targetDomainsFromPayloads(aliasPayloads);
+    const targetIntents = targetIntentsFromPayloads(aliasPayloads);
+    const queryType = inferQueryType(trimmed, targetDomains, targetIntents);
     const hybridDocuments = (hybridIndex?.documents || {}) as Record<string, { terms?: Record<string, number>, fields?: Record<string, string> }>;
 
     return documents
@@ -525,12 +555,29 @@ export const rankSearchDocuments = (
             const officialDomainBoost = domainMatched && document.source_type !== 'github_resource' ? 1.24 : 1;
             const resourceDomainPenalty = targetDomains.size > 0 && !domainMatched && document.source_type === 'github_resource' ? 0.76 : 1;
 
+            let bm25Weight = 0.26;
+            let fieldWeight = 0.22;
+            let tagWeight = 0.15;
+            let entityWeight = 0.1;
+            let semanticWeight = 0.12;
+
+            if (queryType === 'task') {
+                entityWeight += 0.05;
+                semanticWeight += 0.05;
+            } else if (queryType === 'exam') {
+                entityWeight += 0.1;
+                fieldWeight += 0.1;
+            } else if (queryType === 'resource') {
+                tagWeight += 0.1;
+                semanticWeight += 0.05;
+            }
+
             const rawMatchScore =
-                0.26 * Math.min(1, bm25Proxy) +
-                0.22 * fieldScore +
-                0.15 * tagScore +
-                0.1 * Math.max(Number(document.domain.includes(trimmed) || document.intent.includes(trimmed)), overlapScore(trimmed, document.source)) +
-                0.12 * Math.max(taskFrameScore, overlapScore(expandedTerms.join(' '), document.content));
+                bm25Weight * Math.min(1, bm25Proxy) +
+                fieldWeight * fieldScore +
+                tagWeight * tagScore +
+                entityWeight * Math.max(Number(document.domain.includes(trimmed) || document.intent.includes(trimmed)), overlapScore(trimmed, document.source)) +
+                semanticWeight * Math.max(taskFrameScore, overlapScore(expandedTerms.join(' '), document.content));
 
             const hasMatch = textScore > 0 || rawMatchScore > 0;
             
@@ -551,17 +598,26 @@ export const rankSearchDocuments = (
                 resourceDomainPenalty *
                 (document.sensitive ? 0.92 : 1) : 0;
 
+            const components = {
+                bm25: Math.min(1, bm25Proxy),
+                field: fieldScore,
+                tag: tagScore,
+                task_frame: taskFrameScore,
+                utility: Math.min(1, utilityScore),
+                risk_penalty: Math.min(1, riskPenalty)
+            };
+
             return {
                 ...document,
                 score: Number(weightedScore.toFixed(4)),
-                score_reason: buildScoreReason(document),
+                score_reason: buildScoreReason(document, components),
                 score_components: {
-                    bm25: Number(Math.min(1, bm25Proxy).toFixed(4)),
-                    field: Number(fieldScore.toFixed(4)),
-                    tag: Number(tagScore.toFixed(4)),
-                    task_frame: Number(taskFrameScore.toFixed(4)),
-                    utility: Number(Math.min(1, utilityScore).toFixed(4)),
-                    risk_penalty: Number(Math.min(1, riskPenalty).toFixed(4))
+                    bm25: Number(components.bm25.toFixed(4)),
+                    field: Number(components.field.toFixed(4)),
+                    tag: Number(components.tag.toFixed(4)),
+                    task_frame: Number(components.task_frame.toFixed(4)),
+                    utility: Number(components.utility.toFixed(4)),
+                    risk_penalty: Number(components.risk_penalty.toFixed(4))
                 }
             };
         })

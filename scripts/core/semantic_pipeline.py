@@ -167,6 +167,8 @@ def derive_semantic_fields_llm(entry: dict[str, Any], llm_result: dict[str, Any]
         "sensitive": "llm" if raw_presence.get("sensitive") else "llm_missing",
     }
     
+    val_out = {**val, "raw_field_presence": raw_presence}
+    
     return SemanticResult(
         semantic_mode="llm",
         field_sources=field_sources,
@@ -197,7 +199,7 @@ def derive_semantic_fields_llm(entry: dict[str, Any], llm_result: dict[str, Any]
         student_score_source="hybrid_rank_feature",
         importance_score_source="hybrid_rank_feature",
         tags=tags,
-        llm=val,
+        llm=val_out,
         raw_field_presence=raw_presence
     )
 

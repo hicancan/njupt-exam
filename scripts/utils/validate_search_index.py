@@ -15,7 +15,7 @@ from config.indexer_config import (
     QUERY_ALIASES_PATH,
     ONTOLOGY_PATH,
 )
-from core.llm_scorer import BatchLLMResult, LLMResult
+from core.llm_scorer import BatchLLMResult, LLMRawResult
 from models.semantic_model import SEARCH_DOMAINS, SEARCH_INTENTS, SEARCH_LIFECYCLES, SEARCH_SOURCE_TYPES
 
 
@@ -140,7 +140,7 @@ def validate_llm_fixture() -> None:
         "confidence": 0.86,
         "review_required": False,
     }
-    LLMResult.model_validate(fixture)
+    LLMRawResult.model_validate(fixture)
     BatchLLMResult.model_validate({"results": [{"id": "fixture-1", **fixture}]})
 
 

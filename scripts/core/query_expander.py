@@ -38,7 +38,17 @@ def understand_query(raw_query: str, aliases: dict[str, Any]) -> dict[str, Any]:
         "exact_terms": unique(exact_terms),
         "search_mode": "hybrid",
         "semantic_queries": unique(build_semantic_queries(normalized_query, expanded_aliases)),
+        "query_type": infer_query_type(normalized_query, target_domains, target_intents),
     }
+
+def infer_query_type(query: str, domains: list[str], intents: list[str]) -> str:
+    if "考试" in query or "exam" in domains or "schedule" in intents:
+        return "exam"
+    if any(term in query for term in ("资料", "题", "复习", "卷", "课件")) or "resource" in domains:
+        return "resource"
+    if any(term in query for term in ("报名", "申请", "提交", "参加")) or any(intent in intents for intent in ("apply", "register", "submit", "attend")):
+        return "task"
+    return "general"
 
 
 def build_semantic_queries(query: str, aliases: list[str]) -> list[str]:

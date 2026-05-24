@@ -1,9 +1,9 @@
 {
-  "generated_at": "2026-05-24T23:27:30.406766+08:00",
+  "generated_at": "2026-05-25T00:05:33.382112+08:00",
   "total_documents": 161,
   "strategy": "hytask-rag-source-channel-taskframe-hybrid-index-v1",
   "semantic_pipeline_version": "semantic-router-v2",
-  "llm_schema_version": "hytask-taskframe-v1.2",
+  "llm_schema_version": "hytask-taskframe-v2.0",
   "llm_enabled": true,
   "llm_provider": "deepseek",
   "llm_model": "deepseek-v4-flash",
@@ -13,81 +13,77 @@
   "llm_stats": {
     "cache_reused": 0,
     "llm_reused": 0,
-    "llm_attempted": 222,
-    "llm_reprocessed": 203,
-    "llm_failed": 11,
-    "llm_fallback": 56,
-    "llm_skipped_by_limit": 0,
-    "llm_batches_attempted": 21,
-    "llm_batch_docs_attempted": 222,
+    "llm_attempted": 20,
+    "llm_reprocessed": 0,
+    "llm_failed": 0,
+    "llm_fallback": 247,
+    "llm_skipped_by_limit": 202,
+    "llm_batches_attempted": 2,
+    "llm_batch_docs_attempted": 20,
     "candidate_llm_cache_reused": 0,
     "restricted": 0
   },
   "semantic_mode_counts": {
-    "llm": 136,
+    "llm": 22,
     "heuristic": 0,
-    "heuristic_degraded": 7,
+    "heuristic_degraded": 0,
     "guarded_metadata": 1,
     "unprocessed": 0
   },
   "field_source_counts": {
     "category": {
-      "heuristic": 7,
-      "llm": 110,
-      "display_mapping": 26,
+      "heuristic": 121,
+      "llm": 22,
       "null": 17,
       "rule_guard": 1
     },
     "domain": {
-      "heuristic": 7,
-      "llm": 136,
+      "heuristic": 121,
+      "llm": 22,
       "null": 17,
       "rule_guard": 1
     },
     "intent": {
-      "heuristic": 7,
-      "llm": 136,
+      "heuristic": 121,
+      "llm": 22,
       "null": 17,
       "rule_guard": 1
     },
     "deadline": {
-      "heuristic": 7,
-      "llm_missing": 110,
-      "llm": 26,
+      "heuristic": 121,
+      "llm": 22,
       "null": 17,
       "rule_guard": 1
     },
     "action_required": {
-      "heuristic": 7,
-      "llm": 136,
+      "heuristic": 121,
+      "llm": 22,
       "null": 17,
       "rule_guard": 1
     },
     "action_summary": {
-      "heuristic": 7,
-      "llm": 39,
-      "llm_missing": 97,
+      "heuristic": 121,
+      "llm": 22,
       "null": 18
     },
     "required_materials": {
-      "null": 25,
-      "llm": 35,
-      "llm_missing": 101
+      "null": 139,
+      "llm": 22
     },
     "summary": {
-      "heuristic": 7,
-      "llm": 136,
+      "heuristic": 121,
+      "llm": 22,
       "null": 17,
       "rule_guard": 1
     },
     "evidence": {
-      "heuristic": 7,
-      "llm": 136,
+      "heuristic": 121,
+      "llm": 22,
       "null": 18
     },
     "sensitive": {
-      "null": 25,
-      "llm": 136
+      "null": 139,
+      "llm": 22
     },
     "review_required": {
       "null": 161
@@ -103,17 +99,16 @@
     }
   },
   "task_frame_source_mode_counts": {
-    "llm": 62,
-    "unknown": 18
+    "heuristic_rule_frame": 18
   },
   "llm_missing_field_counts": {
     "category": 0,
     "domain": 0,
     "intent": 0,
-    "deadline": 110,
+    "deadline": 0,
     "action_required": 0,
-    "action_summary": 97,
-    "required_materials": 101,
+    "action_summary": 0,
+    "required_materials": 0,
     "summary": 0,
     "evidence": 0,
     "sensitive": 0,
@@ -123,33 +118,33 @@
     "task_frames": 0
   },
   "hybrid_score_field_count": 0,
-  "training_eligible_count": 116,
-  "heuristic_degraded_count": 7,
+  "training_eligible_count": 13,
+  "heuristic_degraded_count": 0,
   "llm_purity_rate": 1.0,
   "source_count": 30,
   "channel_count": 99,
   "audited_channel_count": 99,
   "production_channel_count": 99,
   "failed_channel_count": 0,
-  "task_frame_count": 80,
-  "documents_with_task_frame": 71,
+  "task_frame_count": 18,
+  "documents_with_task_frame": 18,
   "evidence_coverage": {
     "audience": 1.0,
     "action": 1.0,
-    "deadline": 1.0,
+    "deadline": 0.0,
     "materials": 1.0,
     "location": 1.0,
     "sensitive": 0.0,
-    "overall": 0.8333
+    "overall": 1.0
   },
-  "review_required_count": 14,
+  "review_required_count": 123,
   "low_evidence_count": 0,
   "restricted_count": 0,
   "sensitive_count": 3,
   "hybrid_index": {
     "doc_count": 161,
-    "task_frame_count": 80,
-    "avg_doc_len": 660.6522
+    "task_frame_count": 18,
+    "avg_doc_len": 654.7578
   },
   "sources": [
     {
@@ -169,9 +164,7 @@
           "student_value": 1.0,
           "audit_status": "chrome_audited",
           "status": "ok",
-          "documents": 1,
-          "candidates": 1,
-          "list_errors": []
+          "documents": 0
         },
         {
           "id": "jwc_course",
@@ -180,9 +173,7 @@
           "student_value": 0.98,
           "audit_status": "chrome_audited",
           "status": "ok",
-          "documents": 2,
-          "candidates": 2,
-          "list_errors": []
+          "documents": 0
         },
         {
           "id": "jwc_degree",
@@ -191,9 +182,7 @@
           "student_value": 0.96,
           "audit_status": "chrome_audited",
           "status": "ok",
-          "documents": 1,
-          "candidates": 1,
-          "list_errors": []
+          "documents": 0
         },
         {
           "id": "jwc_transfer",
@@ -202,9 +191,7 @@
           "student_value": 0.96,
           "audit_status": "chrome_audited",
           "status": "ok",
-          "documents": 1,
-          "candidates": 1,
-          "list_errors": []
+          "documents": 0
         },
         {
           "id": "jwc_recommendation",
@@ -213,9 +200,7 @@
           "student_value": 0.98,
           "audit_status": "chrome_audited",
           "status": "ok",
-          "documents": 9,
-          "candidates": 36,
-          "list_errors": []
+          "documents": 0
         },
         {
           "id": "jwc_download",
@@ -224,9 +209,7 @@
           "student_value": 0.9,
           "audit_status": "chrome_audited",
           "status": "ok",
-          "documents": 0,
-          "candidates": 1,
-          "list_errors": []
+          "documents": 0
         },
         {
           "id": "jwc_calendar",
@@ -234,22 +217,17 @@
           "priority": 0.88,
           "student_value": 0.88,
           "audit_status": "chrome_audited",
-          "status": "warning",
-          "documents": 0,
-          "candidates": 1,
-          "list_errors": [
-            "http://jwc.njupt.edu.cn/2025/0904/c1528a288083/page.htm: 412 Client Error: Precondition Failed for url: http://jwc.njupt.edu.cn/2025/0904/c1528a288083/page.htm"
-          ]
+          "status": "ok",
+          "documents": 0
         }
       ],
-      "status": "ok",
-      "documents": 12,
-      "last_fetch_at": "2026-05-24T23:27:30.406766+08:00",
+      "status": "error",
+      "documents": 0,
+      "last_fetch_at": "2026-05-25T00:05:33.382112+08:00",
       "list_errors": [
         "http://jwc.njupt.edu.cn/2025/0904/c1528a288083/page.htm: 412 Client Error: Precondition Failed for url: http://jwc.njupt.edu.cn/2025/0904/c1528a288083/page.htm"
       ],
-      "candidates": 14,
-      "filtered_out": 2
+      "error": "Invalid format specifier ' 0.9,\n    \"intent\": 0.9,\n    \"deadline\": 0.0,\n    \"action\": 0.8,\n    \"materials\": 0.7,\n    \"location\": 0.0\n  ' for object of type 'str'"
     },
     {
       "id": "xsc",
@@ -268,9 +246,7 @@
           "student_value": 0.98,
           "audit_status": "chrome_audited",
           "status": "ok",
-          "documents": 0,
-          "candidates": 0,
-          "list_errors": []
+          "documents": 0
         },
         {
           "id": "xsc_subsidy",
@@ -279,9 +255,7 @@
           "student_value": 0.98,
           "audit_status": "chrome_audited",
           "status": "ok",
-          "documents": 0,
-          "candidates": 0,
-          "list_errors": []
+          "documents": 0
         },
         {
           "id": "xsc_dormitory",
@@ -290,9 +264,7 @@
           "student_value": 0.9,
           "audit_status": "chrome_audited",
           "status": "ok",
-          "documents": 14,
-          "candidates": 26,
-          "list_errors": []
+          "documents": 0
         },
         {
           "id": "xsc_psychology",
@@ -301,9 +273,7 @@
           "student_value": 0.86,
           "audit_status": "chrome_audited",
           "status": "ok",
-          "documents": 0,
-          "candidates": 25,
-          "list_errors": []
+          "documents": 0
         },
         {
           "id": "xsc_service",
@@ -312,9 +282,7 @@
           "student_value": 0.9,
           "audit_status": "chrome_audited",
           "status": "ok",
-          "documents": 0,
-          "candidates": 0,
-          "list_errors": []
+          "documents": 0
         },
         {
           "id": "xsc_download",
@@ -323,16 +291,13 @@
           "student_value": 0.86,
           "audit_status": "chrome_audited",
           "status": "ok",
-          "documents": 0,
-          "candidates": 0,
-          "list_errors": []
+          "documents": 0
         }
       ],
-      "status": "ok",
-      "documents": 6,
-      "last_fetch_at": "2026-05-24T23:27:30.406766+08:00",
-      "candidates": 14,
-      "filtered_out": 8
+      "status": "error",
+      "documents": 0,
+      "last_fetch_at": "2026-05-25T00:05:33.382112+08:00",
+      "error": "Invalid format specifier ' 0.9,\n    \"intent\": 0.9,\n    \"deadline\": 0.0,\n    \"action\": 0.8,\n    \"materials\": 0.7,\n    \"location\": 0.0\n  ' for object of type 'str'"
     },
     {
       "id": "pg",
@@ -401,10 +366,10 @@
         }
       ],
       "status": "ok",
-      "documents": 7,
-      "last_fetch_at": "2026-05-24T23:27:30.406766+08:00",
+      "documents": 8,
+      "last_fetch_at": "2026-05-25T00:05:33.382112+08:00",
       "candidates": 13,
-      "filtered_out": 6
+      "filtered_out": 5
     },
     {
       "id": "ygb",
@@ -462,10 +427,10 @@
         }
       ],
       "status": "ok",
-      "documents": 4,
-      "last_fetch_at": "2026-05-24T23:27:30.406766+08:00",
+      "documents": 7,
+      "last_fetch_at": "2026-05-25T00:05:33.382112+08:00",
       "candidates": 14,
-      "filtered_out": 10
+      "filtered_out": 7
     },
     {
       "id": "youth",
@@ -523,10 +488,10 @@
         }
       ],
       "status": "ok",
-      "documents": 5,
-      "last_fetch_at": "2026-05-24T23:27:30.406766+08:00",
+      "documents": 2,
+      "last_fetch_at": "2026-05-25T00:05:33.382112+08:00",
       "candidates": 10,
-      "filtered_out": 5
+      "filtered_out": 8
     },
     {
       "id": "cxcy",
@@ -595,10 +560,10 @@
         }
       ],
       "status": "ok",
-      "documents": 14,
-      "last_fetch_at": "2026-05-24T23:27:30.406766+08:00",
+      "documents": 11,
+      "last_fetch_at": "2026-05-25T00:05:33.382112+08:00",
       "candidates": 14,
-      "filtered_out": 0
+      "filtered_out": 3
     },
     {
       "id": "job",
@@ -640,7 +605,7 @@
       ],
       "status": "ok",
       "documents": 18,
-      "last_fetch_at": "2026-05-24T23:27:30.406766+08:00"
+      "last_fetch_at": "2026-05-25T00:05:33.382112+08:00"
     },
     {
       "id": "lib",
@@ -698,10 +663,10 @@
         }
       ],
       "status": "ok",
-      "documents": 12,
-      "last_fetch_at": "2026-05-24T23:27:30.406766+08:00",
+      "documents": 11,
+      "last_fetch_at": "2026-05-25T00:05:33.382112+08:00",
       "candidates": 14,
-      "filtered_out": 2
+      "filtered_out": 3
     },
     {
       "id": "bwc",
@@ -760,7 +725,7 @@
       ],
       "status": "ok",
       "documents": 3,
-      "last_fetch_at": "2026-05-24T23:27:30.406766+08:00",
+      "last_fetch_at": "2026-05-25T00:05:33.382112+08:00",
       "candidates": 12,
       "filtered_out": 9
     },
@@ -832,7 +797,7 @@
       ],
       "status": "ok",
       "documents": 6,
-      "last_fetch_at": "2026-05-24T23:27:30.406766+08:00",
+      "last_fetch_at": "2026-05-25T00:05:33.382112+08:00",
       "candidates": 14,
       "filtered_out": 8
     },
@@ -881,10 +846,10 @@
         }
       ],
       "status": "ok",
-      "documents": 3,
-      "last_fetch_at": "2026-05-24T23:27:30.406766+08:00",
+      "documents": 5,
+      "last_fetch_at": "2026-05-25T00:05:33.382112+08:00",
       "candidates": 14,
-      "filtered_out": 11
+      "filtered_out": 9
     },
     {
       "id": "news",
@@ -920,10 +885,10 @@
         }
       ],
       "status": "ok",
-      "documents": 8,
-      "last_fetch_at": "2026-05-24T23:27:30.406766+08:00",
+      "documents": 10,
+      "last_fetch_at": "2026-05-25T00:05:33.382112+08:00",
       "candidates": 14,
-      "filtered_out": 6
+      "filtered_out": 4
     },
     {
       "id": "xxgk",
@@ -971,7 +936,7 @@
       ],
       "status": "ok",
       "documents": 0,
-      "last_fetch_at": "2026-05-24T23:27:30.406766+08:00",
+      "last_fetch_at": "2026-05-25T00:05:33.382112+08:00",
       "candidates": 0,
       "filtered_out": 0
     },
@@ -1032,7 +997,7 @@
       ],
       "status": "ok",
       "documents": 7,
-      "last_fetch_at": "2026-05-24T23:27:30.406766+08:00",
+      "last_fetch_at": "2026-05-25T00:05:33.382112+08:00",
       "candidates": 14,
       "filtered_out": 7
     },
@@ -1103,10 +1068,10 @@
         }
       ],
       "status": "ok",
-      "documents": 1,
-      "last_fetch_at": "2026-05-24T23:27:30.406766+08:00",
+      "documents": 6,
+      "last_fetch_at": "2026-05-25T00:05:33.382112+08:00",
       "candidates": 8,
-      "filtered_out": 7
+      "filtered_out": 2
     },
     {
       "id": "xxb",
@@ -1164,10 +1129,10 @@
         }
       ],
       "status": "ok",
-      "documents": 2,
-      "last_fetch_at": "2026-05-24T23:27:30.406766+08:00",
+      "documents": 1,
+      "last_fetch_at": "2026-05-25T00:05:33.382112+08:00",
       "candidates": 6,
-      "filtered_out": 4
+      "filtered_out": 5
     },
     {
       "id": "cwc",
@@ -1204,7 +1169,7 @@
       ],
       "status": "ok",
       "documents": 0,
-      "last_fetch_at": "2026-05-24T23:27:30.406766+08:00",
+      "last_fetch_at": "2026-05-25T00:05:33.382112+08:00",
       "candidates": 13,
       "filtered_out": 13
     },
@@ -1253,10 +1218,10 @@
         }
       ],
       "status": "ok",
-      "documents": 1,
-      "last_fetch_at": "2026-05-24T23:27:30.406766+08:00",
+      "documents": 3,
+      "last_fetch_at": "2026-05-25T00:05:33.382112+08:00",
       "candidates": 14,
-      "filtered_out": 13
+      "filtered_out": 11
     },
     {
       "id": "pe",
@@ -1315,7 +1280,7 @@
       ],
       "status": "ok",
       "documents": 3,
-      "last_fetch_at": "2026-05-24T23:27:30.406766+08:00",
+      "last_fetch_at": "2026-05-25T00:05:33.382112+08:00",
       "candidates": 12,
       "filtered_out": 9
     },
@@ -1354,7 +1319,7 @@
       ],
       "status": "ok",
       "documents": 8,
-      "last_fetch_at": "2026-05-24T23:27:30.406766+08:00",
+      "last_fetch_at": "2026-05-25T00:05:33.382112+08:00",
       "candidates": 8,
       "filtered_out": 0
     },
@@ -1393,7 +1358,7 @@
       ],
       "status": "ok",
       "documents": 0,
-      "last_fetch_at": "2026-05-24T23:27:30.406766+08:00",
+      "last_fetch_at": "2026-05-25T00:05:33.382112+08:00",
       "candidates": 0,
       "filtered_out": 0
     },
@@ -1432,7 +1397,7 @@
       ],
       "status": "ok",
       "documents": 0,
-      "last_fetch_at": "2026-05-24T23:27:30.406766+08:00",
+      "last_fetch_at": "2026-05-25T00:05:33.382112+08:00",
       "candidates": 0,
       "filtered_out": 0
     },
@@ -1471,7 +1436,7 @@
       ],
       "status": "ok",
       "documents": 0,
-      "last_fetch_at": "2026-05-24T23:27:30.406766+08:00",
+      "last_fetch_at": "2026-05-25T00:05:33.382112+08:00",
       "candidates": 0,
       "filtered_out": 0
     },
@@ -1510,7 +1475,7 @@
       ],
       "status": "ok",
       "documents": 0,
-      "last_fetch_at": "2026-05-24T23:27:30.406766+08:00",
+      "last_fetch_at": "2026-05-25T00:05:33.382112+08:00",
       "candidates": 0,
       "filtered_out": 0
     },
@@ -1549,7 +1514,7 @@
       ],
       "status": "ok",
       "documents": 0,
-      "last_fetch_at": "2026-05-24T23:27:30.406766+08:00",
+      "last_fetch_at": "2026-05-25T00:05:33.382112+08:00",
       "candidates": 0,
       "filtered_out": 0
     },
@@ -1588,7 +1553,7 @@
       ],
       "status": "ok",
       "documents": 0,
-      "last_fetch_at": "2026-05-24T23:27:30.406766+08:00",
+      "last_fetch_at": "2026-05-25T00:05:33.382112+08:00",
       "candidates": 0,
       "filtered_out": 0
     },
@@ -1627,7 +1592,7 @@
       ],
       "status": "ok",
       "documents": 0,
-      "last_fetch_at": "2026-05-24T23:27:30.406766+08:00",
+      "last_fetch_at": "2026-05-25T00:05:33.382112+08:00",
       "candidates": 0,
       "filtered_out": 0
     },
@@ -1665,10 +1630,10 @@
         }
       ],
       "status": "ok",
-      "documents": 4,
-      "last_fetch_at": "2026-05-24T23:27:30.406766+08:00",
+      "documents": 7,
+      "last_fetch_at": "2026-05-25T00:05:33.382112+08:00",
       "candidates": 13,
-      "filtered_out": 9
+      "filtered_out": 6
     },
     {
       "id": "bc",
@@ -1704,10 +1669,10 @@
         }
       ],
       "status": "ok",
-      "documents": 6,
-      "last_fetch_at": "2026-05-24T23:27:30.406766+08:00",
+      "documents": 12,
+      "last_fetch_at": "2026-05-25T00:05:33.382112+08:00",
       "candidates": 14,
-      "filtered_out": 8
+      "filtered_out": 2
     },
     {
       "id": "jjxy",
@@ -1744,7 +1709,7 @@
       ],
       "status": "ok",
       "documents": 0,
-      "last_fetch_at": "2026-05-24T23:27:30.406766+08:00",
+      "last_fetch_at": "2026-05-25T00:05:33.382112+08:00",
       "candidates": 0,
       "filtered_out": 0
     },
@@ -1755,7 +1720,7 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-24T23:27:30.406766+08:00",
+      "last_fetch_at": "2026-05-25T00:05:33.382112+08:00",
       "warning": "GitHub fetch failed; reused stale cached documents: 403 Client Error: rate limit exceeded for url: https://api.github.com/repos/hicancan/njupt-net"
     },
     {
@@ -1765,7 +1730,7 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-24T23:27:30.406766+08:00",
+      "last_fetch_at": "2026-05-25T00:05:33.382112+08:00",
       "warning": "GitHub fetch failed; reused stale cached documents: 403 Client Error: rate limit exceeded for url: https://api.github.com/repos/hicancan/njupt-jwxt-assistant"
     },
     {
@@ -1775,7 +1740,7 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 5,
-      "last_fetch_at": "2026-05-24T23:27:30.406766+08:00",
+      "last_fetch_at": "2026-05-25T00:05:33.382112+08:00",
       "warning": "GitHub fetch failed; reused stale cached documents: 403 Client Error: rate limit exceeded for url: https://api.github.com/repos/ZsgsDesign/NOJ"
     },
     {
@@ -1785,7 +1750,7 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-24T23:27:30.406766+08:00",
+      "last_fetch_at": "2026-05-25T00:05:33.382112+08:00",
       "warning": "GitHub fetch failed; reused stale cached documents: 403 Client Error: rate limit exceeded for url: https://api.github.com/repos/NJUPTFreeExams/NJUPT-General-Free-Exams"
     },
     {
@@ -1795,7 +1760,7 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-24T23:27:30.406766+08:00",
+      "last_fetch_at": "2026-05-25T00:05:33.382112+08:00",
       "warning": "GitHub fetch failed; reused stale cached documents: 403 Client Error: rate limit exceeded for url: https://api.github.com/repos/NJUPTFreeExams/NJUPT-CST-Free-Exams"
     },
     {
@@ -1805,7 +1770,7 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-24T23:27:30.406766+08:00",
+      "last_fetch_at": "2026-05-25T00:05:33.382112+08:00",
       "warning": "GitHub fetch failed; reused stale cached documents: 403 Client Error: rate limit exceeded for url: https://api.github.com/repos/NJUPTFreeExams/NJUPT-CS-FREE"
     },
     {
@@ -1815,7 +1780,7 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-24T23:27:30.406766+08:00",
+      "last_fetch_at": "2026-05-25T00:05:33.382112+08:00",
       "warning": "GitHub fetch failed; reused stale cached documents: 403 Client Error: rate limit exceeded for url: https://api.github.com/repos/bmxbmx3/cn_sort"
     },
     {
@@ -1825,7 +1790,7 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-24T23:27:30.406766+08:00",
+      "last_fetch_at": "2026-05-25T00:05:33.382112+08:00",
       "warning": "GitHub fetch failed; reused stale cached documents: 403 Client Error: rate limit exceeded for url: https://api.github.com/repos/leftjs/StudentGradesManageSystem"
     },
     {
@@ -1835,7 +1800,7 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-24T23:27:30.406766+08:00",
+      "last_fetch_at": "2026-05-25T00:05:33.382112+08:00",
       "warning": "GitHub fetch failed; reused stale cached documents: 403 Client Error: rate limit exceeded for url: https://api.github.com/repos/renyuanzhe/NJUPT-CS-Courses"
     },
     {
@@ -1845,7 +1810,7 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-24T23:27:30.406766+08:00",
+      "last_fetch_at": "2026-05-25T00:05:33.382112+08:00",
       "warning": "GitHub fetch failed; reused stale cached documents: 403 Client Error: rate limit exceeded for url: https://api.github.com/repos/Wonz5130/NJUPT-Yellow-Page"
     },
     {
@@ -1855,7 +1820,7 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 3,
-      "last_fetch_at": "2026-05-24T23:27:30.406766+08:00",
+      "last_fetch_at": "2026-05-25T00:05:33.382112+08:00",
       "warning": "GitHub fetch failed; reused stale cached documents: 403 Client Error: rate limit exceeded for url: https://api.github.com/repos/GreenPomelo/Undergraduate"
     },
     {
@@ -1865,7 +1830,7 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-24T23:27:30.406766+08:00",
+      "last_fetch_at": "2026-05-25T00:05:33.382112+08:00",
       "warning": "GitHub fetch failed; reused stale cached documents: 403 Client Error: rate limit exceeded for url: https://api.github.com/repos/NJUPTFreeExams/NJUPT-AUTO-Free-Exams"
     },
     {
@@ -1875,7 +1840,7 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-24T23:27:30.406766+08:00",
+      "last_fetch_at": "2026-05-25T00:05:33.382112+08:00",
       "warning": "GitHub fetch failed; reused stale cached documents: 403 Client Error: rate limit exceeded for url: https://api.github.com/repos/NJUPT-CG/NCTF2018"
     },
     {
@@ -1885,7 +1850,7 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-24T23:27:30.406766+08:00",
+      "last_fetch_at": "2026-05-25T00:05:33.382112+08:00",
       "warning": "GitHub fetch failed; reused stale cached documents: 403 Client Error: rate limit exceeded for url: https://api.github.com/repos/gzr-lgtm/NJUPThesis-Bachelor"
     },
     {
@@ -1895,7 +1860,7 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-24T23:27:30.406766+08:00",
+      "last_fetch_at": "2026-05-25T00:05:33.382112+08:00",
       "warning": "GitHub fetch failed; reused stale cached documents: 403 Client Error: rate limit exceeded for url: https://api.github.com/repos/gaoliang/NJUPT-API"
     },
     {
@@ -1905,7 +1870,7 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-24T23:27:30.406766+08:00",
+      "last_fetch_at": "2026-05-25T00:05:33.382112+08:00",
       "warning": "GitHub fetch failed; reused stale cached documents: 403 Client Error: rate limit exceeded for url: https://api.github.com/repos/xiafanglongfei/NJUPT-auto-evaluate"
     },
     {
@@ -1915,7 +1880,7 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-24T23:27:30.406766+08:00",
+      "last_fetch_at": "2026-05-25T00:05:33.382112+08:00",
       "warning": "GitHub fetch failed; reused stale cached documents: 403 Client Error: rate limit exceeded for url: https://api.github.com/repos/NJUPTFreeExams/NJUPT-TE-Free-Exams"
     },
     {
@@ -1925,7 +1890,7 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-24T23:27:30.406766+08:00",
+      "last_fetch_at": "2026-05-25T00:05:33.382112+08:00",
       "warning": "GitHub fetch failed; reused stale cached documents: 403 Client Error: rate limit exceeded for url: https://api.github.com/repos/kaijy91/NJUPT_NET"
     },
     {
@@ -1935,7 +1900,7 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 2,
-      "last_fetch_at": "2026-05-24T23:27:30.406766+08:00",
+      "last_fetch_at": "2026-05-25T00:05:33.382112+08:00",
       "warning": "GitHub fetch failed; reused stale cached documents: 403 Client Error: rate limit exceeded for url: https://api.github.com/repos/s235784/NJUPT_AutoLogin"
     },
     {
@@ -1945,7 +1910,7 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-24T23:27:30.406766+08:00",
+      "last_fetch_at": "2026-05-25T00:05:33.382112+08:00",
       "warning": "GitHub fetch failed; reused stale cached documents: 403 Client Error: rate limit exceeded for url: https://api.github.com/repos/Freedomisgood/NjuptCmcc"
     },
     {
@@ -1955,7 +1920,7 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-24T23:27:30.406766+08:00",
+      "last_fetch_at": "2026-05-25T00:05:33.382112+08:00",
       "warning": "GitHub fetch failed; reused stale cached documents: 403 Client Error: rate limit exceeded for url: https://api.github.com/repos/love98ooo/ZhengFangJiaoWuSystemTampermonkeyScript"
     },
     {
@@ -1965,7 +1930,7 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 2,
-      "last_fetch_at": "2026-05-24T23:27:30.406766+08:00",
+      "last_fetch_at": "2026-05-25T00:05:33.382112+08:00",
       "warning": "GitHub fetch failed; reused stale cached documents: 403 Client Error: rate limit exceeded for url: https://api.github.com/repos/NJUPT-NAVI/NJUPT-Survival-Guide"
     },
     {
@@ -1975,7 +1940,7 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-24T23:27:30.406766+08:00",
+      "last_fetch_at": "2026-05-25T00:05:33.382112+08:00",
       "warning": "GitHub fetch failed; reused stale cached documents: 403 Client Error: rate limit exceeded for url: https://api.github.com/repos/bmxbmx3/finger_vein_recognition"
     },
     {
@@ -1985,7 +1950,7 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-24T23:27:30.406766+08:00",
+      "last_fetch_at": "2026-05-25T00:05:33.382112+08:00",
       "warning": "GitHub fetch failed; reused stale cached documents: 403 Client Error: rate limit exceeded for url: https://api.github.com/repos/lux-QAQ/NJUPT_Fastlogin"
     },
     {
@@ -1995,7 +1960,7 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-24T23:27:30.406766+08:00",
+      "last_fetch_at": "2026-05-25T00:05:33.382112+08:00",
       "warning": "GitHub fetch failed; reused stale cached documents: 403 Client Error: rate limit exceeded for url: https://api.github.com/repos/NJUPTFreeExams/njuptfreeexams.github.io"
     },
     {
@@ -2005,7 +1970,7 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-24T23:27:30.406766+08:00",
+      "last_fetch_at": "2026-05-25T00:05:33.382112+08:00",
       "warning": "GitHub fetch failed; reused stale cached documents: 403 Client Error: rate limit exceeded for url: https://api.github.com/repos/dhiyu/NJUPT-Bachelor"
     },
     {
@@ -2015,7 +1980,7 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-24T23:27:30.406766+08:00",
+      "last_fetch_at": "2026-05-25T00:05:33.382112+08:00",
       "warning": "GitHub fetch failed; reused stale cached documents: 403 Client Error: rate limit exceeded for url: https://api.github.com/repos/yosunpeng/postgraduate_test_njupt"
     },
     {
@@ -2025,7 +1990,7 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-24T23:27:30.406766+08:00",
+      "last_fetch_at": "2026-05-25T00:05:33.382112+08:00",
       "warning": "GitHub fetch failed; reused stale cached documents: 403 Client Error: rate limit exceeded for url: https://api.github.com/repos/NJUPTFreeExams/NJUPT-InfoSec-Free-Exams"
     },
     {
@@ -2035,7 +2000,7 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-24T23:27:30.406766+08:00",
+      "last_fetch_at": "2026-05-25T00:05:33.382112+08:00",
       "warning": "GitHub fetch failed; reused stale cached documents: 403 Client Error: rate limit exceeded for url: https://api.github.com/repos/ace-trump-tech/NJUPT-Graduation-thesis"
     },
     {
@@ -2045,7 +2010,7 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-24T23:27:30.406766+08:00",
+      "last_fetch_at": "2026-05-25T00:05:33.382112+08:00",
       "warning": "GitHub fetch failed; reused stale cached documents: 403 Client Error: rate limit exceeded for url: https://api.github.com/repos/Yolumia/NJUPT-NETWORK"
     },
     {
@@ -2055,7 +2020,7 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-24T23:27:30.406766+08:00",
+      "last_fetch_at": "2026-05-25T00:05:33.382112+08:00",
       "warning": "GitHub fetch failed; reused stale cached documents: 403 Client Error: rate limit exceeded for url: https://api.github.com/repos/Moonike1217/NJUPTExamICSBuilder"
     },
     {
@@ -2065,7 +2030,7 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-24T23:27:30.406766+08:00",
+      "last_fetch_at": "2026-05-25T00:05:33.382112+08:00",
       "warning": "GitHub fetch failed; reused stale cached documents: 403 Client Error: rate limit exceeded for url: https://api.github.com/repos/musnows/Njupt-Wifi-Login"
     }
   ]

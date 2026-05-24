@@ -24,10 +24,24 @@ def rank_documents(
     *,
     limit: int | None = None,
 ) -> list[dict[str, Any]]:
-    weights = {**DEFAULT_WEIGHTS, **((ranking_weights or {}).get("weights", ranking_weights or {}))}
     field_weights = (ranking_weights or {}).get("field_weights", {})
     understood = understand_query(query, query_aliases)
-    query_tokens = tokenize_text(" ".join([understood["normalized_query"], *understood["aliases"], *understood["semantic_queries"]]))
+    query_type = understood.get("query_type", "general")
+    
+    base_weights = {**DEFAULT_WEIGHTS, **((ranking_weights or {}).get("weights", ranking_weights or {}))}
+    if query_type == "task":
+        base_weights["entity"] += 0.05
+        base_weights["semantic_expansion"] += 0.05
+    elif query_type == "exam":
+        base_weights["entity"] += 0.1
+        base_weights["field"] += 0.1
+    elif query_type == "resource":
+        base_weights["tag"] += 0.1
+        base_weights["semantic_expansion"] += 0.05
+        
+    weights = base_weights
+    
+    query_tokens = tokenize_text(" ".join([understood["normalized_query"], *understood.get("aliases", []), *understood.get("semantic_queries", [])]))
     bm25 = bm25_scores(query_tokens, hybrid_index)
     doc_lookup = {str(document.get("id")): document for document in documents}
     results: list[dict[str, Any]] = []
@@ -136,5 +150,9 @@ def risk_penalty_score(document: dict[str, Any]) -> float:
 def build_reason(document: dict[str, Any], components: dict[str, float]) -> str:
     lead = f"{document.get('source', '')} · {document.get('channel', '')}".strip(" ·")
     ranked = sorted(components.items(), key=lambda item: item[1], reverse=True)[:3]
-    detail = " / ".join(f"{name}:{value:.2f}" for name, value in ranked if value > 0)
+    detail_parts = []
+    for name, value in ranked:
+        if value > 0.01:
+            detail_parts.append(f"{name}:{value:.2f}")
+    detail = " / ".join(detail_parts)
     return f"{lead} · {detail}" if detail else lead

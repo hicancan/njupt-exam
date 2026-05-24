@@ -19,7 +19,7 @@ from models.semantic_model import SEARCH_DOMAINS, SEARCH_INTENTS, normalize_doma
 from core.llm_task_frame import task_frame_prompt_contract
 from core.evidence_pack import build_evidence_pack
 
-LLM_SCHEMA_VERSION = "hytask-taskframe-v2.0"
+LLM_SCHEMA_VERSION = "hytask-taskframe-v2.1"
 GEMINI_MODEL_NAME = os.environ.get("GEMINI_MODEL", "gemini-3.1-flash-lite")
 LLM_MODEL_NAME = DEEPSEEK_MODEL
 

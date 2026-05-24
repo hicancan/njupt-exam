@@ -670,39 +670,65 @@ def analyze_prepared_documents(prepared: list[dict[str, Any]], now: datetime) ->
         max_chars=int(_RUN_CONFIG["llm_batch_max_chars"]),
     )
 
-    for batch in batches:
-        batch_ids = {str(item["id"]) for item in batch}
+    def process_batch(current_batch: list[dict[str, Any]], attempts: int = 1) -> dict[str, dict[str, Any]]:
+        if not current_batch:
+            return {}
+        batch_ids = {str(item["id"]) for item in current_batch}
         _RUN_STATS["llm_batches_attempted"] += 1
-        _RUN_STATS["llm_batch_docs_attempted"] += len(batch)
-        _RUN_STATS["llm_attempted"] += len(batch)
+        
         batch_results = analyze_documents_batch_with_llm(
-            batch,
+            current_batch,
             provider=runtime_llm_provider(),
             enabled=True,
             schema_version=active_llm_schema_version(),
             max_output_tokens=effective_llm_batch_max_output_tokens(),
         )
-        for cache_key, result in batch_results.items():
-            if cache_key not in entry_by_cache_key:
-                continue
-            results[cache_key] = result
-            store_llm_cache_result(entry_by_cache_key[cache_key], result, now)
-            _RUN_STATS["llm_reprocessed"] += 1
-
-        missing_ids = batch_ids - set(batch_results)
-        if missing_ids:
-            _RUN_STATS["llm_failed"] += len(missing_ids)
-            _RUN_STATS["llm_fallback"] += len(missing_ids)
-            for missing_id in missing_ids:
+        
+        missing = batch_ids - set(batch_results)
+        if missing and attempts < 3:
+            # Batch failed partially or completely, try splitting
+            print(f"Batch failed ({len(missing)} missing). Splitting and retrying (attempt {attempts+1})...")
+            mid = max(1, len(current_batch) // 2)
+            left_batch = current_batch[:mid]
+            right_batch = current_batch[mid:]
+            res_left = process_batch(left_batch, attempts + 1)
+            res_right = process_batch(right_batch, attempts + 1)
+            
+            # Merge results
+            for k, v in res_left.items(): batch_results[k] = v
+            for k, v in res_right.items(): batch_results[k] = v
+            
+            # Recalculate missing
+            missing = batch_ids - set(batch_results)
+            
+        if missing:
+            _RUN_STATS["llm_failed"] += len(missing)
+            _RUN_STATS["llm_fallback"] += len(missing)
+            for missing_id in missing:
                 if missing_id in entry_by_cache_key:
-                    results[missing_id] = {
+                    batch_results[missing_id] = {
                         "llm_failure": {
                             "attempted": True,
                             "provider_attempts": provider_chain(runtime_llm_provider()),
                             "failure_reason": "provider_error_or_dropped",
+                            "retry_count": attempts,
                             "fallback_mode": "heuristic_degraded"
                         }
                     }
+        return batch_results
+
+    for batch in batches:
+        _RUN_STATS["llm_batch_docs_attempted"] += len(batch)
+        _RUN_STATS["llm_attempted"] += len(batch)
+        batch_results = process_batch(batch)
+        
+        for cache_key, result in batch_results.items():
+            if cache_key not in entry_by_cache_key:
+                continue
+            results[cache_key] = result
+            if "llm_failure" not in result:
+                store_llm_cache_result(entry_by_cache_key[cache_key], result, now)
+                _RUN_STATS["llm_reprocessed"] += 1
 
     return results
 
