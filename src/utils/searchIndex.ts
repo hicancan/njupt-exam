@@ -313,7 +313,7 @@ const buildScoreReason = (document: SearchDocument, components?: Record<string, 
     if (!components) return lead;
 
     const ranked = Object.entries(components)
-        .filter(([_, value]) => value > 0.01)
+        .filter(([, value]) => value > 0.01)
         .sort((a, b) => b[1] - a[1])
         .slice(0, 3)
         .map(([name, value]) => `${name}:${value.toFixed(2)}`);
@@ -555,7 +555,7 @@ export const rankSearchDocuments = (
             const officialDomainBoost = domainMatched && document.source_type !== 'github_resource' ? 1.24 : 1;
             const resourceDomainPenalty = targetDomains.size > 0 && !domainMatched && document.source_type === 'github_resource' ? 0.76 : 1;
 
-            let bm25Weight = 0.26;
+            const bm25Weight = 0.26;
             let fieldWeight = 0.22;
             let tagWeight = 0.15;
             let entityWeight = 0.1;
