@@ -274,7 +274,7 @@ def _build_batch_prompt(documents: list[dict[str, Any]], schema_version: str) ->
 1. 只输出合法 JSON object，不要 Markdown；顶层必须是 {{"results": [...]}}。
 2. 每个 results[i].id 必须原样使用输入文档 id；不得新增、改写、遗漏 id。
 3. 不要编造原文没有的信息；标题暗示但正文没有证据时，降低 confidence 并设置 review_required=true。
-4. 日期、截止时间、地点、对象、材料必须来自原文；不确定填 null 或空数组。
+4. deadline 必须是严格的 ISO 8601 格式（如 "2026-05-01T23:59:00+08:00"）。如果原文只有模糊描述（如“每年5月”、“开学前”），请将其写入 student_summary 或 action_summary 中，并将 deadline 设为 null！
 5. 若正文显示“仅校内地址访问 / 请登录 / 无权访问 / 当前 IP 非校内地址”，不得推断行动事项，设置 review_required=true。
 6. 分类只能使用给定枚举。竞赛只用于真实比赛/赛事/获奖/校赛；海外访学、创业基金、科研训练、交流项目优先归“项目”；奖助只用于奖学金、助学金、资助、评优，不要因为普通“公示”就归奖助。
 7. 若含姓名、学号、手机号、身份证、名单、考生名单、获奖名单、参赛队员等个人信息风险，sensitive=true 并说明 sensitive_types。
