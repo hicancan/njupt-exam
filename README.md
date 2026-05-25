@@ -75,8 +75,10 @@ public/data/data_summary.json
 - TaskFrame：把通知建模为学生任务，包含对象、任务、动作、截止、材料、地点、证据、风险和置信度。
 - Hybrid Index：存储 BM25 词项、字段文本、任务文本、材料、证据、source/channel 信号。
 - Query Aliases：把“保研/推免”“大创”“校园网”等学生自然语言映射到领域、意图和语义扩展。
+- Query Intent Router: 识别查询模式并将其路由到特定垂类意图（如考试查询、资源搜索、事务通知等）。
+- Candidate Gating & Vertical Ranking: 依据路由意图，进行目标域候选文档评级（Tier A/B/C）与特化权重评分。
 - Hybrid Retrieval：组合 BM25、字段、标签、实体、语义扩展、学生效用和风险惩罚。
-- Self Evaluation：`scripts/eval/eval_search.py` 与 `scripts/eval/query_smoke_test.py` 做自动质量与产品烟测。
+- Self Evaluation：`scripts/eval/eval_search.py`，`scripts/eval/eval_product_search.py` 与 `scripts/eval/query_smoke_test.py` 做自动质量与产品烟测。
 
 ## 安全边界
 

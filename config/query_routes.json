@@ -1,0 +1,145 @@
+[
+  {
+    "id": "exam_notice_search",
+    "triggers": ["四六级", "期末", "考试", "CET", "四级", "六级"],
+    "query_type": "exam_notice_search",
+    "must_domains": ["exam"],
+    "preferred_domains": ["exam"],
+    "preferred_sources": ["jwc", "njupt_notice"],
+    "preferred_channels": ["jwc_exam"],
+    "preferred_intents": ["schedule", "register", "check_result"],
+    "blocked_domains_for_top5": ["international", "innovation_project"],
+    "blocked_sources_for_top5": ["exchange", "cxcy", "github"],
+    "allow_resource_top5": false,
+    "freshness_preference": "recent",
+    "explanation": "考试类通知（如四六级、期末安排等），优先显示教务处和官方考试通知。"
+  },
+  {
+    "id": "class_exam_lookup",
+    "triggers": ["B250403", "班级"],
+    "query_type": "class_exam_lookup",
+    "must_domains": ["exam"],
+    "preferred_sources": ["exam_vertical"],
+    "explanation": "班级具体考试查询，优先展示垂直考试频道的精确匹配结果。"
+  },
+  {
+    "id": "degree_defense_search",
+    "triggers": ["论文答辩", "毕业答辩", "学位论文答辩", "答辩公告", "答辩"],
+    "query_type": "degree_defense_search",
+    "must_domains": ["degree"],
+    "preferred_domains": ["degree", "academic"],
+    "preferred_sources": ["pg", "jwc"],
+    "preferred_channels": ["pg_degree", "pg_graduation", "jwc_degree"],
+    "preferred_intents": ["schedule", "submit", "read"],
+    "blocked_domains_for_top5": ["innovation_project"],
+    "blocked_sources_for_top5": ["cxcy"],
+    "allow_resource_top5": false,
+    "freshness_preference": "recent",
+    "explanation": "学位论文/毕业论文答辩类查询优先研究生院、学院和学位相关通知。"
+  },
+  {
+    "id": "service_search",
+    "triggers": ["医保", "校园网", "网络", "报修", "后勤", "医疗", "网费"],
+    "query_type": "service_search",
+    "preferred_domains": ["medical_insurance", "life", "logistics", "service", "network"],
+    "preferred_sources": ["hqc", "xxb"],
+    "blocked_domains_for_top5": ["innovation_project"],
+    "blocked_sources_for_top5": ["cxcy"],
+    "explanation": "校园生活服务类（如医保、网络等），优先后勤和信息中心。"
+  },
+  {
+    "id": "official_notice_search",
+    "triggers": ["转专业", "休学", "复学", "退学"],
+    "query_type": "official_notice_search",
+    "preferred_domains": ["academic", "official"],
+    "preferred_sources": ["jwc", "xsc"],
+    "blocked_domains_for_top5": ["innovation_project"],
+    "blocked_sources_for_top5": ["cxcy"],
+    "explanation": "官方学籍/学业通知，优先教务处或学生处。"
+  },
+  {
+    "id": "resource_search",
+    "triggers": ["高数", "离散数学", "物理", "资料", "课件", "复习", "真题", "微积分"],
+    "query_type": "resource_search",
+    "preferred_domains": ["resource", "course"],
+    "preferred_sources": ["github", "github_resource"],
+    "explanation": "课程资料和复习内容，优先显示GitHub资源。"
+  },
+  {
+    "id": "innovation_project_search",
+    "triggers": ["大创", "创新创业", "结题", "中期", "立项", "国创", "省创"],
+    "query_type": "innovation_project_search",
+    "preferred_domains": ["innovation_project", "project"],
+    "preferred_sources": ["cxcy"],
+    "explanation": "大创和各类创新项目通知。"
+  },
+  {
+    "id": "campus_alert_search",
+    "triggers": ["停电", "停水", "断网", "检修", "警报"],
+    "query_type": "campus_alert_search",
+    "must_domains": ["alert", "logistics"],
+    "preferred_sources": ["hqc", "bwc"],
+    "freshness_preference": "very_recent",
+    "explanation": "校园突发或预警通知（停水停电等）。"
+  },
+  {
+    "id": "scholarship_search",
+    "triggers": ["奖学金", "国奖", "评优", "三好", "先进"],
+    "query_type": "scholarship_search",
+    "preferred_domains": ["scholarship"],
+    "preferred_sources": ["xsc", "ygb"],
+    "explanation": "奖学金及评优通知。"
+  },
+  {
+    "id": "subsidy_search",
+    "triggers": ["助学金", "困难认定", "贷款", "勤工助学", "补助"],
+    "query_type": "subsidy_search",
+    "preferred_domains": ["subsidy"],
+    "preferred_sources": ["xsc"],
+    "explanation": "助学金和困难认定等资助政策。"
+  },
+  {
+    "id": "graduation_search",
+    "triggers": ["毕业", "离校", "派遣", "档案", "双证"],
+    "query_type": "graduation_search",
+    "preferred_domains": ["graduation"],
+    "preferred_sources": ["pg", "jwc", "job"],
+    "explanation": "毕业和离校相关事宜。"
+  },
+  {
+    "id": "competition_search",
+    "triggers": ["比赛", "竞赛", "挑战杯", "电赛", "数模", "蓝桥杯"],
+    "query_type": "competition_search",
+    "preferred_domains": ["competition"],
+    "explanation": "各类学科竞赛和比赛通知。"
+  },
+  {
+    "id": "job_search",
+    "triggers": ["招聘", "宣讲会", "就业", "双选会", "秋招", "春招"],
+    "query_type": "job_search",
+    "preferred_domains": ["job", "career"],
+    "preferred_sources": ["job"],
+    "explanation": "校园招聘和就业信息。"
+  },
+  {
+    "id": "library_search",
+    "triggers": ["图书馆", "开馆", "借阅", "知网", "数据库"],
+    "query_type": "library_search",
+    "preferred_domains": ["library"],
+    "preferred_sources": ["lib"],
+    "explanation": "图书馆相关通知和资源。"
+  },
+  {
+    "id": "policy_search",
+    "triggers": ["政策", "管理办法", "规定", "细则", "章程"],
+    "query_type": "policy_search",
+    "preferred_domains": ["policy"],
+    "explanation": "学校各类政策法规。"
+  },
+  {
+    "id": "general_search",
+    "triggers": [],
+    "query_type": "general_search",
+    "explanation": "通用搜索，无特定倾向。"
+  }
+]

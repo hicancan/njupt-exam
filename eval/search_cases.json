@@ -1,0 +1,60 @@
+[
+  {
+    "query": "四六级",
+    "route": "exam_notice_search",
+    "top1_must_domain_any": ["exam"],
+    "top5_must_include_source_any": ["jwc", "njupt_notice"],
+    "top5_must_not_source_any": ["exchange", "cxcy", "github"],
+    "top5_must_not_domain_any": ["international", "innovation_project"],
+    "allow_empty": false
+  },
+  {
+    "query": "论文答辩",
+    "route": "degree_defense_search",
+    "top5_must_include_domain_any": ["academic"],
+    "top5_must_not_source_any": ["cxcy"],
+    "top5_must_not_domain_any": ["innovation_project"]
+  },
+  {
+    "query": "医保",
+    "route": "service_search",
+    "top5_must_include_domain_any": ["medical_insurance", "life", "logistics"],
+    "top5_must_not_source_any": ["cxcy"],
+    "top5_must_not_domain_any": ["innovation_project"]
+  },
+  {
+    "query": "转专业",
+    "route": "official_notice_search",
+    "top5_must_not_source_any": ["cxcy"],
+    "top5_must_not_domain_any": ["innovation_project"]
+  },
+  {
+    "query": "B250403",
+    "route": "class_exam_lookup"
+  },
+  {
+    "query": "高数",
+    "route": "resource_search",
+    "top3_must_include_source_any": ["github"]
+  },
+  {
+    "query": "离散数学",
+    "route": "resource_search",
+    "top3_must_include_source_any": ["github"]
+  },
+  {
+    "query": "大创",
+    "route": "innovation_project_search",
+    "top5_must_include_source_any": ["cxcy", "project", "innovation_project"]
+  },
+  {
+    "query": "停电",
+    "route": "campus_alert_search",
+    "top5_must_include_source_any": ["hqc", "logistics", "alert"]
+  },
+  {
+    "query": "校园网",
+    "route": "service_search",
+    "top5_must_include_source_any": ["xxb", "campus_network", "github"]
+  }
+]

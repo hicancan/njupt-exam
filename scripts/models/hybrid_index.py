@@ -92,10 +92,13 @@ def build_search_fields(document: dict[str, Any], task_frames: list[dict[str, An
     return {
         "title": str(document.get("title") or ""),
         "tags": " ".join(str(item) for item in document.get("tags", [])),
+        "class_name": str(document.get("class_name") or ""),
         "task.what": task_what,
         "task.action.summary": task_action,
         "evidence": " ".join([*(str(item) for item in document.get("evidence", [])), task_evidence]),
         "materials.name": " ".join([*(str(item) for item in document.get("required_materials", [])), materials]),
         "source": " ".join(str(document.get(key) or "") for key in ("source", "channel", "source_id", "channel_id")),
         "content": str(document.get("content") or ""),
+        "semantic_queries": " ".join(str(item) for item in document.get("llm", {}).get("semantic_queries", [])),
+        "query_phrases": " ".join(str(item) for item in document.get("llm", {}).get("query_phrases", [])),
     }

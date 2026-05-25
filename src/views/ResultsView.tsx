@@ -3,6 +3,7 @@ import { AlertTriangle, CalendarDays, Clock, FileText, GraduationCap, LockKeyhol
 import { ExamList } from '@/components/ExamList';
 import { ExamDetail } from '@/components/ExamDetail';
 import { ResultsSkeleton } from '@/components/ResultsSkeleton';
+import { routeQuery } from '@/utils/queryRouter';
 import { RankedSearchDocument, SearchDocument, SearchDomain, SearchIntent, SearchResult } from '@/types';
 import {
     formatSearchDate,
@@ -16,6 +17,21 @@ type DomainFilter = SearchDomain | '全部';
 type IntentFilter = SearchIntent | '全部';
 
 const isExternalUrl = (url: string): boolean => /^https?:\/\//.test(url);
+
+const getRouteName = (route: string) => {
+    const names: Record<string, string> = {
+        exam_notice_search: '考试相关',
+        class_exam_lookup: '考表查询',
+        degree_defense_search: '论文答辩',
+        service_search: '办事服务',
+        innovation_project_search: '竞赛大创',
+        scholarship_search: '奖助学金',
+        campus_alert_search: '重要通知',
+        resource_search: '学习资料',
+        general_search: '综合查询'
+    };
+    return names[route] || '综合查询';
+};
 
 interface SearchResultCardProps {
     document: RankedSearchDocument | SearchDocument;
@@ -219,6 +235,8 @@ export function ResultsView({
     totalRecords
 }: ResultsViewProps) {
     const trimmedQuery = query.trim();
+    const routeInfo = useMemo(() => routeQuery(trimmedQuery), [trimmedQuery]);
+    const [activeTab, setActiveTab] = useState<'all' | 'exam' | 'resource' | 'notice'>('all');
     const [domainFilter, setDomainFilter] = useState<DomainFilter>('全部');
     const [intentFilter, setIntentFilter] = useState<IntentFilter>('全部');
     const domainOptions = useMemo(() => {
@@ -229,6 +247,9 @@ export function ResultsView({
     }, [results]);
     const filteredResults = useMemo(() => {
         return results.filter(document => {
+            if (activeTab === 'exam' && document.domain !== 'exam' && document.kind !== 'exam') return false;
+            if (activeTab === 'resource' && document.source_type !== 'github_resource') return false;
+            if (activeTab === 'notice' && document.kind === 'exam') return false;
             if (domainFilter !== '全部' && document.domain !== domainFilter) return false;
             if (intentFilter !== '全部' && document.intent !== intentFilter) return false;
 
@@ -314,9 +335,15 @@ export function ResultsView({
                         <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-2 mb-4">
                             <div>
                                 <h2 className="text-xl font-semibold text-[#202124] dark:text-[#e8eaed]">搜索结果</h2>
+                                <div className="flex space-x-4 mt-2 mb-1 border-b border-[#dadce0] dark:border-[#3c4043]">
+                                    <button onClick={() => setActiveTab('all')} className={`pb-2 text-sm font-medium ${activeTab === 'all' ? 'text-[#1a73e8] border-b-2 border-[#1a73e8]' : 'text-[#5f6368] hover:text-[#202124] dark:text-[#9aa0a6] dark:hover:text-[#e8eaed]'}`}>综合</button>
+                                    <button onClick={() => setActiveTab('exam')} className={`pb-2 text-sm font-medium ${activeTab === 'exam' ? 'text-[#1a73e8] border-b-2 border-[#1a73e8]' : 'text-[#5f6368] hover:text-[#202124] dark:text-[#9aa0a6] dark:hover:text-[#e8eaed]'}`}>考试</button>
+                                    <button onClick={() => setActiveTab('resource')} className={`pb-2 text-sm font-medium ${activeTab === 'resource' ? 'text-[#1a73e8] border-b-2 border-[#1a73e8]' : 'text-[#5f6368] hover:text-[#202124] dark:text-[#9aa0a6] dark:hover:text-[#e8eaed]'}`}>资料</button>
+                                    <button onClick={() => setActiveTab('notice')} className={`pb-2 text-sm font-medium ${activeTab === 'notice' ? 'text-[#1a73e8] border-b-2 border-[#1a73e8]' : 'text-[#5f6368] hover:text-[#202124] dark:text-[#9aa0a6] dark:hover:text-[#e8eaed]'}`}>通知</button>
+                                </div>
                                 <p className="mt-1 text-sm text-[#70757a] dark:text-[#9aa0a6]">
                                     {trimmedQuery.length >= 2
-                                        ? `“${trimmedQuery}” 找到 ${filteredResults.length} 条结果，按相关度、任务动作和时效排序。`
+                                        ? `当前理解：${getRouteName(routeInfo.query_type)} | 找到 ${filteredResults.length} 条结果`
                                         : '未输入关键词时展示近期高价值校园信息。'}
                                 </p>
                             </div>

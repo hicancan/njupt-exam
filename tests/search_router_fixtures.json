@@ -1,0 +1,42 @@
+[
+  {
+    "query": "四六级",
+    "expected_route": "exam_notice_search"
+  },
+  {
+    "query": "论文答辩",
+    "expected_route": "degree_defense_search"
+  },
+  {
+    "query": "医保",
+    "expected_route": "service_search"
+  },
+  {
+    "query": "转专业",
+    "expected_route": "official_notice_search"
+  },
+  {
+    "query": "B250403",
+    "expected_route": "class_exam_lookup"
+  },
+  {
+    "query": "高数",
+    "expected_route": "resource_search"
+  },
+  {
+    "query": "离散数学",
+    "expected_route": "resource_search"
+  },
+  {
+    "query": "大创",
+    "expected_route": "innovation_project_search"
+  },
+  {
+    "query": "停电",
+    "expected_route": "campus_alert_search"
+  },
+  {
+    "query": "校园网",
+    "expected_route": "service_search"
+  }
+]

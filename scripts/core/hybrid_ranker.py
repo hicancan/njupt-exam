@@ -24,49 +24,8 @@ def rank_documents(
     *,
     limit: int | None = None,
 ) -> list[dict[str, Any]]:
-    field_weights = (ranking_weights or {}).get("field_weights", {})
-    understood = understand_query(query, query_aliases)
-    query_type = understood.get("query_type", "general")
-    
-    base_weights = {**DEFAULT_WEIGHTS, **((ranking_weights or {}).get("weights", ranking_weights or {}))}
-    if query_type == "task":
-        base_weights["entity"] += 0.05
-        base_weights["semantic_expansion"] += 0.05
-    elif query_type == "exam":
-        base_weights["entity"] += 0.1
-        base_weights["field"] += 0.1
-    elif query_type == "resource":
-        base_weights["tag"] += 0.1
-        base_weights["semantic_expansion"] += 0.05
-        
-    weights = base_weights
-    
-    query_tokens = tokenize_text(" ".join([understood["normalized_query"], *understood.get("aliases", []), *understood.get("semantic_queries", [])]))
-    bm25 = bm25_scores(query_tokens, hybrid_index)
-    doc_lookup = {str(document.get("id")): document for document in documents}
-    results: list[dict[str, Any]] = []
-    for doc_id, document in doc_lookup.items():
-        index_payload = (hybrid_index.get("documents") or {}).get(doc_id, {})
-        components = score_components(document, index_payload, understood, bm25.get(doc_id, 0.0), field_weights)
-        total = (
-            weights["bm25"] * components["bm25"]
-            + weights["field"] * components["field"]
-            + weights["tag"] * components["tag"]
-            + weights["entity"] * components["entity"]
-            + weights["semantic_expansion"] * components["semantic_expansion"]
-            + weights["utility"] * components["utility"]
-            - weights["risk_penalty"] * components["risk_penalty"]
-        )
-        if total <= 0:
-            continue
-        results.append({
-            **document,
-            "score": round(total, 6),
-            "score_components": components,
-            "score_reason": build_reason(document, components),
-        })
-    results.sort(key=lambda item: (item["score"], item.get("published_at") or ""), reverse=True)
-    return results[:limit] if limit else results
+    from search.vertical_ranker import vertical_rank_documents
+    return vertical_rank_documents(query, documents, hybrid_index, query_aliases, ranking_weights, limit=limit)
 
 
 def score_components(

@@ -824,6 +824,18 @@ def build_search_document_from_prepared(
         "llm_failure": semantic.llm_failure,
     }
     document["task_frames"] = extract_task_frames(document, llm_result=llm_result, rule_guard=document["rule_guard"])
+    
+    document["search_profile"] = {
+        "route_domains": list(set([semantic.domain, *[tag for tag in semantic.tags if tag in ["international", "project", "academic", "exam"]]])),
+        "route_intents": list(set([semantic.intent, *[frame.get("action", {}).get("verb") for frame in document["task_frames"] if isinstance(frame.get("action"), dict) and frame.get("action").get("verb")]])),
+        "eligible_query_types": ["task_search", "general_search"] if document["task_frames"] else ["general_search"],
+        "blocked_query_types": [],
+        "strong_terms": semantic.tags[:3],
+        "weak_terms": semantic.tags[3:],
+        "exact_terms": [semantic.category],
+        "audience_terms": list(entry.get("audience", []))
+    }
+    
     return document
 
 
@@ -1482,14 +1494,26 @@ def crawl_source(source: SourceConfig, now: datetime) -> tuple[list[dict[str, An
         manifest_entry["candidates"] = len(enriched)
         manifest_entry["filtered_out"] = len(enriched) - len(filtered)
         manifest_entry["documents"] = len(documents)
-        manifest_entry["channels"] = [
-            {
-                **channel_entry,
-                **channel_stats.get(channel_entry["id"], {}),
-                "status": "ok" if not channel_stats.get(channel_entry["id"], {}).get("list_errors") else "warning",
-            }
-            for channel_entry in manifest_entry["channels"]
-        ]
+        enriched_channels = []
+        for channel_entry in manifest_entry["channels"]:
+            stat = channel_stats.get(channel_entry["id"], {})
+            merged = {**channel_entry, **stat}
+            cands = stat.get("candidates", 0)
+            docs = stat.get("documents", 0)
+            errs = stat.get("list_errors", [])
+            
+            if docs > 0:
+                merged["status"] = "ok_with_docs"
+            elif errs:
+                merged["status"] = "error_fetch_failed"
+            elif cands > 0 and docs == 0:
+                merged["status"] = "warning_filtered_all"
+            else:
+                merged["status"] = "ok_no_recent_docs"
+                
+            enriched_channels.append(merged)
+            
+        manifest_entry["channels"] = enriched_channels
         return documents, manifest_entry
     except Exception as exc:
         manifest_entry["status"] = "error"

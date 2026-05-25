@@ -186,7 +186,7 @@ def derive_semantic_fields_llm(entry: dict[str, Any], llm_result: dict[str, Any]
         action_required=bool(val.get("action_required", False)),
         action_type=val.get("action_type"),
         action_summary=val.get("action_summary"),
-        required_materials=[clean_text(str(item)) for item in (val.get("required_materials") or []) if clean_text(str(item))],
+        required_materials=[clean_text(str(item.get("name") if isinstance(item, dict) else item)) for item in (val.get("required_materials") or []) if clean_text(str(item.get("name") if isinstance(item, dict) else item))],
         sensitive=sensitive,
         sensitive_types=[clean_text(str(item)) for item in (val.get("sensitive_types") or []) if clean_text(str(item))],
         review_required=review_required,

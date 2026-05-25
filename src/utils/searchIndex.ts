@@ -11,6 +11,7 @@ import {
     SearchManifestSchema
 } from '@/types';
 import { z } from 'zod';
+import { routeQuery } from './queryRouter';
 
 class SearchContractError extends Error {
     constructor(message: string) {
@@ -507,7 +508,6 @@ export const rankSearchDocuments = (
     queryAliases: Record<string, unknown> = {}
 ): RankedSearchDocument[] => {
     const trimmed = query.trim();
-
     if (trimmed.length < 2) {
         return [...documents]
             .sort((a, b) => {
@@ -526,101 +526,109 @@ export const rankSearchDocuments = (
             }));
     }
 
-    const aliasPayloads = aliasPayloadsForQuery(trimmed, queryAliases);
-    const expandedTerms = aliasTermsFromPayloads(aliasPayloads);
-    const targetDomains = targetDomainsFromPayloads(aliasPayloads);
-    const targetIntents = targetIntentsFromPayloads(aliasPayloads);
-    const queryType = inferQueryType(trimmed, targetDomains, targetIntents);
+    const routeObj = routeQuery(trimmed);
+    const targetDomains = new Set(routeObj.target_domains);
+    const targetIntents = new Set(routeObj.target_intents);
+    const blockedDomains = new Set(routeObj.blocked_domains_for_top5);
+    const blockedSources = new Set(routeObj.blocked_sources_for_top5);
+    const allowResourceTop5 = routeObj.allow_resource_top5;
+
     const hybridDocuments = (hybridIndex?.documents || {}) as Record<string, { terms?: Record<string, number>, fields?: Record<string, string> }>;
 
-    return documents
-        .map(document => {
-            const textScore = scoreTextMatch(document, trimmed, expandedTerms);
-            const hybridPayload = hybridDocuments[document.id];
-            const bm25Proxy = hybridPayload?.terms ? scoreHybridTerms(hybridPayload.terms, [trimmed, ...expandedTerms].join(' ')) : textScore / 24;
-            const fieldScore = hybridPayload?.fields ? scoreHybridFields(hybridPayload.fields, [trimmed, ...expandedTerms].join(' ')) : Math.min(1, textScore / 24);
-            const tagScore = overlapScore([trimmed, ...expandedTerms].join(' '), document.tags.join(' '));
-            const taskFrameScore = document.task_frames.length > 0 ? overlapScore(
-                [trimmed, ...expandedTerms].join(' '),
-                document.task_frames.map(frame => `${frame.what} ${frame.action.summary || ''} ${frame.evidence.map(item => item.text).join(' ')}`).join(' ')
-            ) : 0;
-            const sourceWeight = document.source_weight ?? 0.8;
-            const utilityScore =
-                (0.42 * document.student_score) +
-                (0.3 * document.importance_score) +
-                (0.2 * sourceWeight) +
-                (document.task_frames.length > 0 ? 0.08 : 0);
-            const riskPenalty = (document.sensitive ? 0.5 : 0) + (document.review_required ? 0.25 : 0) + (document.status === 'restricted' ? 0.5 : 0);
-            const domainMatched = targetDomains.has(normalize(document.domain));
-            const officialDomainBoost = domainMatched && document.source_type !== 'github_resource' ? 1.24 : 1;
-            const resourceDomainPenalty = targetDomains.size > 0 && !domainMatched && document.source_type === 'github_resource' ? 0.76 : 1;
+    const aliasPayloads = aliasPayloadsForQuery(trimmed, queryAliases);
+    const expandedTerms = aliasTermsFromPayloads(aliasPayloads);
 
-            const bm25Weight = 0.26;
-            let fieldWeight = 0.22;
-            let tagWeight = 0.15;
-            let entityWeight = 0.1;
-            let semanticWeight = 0.12;
+    const candidates = documents.map(document => {
+        const textScore = scoreTextMatch(document, trimmed, expandedTerms);
+        const hybridPayload = hybridDocuments[document.id];
+        const bm25Proxy = hybridPayload?.terms ? scoreHybridTerms(hybridPayload.terms, [trimmed, ...expandedTerms].join(' ')) : textScore / 24;
+        const fieldScore = hybridPayload?.fields ? scoreHybridFields(hybridPayload.fields, [trimmed, ...expandedTerms].join(' ')) : Math.min(1, textScore / 24);
+        const tagScore = overlapScore([trimmed, ...expandedTerms].join(' '), document.tags.join(' '));
+        const taskFrameScore = document.task_frames.length > 0 ? overlapScore(
+            [trimmed, ...expandedTerms].join(' '),
+            document.task_frames.map(frame => `${frame.what} ${frame.action.summary || ''} ${frame.evidence.map(item => item.text).join(' ')}`).join(' ')
+        ) : 0;
+        
+        const domain = normalize(document.domain);
+        const intent = normalize(document.intent);
+        const source = normalize(document.source);
+        const sourceId = normalize(document.source_id);
 
-            if (queryType === 'task') {
-                entityWeight += 0.05;
-                semanticWeight += 0.05;
-            } else if (queryType === 'exam') {
-                entityWeight += 0.1;
-                fieldWeight += 0.1;
-            } else if (queryType === 'resource') {
-                tagWeight += 0.1;
-                semanticWeight += 0.05;
+        let tier = 'C';
+        if (targetDomains.has(domain) && targetIntents.has(intent)) {
+            tier = 'A';
+        } else if (targetDomains.has(domain) || targetIntents.has(intent)) {
+            tier = 'B';
+        } else if (targetDomains.size === 0 && targetIntents.size === 0) {
+            tier = 'A'; // fallback to general search
+        }
+
+        const isBlocked = blockedDomains.has(domain) || blockedSources.has(source) || blockedSources.has(sourceId);
+        if (isBlocked) tier = 'C';
+        if (!allowResourceTop5 && document.source_type === 'github_resource') tier = 'C';
+
+        let tierMultiplier = 1.0;
+        if (tier === 'A') tierMultiplier = 2.0;
+        else if (tier === 'B') tierMultiplier = 1.2;
+        else if (tier === 'C') tierMultiplier = 0.1;
+
+        const rawMatchScore =
+            0.3 * Math.min(1, bm25Proxy) +
+            0.25 * fieldScore +
+            0.2 * tagScore +
+            0.15 * Math.max(taskFrameScore, overlapScore(expandedTerms.join(' '), document.content));
+
+        const hasMatch = textScore > 0 || rawMatchScore > 0;
+        
+        const utilityScore =
+            (0.42 * document.student_score) +
+            (0.3 * document.importance_score) +
+            (0.2 * (document.source_weight ?? 0.8));
+
+        const riskPenalty = (document.sensitive ? 0.5 : 0) + (document.review_required ? 0.25 : 0) + (document.status === 'restricted' ? 0.5 : 0);
+
+        const hybridScore = hasMatch 
+            ? rawMatchScore + 0.2 * Math.min(1, utilityScore) - 0.05 * Math.min(1, riskPenalty)
+            : 0;
+
+        const weightedScore = hasMatch ? (textScore + hybridScore * 32) *
+            (0.55 + document.student_score * 0.45) *
+            (0.72 + document.freshness_score * 0.28) *
+            (0.7 + document.importance_score * 0.3) *
+            intentWeight(document.intent) *
+            lifecycleWeight(document.lifecycle) *
+            sourceTypeWeight(document.source_type) *
+            deadlineUrgencyWeight(document.deadline) *
+            tierMultiplier : 0;
+
+        const components = {
+            bm25: Math.min(1, bm25Proxy),
+            field: fieldScore,
+            tag: tagScore,
+            task_frame: taskFrameScore,
+            utility: Math.min(1, utilityScore),
+            risk_penalty: Math.min(1, riskPenalty),
+            tier: tierMultiplier
+        };
+
+        return {
+            ...document,
+            score: Number(weightedScore.toFixed(4)),
+            score_reason: buildScoreReason(document, components) + ` [${tier}]`,
+            score_components: {
+                ...components,
+                bm25: Number(components.bm25.toFixed(4)),
+                field: Number(components.field.toFixed(4)),
+                tag: Number(components.tag.toFixed(4)),
+                task_frame: Number(components.task_frame.toFixed(4)),
+                utility: Number(components.utility.toFixed(4)),
+                risk_penalty: Number(components.risk_penalty.toFixed(4)),
+                tier: Number(tierMultiplier.toFixed(2))
             }
+        } as RankedSearchDocument;
+    });
 
-            const rawMatchScore =
-                bm25Weight * Math.min(1, bm25Proxy) +
-                fieldWeight * fieldScore +
-                tagWeight * tagScore +
-                entityWeight * Math.max(Number(document.domain.includes(trimmed) || document.intent.includes(trimmed)), overlapScore(trimmed, document.source)) +
-                semanticWeight * Math.max(taskFrameScore, overlapScore(expandedTerms.join(' '), document.content));
-
-            const hasMatch = textScore > 0 || rawMatchScore > 0;
-            
-            const hybridScore = hasMatch 
-                ? rawMatchScore + 0.2 * Math.min(1, utilityScore) - 0.05 * Math.min(1, riskPenalty)
-                : 0;
-
-            const weightedScore = hasMatch ? (textScore + hybridScore * 32) *
-                (0.55 + document.student_score * 0.45) *
-                (0.72 + document.freshness_score * 0.28) *
-                (0.7 + document.importance_score * 0.3) *
-                (0.78 + sourceWeight * 0.22) *
-                intentWeight(document.intent) *
-                lifecycleWeight(document.lifecycle) *
-                sourceTypeWeight(document.source_type) *
-                deadlineUrgencyWeight(document.deadline) *
-                officialDomainBoost *
-                resourceDomainPenalty *
-                (document.sensitive ? 0.92 : 1) : 0;
-
-            const components = {
-                bm25: Math.min(1, bm25Proxy),
-                field: fieldScore,
-                tag: tagScore,
-                task_frame: taskFrameScore,
-                utility: Math.min(1, utilityScore),
-                risk_penalty: Math.min(1, riskPenalty)
-            };
-
-            return {
-                ...document,
-                score: Number(weightedScore.toFixed(4)),
-                score_reason: buildScoreReason(document, components),
-                score_components: {
-                    bm25: Number(components.bm25.toFixed(4)),
-                    field: Number(components.field.toFixed(4)),
-                    tag: Number(components.tag.toFixed(4)),
-                    task_frame: Number(components.task_frame.toFixed(4)),
-                    utility: Number(components.utility.toFixed(4)),
-                    risk_penalty: Number(components.risk_penalty.toFixed(4))
-                }
-            };
-        })
+    return candidates
         .filter(document => document.score > 0)
         .sort((a, b) => {
             if (b.score !== a.score) return b.score - a.score;
