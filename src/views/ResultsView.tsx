@@ -236,7 +236,7 @@ export function ResultsView({
 }: ResultsViewProps) {
     const trimmedQuery = query.trim();
     const routeInfo = useMemo(() => routeQuery(trimmedQuery), [trimmedQuery]);
-    const [activeTab, setActiveTab] = useState<'all' | 'exam' | 'resource' | 'notice'>('all');
+    const [activeTab, setActiveTab] = useState<'all' | 'official_notice' | 'task_deadline' | 'exam' | 'resource' | 'service'>('all');
     const [domainFilter, setDomainFilter] = useState<DomainFilter>('全部');
     const [intentFilter, setIntentFilter] = useState<IntentFilter>('全部');
     const domainOptions = useMemo(() => {
@@ -248,8 +248,10 @@ export function ResultsView({
     const filteredResults = useMemo(() => {
         return results.filter(document => {
             if (activeTab === 'exam' && document.domain !== 'exam' && document.kind !== 'exam') return false;
-            if (activeTab === 'resource' && document.source_type !== 'github_resource') return false;
-            if (activeTab === 'notice' && document.kind === 'exam') return false;
+            if (activeTab === 'resource' && document.kind !== 'resource' && document.domain !== 'resource' && document.source_type !== 'github_resource') return false;
+            if (activeTab === 'official_notice' && document.kind !== 'notice' && document.source_type !== 'central_notice' && document.source_type !== 'central_admin' && document.domain !== 'policy' && document.domain !== 'news') return false;
+            if (activeTab === 'task_deadline' && !['apply', 'register', 'submit', 'pay', 'attend'].includes(document.intent)) return false;
+            if (activeTab === 'service' && !['logistics', 'campus_network', 'medical_insurance', 'archive', 'library', 'security', 'life'].includes(document.domain)) return false;
             if (domainFilter !== '全部' && document.domain !== domainFilter) return false;
             if (intentFilter !== '全部' && document.intent !== intentFilter) return false;
 
@@ -336,10 +338,12 @@ export function ResultsView({
                             <div>
                                 <h2 className="text-xl font-semibold text-[#202124] dark:text-[#e8eaed]">搜索结果</h2>
                                 <div className="flex space-x-4 mt-2 mb-1 border-b border-[#dadce0] dark:border-[#3c4043]">
-                                    <button onClick={() => setActiveTab('all')} className={`pb-2 text-sm font-medium ${activeTab === 'all' ? 'text-[#1a73e8] border-b-2 border-[#1a73e8]' : 'text-[#5f6368] hover:text-[#202124] dark:text-[#9aa0a6] dark:hover:text-[#e8eaed]'}`}>综合</button>
+                                    <button onClick={() => setActiveTab('all')} className={`pb-2 text-sm font-medium ${activeTab === 'all' ? 'text-[#1a73e8] border-b-2 border-[#1a73e8]' : 'text-[#5f6368] hover:text-[#202124] dark:text-[#9aa0a6] dark:hover:text-[#e8eaed]'}`}>全部</button>
+                                    <button onClick={() => setActiveTab('official_notice')} className={`pb-2 text-sm font-medium ${activeTab === 'official_notice' ? 'text-[#1a73e8] border-b-2 border-[#1a73e8]' : 'text-[#5f6368] hover:text-[#202124] dark:text-[#9aa0a6] dark:hover:text-[#e8eaed]'}`}>官方通知</button>
+                                    <button onClick={() => setActiveTab('task_deadline')} className={`pb-2 text-sm font-medium ${activeTab === 'task_deadline' ? 'text-[#1a73e8] border-b-2 border-[#1a73e8]' : 'text-[#5f6368] hover:text-[#202124] dark:text-[#9aa0a6] dark:hover:text-[#e8eaed]'}`}>任务/截止</button>
                                     <button onClick={() => setActiveTab('exam')} className={`pb-2 text-sm font-medium ${activeTab === 'exam' ? 'text-[#1a73e8] border-b-2 border-[#1a73e8]' : 'text-[#5f6368] hover:text-[#202124] dark:text-[#9aa0a6] dark:hover:text-[#e8eaed]'}`}>考试</button>
                                     <button onClick={() => setActiveTab('resource')} className={`pb-2 text-sm font-medium ${activeTab === 'resource' ? 'text-[#1a73e8] border-b-2 border-[#1a73e8]' : 'text-[#5f6368] hover:text-[#202124] dark:text-[#9aa0a6] dark:hover:text-[#e8eaed]'}`}>资料</button>
-                                    <button onClick={() => setActiveTab('notice')} className={`pb-2 text-sm font-medium ${activeTab === 'notice' ? 'text-[#1a73e8] border-b-2 border-[#1a73e8]' : 'text-[#5f6368] hover:text-[#202124] dark:text-[#9aa0a6] dark:hover:text-[#e8eaed]'}`}>通知</button>
+                                    <button onClick={() => setActiveTab('service')} className={`pb-2 text-sm font-medium ${activeTab === 'service' ? 'text-[#1a73e8] border-b-2 border-[#1a73e8]' : 'text-[#5f6368] hover:text-[#202124] dark:text-[#9aa0a6] dark:hover:text-[#e8eaed]'}`}>服务</button>
                                 </div>
                                 <p className="mt-1 text-sm text-[#70757a] dark:text-[#9aa0a6]">
                                     {trimmedQuery.length >= 2

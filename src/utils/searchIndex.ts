@@ -506,6 +506,7 @@ export const rankSearchDocuments = (
     const targetIntents = new Set(routeObj.target_intents);
     const blockedDomains = new Set(routeObj.blocked_domains_for_top5);
     const blockedSources = new Set(routeObj.blocked_sources_for_top5);
+    const preferredSources = new Set(routeObj.preferred_sources);
     const allowResourceTop5 = routeObj.allow_resource_top5;
     
     const badResultTerms = (routeObj as any).bad_result_terms || [];
@@ -579,6 +580,16 @@ export const rankSearchDocuments = (
         if (tier === 'A') tierMultiplier = 2.0;
         else if (tier === 'B') tierMultiplier = 1.2;
         else if (tier === 'C') tierMultiplier = 0.1;
+
+        let sourceBoost = 1.0;
+        if (preferredSources.has(source) || preferredSources.has(sourceId)) {
+            sourceBoost = 1.25;
+            if (routeObj.query_type === 'class_exam_lookup') {
+                sourceBoost = 10.0;
+                tierMultiplier = 2.0; // Tier A
+                tier = 'A';
+            }
+        }
         
         const rawMatchScore =
             0.3 * Math.min(1, bm25Proxy) +
@@ -601,6 +612,7 @@ export const rankSearchDocuments = (
             : 0;
 
         let weightedScore = hasMatch ? (textScore + hybridScore * 32) *
+            sourceBoost *
             (0.55 + document.student_score * 0.45) *
             (0.72 + document.freshness_score * 0.28) *
             (0.7 + document.importance_score * 0.3) *
@@ -643,8 +655,8 @@ export const rankSearchDocuments = (
         } as RankedSearchDocument & { isBlocked: boolean, tierCategory: string };
     });
 
-    candidates = candidates
-        .filter(document => document.score > 0)
+    const validCandidates = candidates
+        .filter((doc): doc is RankedSearchDocument & { isBlocked: boolean, tierCategory: string } => doc !== null && doc.score > 0)
         .sort((a, b) => {
             const aBlocked = a.isBlocked ? 1 : 0;
             const bBlocked = b.isBlocked ? 1 : 0;
@@ -658,14 +670,14 @@ export const rankSearchDocuments = (
             return dateSortValue(b.published_at) - dateSortValue(a.published_at);
         });
         
-    candidates.forEach(doc => {
+    validCandidates.forEach(doc => {
         if (doc.isBlocked) {
             (doc as any).degraded_fallback = true;
             doc.score_reason += "，目标候选不足，作为降级补位";
         }
     });
 
-    return candidates;
+    return validCandidates;
 };
 
 export const getDomainLabel = (domain: SearchDomain): string => DOMAIN_LABELS[domain] || domain;

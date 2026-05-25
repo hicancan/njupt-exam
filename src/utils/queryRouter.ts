@@ -46,6 +46,9 @@ export interface RouteResult {
   freshness_preference: string;
   alternative_routes: RouteAlternative[];
   explanation: string;
+  bad_result_terms: string[];
+  must_include_terms_for_top_results: string[];
+  top1_prefer_exact_title: boolean;
 }
 
 const queryRoutes: QueryRoute[] = routesData as QueryRoute[];
@@ -137,6 +140,7 @@ export function routeQuery(rawQuery: string): RouteResult {
     allow_resource_top5: bestRoute.allow_resource_top5 !== false,
     freshness_preference: bestRoute.freshness_preference || 'none',
     alternative_routes: altRoutes,
-    explanation: bestRoute.explanation || ''
+    explanation: bestRoute.explanation || '',
+    top1_prefer_exact_title: bestRoute.top1_prefer_exact_title || false
   };
 }
