@@ -10,6 +10,7 @@ interface UseSearchIndexResult {
     hybridIndex: Record<string, unknown> | null;
     queryAliases: Record<string, unknown>;
     ontology: Record<string, unknown> | null;
+    optionalUnavailable: string[];
     loading: boolean;
     error: string | null;
 }
@@ -22,27 +23,62 @@ export function useSearchIndex(): UseSearchIndexResult {
     const [hybridIndex, setHybridIndex] = useState<Record<string, unknown> | null>(null);
     const [queryAliases, setQueryAliases] = useState<Record<string, unknown>>({});
     const [ontology, setOntology] = useState<Record<string, unknown> | null>(null);
+    const [optionalUnavailable, setOptionalUnavailable] = useState<string[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
         const controller = new AbortController();
 
-        Promise.all([
-            fetchJson(APP_CONFIG.DATA_URLS.SEARCH_INDEX, controller.signal),
-            fetchJson(APP_CONFIG.DATA_URLS.SEARCH_MANIFEST, controller.signal),
-            fetchJson(APP_CONFIG.DATA_URLS.HYBRID_INDEX, controller.signal),
-            fetchJson(APP_CONFIG.DATA_URLS.QUERY_ALIASES, controller.signal),
-            fetchJson(APP_CONFIG.DATA_URLS.ONTOLOGY, controller.signal)
-        ])
-            .then(([documentPayload, manifestPayload, hybridPayload, aliasesPayload, ontologyPayload]) => {
-                setDocuments(parseSearchDocuments(documentPayload, APP_CONFIG.DATA_URLS.SEARCH_INDEX));
-                setManifest(parseSearchManifest(manifestPayload, APP_CONFIG.DATA_URLS.SEARCH_MANIFEST));
-                setHybridIndex(hybridPayload as Record<string, unknown>);
-                setQueryAliases(aliasesPayload as Record<string, unknown>);
-                setOntology(ontologyPayload as Record<string, unknown>);
-                setError(null);
-            })
+        const load = async () => {
+            const [documentPayload, manifestPayload] = await Promise.all([
+                fetchJson(APP_CONFIG.DATA_URLS.SEARCH_INDEX, controller.signal),
+                fetchJson(APP_CONFIG.DATA_URLS.SEARCH_MANIFEST, controller.signal)
+            ]);
+
+            const parsedDocuments = parseSearchDocuments(documentPayload, APP_CONFIG.DATA_URLS.SEARCH_INDEX);
+            const parsedManifest = parseSearchManifest(manifestPayload, APP_CONFIG.DATA_URLS.SEARCH_MANIFEST);
+
+            const optionalResults = await Promise.allSettled([
+                fetchJson(APP_CONFIG.DATA_URLS.HYBRID_INDEX, controller.signal),
+                fetchJson(APP_CONFIG.DATA_URLS.QUERY_ALIASES, controller.signal),
+                fetchJson(APP_CONFIG.DATA_URLS.ONTOLOGY, controller.signal)
+            ]);
+            const unavailable: string[] = [];
+            const [hybridResult, aliasesResult, ontologyResult] = optionalResults;
+
+            if (hybridResult?.status === 'fulfilled') {
+                setHybridIndex(hybridResult.value as Record<string, unknown>);
+            } else {
+                setHybridIndex(null);
+                unavailable.push('hybrid_index');
+            }
+
+            if (aliasesResult?.status === 'fulfilled') {
+                setQueryAliases(aliasesResult.value as Record<string, unknown>);
+            } else {
+                setQueryAliases({});
+                unavailable.push('query_aliases');
+            }
+
+            if (ontologyResult?.status === 'fulfilled') {
+                setOntology(ontologyResult.value as Record<string, unknown>);
+            } else {
+                setOntology(null);
+                unavailable.push('ontology');
+            }
+
+            setOptionalUnavailable(unavailable);
+            if (unavailable.length > 0) {
+                console.warn(`Optional search features unavailable: ${unavailable.join(', ')}`);
+            }
+
+            setDocuments(parsedDocuments);
+            setManifest(parsedManifest);
+            setError(null);
+        };
+
+        load()
             .catch(err => {
                 if (err instanceof DOMException && err.name === 'AbortError') {
                     return;
@@ -53,6 +89,7 @@ export function useSearchIndex(): UseSearchIndexResult {
                 setHybridIndex(null);
                 setQueryAliases({});
                 setOntology(null);
+                setOptionalUnavailable([]);
                 setError(err instanceof Error ? err.message : '无法加载校园搜索索引');
             })
             .finally(() => {
@@ -64,5 +101,5 @@ export function useSearchIndex(): UseSearchIndexResult {
         return () => controller.abort();
     }, []);
 
-    return { documents, manifest, hybridIndex, queryAliases, ontology, loading, error };
+    return { documents, manifest, hybridIndex, queryAliases, ontology, optionalUnavailable, loading, error };
 }

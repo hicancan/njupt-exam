@@ -9,19 +9,14 @@ import os
 import sys
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
+SCRIPTS_DIR = os.path.join(BASE_DIR, "scripts")
+if SCRIPTS_DIR not in sys.path:
+    sys.path.insert(0, SCRIPTS_DIR)
 
-# Valid enums (must match TypeScript types/index.ts)
-SEARCH_DOMAINS = {
-    "academic", "exam", "course", "degree", "scholarship", "employment", "competition",
-    "project", "innovation_project", "international", "life", "library", "security", "logistics",
-    "campus_network", "subsidy", "medical_insurance", "archive", "lecture",
-    "research", "resource", "news", "policy"
-}
+from models.search_contract import SEARCH_DOMAINS, SEARCH_INTENTS
 
-SEARCH_INTENTS = {
-    "apply", "register", "submit", "attend", "check_result", "publicity", "download",
-    "read", "schedule", "alert", "pay", "contact", "export"
-}
+SEARCH_DOMAIN_SET = set(SEARCH_DOMAINS)
+SEARCH_INTENT_SET = set(SEARCH_INTENTS)
 
 
 def validate():
@@ -50,14 +45,14 @@ def validate():
         for field in ["must_domains", "preferred_domains", "blocked_domains_for_top5"]:
             values = route.get(field, [])
             for v in values:
-                if v not in SEARCH_DOMAINS:
+                if v not in SEARCH_DOMAIN_SET:
                     errors.append(f"{route_id}: invalid domain '{v}' in {field}")
 
         # Validate intents
         for field in ["preferred_intents"]:
             values = route.get(field, [])
             for v in values:
-                if v not in SEARCH_INTENTS:
+                if v not in SEARCH_INTENT_SET:
                     errors.append(f"{route_id}: invalid intent '{v}' in {field}")
 
         # Check duplicates

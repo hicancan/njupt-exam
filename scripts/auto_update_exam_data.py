@@ -3,7 +3,6 @@ from bs4 import BeautifulSoup
 from urllib.parse import urljoin
 import os
 import re
-import urllib3
 import zipfile
 import time
 import sys
@@ -14,12 +13,10 @@ if hasattr(sys.stdout, "reconfigure"):
 if hasattr(sys.stderr, "reconfigure"):
     sys.stderr.reconfigure(encoding="utf-8")
 
-# 禁用 SSL 警告
-urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
-
 # --- 配置区域 ---
 LIST_URL = "https://jwc.njupt.edu.cn/1594/list.htm"
 SAVE_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "public", "data")
+JWC_TLS_VERIFY = os.environ.get("NJUPT_JWC_VERIFY_TLS", "true").strip().lower() not in {"0", "false", "no"}
 
 # 1. 必须包含的关键词 (且关系)
 REQUIRED_KEYWORDS = ["学年", "学期"]
@@ -70,8 +67,7 @@ def download_file(url: str, save_path: str, max_retries: int = 3) -> bool:
     for attempt in range(1, max_retries + 1):
         try:
             print(f"  ⬇️  下载中: {os.path.basename(save_path)} (尝试 {attempt}/{max_retries})...", end="", flush=True)
-            # verify=False is intentional: JWC often has self-signed/incomplete cert chains
-            response = requests.get(url, headers=HEADERS, verify=False, timeout=30)
+            response = requests.get(url, headers=HEADERS, verify=JWC_TLS_VERIFY, timeout=30)
             response.raise_for_status()
             with open(save_path, 'wb') as f:
                 f.write(response.content)
@@ -94,7 +90,7 @@ def find_latest_schedule_notification() -> Optional[tuple[str, str]]:
     """遍历列表页，寻找最新的、符合逻辑的通知"""
     print(f"🔍 访问通知列表: {LIST_URL}")
     try:
-        resp = requests.get(LIST_URL, headers=HEADERS, verify=False, timeout=10)
+        resp = requests.get(LIST_URL, headers=HEADERS, verify=JWC_TLS_VERIFY, timeout=10)
         resp.encoding = 'utf-8'
         soup = BeautifulSoup(resp.text, 'html.parser')
         
@@ -136,7 +132,7 @@ def process_detail_page(url: str, title: str):
     """解析详情页并智能下载附件"""
     print(f"🔍 解析详情页附件...")
     try:
-        resp = requests.get(url, headers=HEADERS, verify=False, timeout=10)
+        resp = requests.get(url, headers=HEADERS, verify=JWC_TLS_VERIFY, timeout=10)
         resp.encoding = 'utf-8'
         soup = BeautifulSoup(resp.text, 'html.parser')
         

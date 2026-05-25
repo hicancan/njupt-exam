@@ -42,12 +42,12 @@ export const clamp01 = (value: number): number => {
     return Math.min(1, Math.max(0, value));
 };
 
-export const SearchDocumentKindSchema = z.enum(['notice', 'exam', 'resource']).catch('notice');
+export const SearchDocumentKindSchema = z.enum(['notice', 'exam', 'resource']);
 export type SearchDocumentKind = z.infer<typeof SearchDocumentKindSchema>;
 
 export const SearchCategorySchema = z.enum([
     '考试', '选课', '竞赛', '奖助', '就业', '讲座', '生活', '学院', '研究生', '项目', '资料', '公告'
-]).catch('公告');
+]);
 export type SearchCategory = z.infer<typeof SearchCategorySchema>;
 
 export const SearchDomainSchema = z.enum([
@@ -55,23 +55,40 @@ export const SearchDomainSchema = z.enum([
     'project', 'innovation_project', 'international', 'life', 'library', 'security', 'logistics',
     'campus_network', 'subsidy', 'medical_insurance', 'archive', 'lecture',
     'research', 'resource', 'news', 'policy'
-]).catch('news');
+]);
 export type SearchDomain = z.infer<typeof SearchDomainSchema>;
 
 export const SearchIntentSchema = z.enum([
     'apply', 'register', 'submit', 'attend', 'check_result', 'publicity', 'download',
     'read', 'schedule', 'alert', 'pay', 'contact', 'export'
-]).catch('read');
+]);
 export type SearchIntent = z.infer<typeof SearchIntentSchema>;
 
 export const SearchSourceTypeSchema = z.enum([
     'central_admin', 'central_notice', 'central_news', 'college', 'service_unit',
     'job_platform', 'github_resource', 'research_admin', 'policy', 'exam_vertical'
-]).catch('central_admin');
+]);
 export type SearchSourceType = z.infer<typeof SearchSourceTypeSchema>;
 
-export const SearchLifecycleSchema = z.enum(['active', 'upcoming', 'expired', 'evergreen', 'unknown']).catch('unknown');
+export const SearchLifecycleSchema = z.enum(['active', 'upcoming', 'expired', 'evergreen', 'unknown']);
 export type SearchLifecycle = z.infer<typeof SearchLifecycleSchema>;
+
+export const SearchSemanticModeSchema = z.enum(['llm', 'heuristic', 'heuristic_degraded', 'guarded_metadata', 'structured_exam', 'unprocessed']);
+export type SearchSemanticMode = z.infer<typeof SearchSemanticModeSchema>;
+
+export const TaskFrameSourceModeSchema = z.enum([
+    'llm_raw_task_frame',
+    'generated_from_llm_fields',
+    'heuristic_rule_frame',
+    'exam_structured_data',
+    'guarded_metadata_empty',
+    'unprocessed',
+    'unknown'
+]);
+export type TaskFrameSourceMode = z.infer<typeof TaskFrameSourceModeSchema>;
+
+export const TaskFrameTaskTypeSchema = z.enum(['application', 'schedule', 'result_check', 'download', 'opportunity', 'read']);
+export type TaskFrameTaskType = z.infer<typeof TaskFrameTaskTypeSchema>;
 
 export const SearchAttachmentSchema = z.object({
     name: z.string(),
@@ -96,9 +113,9 @@ export type SearchDocumentLLMMetadata = z.infer<typeof SearchDocumentLLMSchema>;
 export const TaskFrameSchema = z.object({
     task_id: z.string(),
     doc_id: z.string(),
-    source_mode: z.string().optional().default('unknown'),
+    source_mode: TaskFrameSourceModeSchema,
     field_sources: z.record(z.string(), z.string()).optional(),
-    task_type: z.string(),
+    task_type: TaskFrameTaskTypeSchema,
     who: z.object({
         audience: z.array(z.string()).default([]),
         college: z.array(z.string()).default([]),
@@ -116,9 +133,9 @@ export const TaskFrameSchema = z.object({
     time: z.object({
         published_at: z.string().nullable().optional(),
         deadline: z.string().nullable().optional(),
-        lifecycle: z.string().default('unknown'),
+        lifecycle: SearchLifecycleSchema,
         urgency_days: z.number().nullable().optional()
-    }).default({ lifecycle: 'unknown' }),
+    }),
     materials: z.array(z.object({
         name: z.string(),
         role: z.string().nullable().optional(),
@@ -194,7 +211,7 @@ export const SearchDocumentSchema = z.object({
     llm: SearchDocumentLLMSchema.optional(),
     canonical: z.record(z.string(), z.unknown()).optional(),
     rule_guard: z.record(z.string(), z.unknown()).optional(),
-    semantic_mode: z.string().optional(),
+    semantic_mode: SearchSemanticModeSchema.optional(),
     field_sources: z.record(z.string(), z.string()).optional(),
     task_frames: z.array(TaskFrameSchema).default([]),
     class_name: z.string().optional(),
@@ -220,7 +237,7 @@ export const SearchManifestSourceSchema = z.object({
     priority: z.number().optional(),
     candidates: z.number().optional(),
     filtered_out: z.number().optional(),
-    status: z.enum(['ok', 'error']).catch('error'),
+    status: z.enum(['ok', 'error']),
     documents: z.number(),
     last_fetch_at: z.string().nullable().optional(),
     error: z.string().optional()

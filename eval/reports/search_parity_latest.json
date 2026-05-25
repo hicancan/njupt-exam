@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-05-25T10:04:21.352250",
+  "timestamp": "2026-05-25T19:53:23.846587",
   "thresholds": {
     "route_fixture": 1.0,
     "critical_top1_match_rate": 1.0,
@@ -24,12 +24,12 @@
     "avg_kendall_tau": 0.8571,
     "all_metrics": {
       "total_queries": 30,
-      "top1_match_count": 25,
-      "top1_match_rate": 0.8333,
-      "top1_source_match_count": 25,
-      "top1_source_match_rate": 0.8333,
-      "avg_jaccard": 0.8333,
-      "avg_kendall_tau": 0.7
+      "top1_match_count": 29,
+      "top1_match_rate": 0.9667,
+      "top1_source_match_count": 29,
+      "top1_source_match_rate": 0.9667,
+      "avg_jaccard": 0.9667,
+      "avg_kendall_tau": 0.8667
     },
     "comparable_metrics": {
       "total_queries": 22,
@@ -54,12 +54,18 @@
       {
         "query": "四六级",
         "py_top5": [
-          "github-Wonz5130-NJUPT-Yellow-Page-6b26212a59d0020a7963",
-          "github-ZsgsDesign-NOJ-5f8e81f797dee6252ca7"
+          "simp-916527c5424f64b391da",
+          "jwc-7302a28b49d7e92c069f",
+          "ygb-2d1cbb54989b3129a211",
+          "job-ce4500e0b0dad687f8d2",
+          "jwc-59a29f409eb78f77b1e1"
         ],
         "ts_top5": [
-          "github-Wonz5130-NJUPT-Yellow-Page-6b26212a59d0020a7963",
-          "github-ZsgsDesign-NOJ-5f8e81f797dee6252ca7"
+          "simp-916527c5424f64b391da",
+          "jwc-7302a28b49d7e92c069f",
+          "ygb-2d1cbb54989b3129a211",
+          "job-ce4500e0b0dad687f8d2",
+          "jwc-59a29f409eb78f77b1e1"
         ],
         "jaccard": 1.0,
         "top1_match": true,
@@ -72,15 +78,23 @@
       {
         "query": "CET",
         "py_top5": [
-          "github-ZsgsDesign-NOJ-5f8e81f797dee6252ca7"
+          "simp-916527c5424f64b391da",
+          "jwc-7302a28b49d7e92c069f",
+          "ygb-2d1cbb54989b3129a211",
+          "job-ce4500e0b0dad687f8d2",
+          "jwc-59a29f409eb78f77b1e1"
         ],
         "ts_top5": [
-          "github-ZsgsDesign-NOJ-5f8e81f797dee6252ca7"
+          "simp-916527c5424f64b391da",
+          "jwc-7302a28b49d7e92c069f",
+          "ygb-2d1cbb54989b3129a211",
+          "job-ce4500e0b0dad687f8d2",
+          "jwc-59a29f409eb78f77b1e1"
         ],
         "jaccard": 1.0,
         "top1_match": true,
         "top1_source_match": true,
-        "kendall_tau": 0.0,
+        "kendall_tau": 1.0,
         "is_data_gap_allowed": true,
         "is_critical": false,
         "route_match": true
@@ -115,24 +129,48 @@
       },
       {
         "query": "论文答辩",
-        "py_top5": [],
-        "ts_top5": [],
-        "jaccard": 0.0,
-        "top1_match": false,
-        "top1_source_match": false,
-        "kendall_tau": 0.0,
+        "py_top5": [
+          "yzb-46fad1a32e8fe5b2292f",
+          "xsc-15efe5746b1ead8db1fd",
+          "news-cbd56e0e02b3e55bc381",
+          "lib-a25dec89a51e270257cc",
+          "job-ce4500e0b0dad687f8d2"
+        ],
+        "ts_top5": [
+          "yzb-46fad1a32e8fe5b2292f",
+          "xsc-15efe5746b1ead8db1fd",
+          "news-cbd56e0e02b3e55bc381",
+          "lib-a25dec89a51e270257cc",
+          "job-ce4500e0b0dad687f8d2"
+        ],
+        "jaccard": 1.0,
+        "top1_match": true,
+        "top1_source_match": true,
+        "kendall_tau": 1.0,
         "is_data_gap_allowed": true,
         "is_critical": false,
         "route_match": true
       },
       {
         "query": "毕业答辩",
-        "py_top5": [],
-        "ts_top5": [],
-        "jaccard": 0.0,
-        "top1_match": false,
-        "top1_source_match": false,
-        "kendall_tau": 0.0,
+        "py_top5": [
+          "news-cbd56e0e02b3e55bc381",
+          "xsc-15efe5746b1ead8db1fd",
+          "yzb-46fad1a32e8fe5b2292f",
+          "lib-a25dec89a51e270257cc",
+          "job-ce4500e0b0dad687f8d2"
+        ],
+        "ts_top5": [
+          "news-cbd56e0e02b3e55bc381",
+          "xsc-15efe5746b1ead8db1fd",
+          "yzb-46fad1a32e8fe5b2292f",
+          "lib-a25dec89a51e270257cc",
+          "job-ce4500e0b0dad687f8d2"
+        ],
+        "jaccard": 1.0,
+        "top1_match": true,
+        "top1_source_match": true,
+        "kendall_tau": 1.0,
         "is_data_gap_allowed": true,
         "is_critical": false,
         "route_match": true
@@ -165,13 +203,13 @@
         "query": "医保",
         "py_top5": [
           "hqc-edfe9e6977f742324c51",
-          "xsc-5ac8a7b37d2f300d28ce",
-          "ygb-cc83b3e083a981d7092d"
+          "ygb-cc83b3e083a981d7092d",
+          "simp-0b735b8b44f5e54325aa"
         ],
         "ts_top5": [
           "hqc-edfe9e6977f742324c51",
-          "xsc-5ac8a7b37d2f300d28ce",
-          "ygb-cc83b3e083a981d7092d"
+          "ygb-cc83b3e083a981d7092d",
+          "simp-0b735b8b44f5e54325aa"
         ],
         "jaccard": 1.0,
         "top1_match": true,
@@ -283,17 +321,17 @@
         "query": "高数",
         "py_top5": [
           "github-NJUPTFreeExams-NJUPT-CST-Free-Exams-6169d0395e43fe5cb864",
-          "exam-2025-2026学年第二学期考试安排表（学校组织17-18周）-学生用表.xlsx-2646",
-          "exam-2025-2026学年第二学期考试安排表（学校组织17-18周）-学生用表.xlsx-2647",
-          "exam-2025-2026学年第二学期考试安排表（学校组织17-18周）-学生用表.xlsx-2648",
-          "exam-2025-2026学年第二学期考试安排表（学校组织17-18周）-学生用表.xlsx-2649"
+          "github-NJUPTFreeExams-NJUPT-InfoSec-Free-Exams-e6e8024e7e61b78b68d8",
+          "github-yosunpeng-postgraduate_test_njupt-b65d2cfa1c598600bc07",
+          "jwc-59a29f409eb78f77b1e1",
+          "jwc-391500a8447efc7bd72f"
         ],
         "ts_top5": [
           "github-NJUPTFreeExams-NJUPT-CST-Free-Exams-6169d0395e43fe5cb864",
-          "exam-2025-2026学年第二学期考试安排表（学校组织17-18周）-学生用表.xlsx-2646",
-          "exam-2025-2026学年第二学期考试安排表（学校组织17-18周）-学生用表.xlsx-2647",
-          "exam-2025-2026学年第二学期考试安排表（学校组织17-18周）-学生用表.xlsx-2648",
-          "exam-2025-2026学年第二学期考试安排表（学校组织17-18周）-学生用表.xlsx-2649"
+          "github-NJUPTFreeExams-NJUPT-InfoSec-Free-Exams-e6e8024e7e61b78b68d8",
+          "github-yosunpeng-postgraduate_test_njupt-b65d2cfa1c598600bc07",
+          "jwc-59a29f409eb78f77b1e1",
+          "jwc-391500a8447efc7bd72f"
         ],
         "jaccard": 1.0,
         "top1_match": true,
@@ -382,14 +420,14 @@
           "ygb-2d1cbb54989b3129a211",
           "xsc-4d899ea5ef4f3625c66d",
           "ygb-56099b105a3cc0139b86",
-          "bc-c7dc72d8038a09655ec9"
+          "bc-92e1118322b55c02bda3"
         ],
         "ts_top5": [
           "xsc-1624f141fe26342ee80b",
           "ygb-2d1cbb54989b3129a211",
           "xsc-4d899ea5ef4f3625c66d",
           "ygb-56099b105a3cc0139b86",
-          "bc-c7dc72d8038a09655ec9"
+          "bc-92e1118322b55c02bda3"
         ],
         "jaccard": 1.0,
         "top1_match": true,
@@ -522,15 +560,15 @@
       {
         "query": "停电",
         "py_top5": [
-          "hqc-6cc6532cca3bd115388a",
           "hqc-0d2ca4f4fe0d9bac05c1",
+          "hqc-6cc6532cca3bd115388a",
           "hqc-44cadcfc99f71a45ed7c",
           "hqc-ec3775e276c31fc7153f",
           "hqc-b279952a9f7b366cb41e"
         ],
         "ts_top5": [
-          "hqc-6cc6532cca3bd115388a",
           "hqc-0d2ca4f4fe0d9bac05c1",
+          "hqc-6cc6532cca3bd115388a",
           "hqc-44cadcfc99f71a45ed7c",
           "hqc-ec3775e276c31fc7153f",
           "hqc-b279952a9f7b366cb41e"
@@ -547,15 +585,15 @@
         "query": "校园网",
         "py_top5": [
           "xxb-2652f8ad86b44f71b459",
-          "xxb-041dc94e61b52ad09e93",
           "github-hicancan-njupt-net-7f980de7a96003335a87",
+          "xxb-041dc94e61b52ad09e93",
           "github-s235784-NJUPT_AutoLogin-3bfbad0bf26507d2f64a",
           "github-Freedomisgood-NjuptCmcc-2e4d2ee54922589eb084"
         ],
         "ts_top5": [
           "xxb-2652f8ad86b44f71b459",
-          "xxb-041dc94e61b52ad09e93",
           "github-hicancan-njupt-net-7f980de7a96003335a87",
+          "xxb-041dc94e61b52ad09e93",
           "github-s235784-NJUPT_AutoLogin-3bfbad0bf26507d2f64a",
           "github-Freedomisgood-NjuptCmcc-2e4d2ee54922589eb084"
         ],
@@ -596,14 +634,16 @@
         "py_top5": [
           "archives-b38698c994ad71856b52",
           "lib-f3e58588ec5a3b984b8b",
-          "ygb-cc83b3e083a981d7092d",
-          "lib-0babdf8811b922d892a5"
+          "exchange-176cb6ec00a0d59cab1e",
+          "exchange-5b8b5d43475cad50110e",
+          "exchange-8c940f9a9a38972abe4d"
         ],
         "ts_top5": [
           "archives-b38698c994ad71856b52",
           "lib-f3e58588ec5a3b984b8b",
-          "ygb-cc83b3e083a981d7092d",
-          "lib-0babdf8811b922d892a5"
+          "exchange-176cb6ec00a0d59cab1e",
+          "exchange-5b8b5d43475cad50110e",
+          "exchange-8c940f9a9a38972abe4d"
         ],
         "jaccard": 1.0,
         "top1_match": true,
@@ -619,15 +659,15 @@
           "github-dhiyu-NJUPT-Bachelor-6c0dfd18c09b68d15b36",
           "github-ace-trump-tech-NJUPT-Graduation-thesis-45f54f0688c8a8d0c82d",
           "github-gzr-lgtm-NJUPThesis-Bachelor-afd91b3fbe9d32896279",
-          "cxcy-c4132762db65faac8b56",
-          "cxcy-ac6a840bf5e5acb2ae47"
+          "job-ce4500e0b0dad687f8d2",
+          "job-67dc85ca08fe979eb024"
         ],
         "ts_top5": [
           "github-dhiyu-NJUPT-Bachelor-6c0dfd18c09b68d15b36",
           "github-ace-trump-tech-NJUPT-Graduation-thesis-45f54f0688c8a8d0c82d",
           "github-gzr-lgtm-NJUPThesis-Bachelor-afd91b3fbe9d32896279",
-          "cxcy-c4132762db65faac8b56",
-          "cxcy-ac6a840bf5e5acb2ae47"
+          "job-ce4500e0b0dad687f8d2",
+          "job-67dc85ca08fe979eb024"
         ],
         "jaccard": 1.0,
         "top1_match": true,
@@ -639,24 +679,48 @@
       },
       {
         "query": "蓝桥杯",
-        "py_top5": [],
-        "ts_top5": [],
-        "jaccard": 0.0,
-        "top1_match": false,
-        "top1_source_match": false,
-        "kendall_tau": 0.0,
+        "py_top5": [
+          "pg-d225c1da2add6e42ebcc",
+          "news-d3ea2fe86561660ce712",
+          "news-09e1f939c948d0707786",
+          "hqc-bfd10aa90d5011cdbfa7",
+          "github-NJUPT-CG-NCTF2018-cc514192c7ef53998319"
+        ],
+        "ts_top5": [
+          "pg-d225c1da2add6e42ebcc",
+          "news-d3ea2fe86561660ce712",
+          "news-09e1f939c948d0707786",
+          "hqc-bfd10aa90d5011cdbfa7",
+          "github-NJUPT-CG-NCTF2018-cc514192c7ef53998319"
+        ],
+        "jaccard": 1.0,
+        "top1_match": true,
+        "top1_source_match": true,
+        "kendall_tau": 1.0,
         "is_data_gap_allowed": true,
         "is_critical": false,
         "route_match": true
       },
       {
         "query": "挑战杯",
-        "py_top5": [],
-        "ts_top5": [],
-        "jaccard": 0.0,
-        "top1_match": false,
-        "top1_source_match": false,
-        "kendall_tau": 0.0,
+        "py_top5": [
+          "news-d3ea2fe86561660ce712",
+          "pg-d225c1da2add6e42ebcc",
+          "hqc-bfd10aa90d5011cdbfa7",
+          "news-09e1f939c948d0707786",
+          "github-NJUPT-CG-NCTF2018-cc514192c7ef53998319"
+        ],
+        "ts_top5": [
+          "news-d3ea2fe86561660ce712",
+          "pg-d225c1da2add6e42ebcc",
+          "hqc-bfd10aa90d5011cdbfa7",
+          "news-09e1f939c948d0707786",
+          "github-NJUPT-CG-NCTF2018-cc514192c7ef53998319"
+        ],
+        "jaccard": 1.0,
+        "top1_match": true,
+        "top1_source_match": true,
+        "kendall_tau": 1.0,
         "is_data_gap_allowed": true,
         "is_critical": false,
         "route_match": true

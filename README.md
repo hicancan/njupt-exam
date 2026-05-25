@@ -18,7 +18,9 @@
 Source-Channel Graph
 -> Canonical Document
 -> Rule Guard
--> LLM TaskFrame
+-> LLM/Heuristic Semantic Result
+-> Semantic Verifier
+-> TaskFrame
 -> Hybrid Index
 -> Query Understanding
 -> Hybrid Retrieval
@@ -46,6 +48,7 @@ config/source_channels.json
 config/query_aliases.json
 config/ontology.json
 config/ranking_weights.json
+config/search_contract.json
 config/github_search_sources.json
 ```
 
@@ -72,7 +75,9 @@ public/data/data_summary.json
 - Source-Channel Graph：记录公开源站、栏目、学生价值、预期领域/意图、选择器、分页、风险和关键词。
 - Canonical Document：统一 URL、正文、附件、发布时间、hash、dedupe key、source_id 和 channel_id。
 - Rule Guard：在 LLM 前检测 restricted、sensitive、low_evidence、duplicate、expired、evergreen、附件风险和行政噪声。
+- Semantic Verifier：在写入 SearchDocument 前移除未由原文或附件元数据支撑的 deadline、action、materials、location/contact 和 TaskFrame 字段。
 - TaskFrame：把通知建模为学生任务，包含对象、任务、动作、截止、材料、地点、证据、风险和置信度。
+- Search Contract：`config/search_contract.json` 约束 kind、category、domain、intent、source_type、lifecycle、semantic_mode 和 TaskFrame 枚举，生产验证严格失败。
 - Hybrid Index：存储 BM25 词项、字段文本、任务文本、材料、证据、source/channel 信号。
 - Query Aliases：把“保研/推免”“大创”“校园网”等学生自然语言映射到领域、意图和语义扩展。
 - Query Intent Router: 识别查询模式并将其路由到特定垂类意图（如考试查询、资源搜索、事务通知等）。
@@ -87,6 +92,7 @@ public/data/data_summary.json
 - 不绕过校园网或统一身份认证限制。
 - restricted 页面不生成具体任务。
 - sensitive 页面不向 LLM 发送敏感正文，不展示敏感正文片段。
+- LLM/规则输出不是事实源；deadline、action、materials 和 TaskFrame 必须经过 deterministic verifier。
 - API key 只来自环境变量或 GitHub Actions secrets，不写入仓库。
 - 本项目为非官方工具，请以官网原文为准。
 
@@ -140,6 +146,7 @@ uv run python scripts\update_search_index.py --no-github
 
 ```powershell
 uv run python scripts\utils\validate_search_index.py
+uv run python scripts\utils\validate_query_routes.py
 uv run python scripts\eval\eval_search.py --write-report
 uv run python scripts\eval\query_smoke_test.py
 & .\node_modules\.bin\tsx.ps1 --tsconfig tsconfig.app.json scripts\eval\eval_frontend_search.ts --out eval\reports\ts_search_results.json
@@ -147,11 +154,11 @@ uv run python scripts\eval\eval_product_search.py --mode both --ts-results eval\
 uv run python scripts\eval\eval_search_parity.py --ts-results eval\reports\ts_search_results.json
 ```
 
-Search Quality v1.3 使用 `strict_pass / data_gap / degraded_pass / fail` 四类状态。`data_gap` 只表示 Source-Channel 覆盖证明当前索引不能回答该 query，不计入 strict pass。
+Search Quality v1.3 使用 `strict_pass / data_gap / degraded_pass / fail` 四类状态。`data_gap` 只表示 Source-Channel 覆盖证明当前索引不能回答该 query，不计入 strict pass。当前 durable gold map 在 `eval/queries/search_gold.json`，可执行 gate 在 `eval/search_cases.json`。
 
 ## 自动更新
 
-`.github/workflows/auto-update.yml` 每 6 小时更新考试数据、公开校园索引和 GitHub 资料源，并运行索引契约校验。`.github/workflows/deploy.yml` 负责 lint、test、build 与 GitHub Pages 部署。
+`.github/workflows/auto-update.yml` 每 6 小时更新考试数据、公开校园索引和 GitHub 资料源，并运行索引契约、产品搜索和 Python/TypeScript parity 校验。workflow inputs 以 shell array 传递；LLM cache 只有在 `commit_llm_cache=true` 时才提交。`.github/workflows/deploy.yml` 负责 lint、test、build 与 GitHub Pages 部署。
 
 LLM 增强只在离线索引构建阶段运行。未配置 Key 时使用规则抽取，不影响静态搜索可用性。
 
@@ -167,8 +174,9 @@ $env:NJUPT_SEARCH_GITHUB_TOKEN="..."
 ## 项目结构
 
 ```text
-config/                 # source-channel graph, ontology, aliases, ranking
-docs/architecture/      # HyTask-RAG 架构
+config/                 # source-channel graph, ontology, aliases, ranking, contract
+docs/architecture/      # HyTask-RAG, contract, ranking, eval, source adapters
+docs/operations/        # update/deploy runbook
 docs/source-audit/      # Chrome DevTools MCP 公开源审计
 docs/product/           # 产品冻结报告
 eval/                   # 自动 query 集与报告

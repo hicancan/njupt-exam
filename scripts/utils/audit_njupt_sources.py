@@ -5,7 +5,6 @@ import sys
 from urllib.parse import urljoin, urlparse
 
 import requests
-import urllib3
 from bs4 import BeautifulSoup
 
 SCRIPTS_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -13,8 +12,6 @@ if SCRIPTS_DIR not in sys.path:
     sys.path.insert(0, SCRIPTS_DIR)
 
 from config.indexer_config import CAMPUS_SOURCE_CONFIG_PATH, HEADERS, REQUEST_TIMEOUT
-
-urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 
 OFFICIAL_INDEX_URLS = (
@@ -32,7 +29,7 @@ EXCLUDED_DOMAINS = {
 
 
 def fetch_html(url: str) -> str:
-    response = requests.get(url, headers=HEADERS, timeout=REQUEST_TIMEOUT, verify=False)
+    response = requests.get(url, headers=HEADERS, timeout=REQUEST_TIMEOUT)
     response.raise_for_status()
     response.encoding = response.apparent_encoding or response.encoding
     return response.text

@@ -16,6 +16,7 @@ export interface QueryRoute {
   blocked_domains_for_top5?: string[];
   blocked_sources_for_top5?: string[];
   allow_resource_top5?: boolean;
+  allow_blocked_fallback?: boolean;
   freshness_preference?: string;
   explanation?: string;
   subtypes?: string[];
@@ -43,6 +44,7 @@ export interface RouteResult {
   blocked_domains_for_top5: string[];
   blocked_sources_for_top5: string[];
   allow_resource_top5: boolean;
+  allow_blocked_fallback: boolean;
   freshness_preference: string;
   alternative_routes: RouteAlternative[];
   explanation: string;
@@ -138,6 +140,7 @@ export function routeQuery(rawQuery: string): RouteResult {
     bad_result_terms: bestRoute.bad_result_terms || [],
     must_include_terms_for_top_results: bestRoute.must_include_terms_for_top_results || [],
     allow_resource_top5: bestRoute.allow_resource_top5 !== false,
+    allow_blocked_fallback: bestRoute.allow_blocked_fallback !== false,
     freshness_preference: bestRoute.freshness_preference || 'none',
     alternative_routes: altRoutes,
     explanation: bestRoute.explanation || '',

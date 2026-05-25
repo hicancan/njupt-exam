@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { Exam, SearchDocument } from '@/types';
-import { buildExamDocuments, getLearningResources, rankSearchDocuments } from './searchIndex';
+import { buildExamDocuments, getLearningResources, parseSearchDocuments, rankSearchDocuments } from './searchIndex';
 
 const baseNotice: SearchDocument = {
     id: 'notice-1',
@@ -61,7 +61,7 @@ const baseNotice: SearchDocument = {
     task_frames: [{
         task_id: 'task-notice-1',
         doc_id: 'notice-1',
-        source_mode: 'llm',
+        source_mode: 'generated_from_llm_fields',
         task_type: 'application',
         who: { audience: ['本科生'], college: [], grade: [], major: [], class_name: [] },
         what: '奖学金评选',
@@ -134,5 +134,15 @@ describe('rankSearchDocuments', () => {
     it('only shows learning resources for course or exam intent', () => {
         expect(getLearningResources('数据结构 复习').length).toBeGreaterThan(0);
         expect(getLearningResources('后勤 停电')).toHaveLength(0);
+    });
+
+    it('rejects invalid production enum values instead of masking them', () => {
+        const invalidDocument = {
+            ...baseNotice,
+            id: 'notice-invalid-domain',
+            domain: 'campus_life',
+        };
+
+        expect(() => parseSearchDocuments([invalidDocument], 'fixture')).toThrow(/campus_life/);
     });
 });

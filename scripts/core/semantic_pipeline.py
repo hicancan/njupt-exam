@@ -9,10 +9,11 @@ from core.heuristics import (
     metadata_only_summary, is_low_evidence_content, SENSITIVE_MATERIAL_PATTERNS
 )
 from core.indexer_scoring import infer_tags
+from core.semantic_verifier import verify_semantic_result
 from config.indexer_config import CATEGORY_KEYWORDS
 from models.semantic_model import (
     derive_display_category, extract_evidence, infer_domain, infer_intent, infer_lifecycle,
-    normalize_domain, normalize_intent
+    normalize_category, normalize_domain, normalize_intent
 )
 
 SEMANTIC_PIPELINE_VERSION = "semantic-router-v2"
@@ -25,7 +26,7 @@ def _get_base_fields(entry: dict[str, Any], guard: dict[str, Any]) -> dict[str, 
         "title": entry.get("title", ""),
         "content": entry.get("canonical", {}).get("clean_text", ""),
         "source_weight": entry.get("source_weight", 1.0),
-        "source_type": entry.get("source_type", "department"),
+        "source_type": entry.get("source_type", "central_admin"),
         "attachments": entry.get("attachments", []),
         "published_at": entry.get("published_at"),
         "default_category": entry.get("category", "公告"),
@@ -82,15 +83,19 @@ def apply_display_overrides(semantic: SemanticResult) -> SemanticResult:
     original_intent = semantic.intent
 
     if not semantic.domain:
-        semantic.domain = "unknown"
+        semantic.domain = "news"
         if "domain" not in semantic.field_sources or semantic.field_sources["domain"] == "llm_missing":
             semantic.field_sources["domain"] = "system_default"
 
     if not semantic.intent:
-        semantic.intent = "information"
+        semantic.intent = "read"
         if "intent" not in semantic.field_sources or semantic.field_sources["intent"] == "llm_missing":
             semantic.field_sources["intent"] = "system_default"
             
+    semantic.domain = normalize_domain(semantic.domain)
+    semantic.intent = normalize_intent(semantic.intent)
+    semantic.category = normalize_category(semantic.category)
+
     if semantic.category not in CATEGORY_KEYWORDS and semantic.category != "公告":
         semantic.category = "公告"
         semantic.field_sources["category"] = "display_mapping"
@@ -274,6 +279,9 @@ def derive_semantic_fields_heuristic(entry: dict[str, Any], guard: dict[str, Any
 
 def derive_semantic_fields_guarded(entry: dict[str, Any], guard: dict[str, Any], now: datetime) -> SemanticResult:
     base = _get_base_fields(entry, guard)
+    scoring_text = f"{base['title']} {base['content']}"
+    category = base["default_category"] if base["default_category"] in CATEGORY_KEYWORDS else "公告"
+    domain = infer_domain(scoring_text, category, base["source_type"])
     field_sources = {k: "rule_guard" for k in ["category", "domain", "intent", "deadline", "action_required", "action_summary", "summary", "evidence", "sensitive", "review_required"]}
     field_sources["student_score"] = "rule_guard"
     field_sources["importance_score"] = "rule_guard"
@@ -282,9 +290,9 @@ def derive_semantic_fields_guarded(entry: dict[str, Any], guard: dict[str, Any],
     return SemanticResult(
         semantic_mode="guarded_metadata",
         field_sources=field_sources,
-        category=base["default_category"] if base["default_category"] in CATEGORY_KEYWORDS else "公告",
-        domain="campus_life",
-        intent="information",
+        category=category,
+        domain=domain,
+        intent="read",
         lifecycle="active",
         evidence=[],
         confidence=1.0,
@@ -325,4 +333,11 @@ def route_semantic_pipeline(entry: dict[str, Any], llm_result: dict[str, Any] | 
         if llm_result and "llm_failure" in llm_result:
             result.llm_failure = llm_result["llm_failure"]
             
-    return apply_display_overrides(apply_safety_overrides(result, guard))
+    result = apply_display_overrides(apply_safety_overrides(result, guard))
+    return verify_semantic_result(
+        result,
+        title=str(entry.get("title", "")),
+        source_text=str(entry.get("content") or entry.get("canonical", {}).get("clean_text", "")),
+        attachments=list(entry.get("attachments", [])),
+        guard=guard,
+    )

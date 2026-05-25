@@ -17,10 +17,10 @@ class TestSemanticPipeline(unittest.TestCase):
         self.mock_now = datetime(2026, 5, 24, 12, 0, 0)
         self.base_entry = {
             "title": "测试公告",
-            "content": "这是一个测试内容",
+            "content": "这是一个测试内容，请学生于2026年5月30日前参加讲座。",
             "default_category": "公告",
             "source_weight": 1.0,
-            "source_type": "department",
+            "source_type": "central_admin",
             "attachments": [],
             "published_at": "2026-05-24T10:00:00"
         }
@@ -87,10 +87,10 @@ class TestSemanticPipeline(unittest.TestCase):
         }
         result = route_semantic_pipeline(self.base_entry, llm_result, guard, run_config, self.mock_now)
         self.assertEqual(result.semantic_mode, "llm")
-        self.assertEqual(result.field_sources["category"], "display_mapping")
+        self.assertEqual(result.field_sources["category"], "llm_missing")
         self.assertEqual(result.field_sources["deadline"], "llm_missing")
         self.assertEqual(result.field_sources["domain"], "system_default")
-        self.assertEqual(result.domain, "unknown")
+        self.assertEqual(result.domain, "news")
         self.assertEqual(result.category, "公告")
 
 if __name__ == '__main__':

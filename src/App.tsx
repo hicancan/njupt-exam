@@ -16,7 +16,7 @@ import { ResultsView } from '@/views/ResultsView';
 
 function App() {
     const { exams: allExams, loading: examLoading, error: examError, sourceUrl, sourceTitle, generatedAt, totalRecords } = useExamData();
-    const { documents: noticeDocuments, hybridIndex, queryAliases, loading: searchLoading, error: searchError } = useSearchIndex();
+    const { documents: noticeDocuments, hybridIndex, queryAliases, optionalUnavailable, loading: searchLoading, error: searchError } = useSearchIndex();
     const { newDataAvailable, reloadToUpdate } = useDataUpdateNotifier();
 
     const { classParam, qParam, navigate } = useUrlState();
@@ -109,6 +109,15 @@ function App() {
                     <div className="border border-[#f4c7c3] dark:border-[#5f2b26] bg-[#fce8e6] dark:bg-[#2b1715] text-[#b3261e] dark:text-[#f28b82] rounded-md p-3 text-sm flex gap-2">
                         <AlertCircle className="w-4 h-4 shrink-0 mt-0.5" aria-hidden="true" />
                         <span>{searchError || examError}</span>
+                    </div>
+                </div>
+            ) : null}
+
+            {!searchError && optionalUnavailable.length > 0 ? (
+                <div className="max-w-6xl mx-auto w-full px-4 pt-4">
+                    <div className="border border-[#fad2cf] dark:border-[#5f2b26] bg-[#fef7e0] dark:bg-[#2d2412] text-[#8c4d00] dark:text-[#fde293] rounded-md p-3 text-sm flex gap-2">
+                        <AlertCircle className="w-4 h-4 shrink-0 mt-0.5" aria-hidden="true" />
+                        <span>部分增强索引不可用，已使用核心搜索降级运行：{optionalUnavailable.join('、')}</span>
                     </div>
                 </div>
             ) : null}

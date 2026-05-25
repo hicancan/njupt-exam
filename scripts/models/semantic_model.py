@@ -2,62 +2,14 @@ import re
 from datetime import datetime
 from typing import Any
 
-SEARCH_DOMAINS = (
-    "academic",
-    "exam",
-    "course",
-    "degree",
-    "scholarship",
-    "employment",
-    "competition",
-    "project",
-    "innovation_project",
-    "international",
-    "life",
-    "library",
-    "security",
-    "logistics",
-    "campus_network",
-    "subsidy",
-    "medical_insurance",
-    "archive",
-    "lecture",
-    "research",
-    "resource",
-    "news",
-    "policy",
+from models.search_contract import (
+    SEARCH_CATEGORIES,
+    SEARCH_DOMAINS,
+    SEARCH_INTENTS,
+    SEARCH_LIFECYCLES,
+    SEARCH_SOURCE_TYPES,
+    normalize_contract_value,
 )
-
-SEARCH_INTENTS = (
-    "apply",
-    "register",
-    "submit",
-    "attend",
-    "check_result",
-    "publicity",
-    "download",
-    "read",
-    "schedule",
-    "alert",
-    "pay",
-    "contact",
-    "export",
-)
-
-SEARCH_SOURCE_TYPES = (
-    "central_admin",
-    "central_notice",
-    "central_news",
-    "college",
-    "service_unit",
-    "job_platform",
-    "github_resource",
-    "research_admin",
-    "policy",
-    "exam_vertical",
-)
-
-SEARCH_LIFECYCLES = ("active", "upcoming", "expired", "evergreen", "unknown")
 
 DOMAIN_KEYWORDS = {
     "exam": ("考试", "期末", "补考", "重修", "四六级", "准考证", "考场"),
@@ -191,18 +143,23 @@ LIFECYCLE_LABELS = {
 
 
 def normalize_domain(value: Any, fallback: str = "news") -> str:
-    text = str(value or "").strip()
-    return text if text in SEARCH_DOMAINS else fallback
+    return normalize_contract_value(value, SEARCH_DOMAINS, fallback)
 
 
 def normalize_intent(value: Any, fallback: str = "read") -> str:
-    text = str(value or "").strip()
-    return text if text in SEARCH_INTENTS else fallback
+    return normalize_contract_value(value, SEARCH_INTENTS, fallback)
 
 
 def normalize_source_type(value: Any, fallback: str = "central_admin") -> str:
-    text = str(value or "").strip()
-    return text if text in SEARCH_SOURCE_TYPES else fallback
+    return normalize_contract_value(value, SEARCH_SOURCE_TYPES, fallback)
+
+
+def normalize_category(value: Any, fallback: str = "公告") -> str:
+    return normalize_contract_value(value, SEARCH_CATEGORIES, fallback)
+
+
+def normalize_lifecycle(value: Any, fallback: str = "unknown") -> str:
+    return normalize_contract_value(value, SEARCH_LIFECYCLES, fallback)
 
 
 def infer_domain(text: str, fallback_category: str = "公告", source_type: str = "central_admin") -> str:

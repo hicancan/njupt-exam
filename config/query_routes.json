@@ -211,6 +211,70 @@
     ]
   },
   {
+    "id": "medical_insurance_service_search",
+    "priority": 88,
+    "triggers": [
+      "医保",
+      "参保",
+      "报销"
+    ],
+    "must_have_any": [],
+    "soft_terms": [
+      "医疗",
+      "门诊",
+      "费用",
+      "保险",
+      "学生"
+    ],
+    "negative_terms": [
+      "校园网",
+      "网络",
+      "网费",
+      "宽带"
+    ],
+    "route_examples": [
+      "学生医保报销",
+      "参保缴费通知"
+    ],
+    "query_type": "service_search",
+    "preferred_domains": [
+      "medical_insurance",
+      "logistics",
+      "life",
+      "subsidy"
+    ],
+    "preferred_sources": [
+      "hqc",
+      "xsc",
+      "ygb"
+    ],
+    "blocked_domains_for_top5": [
+      "campus_network",
+      "resource",
+      "innovation_project"
+    ],
+    "blocked_sources_for_top5": [
+      "github",
+      "cxcy",
+      "xxb"
+    ],
+    "allow_resource_top5": false,
+    "allow_blocked_fallback": false,
+    "bad_result_terms": [
+      "校园网",
+      "网费",
+      "宽带",
+      "自动登录"
+    ],
+    "must_include_terms_for_top_results": [
+      "医保",
+      "医疗",
+      "参保",
+      "报销"
+    ],
+    "explanation": "医保、参保和医疗报销查询，优先后勤/学生事务，排除校园网资源。"
+  },
+  {
     "id": "service_search",
     "priority": 70,
     "triggers": [
@@ -303,6 +367,7 @@
     "blocked_sources_for_top5": [
       "cxcy"
     ],
+    "allow_blocked_fallback": false,
     "explanation": "官方学籍/学业通知，优先教务处或学生处。",
     "must_include_terms_for_top_results": [
       "转专业",

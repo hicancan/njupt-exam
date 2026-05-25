@@ -35,6 +35,11 @@ on:
         required: false
         type: string
         default: '32'
+      commit_llm_cache:
+        description: 'Commit updated LLM cache to main'
+        required: false
+        type: boolean
+        default: false
 
 permissions:
   contents: write
@@ -91,24 +96,29 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
           GEMINI_API_KEYS: ${{ secrets.GEMINI_API_KEYS }}
+          INPUT_FORCE_LLM: ${{ github.event.inputs.force_llm }}
+          INPUT_SOURCE_ID: ${{ github.event.inputs.source_id }}
+          INPUT_LIMIT: ${{ github.event.inputs.limit }}
+          INPUT_LLM_PROVIDER: ${{ github.event.inputs.llm_provider }}
+          INPUT_LLM_BATCH_SIZE: ${{ github.event.inputs.llm_batch_size }}
         run: |
-          ARGS=""
-          if [ "${{ github.event.inputs.force_llm }}" = "true" ]; then
-            ARGS="$ARGS --force-llm"
+          ARGS=()
+          if [ "$INPUT_FORCE_LLM" = "true" ]; then
+            ARGS+=(--force-llm)
           fi
-          if [ -n "${{ github.event.inputs.source_id }}" ]; then
-            ARGS="$ARGS --source ${{ github.event.inputs.source_id }}"
+          if [ -n "$INPUT_SOURCE_ID" ]; then
+            ARGS+=(--source "$INPUT_SOURCE_ID")
           fi
-          if [ -n "${{ github.event.inputs.limit }}" ]; then
-            ARGS="$ARGS --limit ${{ github.event.inputs.limit }}"
+          if [ -n "$INPUT_LIMIT" ]; then
+            ARGS+=(--limit "$INPUT_LIMIT")
           fi
-          if [ -n "${{ github.event.inputs.llm_provider }}" ]; then
-            ARGS="$ARGS --llm-provider ${{ github.event.inputs.llm_provider }}"
+          if [ -n "$INPUT_LLM_PROVIDER" ]; then
+            ARGS+=(--llm-provider "$INPUT_LLM_PROVIDER")
           fi
-          if [ -n "${{ github.event.inputs.llm_batch_size }}" ]; then
-            ARGS="$ARGS --llm-batch-size ${{ github.event.inputs.llm_batch_size }}"
+          if [ -n "$INPUT_LLM_BATCH_SIZE" ]; then
+            ARGS+=(--llm-batch-size "$INPUT_LLM_BATCH_SIZE")
           fi
-          python scripts/update_search_index.py $ARGS
+          python scripts/update_search_index.py "${ARGS[@]}"
 
       - name: Python integrity checks
         run: |
@@ -116,12 +126,14 @@ jobs:
             scripts/update_search_index.py \
             scripts/core/llm_scorer.py \
             scripts/core/semantic_pipeline.py \
+            scripts/core/semantic_verifier.py \
             scripts/core/evidence_pack.py \
             scripts/core/rule_guard.py \
             scripts/core/hybrid_ranker.py \
             scripts/core/query_expander.py \
             scripts/core/task_extractor.py \
             scripts/models/canonical_document.py \
+            scripts/models/search_contract.py \
             scripts/models/source_graph.py \
             scripts/models/task_frame.py \
             scripts/models/hybrid_index.py \
@@ -163,6 +175,8 @@ jobs:
           
       - name: Check for changes
         id: git-check
+        env:
+          INPUT_COMMIT_LLM_CACHE: ${{ github.event.inputs.commit_llm_cache }}
         run: |
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
@@ -179,7 +193,7 @@ jobs:
           if [ -f eval/reports/search_parity_latest.json ]; then
             git add eval/reports/search_parity_latest.json
           fi
-          if [ -f cache/search_llm_cache.json ]; then
+          if [ "$INPUT_COMMIT_LLM_CACHE" = "true" ] && [ -f cache/search_llm_cache.json ]; then
             git add cache/search_llm_cache.json
           fi
           if git diff --staged --quiet; then

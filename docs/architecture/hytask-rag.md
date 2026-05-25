@@ -7,7 +7,9 @@ HyTask-RAG is the njupt-search v1 architecture before small-model training:
 -> Source-Channel Graph
 -> CanonicalDocument
 -> RuleGuard
--> LLM/Rule TaskFrame
+-> LLM/Rule SemanticResult
+-> Semantic Verifier
+-> TaskFrame
 -> HybridIndex
 -> Query Understanding
 -> Hybrid Retrieval
@@ -70,6 +72,21 @@ Guard outputs include:
 - `review_required`.
 
 Restricted pages do not generate TaskFrames. Sensitive pages do not expose sensitive body text.
+
+## Semantic Verifier
+
+`scripts/core/semantic_verifier.py` is the deterministic gate between LLM/heuristic semantic extraction and production SearchDocument output.
+
+It removes or downgrades:
+
+- deadlines without date/deadline evidence;
+- student actions that are not grounded in source text;
+- department-only actions incorrectly interpreted as student tasks;
+- required materials not present in source text or attachment metadata;
+- TaskFrame deadlines/actions/materials/location/contact that are not grounded;
+- all concrete TaskFrames for restricted, sensitive, low-evidence, or LLM-disallowed documents.
+
+Removal counts are written into document `semantic_verifier` metadata and summarized in the manifest on the next indexing run.
 
 ## TaskFrame
 

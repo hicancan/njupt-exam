@@ -35,6 +35,7 @@ eval/reports/eval-*.json
 project_structure.txt
 project_files.txt
 project_files_list.txt
+CLAUDE.md
 # Environment variables
 .env
 .env.local

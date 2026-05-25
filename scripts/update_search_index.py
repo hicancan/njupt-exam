@@ -5,15 +5,13 @@ import hashlib
 import json
 import os
 import re
+from collections import Counter
 from datetime import datetime, timezone, timedelta
 from typing import Any
 from urllib.parse import quote, urljoin, urlparse, urlunparse
 
 import requests
-import urllib3
 from bs4 import BeautifulSoup
-
-urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 from config.indexer_config import (
     BASE_DIR, PUBLIC_DIR, INDEX_DIR, DOCUMENTS_PATH, MANIFEST_PATH, GITHUB_SOURCE_CONFIG_PATH,
@@ -75,6 +73,7 @@ from models.hybrid_index import build_hybrid_index
 from models.source_graph import load_source_channel_graph
 from core.rule_guard import evaluate_rule_guard, restricted_summary
 from core.task_extractor import extract_task_frames
+from core.semantic_verifier import verify_search_document
 
 SOURCE_PRIORITY = {
     "本科生院 / 教务处": 1.0,
@@ -370,15 +369,19 @@ def discover_next_list_urls(soup: BeautifulSoup, list_url: str, source: SourceCo
     return urls
 
 
-def fetch_html(url: str) -> str:
-    response = requests.get(url, headers=HEADERS, verify=False, timeout=REQUEST_TIMEOUT)
+def request_verify_for(source: SourceConfig | None = None) -> bool:
+    return not bool(source and source.allow_insecure_tls)
+
+
+def fetch_html(url: str, source: SourceConfig | None = None) -> str:
+    response = requests.get(url, headers=HEADERS, verify=request_verify_for(source), timeout=REQUEST_TIMEOUT)
     response.raise_for_status()
     response.encoding = response.apparent_encoding or response.encoding
     return response.text
 
 
-def post_json(url: str, body: dict[str, Any]) -> dict[str, Any]:
-    response = requests.post(url, json=body, headers=HEADERS, verify=False, timeout=REQUEST_TIMEOUT)
+def post_json(url: str, body: dict[str, Any], source: SourceConfig | None = None) -> dict[str, Any]:
+    response = requests.post(url, json=body, headers=HEADERS, verify=request_verify_for(source), timeout=REQUEST_TIMEOUT)
     response.raise_for_status()
     return response.json()
 
@@ -496,10 +499,19 @@ from core.indexer_scoring import (
 )
 
 
-def extract_attachments(soup: BeautifulSoup, page_url: str) -> list[dict[str, str]]:
+def extract_attachments(soup: BeautifulSoup, page_url: str, selector: str | None = None) -> list[dict[str, str]]:
     attachments: list[dict[str, str]] = []
     seen: set[str] = set()
-    for anchor in soup.find_all("a"):
+    roots = soup.select(selector) if selector else [soup]
+    if selector and not roots:
+        roots = [soup]
+    anchors = []
+    for root in roots:
+        if getattr(root, "name", None) == "a":
+            anchors.append(root)
+        else:
+            anchors.extend(root.find_all("a"))
+    for anchor in anchors:
         href = anchor.get("href")
         if not href:
             continue
@@ -515,9 +527,15 @@ def extract_attachments(soup: BeautifulSoup, page_url: str) -> list[dict[str, st
     return attachments[:8]
 
 
-def extract_article_text(soup: BeautifulSoup) -> str:
+def extract_article_text_with_strategy(soup: BeautifulSoup, selector: str | None = None) -> tuple[str, str]:
     for tag in soup(["script", "style", "noscript"]):
         tag.decompose()
+
+    if selector:
+        for node in soup.select(selector):
+            text = clean_text(node.get_text(" ", strip=True))
+            if len(text) >= 20:
+                return text[:2400], "channel_content_selector"
 
     selectors = [
         ".wp_articlecontent",
@@ -535,8 +553,12 @@ def extract_article_text(soup: BeautifulSoup) -> str:
         if node:
             text = clean_text(node.get_text(" ", strip=True))
             if len(text) >= 20:
-                return text[:2400]
-    return clean_text(soup.get_text(" ", strip=True))[:2400]
+                return text[:2400], "global_content_selector"
+    return clean_text(soup.get_text(" ", strip=True))[:2400], "body_text_fallback"
+
+
+def extract_article_text(soup: BeautifulSoup, selector: str | None = None) -> str:
+    return extract_article_text_with_strategy(soup, selector)[0]
 
 
 def strip_html(value: str | None) -> str:
@@ -746,8 +768,8 @@ def build_search_document_from_prepared(
             attachments=list(entry.get("attachments", [])),
             published_at=entry.get("published_at"),
             lifecycle="active",
-            domain=entry.get("domain", "campus_life"),
-            intent=entry.get("intent", "information"),
+            domain=entry.get("domain", "news"),
+            intent=entry.get("intent", "read"),
             source_type=entry.get("source_type"),
         )
         
@@ -822,8 +844,10 @@ def build_search_document_from_prepared(
         "student_score_source": semantic.student_score_source,
         "importance_score_source": semantic.importance_score_source,
         "llm_failure": semantic.llm_failure,
+        "crawler": entry.get("crawler", {}),
     }
     document["task_frames"] = extract_task_frames(document, llm_result=llm_result, rule_guard=document["rule_guard"])
+    document = verify_search_document(document)
     
     document["search_profile"] = {
         "route_domains": list(set([semantic.domain, *[tag for tag in semantic.tags if tag in ["international", "project", "academic", "exam"]]])),
@@ -850,23 +874,40 @@ def prepare_notice_candidate(
     published_at = candidate.get("published_at")
     content = title
     attachments: list[dict[str, str]] = []
+    selector_warnings = list(candidate.get("selector_warnings") or [])
+    selector_strategy = str(candidate.get("selector_strategy") or "global_anchor_fallback")
 
     try:
-        html = fetch_html(url)
+        html = fetch_html(url, source)
         soup = BeautifulSoup(html, "html.parser")
-        title_node = (
-            soup.select_one(".arti_title")
-            or soup.select_one(".articleTitle")
-            or soup.select_one(".news_title")
-            or soup.find("h1")
-        )
+        title_node = soup.select_one(channel.selectors.title) if channel.selectors.title else None
+        if not title_node:
+            title_node = (
+                soup.select_one(".arti_title")
+                or soup.select_one(".articleTitle")
+                or soup.select_one(".news_title")
+                or soup.find("h1")
+            )
         page_title = clean_text(title_node.get_text(" ", strip=True)) if title_node else ""
         if page_title and len(page_title) >= 4 and page_title not in NAV_TITLES:
             title = page_title
-        content = extract_article_text(soup) or title
-        attachments = extract_attachments(soup, url)
+        content, content_strategy = extract_article_text_with_strategy(soup, channel.selectors.content)
+        content = content or title
+        selector_strategy = f"{selector_strategy}+{content_strategy}"
+        if channel.selectors.content and content_strategy != "channel_content_selector":
+            selector_warnings.append(f"{channel.id}: content selector {channel.selectors.content!r} did not produce article text")
+        attachments = extract_attachments(soup, url, channel.selectors.attachments)
+        if channel.selectors.attachments and not attachments:
+            selector_warnings.append(f"{channel.id}: attachment selector {channel.selectors.attachments!r} found no attachments")
+        if channel.selectors.date:
+            date_node = soup.select_one(channel.selectors.date)
+            if date_node:
+                published_at = published_at or parse_date(date_node.get_text(" ", strip=True), now)
+            else:
+                selector_warnings.append(f"{channel.id}: date selector {channel.selectors.date!r} found no date")
         published_at = published_at or parse_date(content, now)
-    except Exception:
+    except Exception as exc:
+        selector_warnings.append(f"{channel.id}: detail fetch/extraction failed for {url}: {exc}")
         content = title
 
     if is_expired(published_at, now):
@@ -930,11 +971,104 @@ def prepare_notice_candidate(
         "lifecycle_kind": "notice",
         "canonical": canonical.model_dump(),
         "rule_guard": rule_guard,
+        "crawler": {
+            "selector_strategy": selector_strategy,
+            "warnings": selector_warnings[:6],
+            "allow_insecure_tls": source.allow_insecure_tls,
+        },
     }
 
 
-def collect_candidates(source: SourceConfig, channel: ChannelConfig, now: datetime) -> tuple[list[dict[str, str | None]], list[str]]:
+def channel_has_list_selectors(channel: ChannelConfig) -> bool:
+    selectors = channel.selectors
+    return any((selectors.list_item, selectors.title, selectors.date, selectors.link))
+
+
+def select_relative_text(node: Any, selector: str | None) -> str:
+    if selector:
+        selected = node.select_one(selector)
+        if selected:
+            return clean_text(selected.get("title") or selected.get_text(" ", strip=True))
+        return ""
+    return clean_text(node.get("title") or node.get_text(" ", strip=True))
+
+
+def select_relative_link(node: Any, selector: str | None) -> tuple[str, str]:
+    link_node = node.select_one(selector) if selector else None
+    if link_node is None:
+        link_node = node if getattr(node, "name", None) == "a" else node.find("a")
+    if not link_node:
+        return "", ""
+    href = str(link_node.get("href") or "")
+    text = clean_text(link_node.get("title") or link_node.get_text(" ", strip=True))
+    return href, text
+
+
+def collect_selector_candidates(
+    soup: BeautifulSoup,
+    *,
+    list_url: str,
+    source: SourceConfig,
+    channel: ChannelConfig,
+    now: datetime,
+    seen: set[str],
+) -> tuple[list[dict[str, str | None]], list[str]]:
+    selectors = channel.selectors
+    warnings: list[str] = []
+    nodes = soup.select(selectors.list_item) if selectors.list_item else []
+    if not nodes and selectors.list_item:
+        warnings.append(f"{channel.id}: list_item selector {selectors.list_item!r} matched no nodes")
+        return [], warnings
+    if not nodes:
+        nodes = soup.find_all("a")
+
     candidates: list[dict[str, str | None]] = []
+    for node in nodes:
+        href, link_text = select_relative_link(node, selectors.link)
+        if not href:
+            continue
+        title = select_relative_text(node, selectors.title) or link_text
+        if len(title) < 4 or title in NAV_TITLES or title.lower() in NAV_TITLES:
+            continue
+        absolute_url = normalize_url(urljoin(list_url, href))
+        parsed = urlparse(absolute_url)
+        if parsed.scheme not in {"http", "https"} or not same_domain(absolute_url, source):
+            continue
+        extension = extension_from_url(absolute_url)
+        if extension in STATIC_EXTENSIONS or extension in ATTACHMENT_EXTENSIONS:
+            continue
+        if absolute_url in seen or not matches_source_patterns(absolute_url, title, source):
+            continue
+
+        parent_text = clean_text(node.get_text(" ", strip=True))
+        if not looks_like_notice_link(title, parent_text, absolute_url, now):
+            continue
+        channel_text = f"{title} {parent_text}"
+        if any(keyword and keyword in channel_text for keyword in channel.negative_keywords):
+            if not any(keyword and keyword in channel_text for keyword in channel.positive_keywords):
+                continue
+
+        seen.add(absolute_url)
+        date_text = ""
+        if selectors.date:
+            date_node = node.select_one(selectors.date)
+            if date_node:
+                date_text = clean_text(date_node.get_text(" ", strip=True))
+        published_at = parse_date(" ".join([date_text, title, parent_text, absolute_url]), now)
+        if is_expired(published_at, now):
+            continue
+        candidates.append({
+            "title": title,
+            "url": absolute_url,
+            "published_at": published_at,
+            "selector_strategy": "channel_list_selector" if channel_has_list_selectors(channel) else "global_anchor_fallback",
+            "selector_warnings": warnings[:3],
+        })
+    return candidates, warnings
+
+
+def collect_candidates(source: SourceConfig, channel: ChannelConfig, now: datetime) -> tuple[list[dict[str, Any]], list[str]]:
+    candidates: list[dict[str, Any]] = []
     seen: set[str] = set()
     list_errors: list[str] = []
     pending = list(channel.list_urls or source.list_urls)
@@ -947,11 +1081,31 @@ def collect_candidates(source: SourceConfig, channel: ChannelConfig, now: dateti
             continue
         visited_list_urls.add(list_url)
         try:
-            html = fetch_html(list_url)
+            html = fetch_html(list_url, source)
         except Exception as exc:
             list_errors.append(f"{list_url}: {exc}")
             continue
         soup = BeautifulSoup(html, "html.parser")
+
+        selector_candidates: list[dict[str, Any]] = []
+        if channel_has_list_selectors(channel):
+            selector_candidates, selector_warnings = collect_selector_candidates(
+                soup,
+                list_url=list_url,
+                source=source,
+                channel=channel,
+                now=now,
+                seen=seen,
+            )
+            candidates.extend(selector_candidates)
+            list_errors.extend(selector_warnings[:3])
+            if selector_candidates:
+                if source.max_pages > 1:
+                    for next_url in discover_next_list_urls(soup, list_url, source):
+                        if next_url not in visited_list_urls and next_url not in pending:
+                            pending.append(next_url)
+                continue
+            list_errors.append(f"{channel.id}: channel selectors produced no usable candidates for {list_url}; using global anchor fallback")
 
         for anchor in soup.find_all("a"):
             href = anchor.get("href")
@@ -995,6 +1149,8 @@ def collect_candidates(source: SourceConfig, channel: ChannelConfig, now: dateti
                 "title": title,
                 "url": absolute_url,
                 "published_at": published_at,
+                "selector_strategy": "global_anchor_fallback",
+                "selector_warnings": [],
             })
 
         if source.max_pages > 1:
@@ -1092,7 +1248,7 @@ def crawl_job_source(source: SourceConfig, now: datetime) -> list[dict[str, Any]
         "size": 10,
         "xxdm": JOB_STATION_CODE,
     }
-    meeting_payload = post_json(f"{JOB_API_BASE}/getZphPageList", meeting_body)
+    meeting_payload = post_json(f"{JOB_API_BASE}/getZphPageList", meeting_body, source)
     for item in meeting_payload.get("result", {}).get("records", [])[:10]:
         title = clean_text(str(item.get("zphmc", "")))
         if not title:
@@ -1125,7 +1281,7 @@ def crawl_job_source(source: SourceConfig, now: datetime) -> list[dict[str, Any]
         "size": 10,
         "xxdm": JOB_STATION_CODE,
     }
-    lecture_payload = post_json(f"{JOB_API_BASE}/getXjhPageList", lecture_body)
+    lecture_payload = post_json(f"{JOB_API_BASE}/getXjhPageList", lecture_body, source)
     for item in lecture_payload.get("result", {}).get("records", [])[:8]:
         title = clean_text(str(item.get("xjhmc", "")))
         if not title:
@@ -1411,6 +1567,7 @@ def crawl_source(source: SourceConfig, now: datetime) -> tuple[list[dict[str, An
         "domain": urlparse(source.base_url).netloc,
         "source_type": normalize_source_type(source.source_type),
         "adapter_kind": source.adapter_kind,
+        "allow_insecure_tls": source.allow_insecure_tls,
         "priority": source.source_weight,
         "requires_devtools_audit": source.requires_devtools_audit,
         "channel_count": len(source.channels),
@@ -1421,6 +1578,14 @@ def crawl_source(source: SourceConfig, now: datetime) -> tuple[list[dict[str, An
                 "priority": channel.priority,
                 "student_value": channel.student_value,
                 "audit_status": channel.audit_status,
+                "selectors": {
+                    "list_item": channel.selectors.list_item,
+                    "title": channel.selectors.title,
+                    "date": channel.selectors.date,
+                    "link": channel.selectors.link,
+                    "content": channel.selectors.content,
+                    "attachments": channel.selectors.attachments,
+                },
                 "status": "ok",
                 "documents": 0,
             }
@@ -1447,7 +1612,19 @@ def crawl_source(source: SourceConfig, now: datetime) -> tuple[list[dict[str, An
                 candidate["channel_name"] = channel.name
             candidates.extend(channel_candidates)
             list_errors.extend(channel_errors)
-            channel_stats[channel.id] = {"candidates": len(channel_candidates), "list_errors": channel_errors[:3], "documents": 0}
+            selector_strategies: dict[str, int] = {}
+            selector_warnings: list[str] = []
+            for candidate in channel_candidates:
+                strategy = str(candidate.get("selector_strategy") or "unknown")
+                selector_strategies[strategy] = selector_strategies.get(strategy, 0) + 1
+                selector_warnings.extend(str(item) for item in candidate.get("selector_warnings", []) if str(item))
+            channel_stats[channel.id] = {
+                "candidates": len(channel_candidates),
+                "list_errors": channel_errors[:3],
+                "documents": 0,
+                "selector_strategies": selector_strategies,
+                "selector_warnings": list(dict.fromkeys(selector_warnings))[:5],
+            }
         if list_errors:
             manifest_entry["list_errors"] = list_errors[:8]
         enriched: list[dict[str, Any]] = []
@@ -1735,6 +1912,7 @@ def finalize_hytask_documents(documents: list[dict[str, Any]]) -> list[dict[str,
         if not doc.get("task_frames"):
             doc["task_frames"] = extract_task_frames(doc, llm_result=None, rule_guard=doc["rule_guard"])
         normalize_existing_task_frames(doc)
+        doc = verify_search_document(doc)
         finalized.append(doc)
     return finalized
 
@@ -1797,6 +1975,40 @@ def evidence_field_applicable(frame: dict[str, Any], field: str) -> bool:
     if field == "sensitive":
         return bool((frame.get("risk") or {}).get("sensitive"))
     return False
+
+
+def verifier_removal_counts(documents: list[dict[str, Any]]) -> dict[str, int]:
+    counts: Counter[str] = Counter()
+    for document in documents:
+        verifier = document.get("semantic_verifier") if isinstance(document.get("semantic_verifier"), dict) else {}
+        removals = verifier.get("removals") if isinstance(verifier.get("removals"), dict) else {}
+        for field, value in removals.items():
+            try:
+                counts[str(field)] += int(value)
+            except (TypeError, ValueError):
+                counts[str(field)] += 1
+    return dict(sorted(counts.items()))
+
+
+def field_grounding_metrics(documents: list[dict[str, Any]], removals: dict[str, int]) -> dict[str, Any]:
+    total = max(1, len(documents))
+    field_getters = {
+        "deadline": lambda doc: bool(doc.get("deadline")),
+        "action_required": lambda doc: bool(doc.get("action_required")),
+        "required_materials": lambda doc: bool(doc.get("required_materials")),
+        "task_frames": lambda doc: bool(doc.get("task_frames")),
+    }
+    non_null_rates: dict[str, float] = {}
+    grounded_rates: dict[str, float] = {}
+    for field, getter in field_getters.items():
+        non_null = sum(1 for document in documents if getter(document))
+        non_null_rates[field] = round(non_null / total, 4)
+        removed = int(removals.get(field, 0) or removals.get(f"task_frame_{field}", 0) or 0)
+        grounded_rates[field] = round(max(0, non_null - removed) / non_null, 4) if non_null else 0.0
+    return {
+        "non_null_field_rates": non_null_rates,
+        "grounded_field_rates": grounded_rates,
+    }
 
 
 def parse_args() -> argparse.Namespace:
@@ -1877,6 +2089,8 @@ def main() -> None:
     )
     source_graph = load_source_channel_graph(SOURCE_CHANNEL_CONFIG_PATH)
     evidence_coverage = calculate_evidence_coverage(task_frames)
+    semantic_verifier_removals = verifier_removal_counts(all_documents)
+    grounding_metrics = field_grounding_metrics(all_documents, semantic_verifier_removals)
 
     from core.semantic_pipeline import SEMANTIC_PIPELINE_VERSION
 
@@ -1943,6 +2157,10 @@ def main() -> None:
         "task_frame_count": len(task_frames),
         "documents_with_task_frame": sum(1 for document in all_documents if document.get("task_frames")),
         "evidence_coverage": evidence_coverage,
+        "non_null_field_rates": grounding_metrics["non_null_field_rates"],
+        "grounded_field_rates": grounding_metrics["grounded_field_rates"],
+        "verifier_removal_counts": semantic_verifier_removals,
+        "task_frame_grounded_rate": evidence_coverage.get("overall", 0),
         "review_required_count": sum(1 for document in all_documents if document.get("review_required")),
         "low_evidence_count": sum(1 for document in all_documents if (document.get("rule_guard") or {}).get("low_evidence")),
         "restricted_count": sum(1 for document in all_documents if document.get("status") == "restricted" or (document.get("rule_guard") or {}).get("restricted")),

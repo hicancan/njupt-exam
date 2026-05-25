@@ -95,6 +95,16 @@ NEGATIVE_KEYWORDS = [
 ]
 
 @dataclass(frozen=True)
+class SelectorConfig:
+    list_item: str | None = None
+    title: str | None = None
+    date: str | None = None
+    link: str | None = None
+    content: str | None = None
+    attachments: str | None = None
+
+
+@dataclass(frozen=True)
 class ChannelConfig:
     id: str
     source_id: str
@@ -107,6 +117,7 @@ class ChannelConfig:
     crawl_depth: int = 1
     pagination_type: str = "none"
     pagination_pattern: str | None = None
+    selectors: SelectorConfig = SelectorConfig()
     sensitive_risks: tuple[str, ...] = ()
     positive_keywords: tuple[str, ...] = ()
     negative_keywords: tuple[str, ...] = ()
@@ -129,6 +140,7 @@ class SourceConfig:
     exclude_patterns: tuple[str, ...] = ()
     enabled: bool = True
     requires_devtools_audit: bool = False
+    allow_insecure_tls: bool = False
     max_pages: int = 1
     notes: str = ""
     channels: tuple[ChannelConfig, ...] = ()
@@ -153,6 +165,19 @@ def _coerce_string_tuple(value: object) -> tuple[str, ...]:
     if isinstance(value, list):
         return tuple(str(item).strip() for item in value if str(item).strip())
     return ()
+
+
+def _selector_config(value: object) -> SelectorConfig:
+    if not isinstance(value, dict):
+        return SelectorConfig()
+    return SelectorConfig(
+        list_item=str(value.get("list_item") or "").strip() or None,
+        title=str(value.get("title") or "").strip() or None,
+        date=str(value.get("date") or "").strip() or None,
+        link=str(value.get("link") or "").strip() or None,
+        content=str(value.get("content") or "").strip() or None,
+        attachments=str(value.get("attachments") or "").strip() or None,
+    )
 
 
 def _read_source_channel_payload(path: str = SOURCE_CHANNEL_CONFIG_PATH) -> list[dict]:
@@ -205,6 +230,7 @@ def _channel_configs_from_item(source_id: str, source_priority: float, raw_chann
                 crawl_depth=crawl_depth,
                 pagination_type=str(pagination.get("type") or "none"),
                 pagination_pattern=pagination.get("pattern"),
+                selectors=_selector_config(raw.get("selectors")),
                 sensitive_risks=_coerce_string_tuple(raw.get("sensitive_risks")),
                 positive_keywords=_coerce_string_tuple(raw.get("positive_keywords")),
                 negative_keywords=_coerce_string_tuple(raw.get("negative_keywords")),
@@ -258,6 +284,7 @@ def read_source_channel_configs(path: str = SOURCE_CHANNEL_CONFIG_PATH) -> tuple
                 exclude_patterns=_coerce_string_tuple(item.get("exclude_patterns")),
                 enabled=True,
                 requires_devtools_audit=bool(item.get("requires_devtools_audit", False)),
+                allow_insecure_tls=bool(item.get("allow_insecure_tls", False)),
                 max_pages=max_pages,
                 notes=str(item.get("notes") or "").strip(),
                 channels=channels,

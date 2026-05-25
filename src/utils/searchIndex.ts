@@ -12,6 +12,7 @@ import {
 } from '@/types';
 import { z } from 'zod';
 import { routeQuery } from './queryRouter';
+import rankingWeightsConfig from '../../config/ranking_weights.json';
 
 class SearchContractError extends Error {
     constructor(message: string) {
@@ -19,6 +20,23 @@ class SearchContractError extends Error {
         this.name = 'SearchContractError';
     }
 }
+
+const valueAtPath = (payload: unknown, path: PropertyKey[]): unknown => {
+    let current = payload;
+    for (const part of path) {
+        if (current === null || current === undefined) return undefined;
+        current = (current as Record<PropertyKey, unknown>)[part];
+    }
+    return current;
+};
+
+const formatZodIssues = (payload: unknown, error: z.ZodError): string => {
+    return error.issues.map(issue => {
+        const fieldPath = issue.path.join('.') || '<root>';
+        const invalidValue = valueAtPath(payload, issue.path);
+        return `${fieldPath}: ${issue.message}; value=${JSON.stringify(invalidValue)}`;
+    }).join('; ');
+};
 
 const DOMAIN_LABELS: Record<SearchDomain, string> = {
     academic: '学业事务',
@@ -103,7 +121,25 @@ const RESOURCE_INTENT_KEYWORDS = [
     '竞赛'
 ];
 
+type RankingConfig = {
+    weights?: Record<string, number>;
+    field_weights?: Record<string, number>;
+    text_match_weights?: Record<string, number>;
+    intent_weights?: Record<string, number>;
+    lifecycle_weights?: Record<string, number>;
+    source_type_weights?: Record<string, number>;
+    utility_weights?: Record<string, number>;
+    risk_penalties?: Record<string, number>;
+    tier_multipliers?: Record<string, number>;
+    source_boosts?: Record<string, number>;
+    deadline_urgency_weights?: Record<string, number>;
+};
 
+const RANKING_CONFIG = rankingWeightsConfig as RankingConfig;
+const rankWeight = (section: keyof RankingConfig, key: string, fallback: number): number => {
+    const value = RANKING_CONFIG[section]?.[key];
+    return Number.isFinite(value) ? Number(value) : fallback;
+};
 
 
 
@@ -161,27 +197,41 @@ const overlapScore = (query: string, text: string): number => {
     return hits / queryTokens.size;
 };
 
-const scoreHybridTerms = (terms: Record<string, number>, query: string): number => {
-    const tokens = tokenize(query).map(normalize).filter(Boolean);
-    if (tokens.length === 0) return 0;
-    let score = 0;
-    for (const token of tokens) {
-        score += Number(terms[token] || 0);
+const tokenizeHybridText = (text: string): string[] => {
+    const matches = text.toLowerCase().match(/[A-Za-z][A-Za-z0-9_+\-.#]*|[0-9]+|[\u4e00-\u9fff]{1,4}/gu) || [];
+    const expanded: string[] = [];
+    for (const token of matches) {
+        expanded.push(token);
+        if (/^[\u4e00-\u9fff]{3,4}$/u.test(token)) {
+            for (let index = 0; index < token.length - 1; index += 1) {
+                expanded.push(token.slice(index, index + 2));
+            }
+        }
     }
-    return Math.min(1, score / Math.max(12, tokens.length * 3));
+    return expanded.filter(Boolean);
+};
+
+const scoreHybridBm25 = (hybridIndex: Record<string, unknown> | null, docId: string, query: string): number => {
+    const documents = (hybridIndex?.documents || {}) as Record<string, { terms?: Record<string, number>, length?: number }>;
+    const payload = documents[docId];
+    if (!payload?.terms) return 0;
+    const idf = (hybridIndex?.idf || {}) as Record<string, number>;
+    const avgDocLen = Number(hybridIndex?.avg_doc_len || 1) || 1;
+    const docLen = Number(payload.length || 1) || 1;
+    const k1 = 1.5;
+    const b = 0.75;
+    let score = 0;
+    for (const token of tokenizeHybridText(query)) {
+        const tf = Number(payload.terms[token] || 0);
+        if (tf <= 0) continue;
+        const termIdf = Number(idf[token] || Math.log(1.2));
+        score += termIdf * (tf * (k1 + 1)) / (tf + k1 * (1 - b + b * docLen / avgDocLen));
+    }
+    return Math.min(1, score / 8);
 };
 
 const scoreHybridFields = (fields: Record<string, string>, query: string): number => {
-    const weights: Record<string, number> = {
-        title: 4,
-        tags: 3,
-        'task.what': 3,
-        'task.action.summary': 2.8,
-        evidence: 2.5,
-        'materials.name': 2,
-        source: 1.5,
-        content: 1,
-    };
+    const weights = RANKING_CONFIG.field_weights || {};
     let score = 0;
     let maxScore = 0;
     for (const [field, value] of Object.entries(fields)) {
@@ -251,24 +301,24 @@ const scoreTextMatch = (document: SearchDocument, query: string, expandedTerms: 
     let score = 0;
     const normalizedQuery = normalize(query);
 
-    if (title === normalizedQuery) score += 18;
-    if (title.includes(normalizedQuery)) score += 12;
-    if (className && className === normalizedQuery) score += 16;
+    if (title === normalizedQuery) score += rankWeight('text_match_weights', 'exact_title', 18);
+    if (title.includes(normalizedQuery)) score += rankWeight('text_match_weights', 'title_contains_query', 12);
+    if (className && className === normalizedQuery) score += rankWeight('text_match_weights', 'class_exact', 16);
 
     for (const token of tokens) {
         const normalizedToken = normalize(token);
         if (!normalizedToken) continue;
-        if (title.includes(normalizedToken)) score += 8;
-        if (tags.includes(normalizedToken)) score += 4;
-        if (domain.includes(normalizedToken)) score += 4;
-        if (intent.includes(normalizedToken)) score += 3;
-        if (sourceType.includes(normalizedToken)) score += 2;
-        if (channel.includes(normalizedToken)) score += 3;
-        if (source.includes(normalizedToken)) score += 3;
-        if (evidence.includes(normalizedToken)) score += 2;
-        if (taskText.includes(normalizedToken)) score += 5;
-        if (content.includes(normalizedToken)) score += 1.5;
-        if (className.includes(normalizedToken)) score += 8;
+        if (title.includes(normalizedToken)) score += rankWeight('text_match_weights', 'title', 8);
+        if (tags.includes(normalizedToken)) score += rankWeight('text_match_weights', 'tags', 4);
+        if (domain.includes(normalizedToken)) score += rankWeight('text_match_weights', 'domain', 4);
+        if (intent.includes(normalizedToken)) score += rankWeight('text_match_weights', 'intent', 3);
+        if (sourceType.includes(normalizedToken)) score += rankWeight('text_match_weights', 'source_type', 2);
+        if (channel.includes(normalizedToken)) score += rankWeight('text_match_weights', 'channel', 3);
+        if (source.includes(normalizedToken)) score += rankWeight('text_match_weights', 'source', 3);
+        if (evidence.includes(normalizedToken)) score += rankWeight('text_match_weights', 'evidence', 2);
+        if (taskText.includes(normalizedToken)) score += rankWeight('text_match_weights', 'task_text', 5);
+        if (content.includes(normalizedToken)) score += rankWeight('text_match_weights', 'content', 1.5);
+        if (className.includes(normalizedToken)) score += rankWeight('text_match_weights', 'class_name', 8);
     }
 
     return score;
@@ -299,49 +349,15 @@ const buildScoreReason = (document: SearchDocument, components?: Record<string, 
 };
 
 const intentWeight = (intent: SearchIntent): number => {
-    const weights: Record<SearchIntent, number> = {
-        apply: 1.14,
-        register: 1.13,
-        submit: 1.12,
-        check_result: 1.08,
-        publicity: 1.05,
-        schedule: 1.06,
-        alert: 1.08,
-        attend: 1.04,
-        download: 0.98,
-        read: 0.9,
-        pay: 1.05,
-        contact: 0.96,
-        export: 0.98
-    };
-    return weights[intent] ?? 1;
+    return rankWeight('intent_weights', intent, 1);
 };
 
 const lifecycleWeight = (lifecycle: SearchLifecycle): number => {
-    const weights: Record<SearchLifecycle, number> = {
-        active: 1.08,
-        upcoming: 1.04,
-        evergreen: 0.98,
-        unknown: 0.96,
-        expired: 0.76
-    };
-    return weights[lifecycle] ?? 1;
+    return rankWeight('lifecycle_weights', lifecycle, 1);
 };
 
 const sourceTypeWeight = (sourceType: SearchSourceType): number => {
-    const weights: Record<SearchSourceType, number> = {
-        central_admin: 1.08,
-        central_notice: 1.04,
-        job_platform: 1.05,
-        college: 1.02,
-        service_unit: 1,
-        github_resource: 0.9,
-        central_news: 0.86,
-        research_admin: 0.88,
-        policy: 0.84,
-        exam_vertical: 1.12
-    };
-    return weights[sourceType] ?? 1;
+    return rankWeight('source_type_weights', sourceType, 1);
 };
 
 const deadlineUrgencyWeight = (deadline: string | null | undefined): number => {
@@ -349,11 +365,11 @@ const deadlineUrgencyWeight = (deadline: string | null | undefined): number => {
     const date = new Date(deadline);
     if (Number.isNaN(date.getTime())) return 1;
     const days = (date.getTime() - Date.now()) / 86_400_000;
-    if (days < 0) return 0.82;
-    if (days <= 1) return 1.18;
-    if (days <= 3) return 1.14;
-    if (days <= 7) return 1.08;
-    return 1.02;
+    if (days < 0) return rankWeight('deadline_urgency_weights', 'expired', 0.82);
+    if (days <= 1) return rankWeight('deadline_urgency_weights', 'within_1_day', 1.18);
+    if (days <= 3) return rankWeight('deadline_urgency_weights', 'within_3_days', 1.14);
+    if (days <= 7) return rankWeight('deadline_urgency_weights', 'within_7_days', 1.08);
+    return rankWeight('deadline_urgency_weights', 'future', 1.02);
 };
 
 export const parseSearchDocuments = (payload: unknown, source = 'search documents'): SearchDocument[] => {
@@ -368,6 +384,9 @@ export const parseSearchDocuments = (payload: unknown, source = 'search document
         }
         return docs as unknown as SearchDocument[];
     } catch (e) {
+        if (e instanceof z.ZodError) {
+            throw new SearchContractError(`Validation failed for ${source}: ${formatZodIssues(payload, e)}`);
+        }
         throw new SearchContractError(`Validation failed for ${source}: ${e instanceof Error ? e.message : String(e)}`);
     }
 };
@@ -376,6 +395,9 @@ export const parseSearchManifest = (payload: unknown, source = 'search manifest'
     try {
         return SearchManifestSchema.parse(payload) as unknown as SearchManifest;
     } catch (e) {
+        if (e instanceof z.ZodError) {
+            throw new SearchContractError(`Validation failed for ${source}: ${formatZodIssues(payload, e)}`);
+        }
         throw new SearchContractError(`Validation failed for ${source}: ${e instanceof Error ? e.message : String(e)}`);
     }
 };
@@ -457,7 +479,7 @@ export const buildExamDocuments = (exams: Exam[]): SearchDocument[] => {
             task_frames: [{
                 task_id: `task-exam-${exam.id}`,
                 doc_id: `exam-${exam.id}`,
-                source_mode: 'heuristic',
+                source_mode: 'exam_structured_data',
                 task_type: 'schedule',
                 who: { audience: ['本科生'], college: [], grade: exam.grade ? [exam.grade] : [], major: exam.major ? [exam.major] : [], class_name: [exam.class_name] },
                 what: `${exam.course_name} 考试安排`,
@@ -508,9 +530,10 @@ export const rankSearchDocuments = (
     const blockedSources = new Set(routeObj.blocked_sources_for_top5);
     const preferredSources = new Set(routeObj.preferred_sources);
     const allowResourceTop5 = routeObj.allow_resource_top5;
-    
+
     const badResultTerms = routeObj.bad_result_terms || [];
     const mustIncludeTerms = routeObj.must_include_terms_for_top_results || [];
+    const allowBlockedFallback = routeObj.allow_blocked_fallback && mustIncludeTerms.length === 0;
     const top1Exact = routeObj.top1_prefer_exact_title || false;
 
     const hybridDocuments = (hybridIndex?.documents || {}) as Record<string, { terms?: Record<string, number>, fields?: Record<string, string> }>;
@@ -521,11 +544,12 @@ export const rankSearchDocuments = (
     const candidates = documents.map(document => {
         const textScore = scoreTextMatch(document, trimmed, expandedTerms);
         const hybridPayload = hybridDocuments[document.id];
-        const bm25Proxy = hybridPayload?.terms ? scoreHybridTerms(hybridPayload.terms, [trimmed, ...expandedTerms].join(' ')) : textScore / 24;
-        const fieldScore = hybridPayload?.fields ? scoreHybridFields(hybridPayload.fields, [trimmed, ...expandedTerms].join(' ')) : Math.min(1, textScore / 24);
-        const tagScore = overlapScore([trimmed, ...expandedTerms].join(' '), document.tags.join(' '));
+        const queryWithAliases = [trimmed, ...expandedTerms].join(' ');
+        const bm25Proxy = hybridPayload?.terms ? scoreHybridBm25(hybridIndex, document.id, queryWithAliases) : textScore / 24;
+        const fieldScore = hybridPayload?.fields ? scoreHybridFields(hybridPayload.fields, queryWithAliases) : Math.min(1, textScore / 24);
+        const tagScore = overlapScore(queryWithAliases, document.tags.join(' '));
         const taskFrameScore = document.task_frames.length > 0 ? overlapScore(
-            [trimmed, ...expandedTerms].join(' '),
+            queryWithAliases,
             document.task_frames.map(frame => `${frame.what} ${frame.action.summary || ''} ${frame.evidence.map(item => item.text).join(' ')}`).join(' ')
         ) : 0;
 
@@ -588,38 +612,41 @@ export const rankSearchDocuments = (
         }
 
         let tierMultiplier = 1.0;
-        if (tier === 'A') tierMultiplier = 2.0;
-        else if (tier === 'B') tierMultiplier = 1.2;
-        else if (tier === 'C') tierMultiplier = 0.1;
+        if (tier === 'A') tierMultiplier = rankWeight('tier_multipliers', 'A', 2.0);
+        else if (tier === 'B') tierMultiplier = rankWeight('tier_multipliers', 'B', 1.2);
+        else if (tier === 'C') tierMultiplier = rankWeight('tier_multipliers', 'C', 0.1);
 
         let sourceBoost = 1.0;
         if (preferredSources.has(source) || preferredSources.has(sourceId)) {
-            sourceBoost = 1.25;
+            sourceBoost = rankWeight('source_boosts', 'preferred', 1.25);
             if (routeObj.query_type === 'class_exam_lookup') {
-                sourceBoost = 10.0;
-                tierMultiplier = 2.0; // Tier A
+                sourceBoost = rankWeight('source_boosts', 'class_exam_lookup', 10.0);
+                tierMultiplier = rankWeight('tier_multipliers', 'A', 2.0);
                 tier = 'A';
             }
         }
 
         const rawMatchScore =
-            0.3 * Math.min(1, bm25Proxy) +
-            0.25 * fieldScore +
-            0.2 * tagScore +
-            0.15 * Math.max(taskFrameScore, overlapScore(expandedTerms.join(' '), document.content));
+            rankWeight('weights', 'bm25', 0.26) * Math.min(1, bm25Proxy) +
+            rankWeight('weights', 'field', 0.22) * fieldScore +
+            rankWeight('weights', 'tag', 0.15) * tagScore +
+            rankWeight('weights', 'task_frame', 0.15) * Math.max(taskFrameScore, overlapScore(expandedTerms.join(' '), document.content));
 
         const hasMatch = textScore > 0 || rawMatchScore > 0;
 
         let utilityScore =
-            (0.42 * document.student_score) +
-            (0.3 * document.importance_score) +
-            (0.2 * (document.source_weight ?? 0.8));
+            (rankWeight('utility_weights', 'student_score', 0.42) * document.student_score) +
+            (rankWeight('utility_weights', 'importance_score', 0.3) * document.importance_score) +
+            (rankWeight('utility_weights', 'source_weight', 0.2) * (document.source_weight ?? 0.8));
 
-        const riskPenalty = (document.sensitive ? 0.5 : 0) + (document.review_required ? 0.25 : 0) + (document.status === 'restricted' ? 0.5 : 0);
+        const riskPenalty =
+            (document.sensitive ? rankWeight('risk_penalties', 'sensitive', 0.5) : 0) +
+            (document.review_required ? rankWeight('risk_penalties', 'review_required', 0.25) : 0) +
+            (document.status === 'restricted' ? rankWeight('risk_penalties', 'restricted', 0.5) : 0);
         utilityScore = Math.max(0, utilityScore - riskPenalty);
 
         const hybridScore = hasMatch
-            ? rawMatchScore + 0.2 * Math.min(1, utilityScore) - 0.05 * Math.min(1, riskPenalty)
+            ? rawMatchScore + rankWeight('utility_weights', 'utility_multiplier', 0.2) * Math.min(1, utilityScore) - rankWeight('weights', 'risk_penalty', 0.05) * Math.min(1, riskPenalty)
             : 0;
 
         let weightedScore = hasMatch ? (textScore + hybridScore * 32) *
@@ -706,7 +733,7 @@ export const rankSearchDocuments = (
         ...fallbackCandidates,
     ].slice(0, MAX_RESULTS);
 
-    if (validCandidates.length < MAX_RESULTS) {
+    if (allowBlockedFallback && validCandidates.length < MAX_RESULTS) {
         for (const doc of blockedCandidates) {
             if (validCandidates.length >= MAX_RESULTS) break;
             doc.degraded_fallback = true;
@@ -832,7 +859,7 @@ export const getLearningResources = (query: string): SearchDocument[] => {
             task_frames: [{
                 task_id: 'task-resource-exam-review',
                 doc_id: 'resource-exam-review',
-                source_mode: 'heuristic',
+                source_mode: 'heuristic_rule_frame',
                 task_type: 'download',
                 who: { audience: ['本科生'], college: [], grade: [], major: [], class_name: [] },
                 what: '课程期末复习与习题讲解',

@@ -1,0 +1,64 @@
+{
+  "version": 1,
+  "description": "Durable product query gold set for njupt-search. eval/search_cases.json remains the executable gate; this file documents the intended coverage categories and acceptance semantics.",
+  "statuses": ["strict_pass", "data_gap", "degraded_pass", "fail"],
+  "metrics": ["MRR@5", "NDCG@5", "Recall@10", "top1_source_correctness", "route_accuracy", "python_ts_drift", "grounded_task_frame_rate", "restricted_leakage_count"],
+  "categories": [
+    {
+      "name": "exam_class_lookup",
+      "queries": ["B250403", "B250403 高数", "高数考试"],
+      "expected_route": "class_exam_lookup",
+      "critical": true
+    },
+    {
+      "name": "cet_notice",
+      "queries": ["四六级", "CET", "四级", "六级"],
+      "expected_route": "cet_notice_search",
+      "data_gap_allowed": true,
+      "coverage_channels": ["jwc_exam"]
+    },
+    {
+      "name": "transfer_major",
+      "queries": ["转专业"],
+      "expected_route": "official_notice_search",
+      "critical": true
+    },
+    {
+      "name": "scholarship_subsidy",
+      "queries": ["奖学金", "助学金", "困难认定"],
+      "expected_routes": ["scholarship_search", "subsidy_search"],
+      "critical": true
+    },
+    {
+      "name": "innovation_competition",
+      "queries": ["大创", "挑战杯", "蓝桥杯", "数模"],
+      "expected_routes": ["innovation_project_search", "competition_search"],
+      "data_gap_allowed": true,
+      "coverage_channels": ["cxcy_competition"]
+    },
+    {
+      "name": "degree_defense",
+      "queries": ["论文答辩", "毕业答辩"],
+      "expected_route": "degree_defense_search",
+      "data_gap_allowed": true,
+      "coverage_channels": ["pg_degree", "pg_graduation"]
+    },
+    {
+      "name": "employment",
+      "queries": ["宣讲会", "双选会", "招聘", "实习"],
+      "expected_route": "job_search",
+      "critical": true
+    },
+    {
+      "name": "library_network_logistics",
+      "queries": ["图书馆开放", "校园网", "医保", "参保", "报销", "停水", "停电"],
+      "expected_routes": ["library_search", "service_search", "campus_alert_search"],
+      "critical": true
+    },
+    {
+      "name": "policy_resource_negative",
+      "queries": ["管理办法", "真题", "课件", "复习", "不存在的校园事项"],
+      "expected_routes": ["policy_search", "resource_search", "general_search"]
+    }
+  ]
+}

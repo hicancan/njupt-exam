@@ -16,7 +16,17 @@ from config.indexer_config import (
     ONTOLOGY_PATH,
 )
 from core.llm_scorer import BatchLLMResult, LLMRawResult
-from models.semantic_model import SEARCH_DOMAINS, SEARCH_INTENTS, SEARCH_LIFECYCLES, SEARCH_SOURCE_TYPES
+from models.search_contract import (
+    SEARCH_CATEGORIES,
+    SEARCH_DOCUMENT_KINDS,
+    SEARCH_DOMAINS,
+    SEARCH_INTENTS,
+    SEARCH_LIFECYCLES,
+    SEARCH_SEMANTIC_MODES,
+    SEARCH_SOURCE_TYPES,
+    TASK_FRAME_SOURCE_MODES,
+    TASK_TYPES,
+)
 
 
 REQUIRED_DOCUMENT_FIELDS = {
@@ -73,6 +83,18 @@ def read_json(path: str):
 def fail(message: str) -> None:
     print(f"[validate_search_index] {message}", file=sys.stderr)
     raise SystemExit(1)
+
+
+def contract_error(path: str, item_id: str, field: str, value: object, allowed: tuple[str, ...]) -> str:
+    return (
+        f"{path} item {item_id} invalid {field}={value!r}; "
+        f"allowed values: {', '.join(allowed)}"
+    )
+
+
+def validate_contract_value(path: str, item_id: str, field: str, value: object, allowed: tuple[str, ...]) -> None:
+    if str(value or "") not in allowed:
+        fail(contract_error(path, item_id, field, value, allowed))
 
 
 def validate_source_channels() -> None:
@@ -167,14 +189,14 @@ def validate_documents() -> None:
         if doc_id in seen:
             fail(f"duplicate document id: {doc_id}")
         seen.add(doc_id)
-        if document["domain"] not in SEARCH_DOMAINS:
-            fail(f"document {doc_id} has invalid domain {document['domain']}")
-        if document["intent"] not in SEARCH_INTENTS:
-            fail(f"document {doc_id} has invalid intent {document['intent']}")
-        if document["source_type"] not in SEARCH_SOURCE_TYPES:
-            fail(f"document {doc_id} has invalid source_type {document['source_type']}")
-        if document["lifecycle"] not in SEARCH_LIFECYCLES:
-            fail(f"document {doc_id} has invalid lifecycle {document['lifecycle']}")
+        validate_contract_value(DOCUMENTS_PATH, doc_id, "kind", document["kind"], SEARCH_DOCUMENT_KINDS)
+        validate_contract_value(DOCUMENTS_PATH, doc_id, "category", document["category"], SEARCH_CATEGORIES)
+        validate_contract_value(DOCUMENTS_PATH, doc_id, "domain", document["domain"], SEARCH_DOMAINS)
+        validate_contract_value(DOCUMENTS_PATH, doc_id, "intent", document["intent"], SEARCH_INTENTS)
+        validate_contract_value(DOCUMENTS_PATH, doc_id, "source_type", document["source_type"], SEARCH_SOURCE_TYPES)
+        validate_contract_value(DOCUMENTS_PATH, doc_id, "lifecycle", document["lifecycle"], SEARCH_LIFECYCLES)
+        if document.get("semantic_mode") is not None:
+            validate_contract_value(DOCUMENTS_PATH, doc_id, "semantic_mode", document["semantic_mode"], SEARCH_SEMANTIC_MODES)
         if not isinstance(document.get("canonical"), dict):
             fail(f"document {doc_id} has invalid canonical object")
         if not isinstance(document.get("rule_guard"), dict):
@@ -186,6 +208,14 @@ def validate_documents() -> None:
                 fail(f"restricted document {doc_id} must not require action")
             if document.get("task_frames"):
                 fail(f"restricted document {doc_id} must not have task_frames")
+        rule_guard = document.get("rule_guard") if isinstance(document.get("rule_guard"), dict) else {}
+        if (
+            rule_guard.get("restricted")
+            or rule_guard.get("sensitive")
+            or rule_guard.get("low_evidence")
+            or rule_guard.get("allow_llm") is False
+        ) and document.get("task_frames"):
+            fail(f"guarded document {doc_id} must not have task_frames")
         for field in ("student_score", "freshness_score", "importance_score"):
             value = document[field]
             if not isinstance(value, (int, float)) or not 0 <= float(value) <= 1:
@@ -309,6 +339,11 @@ def validate_task_frames_and_hybrid_index() -> None:
         for field in ("task_id", "doc_id", "task_type", "who", "what", "action", "time", "source", "evidence", "risk"):
             if field not in frame:
                 fail(f"task frame missing field {field}")
+        frame_id = str(frame.get("task_id") or frame.get("doc_id") or "<unknown>")
+        validate_contract_value(TASK_FRAMES_PATH, frame_id, "source_mode", frame.get("source_mode"), TASK_FRAME_SOURCE_MODES)
+        validate_contract_value(TASK_FRAMES_PATH, frame_id, "task_type", frame.get("task_type"), TASK_TYPES)
+        time_payload = frame.get("time") if isinstance(frame.get("time"), dict) else {}
+        validate_contract_value(TASK_FRAMES_PATH, frame_id, "time.lifecycle", time_payload.get("lifecycle"), SEARCH_LIFECYCLES)
     hybrid = read_json(HYBRID_INDEX_PATH)
     if not isinstance(hybrid, dict) or hybrid.get("version") != "hytask-hybrid-index-v1":
         fail("hybrid_index.json has invalid version")

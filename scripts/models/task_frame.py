@@ -1,9 +1,16 @@
 import hashlib
 import re
 from datetime import datetime
-from typing import Any, Literal
+from typing import Any
 
 from pydantic import BaseModel, Field, field_validator
+
+from models.search_contract import (
+    SEARCH_LIFECYCLES,
+    TASK_FRAME_SOURCE_MODES,
+    TASK_TYPES,
+    normalize_contract_value,
+)
 
 
 class TaskAudience(BaseModel):
@@ -31,6 +38,11 @@ class TaskTime(BaseModel):
     deadline: str | None = None
     lifecycle: str = "unknown"
     urgency_days: int | None = None
+
+    @field_validator("lifecycle", mode="before")
+    @classmethod
+    def _validate_lifecycle(cls, value: Any) -> str:
+        return normalize_contract_value(value, SEARCH_LIFECYCLES, "unknown")
 
 
 class TaskMaterial(BaseModel):
@@ -68,15 +80,7 @@ class TaskRisk(BaseModel):
 class TaskFrame(BaseModel):
     task_id: str
     doc_id: str
-    source_mode: Literal[
-        "llm_raw_task_frame",
-        "generated_from_llm_fields",
-        "heuristic_rule_frame",
-        "exam_structured_data",
-        "guarded_metadata_empty",
-        "unprocessed",
-        "unknown"
-    ] = "unknown"
+    source_mode: str = "unknown"
     field_sources: dict[str, str] = Field(default_factory=dict)
     task_type: str = "read"
     who: TaskAudience = Field(default_factory=TaskAudience)
@@ -89,6 +93,16 @@ class TaskFrame(BaseModel):
     evidence: list[TaskEvidence] = Field(default_factory=list)
     risk: TaskRisk = Field(default_factory=TaskRisk)
     confidence: float = Field(default=0.5, ge=0, le=1)
+
+    @field_validator("source_mode", mode="before")
+    @classmethod
+    def _validate_source_mode(cls, value: Any) -> str:
+        return normalize_contract_value(value, TASK_FRAME_SOURCE_MODES, "unknown")
+
+    @field_validator("task_type", mode="before")
+    @classmethod
+    def _validate_task_type(cls, value: Any) -> str:
+        return normalize_contract_value(value, TASK_TYPES, "read")
 
     @field_validator("materials", mode="before")
     @classmethod

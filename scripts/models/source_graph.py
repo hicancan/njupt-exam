@@ -67,6 +67,9 @@ class SourceNode(BaseModel):
     audit_status: str = "manual_seeded"
     enabled: bool = True
     adapter_kind: str = "njupt_wp"
+    requires_devtools_audit: bool = False
+    allow_insecure_tls: bool = False
+    max_pages: int = Field(default=1, ge=1, le=5)
     include_patterns: list[str] = Field(default_factory=list)
     exclude_patterns: list[str] = Field(default_factory=list)
     notes: str = ""

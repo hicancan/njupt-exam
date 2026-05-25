@@ -4,7 +4,7 @@ import re
 from datetime import datetime, timezone
 from typing import Any, Dict, List
 
-from core.bm25_indexer import tokenize_text
+from core.bm25_indexer import bm25_scores, tokenize_text
 from core.query_expander import understand_query
 from core.hybrid_ranker import token_overlap
 from search.query_router import route_query, load_query_routes
@@ -38,7 +38,7 @@ def vertical_rank_documents(
     *,
     limit: int | None = None,
 ) -> List[Dict[str, Any]]:
-    return _rank_documents_frontend_compatible(query, documents, hybrid_index, query_aliases, limit=limit)
+    return _rank_documents_frontend_compatible(query, documents, hybrid_index, query_aliases, ranking_weights or {}, limit=limit)
 
 
 def _rank_documents_frontend_compatible(
@@ -46,6 +46,7 @@ def _rank_documents_frontend_compatible(
     documents: List[Dict[str, Any]],
     hybrid_index: Dict[str, Any],
     query_aliases: Dict[str, Any],
+    ranking_weights: Dict[str, Any],
     *,
     limit: int | None = None,
 ) -> List[Dict[str, Any]]:
@@ -57,10 +58,10 @@ def _rank_documents_frontend_compatible(
         for document in documents:
             score = (
                 float(document.get("importance_score", 0) or 0)
-                * intent_weight(str(document.get("intent", "")))
-                * lifecycle_weight(str(document.get("lifecycle", "")))
-                * source_type_weight(str(document.get("source_type", "")))
-                * deadline_urgency_weight(document.get("deadline"))
+                * intent_weight(str(document.get("intent", "")), ranking_weights)
+                * lifecycle_weight(str(document.get("lifecycle", "")), ranking_weights)
+                * source_type_weight(str(document.get("source_type", "")), ranking_weights)
+                * deadline_urgency_weight(document.get("deadline"), ranking_weights)
             )
             ranked.append({**document, "score": round(score, 4), "score_reason": build_score_reason_ts(document)})
         ranked.sort(
@@ -82,20 +83,22 @@ def _rank_documents_frontend_compatible(
 
     bad_result_terms = route.get("bad_result_terms", []) or []
     must_include_terms = route.get("must_include_terms_for_top_results", []) or []
+    allow_blocked_fallback = bool(route.get("allow_blocked_fallback", True)) and not must_include_terms
     top1_exact = bool(route.get("top1_prefer_exact_title", False))
     hybrid_documents = (hybrid_index.get("documents") or {}) if hybrid_index else {}
     expanded_terms = alias_terms_for_query(trimmed, query_aliases)
+    query_with_aliases = " ".join([trimmed, *expanded_terms])
+    bm25_by_doc = bm25_scores(tokenize_text(query_with_aliases), hybrid_index or {}) if hybrid_index else {}
 
     candidates: List[Dict[str, Any]] = []
     for document in documents:
         doc_id = str(document.get("id", ""))
-        text_score = score_text_match(document, trimmed, expanded_terms)
+        text_score = score_text_match(document, trimmed, expanded_terms, ranking_weights)
         hybrid_payload = hybrid_documents.get(doc_id, {})
-        query_with_aliases = " ".join([trimmed, *expanded_terms])
         terms = hybrid_payload.get("terms") or {}
         fields = hybrid_payload.get("fields") or {}
-        bm25_proxy = score_hybrid_terms(terms, query_with_aliases) if terms else text_score / 24
-        field_score = score_hybrid_fields(fields, query_with_aliases) if fields else min(1, text_score / 24)
+        bm25_proxy = min(1.0, float(bm25_by_doc.get(doc_id, 0.0)) / 8.0) if terms else text_score / 24
+        field_score = score_hybrid_fields(fields, query_with_aliases, ranking_weights) if fields else min(1, text_score / 24)
         tag_score = overlap_score(query_with_aliases, " ".join(str(item) for item in document.get("tags", []) or []))
         task_text = " ".join(
             f"{frame.get('what', '')} {((frame.get('action') or {}).get('summary') or '')} "
@@ -142,50 +145,56 @@ def _rank_documents_frontend_compatible(
             is_blocked = True
 
         if tier == "A":
-            tier_multiplier = 2.0
+            tier_multiplier = section_weight(ranking_weights, "tier_multipliers", "A", 2.0)
         elif tier == "B":
-            tier_multiplier = 1.2
+            tier_multiplier = section_weight(ranking_weights, "tier_multipliers", "B", 1.2)
         else:
-            tier_multiplier = 0.1
+            tier_multiplier = section_weight(ranking_weights, "tier_multipliers", "C", 0.1)
 
         source_boost = 1.0
         if source in preferred_sources or source_id in preferred_sources:
-            source_boost = 1.25
+            source_boost = section_weight(ranking_weights, "source_boosts", "preferred", 1.25)
             if route.get("query_type") == "class_exam_lookup":
-                source_boost = 10.0
-                tier_multiplier = 2.0
+                source_boost = section_weight(ranking_weights, "source_boosts", "class_exam_lookup", 10.0)
+                tier_multiplier = section_weight(ranking_weights, "tier_multipliers", "A", 2.0)
                 tier = "A"
 
         raw_match_score = (
-            0.3 * min(1, bm25_proxy)
-            + 0.25 * field_score
-            + 0.2 * tag_score
-            + 0.15 * max(task_frame_score, overlap_score(" ".join(expanded_terms), str(document.get("content", ""))))
+            section_weight(ranking_weights, "weights", "bm25", 0.26) * min(1, bm25_proxy)
+            + section_weight(ranking_weights, "weights", "field", 0.22) * field_score
+            + section_weight(ranking_weights, "weights", "tag", 0.15) * tag_score
+            + section_weight(ranking_weights, "weights", "task_frame", 0.15) * max(task_frame_score, overlap_score(" ".join(expanded_terms), str(document.get("content", ""))))
         )
         has_match = text_score > 0 or raw_match_score > 0
 
         utility_score = (
-            0.42 * float(document.get("student_score", 0) or 0)
-            + 0.3 * float(document.get("importance_score", 0) or 0)
-            + 0.2 * float(document.get("source_weight", 0.8) or 0.8)
+            section_weight(ranking_weights, "utility_weights", "student_score", 0.42) * float(document.get("student_score", 0) or 0)
+            + section_weight(ranking_weights, "utility_weights", "importance_score", 0.3) * float(document.get("importance_score", 0) or 0)
+            + section_weight(ranking_weights, "utility_weights", "source_weight", 0.2) * float(document.get("source_weight", 0.8) or 0.8)
         )
         risk_penalty = (
-            (0.5 if document.get("sensitive") else 0)
-            + (0.25 if document.get("review_required") else 0)
-            + (0.5 if document.get("status") == "restricted" else 0)
+            (section_weight(ranking_weights, "risk_penalties", "sensitive", 0.5) if document.get("sensitive") else 0)
+            + (section_weight(ranking_weights, "risk_penalties", "review_required", 0.25) if document.get("review_required") else 0)
+            + (section_weight(ranking_weights, "risk_penalties", "restricted", 0.5) if document.get("status") == "restricted" else 0)
         )
         utility_score = max(0, utility_score - risk_penalty)
-        hybrid_score = raw_match_score + 0.2 * min(1, utility_score) - 0.05 * min(1, risk_penalty) if has_match else 0
+        hybrid_score = (
+            raw_match_score
+            + section_weight(ranking_weights, "utility_weights", "utility_multiplier", 0.2) * min(1, utility_score)
+            - section_weight(ranking_weights, "weights", "risk_penalty", 0.05) * min(1, risk_penalty)
+            if has_match
+            else 0
+        )
         weighted_score = (
             (text_score + hybrid_score * 32)
             * source_boost
             * (0.55 + float(document.get("student_score", 0) or 0) * 0.45)
             * (0.72 + float(document.get("freshness_score", 0) or 0) * 0.28)
             * (0.7 + float(document.get("importance_score", 0) or 0) * 0.3)
-            * intent_weight(str(document.get("intent", "")))
-            * lifecycle_weight(str(document.get("lifecycle", "")))
-            * source_type_weight(str(document.get("source_type", "")))
-            * deadline_urgency_weight(document.get("deadline"))
+            * intent_weight(str(document.get("intent", "")), ranking_weights)
+            * lifecycle_weight(str(document.get("lifecycle", "")), ranking_weights)
+            * source_type_weight(str(document.get("source_type", "")), ranking_weights)
+            * deadline_urgency_weight(document.get("deadline"), ranking_weights)
             * tier_multiplier
             if has_match
             else 0
@@ -241,7 +250,7 @@ def _rank_documents_frontend_compatible(
 
     max_results = 30 if limit is None else limit
     valid = [*strong, *weak, *fallback][:max_results]
-    if len(valid) < max_results:
+    if allow_blocked_fallback and len(valid) < max_results:
         for doc in blocked:
             if len(valid) >= max_results:
                 break
@@ -272,25 +281,19 @@ def overlap_score(query: str, text: str) -> float:
     return hits / len(query_tokens)
 
 
-def score_hybrid_terms(terms: Dict[str, Any], query: str) -> float:
-    tokens = [normalize(token) for token in tokenize(query) if normalize(token)]
-    if not tokens:
-        return 0.0
-    score = sum(float(terms.get(token, 0) or 0) for token in tokens)
-    return min(1.0, score / max(12, len(tokens) * 3))
+def section_weight(config: Dict[str, Any], section: str, key: str, fallback: float) -> float:
+    payload = config.get(section) if isinstance(config, dict) else {}
+    if not isinstance(payload, dict):
+        return fallback
+    try:
+        value = float(payload.get(key, fallback))
+    except (TypeError, ValueError):
+        return fallback
+    return value if math.isfinite(value) else fallback
 
 
-def score_hybrid_fields(fields: Dict[str, Any], query: str) -> float:
-    weights = {
-        "title": 4,
-        "tags": 3,
-        "task.what": 3,
-        "task.action.summary": 2.8,
-        "evidence": 2.5,
-        "materials.name": 2,
-        "source": 1.5,
-        "content": 1,
-    }
+def score_hybrid_fields(fields: Dict[str, Any], query: str, ranking_weights: Dict[str, Any]) -> float:
+    weights = ranking_weights.get("field_weights", {}) if isinstance(ranking_weights, dict) else {}
     score = 0.0
     max_score = 0.0
     for field, value in fields.items():
@@ -356,7 +359,13 @@ SOURCE_TYPE_LABELS = {
 }
 
 
-def score_text_match(document: Dict[str, Any], query: str, expanded_terms: List[str] | None = None) -> float:
+def score_text_match(
+    document: Dict[str, Any],
+    query: str,
+    expanded_terms: List[str] | None = None,
+    ranking_weights: Dict[str, Any] | None = None,
+) -> float:
+    ranking_weights = ranking_weights or {}
     tokens = tokenize(" ".join([query, *(expanded_terms or [])]))
     if not tokens:
         return 0.0
@@ -392,38 +401,38 @@ def score_text_match(document: Dict[str, Any], query: str, expanded_terms: List[
     score = 0.0
     normalized_query = normalize(query)
     if title == normalized_query:
-        score += 18
+        score += section_weight(ranking_weights, "text_match_weights", "exact_title", 18)
     if normalized_query and normalized_query in title:
-        score += 12
+        score += section_weight(ranking_weights, "text_match_weights", "title_contains_query", 12)
     if class_name and class_name == normalized_query:
-        score += 16
+        score += section_weight(ranking_weights, "text_match_weights", "class_exact", 16)
 
     for token in tokens:
         normalized_token = normalize(token)
         if not normalized_token:
             continue
         if normalized_token in title:
-            score += 8
+            score += section_weight(ranking_weights, "text_match_weights", "title", 8)
         if normalized_token in tags:
-            score += 4
+            score += section_weight(ranking_weights, "text_match_weights", "tags", 4)
         if normalized_token in domain:
-            score += 4
+            score += section_weight(ranking_weights, "text_match_weights", "domain", 4)
         if normalized_token in intent:
-            score += 3
+            score += section_weight(ranking_weights, "text_match_weights", "intent", 3)
         if normalized_token in source_type:
-            score += 2
+            score += section_weight(ranking_weights, "text_match_weights", "source_type", 2)
         if normalized_token in channel:
-            score += 3
+            score += section_weight(ranking_weights, "text_match_weights", "channel", 3)
         if normalized_token in source:
-            score += 3
+            score += section_weight(ranking_weights, "text_match_weights", "source", 3)
         if normalized_token in evidence:
-            score += 2
+            score += section_weight(ranking_weights, "text_match_weights", "evidence", 2)
         if normalized_token in task_text:
-            score += 5
+            score += section_weight(ranking_weights, "text_match_weights", "task_text", 5)
         if normalized_token in content:
-            score += 1.5
+            score += section_weight(ranking_weights, "text_match_weights", "content", 1.5)
         if normalized_token in class_name:
-            score += 8
+            score += section_weight(ranking_weights, "text_match_weights", "class_name", 8)
     return score
 
 
@@ -438,65 +447,35 @@ def alias_terms_for_query(query: str, query_aliases: Dict[str, Any]) -> List[str
     return list(dict.fromkeys(term for term in terms if term))
 
 
-def intent_weight(intent: str) -> float:
-    return {
-        "apply": 1.14,
-        "register": 1.13,
-        "submit": 1.12,
-        "check_result": 1.08,
-        "publicity": 1.05,
-        "schedule": 1.06,
-        "alert": 1.08,
-        "attend": 1.04,
-        "download": 0.98,
-        "read": 0.9,
-        "pay": 1.05,
-        "contact": 0.96,
-        "export": 0.98,
-    }.get(intent, 1.0)
+def intent_weight(intent: str, ranking_weights: Dict[str, Any] | None = None) -> float:
+    return section_weight(ranking_weights or {}, "intent_weights", intent, 1.0)
 
 
-def lifecycle_weight(lifecycle: str) -> float:
-    return {
-        "active": 1.08,
-        "upcoming": 1.04,
-        "evergreen": 0.98,
-        "unknown": 0.96,
-        "expired": 0.76,
-    }.get(lifecycle, 1.0)
+def lifecycle_weight(lifecycle: str, ranking_weights: Dict[str, Any] | None = None) -> float:
+    return section_weight(ranking_weights or {}, "lifecycle_weights", lifecycle, 1.0)
 
 
-def source_type_weight(source_type: str) -> float:
-    return {
-        "central_admin": 1.08,
-        "central_notice": 1.04,
-        "job_platform": 1.05,
-        "college": 1.02,
-        "service_unit": 1.0,
-        "github_resource": 0.9,
-        "central_news": 0.86,
-        "research_admin": 0.88,
-        "policy": 0.84,
-        "exam_vertical": 1.12,
-    }.get(source_type, 1.0)
+def source_type_weight(source_type: str, ranking_weights: Dict[str, Any] | None = None) -> float:
+    return section_weight(ranking_weights or {}, "source_type_weights", source_type, 1.0)
 
 
-def deadline_urgency_weight(deadline: Any) -> float:
+def deadline_urgency_weight(deadline: Any, ranking_weights: Dict[str, Any] | None = None) -> float:
+    ranking_weights = ranking_weights or {}
     if not deadline:
-        return 1.0
+        return section_weight(ranking_weights, "deadline_urgency_weights", "none", 1.0)
     dt = parse_date(deadline)
     if not dt:
-        return 1.0
+        return section_weight(ranking_weights, "deadline_urgency_weights", "none", 1.0)
     days = (dt - datetime.now(timezone.utc)).total_seconds() / 86400
     if days < 0:
-        return 0.82
+        return section_weight(ranking_weights, "deadline_urgency_weights", "expired", 0.82)
     if days <= 1:
-        return 1.18
+        return section_weight(ranking_weights, "deadline_urgency_weights", "within_1_day", 1.18)
     if days <= 3:
-        return 1.14
+        return section_weight(ranking_weights, "deadline_urgency_weights", "within_3_days", 1.14)
     if days <= 7:
-        return 1.08
-    return 1.02
+        return section_weight(ranking_weights, "deadline_urgency_weights", "within_7_days", 1.08)
+    return section_weight(ranking_weights, "deadline_urgency_weights", "future", 1.02)
 
 
 def parse_date(value: Any) -> datetime | None:
