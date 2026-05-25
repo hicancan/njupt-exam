@@ -99,6 +99,7 @@ def build_search_fields(document: dict[str, Any], task_frames: list[dict[str, An
         "materials.name": " ".join([*(str(item) for item in document.get("required_materials", [])), materials]),
         "source": " ".join(str(document.get(key) or "") for key in ("source", "channel", "source_id", "channel_id")),
         "content": str(document.get("content") or ""),
-        "semantic_queries": " ".join(str(item) for item in document.get("llm", {}).get("semantic_queries", [])),
-        "query_phrases": " ".join(str(item) for item in document.get("llm", {}).get("query_phrases", [])),
+        "semantic_queries": " ".join(str(item) for item in document.get("llm", {}).get("semantic_queries", []) if isinstance(document.get("llm", {}).get("semantic_queries"), list)),
+        "query_phrases": " ".join(str(item) for item in document.get("llm", {}).get("query_phrases", []) if isinstance(document.get("llm", {}).get("query_phrases"), list)),
+        "search_profile": str(document.get("llm", {}).get("search_profile") or ""),
     }

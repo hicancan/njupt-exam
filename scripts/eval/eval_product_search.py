@@ -30,6 +30,19 @@ def evaluate_cases():
     
     errors = []
     
+    from datetime import datetime
+    
+    report = {
+        "timestamp": datetime.now().isoformat(),
+        "total_cases": total,
+        "route_accuracy": 0,
+        "bad_top5_rate": 0,
+        "blocked_source_violations": 0,
+        "blocked_domain_violations": 0,
+        "errors": [],
+        "case_details": []
+    }
+    
     for case in cases:
         query = case["query"]
         expected_route = case.get("route")
@@ -89,13 +102,36 @@ def evaluate_cases():
                 
         if case_failed:
             bad_top5_rate += 1
+            
+        report["case_details"].append({
+            "query": query,
+            "route_obj": route_obj,
+            "top5": [
+                {"id": doc.get("id"), "title": doc.get("title"), "domain": doc.get("domain"), "source": doc.get("source")}
+                for doc in top5
+            ],
+            "passed": not case_failed
+        })
+
+    report["route_accuracy"] = route_correct / total if total else 0
+    report["bad_top5_rate"] = bad_top5_rate / total if total else 0
+    report["blocked_source_violations"] = blocked_source_violations
+    report["blocked_domain_violations"] = blocked_domain_violations
+    report["errors"] = errors
+    
+    reports_dir = os.path.join(BASE_DIR, "eval", "reports")
+    os.makedirs(reports_dir, exist_ok=True)
+    report_path = os.path.join(reports_dir, "product_search_latest.json")
+    with open(report_path, "w", encoding="utf-8") as f:
+        json.dump(report, f, ensure_ascii=False, indent=2)
 
     print("=== Product Search Gate Results ===")
     print(f"Total Cases: {total}")
-    print(f"Route Accuracy: {route_correct}/{total} ({(route_correct/total)*100:.1f}%)")
+    print(f"Route Accuracy: {route_correct}/{total} ({(report['route_accuracy'])*100:.1f}%)")
     print(f"Bad Top5 Count: {bad_top5_rate}")
     print(f"Blocked Source Violations: {blocked_source_violations}")
     print(f"Blocked Domain Violations: {blocked_domain_violations}")
+    print(f"Report saved to: {report_path}")
     
     if errors:
         print("\nErrors Found:")

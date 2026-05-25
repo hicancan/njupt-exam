@@ -249,6 +249,52 @@ def validate_manifest() -> None:
     if broken_core_sources:
         fail(f"core sources failed: {', '.join(sorted(broken_core_sources))}")
 
+    # Coverage Gate
+    critical_channels = {
+        "jwc_exam", "jwc_degree", "jwc_transfer", "jwc_recommendation",
+        "xsc_scholarship", "xsc_subsidy", "pg_degree", "pg_graduation"
+    }
+    critical_sources = {
+        "hqc", "lib", "xxb", "archives"
+    }
+    
+    channels_info = []
+    for src in manifest.get("sources", []):
+        for ch in src.get("channels", []):
+            ch["source_id"] = src.get("id")
+            channels_info.append(ch)
+    
+    source_docs = {s: 0 for s in critical_sources}
+    channel_docs = {c: 0 for c in critical_channels}
+    
+    for ch in channels_info:
+        ch_id = ch.get("id")
+        src_id = ch.get("source_id")
+        status = ch.get("status")
+        docs = int(ch.get("documents", 0) or 0)
+        cands = int(ch.get("candidates", 0) or 0)
+        
+        if cands > 0 and docs == 0:
+            if status not in ("ok_no_recent_docs", "warning", "error", "ok_no_relevant_docs", "ok_filtered", "warning_filtered_all", "ok_with_docs"):
+                fail(f"Channel {ch_id} has {cands} candidates but 0 documents, missing valid reason. Status: {status}")
+                
+        if ch_id in channel_docs:
+            channel_docs[ch_id] += docs
+            if docs == 0 and status not in ("ok_no_recent_docs", "warning", "error", "ok_no_relevant_docs", "warning_filtered_all"):
+                fail(f"Critical channel {ch_id} has 0 documents and no valid fallback status. Current status: {status}")
+                
+        if src_id in source_docs:
+            source_docs[src_id] += docs
+            
+    for s_id, count in source_docs.items():
+        if count == 0:
+            has_valid_status = any(
+                ch.get("status") in ("ok_no_recent_docs", "warning", "error", "ok_no_relevant_docs", "warning_filtered_all") 
+                for ch in channels_info if ch.get("source_id") == s_id
+            )
+            if not has_valid_status:
+                fail(f"Critical source {s_id} has 0 documents across all channels and no valid fallback status.")
+
 
 def validate_task_frames_and_hybrid_index() -> None:
     for path in (TASK_FRAMES_PATH, HYBRID_INDEX_PATH, PUBLIC_QUERY_ALIASES_PATH, PUBLIC_ONTOLOGY_PATH):

@@ -192,8 +192,25 @@ def build_exam_documents(exams: list[dict[str, Any]]) -> list[dict[str, Any]]:
             "tags": ["考试", "期末", class_name, course_name, str(exam.get("major") or "")],
             "hash": exam_id,
             "canonical": {"doc_id": f"exam-{exam_id}", "canonical_url": f"?class={class_name}", "content_hash": exam_id, "dedupe_key": f"exam-{exam_id}"},
+            "semantic_mode": "structured_exam",
             "rule_guard": {"restricted": False, "sensitive": False, "low_evidence": False, "duplicate": False, "expired": False, "evergreen": False, "risk_flags": [], "allow_llm": False, "allow_full_text_display": True, "review_required": False},
-            "task_frames": [],
+            "task_frames": [{
+                "task_id": f"exam-task-{exam_id}",
+                "doc_id": f"exam-{exam_id}",
+                "source_mode": "exam_structured_data",
+                "field_sources": {"task_frames": "structured_exam_data"},
+                "task_type": "schedule",
+                "who": {"audience": ["本科生"], "college": [], "grade": [str(exam.get("grade") or "")], "major": [str(exam.get("major") or "")], "class_name": [class_name]},
+                "what": f"{class_name} {course_name} 考试",
+                "action": {"required": True, "verb": "参加考试", "object": course_name, "summary": "按时参加期末考试"},
+                "time": {"published_at": exam.get("date") or exam.get("start_timestamp"), "deadline": exam.get("start_timestamp"), "lifecycle": "active", "urgency_days": None},
+                "materials": [],
+                "location": {"place": str(exam.get("location") or ""), "online": None, "contact": None},
+                "source": {"source_id": "exam_vertical", "channel_id": "exam_schedule", "authority": 1.0, "official": True},
+                "evidence": [{"field": "general", "text": content[:180]}],
+                "risk": {"sensitive": False, "restricted": False, "low_evidence": False, "review_required": False},
+                "confidence": 1.0
+            }],
         })
     return documents
 

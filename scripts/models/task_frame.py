@@ -248,11 +248,6 @@ def fill_task_frame_defaults(item: dict[str, Any], **context: Any) -> dict[str, 
     materials = item.get("materials")
     if not materials:
         material_names = [str(name).strip() for name in context.get("required_materials", []) if str(name).strip()]
-        material_names.extend(
-            str(attachment.get("name") or "附件").strip()
-            for attachment in context["attachments"][:5]
-            if str(attachment.get("name") or "").strip()
-        )
         seen_materials: set[str] = set()
         materials = []
         for name in material_names[:6]:
@@ -265,16 +260,6 @@ def fill_task_frame_defaults(item: dict[str, Any], **context: Any) -> dict[str, 
                 "required": bool(context["action_required"]),
                 "sensitive": material_name_is_sensitive(name),
             })
-        if not materials:
-            materials = [
-                {
-                    "name": str(attachment.get("name") or "附件"),
-                    "role": attachment.get("role"),
-                    "required": bool(context["action_required"]),
-                    "sensitive": bool(attachment.get("sensitive", False)),
-                }
-                for attachment in context["attachments"][:5]
-            ]
     evidence = enrich_grounded_evidence(
         evidence,
         audience=context["fallback_audience"],

@@ -11,45 +11,67 @@ def load_query_routes(path: str) -> List[Dict[str, Any]]:
 
 def route_query(raw_query: str, routes: List[Dict[str, Any]]) -> Dict[str, Any]:
     normalized_query = re.sub(r"\s+", " ", str(raw_query or "")).strip()
+    query_lower = normalized_query.lower()
     
-    # Default fallback route
-    best_route = {
-        "id": "general_search",
-        "query_type": "general_search",
-        "must_domains": [],
-        "preferred_domains": [],
-        "preferred_sources": [],
-        "preferred_channels": [],
-        "preferred_intents": [],
-        "blocked_domains_for_top5": [],
-        "blocked_sources_for_top5": [],
-        "allow_resource_top5": True,
-        "freshness_preference": "none"
-    }
+    scored_routes = []
     
-    confidence = 0.0
-    
-    # Find matching route
     for route in routes:
+        score = route.get("priority", 50) / 100.0  # Priority breaks ties
+        must_have = route.get("must_have_any", [])
+        if must_have:
+            if not any(term.lower() in query_lower for term in must_have):
+                if route.get("id") == "class_exam_lookup" and re.search(r"^[a-z]\d{6,8}", query_lower):
+                    pass
+                else:
+                    score -= 1000
+
+        if route.get("id") == "class_exam_lookup" and re.search(r"^[a-z]\d{6,8}", query_lower):
+            score += 100
+            
         triggers = route.get("triggers", [])
-        if any(trigger.lower() in normalized_query.lower() for trigger in triggers):
-            best_route = route
-            confidence = 0.95
-            break
-            
-    # Also check if class ID pattern (e.g. B250403)
-    if re.search(r"^[A-Za-z]\d{6,8}$", normalized_query):
-        class_route = next((r for r in routes if r.get("id") == "class_exam_lookup"), None)
-        if class_route:
-            best_route = class_route
-            confidence = 0.99
-            
+        for trigger in triggers:
+            if trigger.lower() in query_lower:
+                score += 50
+
+        soft_terms = route.get("soft_terms", [])
+        for term in soft_terms:
+            if term.lower() in query_lower:
+                score += 15
+
+        negative_terms = route.get("negative_terms", [])
+        for term in negative_terms:
+            if term.lower() in query_lower:
+                score -= 50
+                
+        scored_routes.append({"route": route, "score": score})
+
+    scored_routes.sort(key=lambda x: x["score"], reverse=True)
+    if scored_routes:
+        best = scored_routes[0]
+        best_route = best["route"]
+        best_score = best["score"]
+    else:
+        best_route = {"id": "general_search", "query_type": "general_search"}
+        best_score = 0
+    
+    confidence = 0.5
+    if best_score >= 80:
+        confidence = 0.95
+    elif best_score >= 60:
+        confidence = 0.8
+        
+    alt_routes = [
+        {"query_type": r["route"]["query_type"], "score": r["score"]}
+        for r in scored_routes[1:4] if r["score"] > 0
+    ]
+
     return {
         "raw_query": raw_query,
         "normalized_query": normalized_query,
         "query_type": best_route.get("query_type", "general_search"),
+        "route_score": best_score,
         "route_confidence": confidence,
-        "route_source": "query_routes",
+        "route_source": "query_routes_v2",
         "target_domains": best_route.get("must_domains", []) + best_route.get("preferred_domains", []),
         "target_intents": best_route.get("preferred_intents", []),
         "preferred_sources": best_route.get("preferred_sources", []),
@@ -57,5 +79,7 @@ def route_query(raw_query: str, routes: List[Dict[str, Any]]) -> Dict[str, Any]:
         "blocked_domains_for_top5": best_route.get("blocked_domains_for_top5", []),
         "blocked_sources_for_top5": best_route.get("blocked_sources_for_top5", []),
         "allow_resource_top5": best_route.get("allow_resource_top5", True),
-        "freshness_preference": best_route.get("freshness_preference", "none")
+        "freshness_preference": best_route.get("freshness_preference", "none"),
+        "alternative_routes": alt_routes,
+        "explanation": best_route.get("explanation", "")
     }

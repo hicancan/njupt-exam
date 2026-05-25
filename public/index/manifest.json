@@ -168,7 +168,7 @@
           "priority": 1.0,
           "student_value": 1.0,
           "audit_status": "chrome_audited",
-          "status": "ok",
+          "status": "ok_with_docs",
           "documents": 1,
           "candidates": 1,
           "list_errors": []
@@ -179,7 +179,7 @@
           "priority": 0.98,
           "student_value": 0.98,
           "audit_status": "chrome_audited",
-          "status": "ok",
+          "status": "ok_with_docs",
           "documents": 2,
           "candidates": 2,
           "list_errors": []
@@ -190,7 +190,7 @@
           "priority": 0.96,
           "student_value": 0.96,
           "audit_status": "chrome_audited",
-          "status": "ok",
+          "status": "ok_with_docs",
           "documents": 1,
           "candidates": 1,
           "list_errors": []
@@ -201,7 +201,7 @@
           "priority": 0.96,
           "student_value": 0.96,
           "audit_status": "chrome_audited",
-          "status": "ok",
+          "status": "ok_with_docs",
           "documents": 1,
           "candidates": 1,
           "list_errors": []
@@ -212,7 +212,7 @@
           "priority": 0.98,
           "student_value": 0.98,
           "audit_status": "chrome_audited",
-          "status": "ok",
+          "status": "ok_with_docs",
           "documents": 9,
           "candidates": 36,
           "list_errors": []
@@ -223,7 +223,7 @@
           "priority": 0.9,
           "student_value": 0.9,
           "audit_status": "chrome_audited",
-          "status": "ok",
+          "status": "warning_filtered_all",
           "documents": 0,
           "candidates": 1,
           "list_errors": []
@@ -234,7 +234,7 @@
           "priority": 0.88,
           "student_value": 0.88,
           "audit_status": "chrome_audited",
-          "status": "warning",
+          "status": "warning_filtered_all",
           "documents": 0,
           "candidates": 1,
           "list_errors": [
@@ -267,7 +267,7 @@
           "priority": 0.96,
           "student_value": 0.98,
           "audit_status": "chrome_audited",
-          "status": "ok",
+          "status": "ok_no_recent_docs",
           "documents": 0,
           "candidates": 0,
           "list_errors": []
@@ -278,7 +278,7 @@
           "priority": 0.96,
           "student_value": 0.98,
           "audit_status": "chrome_audited",
-          "status": "ok",
+          "status": "ok_no_recent_docs",
           "documents": 0,
           "candidates": 0,
           "list_errors": []
@@ -289,7 +289,7 @@
           "priority": 0.88,
           "student_value": 0.9,
           "audit_status": "chrome_audited",
-          "status": "ok",
+          "status": "ok_with_docs",
           "documents": 14,
           "candidates": 26,
           "list_errors": []
@@ -300,7 +300,7 @@
           "priority": 0.84,
           "student_value": 0.86,
           "audit_status": "chrome_audited",
-          "status": "ok",
+          "status": "warning_filtered_all",
           "documents": 0,
           "candidates": 25,
           "list_errors": []
@@ -311,7 +311,7 @@
           "priority": 0.88,
           "student_value": 0.9,
           "audit_status": "chrome_audited",
-          "status": "ok",
+          "status": "ok_no_recent_docs",
           "documents": 0,
           "candidates": 0,
           "list_errors": []
@@ -322,7 +322,7 @@
           "priority": 0.84,
           "student_value": 0.86,
           "audit_status": "chrome_audited",
-          "status": "ok",
+          "status": "ok_no_recent_docs",
           "documents": 0,
           "candidates": 0,
           "list_errors": []
@@ -350,7 +350,7 @@
           "priority": 0.96,
           "student_value": 0.96,
           "audit_status": "chrome_audited",
-          "status": "warning",
+          "status": "ok_with_docs",
           "documents": 13,
           "candidates": 30,
           "list_errors": [
@@ -363,7 +363,7 @@
           "priority": 0.96,
           "student_value": 0.96,
           "audit_status": "chrome_audited",
-          "status": "ok",
+          "status": "warning_filtered_all",
           "documents": 0,
           "candidates": 29,
           "list_errors": []
@@ -374,7 +374,7 @@
           "priority": 0.88,
           "student_value": 0.88,
           "audit_status": "chrome_audited",
-          "status": "ok",
+          "status": "warning_filtered_all",
           "documents": 0,
           "candidates": 12,
           "list_errors": []
@@ -385,7 +385,7 @@
           "priority": 0.8,
           "student_value": 0.8,
           "audit_status": "chrome_audited",
-          "status": "ok",
+          "status": "warning_filtered_all",
           "documents": 0,
           "candidates": 18,
           "list_errors": []
@@ -396,7 +396,7 @@
           "priority": 0.94,
           "student_value": 0.94,
           "audit_status": "chrome_audited",
-          "status": "ok",
+          "status": "warning_filtered_all",
           "documents": 0,
           "candidates": 36,
           "list_errors": []
@@ -427,7 +427,7 @@
           "priority": 0.92,
           "student_value": 0.94,
           "audit_status": "chrome_audited",
-          "status": "ok",
+          "status": "ok_with_docs",
           "documents": 14,
           "candidates": 25,
           "list_errors": []
@@ -438,7 +438,7 @@
           "priority": 0.88,
           "student_value": 0.9,
           "audit_status": "chrome_audited",
-          "status": "ok",
+          "status": "warning_filtered_all",
           "documents": 0,
           "candidates": 7,
           "list_errors": []
@@ -449,7 +449,7 @@
           "priority": 0.86,
           "student_value": 0.88,
           "audit_status": "chrome_audited",
-          "status": "ok",
+          "status": "warning_filtered_all",
           "documents": 0,
           "candidates": 12,
           "list_errors": []
@@ -460,7 +460,7 @@
           "priority": 0.82,
           "student_value": 0.84,
           "audit_status": "chrome_audited",
-          "status": "ok",
+          "status": "warning_filtered_all",
           "documents": 0,
           "candidates": 18,
           "list_errors": []
@@ -488,7 +488,7 @@
           "priority": 0.9,
           "student_value": 0.92,
           "audit_status": "chrome_audited",
-          "status": "ok",
+          "status": "ok_with_docs",
           "documents": 11,
           "candidates": 36,
           "list_errors": []
@@ -499,7 +499,7 @@
           "priority": 0.84,
           "student_value": 0.86,
           "audit_status": "chrome_audited",
-          "status": "ok",
+          "status": "warning_filtered_all",
           "documents": 0,
           "candidates": 36,
           "list_errors": []
@@ -510,7 +510,7 @@
           "priority": 0.82,
           "student_value": 0.84,
           "audit_status": "chrome_audited",
-          "status": "ok",
+          "status": "warning_filtered_all",
           "documents": 0,
           "candidates": 36,
           "list_errors": []
@@ -521,7 +521,7 @@
           "priority": 0.76,
           "student_value": 0.78,
           "audit_status": "chrome_audited",
-          "status": "ok",
+          "status": "warning_filtered_all",
           "documents": 0,
           "candidates": 29,
           "list_errors": []
@@ -549,7 +549,7 @@
           "priority": 0.94,
           "student_value": 0.98,
           "audit_status": "chrome_audited",
-          "status": "ok",
+          "status": "ok_with_docs",
           "documents": 14,
           "candidates": 22,
           "list_errors": []
@@ -560,7 +560,7 @@
           "priority": 0.9,
           "student_value": 0.94,
           "audit_status": "chrome_audited",
-          "status": "ok",
+          "status": "warning_filtered_all",
           "documents": 0,
           "candidates": 36,
           "list_errors": []
@@ -571,7 +571,7 @@
           "priority": 0.84,
           "student_value": 0.86,
           "audit_status": "chrome_audited",
-          "status": "ok",
+          "status": "warning_filtered_all",
           "documents": 0,
           "candidates": 20,
           "list_errors": []
@@ -582,7 +582,7 @@
           "priority": 0.86,
           "student_value": 0.88,
           "audit_status": "chrome_audited",
-          "status": "ok",
+          "status": "ok_no_recent_docs",
           "documents": 0,
           "candidates": 0,
           "list_errors": []
@@ -593,7 +593,7 @@
           "priority": 0.8,
           "student_value": 0.82,
           "audit_status": "chrome_audited",
-          "status": "ok",
+          "status": "ok_no_recent_docs",
           "documents": 0,
           "candidates": 0,
           "list_errors": []
@@ -621,7 +621,7 @@
           "priority": 0.9,
           "student_value": 0.92,
           "audit_status": "chrome_audited",
-          "status": "ok",
+          "status": "ok_no_recent_docs",
           "documents": 0
         },
         {
@@ -630,7 +630,7 @@
           "priority": 0.88,
           "student_value": 0.9,
           "audit_status": "chrome_audited",
-          "status": "ok",
+          "status": "ok_no_recent_docs",
           "documents": 0
         },
         {
@@ -639,7 +639,7 @@
           "priority": 0.84,
           "student_value": 0.86,
           "audit_status": "chrome_audited",
-          "status": "ok",
+          "status": "ok_no_recent_docs",
           "documents": 0
         }
       ],
@@ -663,7 +663,7 @@
           "priority": 0.84,
           "student_value": 0.86,
           "audit_status": "chrome_audited",
-          "status": "ok",
+          "status": "ok_with_docs",
           "documents": 14,
           "candidates": 14,
           "list_errors": []
@@ -674,7 +674,7 @@
           "priority": 0.82,
           "student_value": 0.84,
           "audit_status": "chrome_audited",
-          "status": "ok",
+          "status": "ok_no_recent_docs",
           "documents": 0,
           "candidates": 0,
           "list_errors": []
@@ -685,7 +685,7 @@
           "priority": 0.78,
           "student_value": 0.8,
           "audit_status": "chrome_audited",
-          "status": "ok",
+          "status": "ok_no_recent_docs",
           "documents": 0,
           "candidates": 0,
           "list_errors": []
@@ -696,7 +696,7 @@
           "priority": 0.74,
           "student_value": 0.76,
           "audit_status": "chrome_audited",
-          "status": "ok",
+          "status": "warning_filtered_all",
           "documents": 0,
           "candidates": 14,
           "list_errors": []
@@ -724,7 +724,7 @@
           "priority": 0.82,
           "student_value": 0.84,
           "audit_status": "chrome_audited",
-          "status": "ok",
+          "status": "ok_with_docs",
           "documents": 11,
           "candidates": 11,
           "list_errors": []
@@ -735,7 +735,7 @@
           "priority": 0.78,
           "student_value": 0.8,
           "audit_status": "chrome_audited",
-          "status": "ok",
+          "status": "ok_with_docs",
           "documents": 1,
           "candidates": 5,
           "list_errors": []
@@ -746,7 +746,7 @@
           "priority": 0.8,
           "student_value": 0.82,
           "audit_status": "chrome_audited",
-          "status": "ok",
+          "status": "ok_no_recent_docs",
           "documents": 0,
           "candidates": 0,
           "list_errors": []
@@ -757,7 +757,7 @@
           "priority": 0.76,
           "student_value": 0.78,
           "audit_status": "chrome_audited",
-          "status": "ok",
+          "status": "ok_no_recent_docs",
           "documents": 0,
           "candidates": 0,
           "list_errors": []
@@ -785,7 +785,7 @@
           "priority": 0.84,
           "student_value": 0.88,
           "audit_status": "chrome_audited",
-          "status": "ok",
+          "status": "ok_with_docs",
           "documents": 14,
           "candidates": 36,
           "list_errors": []
@@ -796,7 +796,7 @@
           "priority": 0.8,
           "student_value": 0.82,
           "audit_status": "chrome_audited",
-          "status": "ok",
+          "status": "warning_filtered_all",
           "documents": 0,
           "candidates": 12,
           "list_errors": []
@@ -807,7 +807,7 @@
           "priority": 0.8,
           "student_value": 0.82,
           "audit_status": "chrome_audited",
-          "status": "ok",
+          "status": "ok_no_recent_docs",
           "documents": 0,
           "candidates": 0,
           "list_errors": []
@@ -818,7 +818,7 @@
           "priority": 0.82,
           "student_value": 0.84,
           "audit_status": "chrome_audited",
-          "status": "ok",
+          "status": "warning_filtered_all",
           "documents": 0,
           "candidates": 35,
           "list_errors": []
@@ -829,7 +829,7 @@
           "priority": 0.7,
           "student_value": 0.72,
           "audit_status": "chrome_audited",
-          "status": "ok",
+          "status": "warning_filtered_all",
           "documents": 0,
           "candidates": 12,
           "list_errors": []
@@ -857,7 +857,7 @@
           "priority": 0.86,
           "student_value": 0.86,
           "audit_status": "chrome_audited",
-          "status": "ok",
+          "status": "ok_with_docs",
           "documents": 14,
           "candidates": 36,
           "list_errors": []
@@ -868,7 +868,7 @@
           "priority": 0.7,
           "student_value": 0.72,
           "audit_status": "chrome_audited",
-          "status": "ok",
+          "status": "warning_filtered_all",
           "documents": 0,
           "candidates": 36,
           "list_errors": []
@@ -879,7 +879,7 @@
           "priority": 0.66,
           "student_value": 0.68,
           "audit_status": "chrome_audited",
-          "status": "ok",
+          "status": "warning_filtered_all",
           "documents": 0,
           "candidates": 36,
           "list_errors": []
@@ -907,7 +907,7 @@
           "priority": 0.62,
           "student_value": 0.55,
           "audit_status": "manual_seeded",
-          "status": "ok",
+          "status": "ok_with_docs",
           "documents": 14,
           "candidates": 36,
           "list_errors": []
@@ -918,7 +918,7 @@
           "priority": 0.56,
           "student_value": 0.5,
           "audit_status": "manual_seeded",
-          "status": "ok",
+          "status": "warning_filtered_all",
           "documents": 0,
           "candidates": 36,
           "list_errors": []
@@ -946,7 +946,7 @@
           "priority": 0.62,
           "student_value": 0.62,
           "audit_status": "chrome_audited",
-          "status": "ok",
+          "status": "ok_no_recent_docs",
           "documents": 0,
           "candidates": 0,
           "list_errors": []
@@ -957,7 +957,7 @@
           "priority": 0.62,
           "student_value": 0.64,
           "audit_status": "chrome_audited",
-          "status": "ok",
+          "status": "ok_no_recent_docs",
           "documents": 0,
           "candidates": 0,
           "list_errors": []
@@ -968,7 +968,7 @@
           "priority": 0.58,
           "student_value": 0.6,
           "audit_status": "chrome_audited",
-          "status": "ok",
+          "status": "ok_no_recent_docs",
           "documents": 0,
           "candidates": 0,
           "list_errors": []
@@ -996,7 +996,7 @@
           "priority": 0.72,
           "student_value": 0.74,
           "audit_status": "chrome_audited",
-          "status": "ok",
+          "status": "ok_with_docs",
           "documents": 14,
           "candidates": 36,
           "list_errors": []
@@ -1007,7 +1007,7 @@
           "priority": 0.76,
           "student_value": 0.78,
           "audit_status": "chrome_audited",
-          "status": "ok",
+          "status": "warning_filtered_all",
           "documents": 0,
           "candidates": 25,
           "list_errors": []
@@ -1018,7 +1018,7 @@
           "priority": 0.68,
           "student_value": 0.7,
           "audit_status": "chrome_audited",
-          "status": "ok",
+          "status": "warning_filtered_all",
           "documents": 0,
           "candidates": 2,
           "list_errors": []
@@ -1029,7 +1029,7 @@
           "priority": 0.6,
           "student_value": 0.62,
           "audit_status": "chrome_audited",
-          "status": "ok",
+          "status": "warning_filtered_all",
           "documents": 0,
           "candidates": 10,
           "list_errors": []
@@ -1057,7 +1057,7 @@
           "priority": 0.74,
           "student_value": 0.76,
           "audit_status": "chrome_audited",
-          "status": "ok",
+          "status": "ok_with_docs",
           "documents": 8,
           "candidates": 28,
           "list_errors": []
@@ -1068,7 +1068,7 @@
           "priority": 0.8,
           "student_value": 0.82,
           "audit_status": "chrome_audited",
-          "status": "ok",
+          "status": "warning_filtered_all",
           "documents": 0,
           "candidates": 28,
           "list_errors": []
@@ -1079,7 +1079,7 @@
           "priority": 0.66,
           "student_value": 0.68,
           "audit_status": "chrome_audited",
-          "status": "ok",
+          "status": "warning_filtered_all",
           "documents": 0,
           "candidates": 36,
           "list_errors": []
@@ -1090,7 +1090,7 @@
           "priority": 0.62,
           "student_value": 0.64,
           "audit_status": "chrome_audited",
-          "status": "ok",
+          "status": "warning_filtered_all",
           "documents": 0,
           "candidates": 25,
           "list_errors": []
@@ -1101,7 +1101,7 @@
           "priority": 0.62,
           "student_value": 0.64,
           "audit_status": "chrome_audited",
-          "status": "ok",
+          "status": "warning_filtered_all",
           "documents": 0,
           "candidates": 5,
           "list_errors": []
@@ -1129,7 +1129,7 @@
           "priority": 0.78,
           "student_value": 0.82,
           "audit_status": "chrome_audited",
-          "status": "ok",
+          "status": "ok_with_docs",
           "documents": 2,
           "candidates": 5,
           "list_errors": []
@@ -1140,7 +1140,7 @@
           "priority": 0.74,
           "student_value": 0.78,
           "audit_status": "chrome_audited",
-          "status": "ok",
+          "status": "ok_no_recent_docs",
           "documents": 0,
           "candidates": 0,
           "list_errors": []
@@ -1151,7 +1151,7 @@
           "priority": 0.7,
           "student_value": 0.72,
           "audit_status": "chrome_audited",
-          "status": "ok",
+          "status": "ok_with_docs",
           "documents": 2,
           "candidates": 4,
           "list_errors": []
@@ -1162,7 +1162,7 @@
           "priority": 0.66,
           "student_value": 0.68,
           "audit_status": "chrome_audited",
-          "status": "ok",
+          "status": "ok_with_docs",
           "documents": 2,
           "candidates": 12,
           "list_errors": []
@@ -1190,7 +1190,7 @@
           "priority": 0.56,
           "student_value": 0.58,
           "audit_status": "manual_seeded",
-          "status": "ok",
+          "status": "ok_with_docs",
           "documents": 13,
           "candidates": 22,
           "list_errors": []
@@ -1201,7 +1201,7 @@
           "priority": 0.52,
           "student_value": 0.54,
           "audit_status": "manual_seeded",
-          "status": "ok",
+          "status": "warning_filtered_all",
           "documents": 0,
           "candidates": 22,
           "list_errors": []
@@ -1229,7 +1229,7 @@
           "priority": 0.64,
           "student_value": 0.66,
           "audit_status": "chrome_audited",
-          "status": "ok",
+          "status": "ok_no_recent_docs",
           "documents": 0,
           "candidates": 0,
           "list_errors": []
@@ -1240,7 +1240,7 @@
           "priority": 0.6,
           "student_value": 0.62,
           "audit_status": "chrome_audited",
-          "status": "ok",
+          "status": "ok_with_docs",
           "documents": 14,
           "candidates": 36,
           "list_errors": []
@@ -1251,7 +1251,7 @@
           "priority": 0.56,
           "student_value": 0.58,
           "audit_status": "chrome_audited",
-          "status": "ok",
+          "status": "ok_no_recent_docs",
           "documents": 0,
           "candidates": 0,
           "list_errors": []
@@ -1279,7 +1279,7 @@
           "priority": 0.62,
           "student_value": 0.64,
           "audit_status": "chrome_audited",
-          "status": "ok",
+          "status": "ok_with_docs",
           "documents": 12,
           "candidates": 24,
           "list_errors": []
@@ -1290,7 +1290,7 @@
           "priority": 0.64,
           "student_value": 0.66,
           "audit_status": "chrome_audited",
-          "status": "ok",
+          "status": "warning_filtered_all",
           "documents": 0,
           "candidates": 36,
           "list_errors": []
@@ -1301,7 +1301,7 @@
           "priority": 0.6,
           "student_value": 0.62,
           "audit_status": "chrome_audited",
-          "status": "ok",
+          "status": "warning_filtered_all",
           "documents": 0,
           "candidates": 28,
           "list_errors": []
@@ -1312,7 +1312,7 @@
           "priority": 0.52,
           "student_value": 0.54,
           "audit_status": "chrome_audited",
-          "status": "ok",
+          "status": "warning_filtered_all",
           "documents": 0,
           "candidates": 9,
           "list_errors": []
@@ -1340,7 +1340,7 @@
           "priority": 0.78,
           "student_value": 0.78,
           "audit_status": "manual_seeded",
-          "status": "warning",
+          "status": "ok_no_recent_docs",
           "documents": 0,
           "candidates": 0,
           "list_errors": [
@@ -1353,7 +1353,7 @@
           "priority": 0.74,
           "student_value": 0.74,
           "audit_status": "manual_seeded",
-          "status": "ok",
+          "status": "ok_with_docs",
           "documents": 4,
           "candidates": 4,
           "list_errors": []
@@ -1384,7 +1384,7 @@
           "priority": 0.76,
           "student_value": 0.76,
           "audit_status": "manual_seeded",
-          "status": "ok",
+          "status": "ok_no_recent_docs",
           "documents": 0,
           "candidates": 0,
           "list_errors": []
@@ -1395,7 +1395,7 @@
           "priority": 0.72,
           "student_value": 0.72,
           "audit_status": "manual_seeded",
-          "status": "ok",
+          "status": "ok_no_recent_docs",
           "documents": 0,
           "candidates": 0,
           "list_errors": []
@@ -1423,7 +1423,7 @@
           "priority": 0.74,
           "student_value": 0.74,
           "audit_status": "manual_seeded",
-          "status": "ok",
+          "status": "ok_no_recent_docs",
           "documents": 0,
           "candidates": 0,
           "list_errors": []
@@ -1434,7 +1434,7 @@
           "priority": 0.7,
           "student_value": 0.7,
           "audit_status": "manual_seeded",
-          "status": "ok",
+          "status": "ok_no_recent_docs",
           "documents": 0,
           "candidates": 0,
           "list_errors": []
@@ -1462,7 +1462,7 @@
           "priority": 0.74,
           "student_value": 0.74,
           "audit_status": "manual_seeded",
-          "status": "ok",
+          "status": "ok_no_recent_docs",
           "documents": 0,
           "candidates": 0,
           "list_errors": []
@@ -1473,7 +1473,7 @@
           "priority": 0.7,
           "student_value": 0.7,
           "audit_status": "manual_seeded",
-          "status": "ok",
+          "status": "ok_no_recent_docs",
           "documents": 0,
           "candidates": 0,
           "list_errors": []
@@ -1501,7 +1501,7 @@
           "priority": 0.72,
           "student_value": 0.72,
           "audit_status": "manual_seeded",
-          "status": "ok",
+          "status": "ok_no_recent_docs",
           "documents": 0,
           "candidates": 0,
           "list_errors": []
@@ -1512,7 +1512,7 @@
           "priority": 0.6799999999999999,
           "student_value": 0.6799999999999999,
           "audit_status": "manual_seeded",
-          "status": "ok",
+          "status": "ok_no_recent_docs",
           "documents": 0,
           "candidates": 0,
           "list_errors": []
@@ -1540,7 +1540,7 @@
           "priority": 0.72,
           "student_value": 0.72,
           "audit_status": "manual_seeded",
-          "status": "ok",
+          "status": "ok_no_recent_docs",
           "documents": 0,
           "candidates": 0,
           "list_errors": []
@@ -1551,7 +1551,7 @@
           "priority": 0.6799999999999999,
           "student_value": 0.6799999999999999,
           "audit_status": "manual_seeded",
-          "status": "ok",
+          "status": "ok_no_recent_docs",
           "documents": 0,
           "candidates": 0,
           "list_errors": []
@@ -1579,7 +1579,7 @@
           "priority": 0.72,
           "student_value": 0.72,
           "audit_status": "manual_seeded",
-          "status": "ok",
+          "status": "ok_no_recent_docs",
           "documents": 0,
           "candidates": 0,
           "list_errors": []
@@ -1590,7 +1590,7 @@
           "priority": 0.6799999999999999,
           "student_value": 0.6799999999999999,
           "audit_status": "manual_seeded",
-          "status": "ok",
+          "status": "ok_no_recent_docs",
           "documents": 0,
           "candidates": 0,
           "list_errors": []
@@ -1618,7 +1618,7 @@
           "priority": 0.68,
           "student_value": 0.68,
           "audit_status": "manual_seeded",
-          "status": "ok",
+          "status": "ok_no_recent_docs",
           "documents": 0,
           "candidates": 0,
           "list_errors": []
@@ -1629,7 +1629,7 @@
           "priority": 0.64,
           "student_value": 0.64,
           "audit_status": "manual_seeded",
-          "status": "ok",
+          "status": "ok_no_recent_docs",
           "documents": 0,
           "candidates": 0,
           "list_errors": []
@@ -1657,7 +1657,7 @@
           "priority": 0.68,
           "student_value": 0.68,
           "audit_status": "manual_seeded",
-          "status": "ok",
+          "status": "ok_with_docs",
           "documents": 13,
           "candidates": 36,
           "list_errors": []
@@ -1668,7 +1668,7 @@
           "priority": 0.64,
           "student_value": 0.64,
           "audit_status": "manual_seeded",
-          "status": "ok",
+          "status": "warning_filtered_all",
           "documents": 0,
           "candidates": 36,
           "list_errors": []
@@ -1696,7 +1696,7 @@
           "priority": 0.66,
           "student_value": 0.66,
           "audit_status": "manual_seeded",
-          "status": "ok",
+          "status": "ok_with_docs",
           "documents": 14,
           "candidates": 26,
           "list_errors": []
@@ -1707,7 +1707,7 @@
           "priority": 0.62,
           "student_value": 0.62,
           "audit_status": "manual_seeded",
-          "status": "ok",
+          "status": "warning_filtered_all",
           "documents": 0,
           "candidates": 26,
           "list_errors": []
@@ -1735,7 +1735,7 @@
           "priority": 0.66,
           "student_value": 0.66,
           "audit_status": "manual_seeded",
-          "status": "ok",
+          "status": "ok_no_recent_docs",
           "documents": 0,
           "candidates": 0,
           "list_errors": []
@@ -1746,7 +1746,7 @@
           "priority": 0.62,
           "student_value": 0.62,
           "audit_status": "manual_seeded",
-          "status": "ok",
+          "status": "ok_no_recent_docs",
           "documents": 0,
           "candidates": 0,
           "list_errors": []

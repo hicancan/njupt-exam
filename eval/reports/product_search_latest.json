@@ -1,0 +1,782 @@
+{
+  "timestamp": "2026-05-25T09:44:58.615454",
+  "total_cases": 10,
+  "route_accuracy": 1.0,
+  "bad_top5_rate": 0.0,
+  "blocked_source_violations": 0,
+  "blocked_domain_violations": 0,
+  "errors": [],
+  "case_details": [
+    {
+      "query": "四六级",
+      "route_obj": {
+        "raw_query": "四六级",
+        "normalized_query": "四六级",
+        "query_type": "exam_notice_search",
+        "route_score": 100.9,
+        "route_confidence": 0.95,
+        "route_source": "query_routes_v2",
+        "target_domains": [
+          "exam",
+          "exam"
+        ],
+        "target_intents": [
+          "schedule",
+          "register",
+          "check_result"
+        ],
+        "preferred_sources": [
+          "jwc",
+          "njupt_notice"
+        ],
+        "preferred_channels": [
+          "jwc_exam"
+        ],
+        "blocked_domains_for_top5": [
+          "international",
+          "innovation_project"
+        ],
+        "blocked_sources_for_top5": [
+          "exchange",
+          "cxcy",
+          "github"
+        ],
+        "allow_resource_top5": false,
+        "freshness_preference": "recent",
+        "alternative_routes": [
+          {
+            "query_type": "campus_alert_search",
+            "score": 0.95
+          },
+          {
+            "query_type": "degree_defense_search",
+            "score": 0.85
+          },
+          {
+            "query_type": "official_notice_search",
+            "score": 0.75
+          }
+        ],
+        "explanation": "考试类通知（如四六级、期末安排等），优先显示教务处和官方考试通知。"
+      },
+      "top5": [
+        {
+          "id": "jwc-7302a28b49d7e92c069f",
+          "title": "【教务管理办公室】2025-2026学年第二学期在线开放课程（慕课）线下考试报名通知",
+          "domain": "exam",
+          "source": "本科生院 / 教务处"
+        },
+        {
+          "id": "jwc-5b4427b16b11f6941a73",
+          "title": "【教务管理办公室】2025-2026学年第二学期考试安排表",
+          "domain": "exam",
+          "source": "本科生院 / 教务处"
+        },
+        {
+          "id": "jwc-3169f05504d4bfad9732",
+          "title": "【教务管理办公室】关于做好2025-2026学年第二学期期末考试工作安排的通知",
+          "domain": "exam",
+          "source": "本科生院 / 教务处"
+        },
+        {
+          "id": "simp-916527c5424f64b391da",
+          "title": "现代邮政学院2025年硕士研究生复试须知",
+          "domain": "exam",
+          "source": "现代邮政学院 / 智慧交通学院"
+        },
+        {
+          "id": "njupt_notice-7011710a55e2cbd7660c",
+          "title": "2025 12.17 关于第15周周末封闭仙林校区部分教学楼的通知",
+          "domain": "exam",
+          "source": "南邮官网通知通告"
+        }
+      ],
+      "passed": true
+    },
+    {
+      "query": "论文答辩",
+      "route_obj": {
+        "raw_query": "论文答辩",
+        "normalized_query": "论文答辩",
+        "query_type": "degree_defense_search",
+        "route_score": 65.85,
+        "route_confidence": 0.8,
+        "route_source": "query_routes_v2",
+        "target_domains": [
+          "degree",
+          "degree",
+          "academic"
+        ],
+        "target_intents": [
+          "schedule",
+          "submit",
+          "read"
+        ],
+        "preferred_sources": [
+          "pg",
+          "jwc"
+        ],
+        "preferred_channels": [
+          "pg_degree",
+          "pg_graduation",
+          "jwc_degree"
+        ],
+        "blocked_domains_for_top5": [
+          "innovation_project"
+        ],
+        "blocked_sources_for_top5": [
+          "cxcy"
+        ],
+        "allow_resource_top5": false,
+        "freshness_preference": "recent",
+        "alternative_routes": [
+          {
+            "query_type": "campus_alert_search",
+            "score": 0.95
+          },
+          {
+            "query_type": "exam_notice_search",
+            "score": 0.9
+          },
+          {
+            "query_type": "official_notice_search",
+            "score": 0.75
+          }
+        ],
+        "explanation": "学位论文/毕业论文答辩类查询优先研究生院、学院和学位相关通知。"
+      },
+      "top5": [
+        {
+          "id": "cs-aa700cc880aa734ce178",
+          "title": "电子信息专业学位（计算机技术方向） 2026年申请考核制博士研究生招生实施细则",
+          "domain": "academic",
+          "source": "计算机学院"
+        },
+        {
+          "id": "cs-2310a7e236b7a19f9487",
+          "title": "计算机科学与技术一级学科2026年申请考核制博士研究生招生实施细则",
+          "domain": "academic",
+          "source": "计算机学院"
+        },
+        {
+          "id": "cs-2606eff01f2ec2dd944f",
+          "title": "网络空间安全一级学科2026年申请考核制博士研究生招生实施细则",
+          "domain": "academic",
+          "source": "计算机学院"
+        },
+        {
+          "id": "pg-a3ee4a62fbb1f6f27749",
+          "title": "南京邮电大学博士研究生培养方案（2025级）",
+          "domain": "academic",
+          "source": "研究生院"
+        },
+        {
+          "id": "pg-6badffb9902a8d5677ac",
+          "title": "南京邮电大学博士研究生培养方案（2024级）",
+          "domain": "academic",
+          "source": "研究生院"
+        }
+      ],
+      "passed": true
+    },
+    {
+      "query": "医保",
+      "route_obj": {
+        "raw_query": "医保",
+        "normalized_query": "医保",
+        "query_type": "service_search",
+        "route_score": 50.7,
+        "route_confidence": 0.5,
+        "route_source": "query_routes_v2",
+        "target_domains": [
+          "medical_insurance",
+          "life",
+          "logistics",
+          "service",
+          "network"
+        ],
+        "target_intents": [],
+        "preferred_sources": [
+          "hqc",
+          "xxb"
+        ],
+        "preferred_channels": [],
+        "blocked_domains_for_top5": [
+          "innovation_project"
+        ],
+        "blocked_sources_for_top5": [
+          "cxcy"
+        ],
+        "allow_resource_top5": true,
+        "freshness_preference": "none",
+        "alternative_routes": [
+          {
+            "query_type": "campus_alert_search",
+            "score": 0.95
+          },
+          {
+            "query_type": "exam_notice_search",
+            "score": 0.9
+          },
+          {
+            "query_type": "degree_defense_search",
+            "score": 0.85
+          }
+        ],
+        "explanation": "校园生活服务类（如医保、网络等），优先后勤和信息中心。"
+      },
+      "top5": [
+        {
+          "id": "hqc-edfe9e6977f742324c51",
+          "title": "关于参保学生外地门（急）诊医疗费用零星报销的通知",
+          "domain": "medical_insurance",
+          "source": "后勤管理处"
+        },
+        {
+          "id": "xsc-114b4ec2154ae391ee7a",
+          "title": "南邮开展2025年“四季时节 暖心常在” 考研状元桂花糕发放活动",
+          "domain": "life",
+          "source": "学生工作处"
+        },
+        {
+          "id": "hqc-6cc6532cca3bd115388a",
+          "title": "仙林校区停电通知",
+          "domain": "logistics",
+          "source": "后勤管理处"
+        },
+        {
+          "id": "hqc-0d2ca4f4fe0d9bac05c1",
+          "title": "关于寒假期间停电检修的通知",
+          "domain": "logistics",
+          "source": "后勤管理处"
+        },
+        {
+          "id": "hqc-44cadcfc99f71a45ed7c",
+          "title": "三牌楼校区停电通知",
+          "domain": "logistics",
+          "source": "后勤管理处"
+        }
+      ],
+      "passed": true
+    },
+    {
+      "query": "转专业",
+      "route_obj": {
+        "raw_query": "转专业",
+        "normalized_query": "转专业",
+        "query_type": "official_notice_search",
+        "route_score": 50.75,
+        "route_confidence": 0.5,
+        "route_source": "query_routes_v2",
+        "target_domains": [
+          "academic",
+          "official"
+        ],
+        "target_intents": [],
+        "preferred_sources": [
+          "jwc",
+          "xsc"
+        ],
+        "preferred_channels": [],
+        "blocked_domains_for_top5": [
+          "innovation_project"
+        ],
+        "blocked_sources_for_top5": [
+          "cxcy"
+        ],
+        "allow_resource_top5": true,
+        "freshness_preference": "none",
+        "alternative_routes": [
+          {
+            "query_type": "campus_alert_search",
+            "score": 0.95
+          },
+          {
+            "query_type": "exam_notice_search",
+            "score": 0.9
+          },
+          {
+            "query_type": "degree_defense_search",
+            "score": 0.85
+          }
+        ],
+        "explanation": "官方学籍/学业通知，优先教务处或学生处。"
+      },
+      "top5": [
+        {
+          "id": "jwc-68a41687f15408883b85",
+          "title": "南京邮电大学本科生转专业管理办法（2025年9月18日修订） 2025-09-26",
+          "domain": "course",
+          "source": "本科生院 / 教务处"
+        },
+        {
+          "id": "cs-aa700cc880aa734ce178",
+          "title": "电子信息专业学位（计算机技术方向） 2026年申请考核制博士研究生招生实施细则",
+          "domain": "academic",
+          "source": "计算机学院"
+        },
+        {
+          "id": "cs-2310a7e236b7a19f9487",
+          "title": "计算机科学与技术一级学科2026年申请考核制博士研究生招生实施细则",
+          "domain": "academic",
+          "source": "计算机学院"
+        },
+        {
+          "id": "cs-2606eff01f2ec2dd944f",
+          "title": "网络空间安全一级学科2026年申请考核制博士研究生招生实施细则",
+          "domain": "academic",
+          "source": "计算机学院"
+        },
+        {
+          "id": "pg-a3ee4a62fbb1f6f27749",
+          "title": "南京邮电大学博士研究生培养方案（2025级）",
+          "domain": "academic",
+          "source": "研究生院"
+        }
+      ],
+      "passed": true
+    },
+    {
+      "query": "B250403",
+      "route_obj": {
+        "raw_query": "B250403",
+        "normalized_query": "B250403",
+        "query_type": "class_exam_lookup",
+        "route_score": 101.0,
+        "route_confidence": 0.95,
+        "route_source": "query_routes_v2",
+        "target_domains": [
+          "exam"
+        ],
+        "target_intents": [],
+        "preferred_sources": [
+          "exam_vertical"
+        ],
+        "preferred_channels": [],
+        "blocked_domains_for_top5": [],
+        "blocked_sources_for_top5": [],
+        "allow_resource_top5": true,
+        "freshness_preference": "none",
+        "alternative_routes": [
+          {
+            "query_type": "campus_alert_search",
+            "score": 0.95
+          },
+          {
+            "query_type": "exam_notice_search",
+            "score": 0.9
+          },
+          {
+            "query_type": "degree_defense_search",
+            "score": 0.85
+          }
+        ],
+        "explanation": "班级具体考试查询，优先展示垂直考试频道的精确匹配结果。"
+      },
+      "top5": [
+        {
+          "id": "jwc-5b4427b16b11f6941a73",
+          "title": "【教务管理办公室】2025-2026学年第二学期考试安排表",
+          "domain": "exam",
+          "source": "本科生院 / 教务处"
+        },
+        {
+          "id": "jwc-7302a28b49d7e92c069f",
+          "title": "【教务管理办公室】2025-2026学年第二学期在线开放课程（慕课）线下考试报名通知",
+          "domain": "exam",
+          "source": "本科生院 / 教务处"
+        },
+        {
+          "id": "jwc-3169f05504d4bfad9732",
+          "title": "【教务管理办公室】关于做好2025-2026学年第二学期期末考试工作安排的通知",
+          "domain": "exam",
+          "source": "本科生院 / 教务处"
+        },
+        {
+          "id": "njupt_notice-7011710a55e2cbd7660c",
+          "title": "2025 12.17 关于第15周周末封闭仙林校区部分教学楼的通知",
+          "domain": "exam",
+          "source": "南邮官网通知通告"
+        },
+        {
+          "id": "simp-916527c5424f64b391da",
+          "title": "现代邮政学院2025年硕士研究生复试须知",
+          "domain": "exam",
+          "source": "现代邮政学院 / 智慧交通学院"
+        }
+      ],
+      "passed": true
+    },
+    {
+      "query": "高数",
+      "route_obj": {
+        "raw_query": "高数",
+        "normalized_query": "高数",
+        "query_type": "resource_search",
+        "route_score": 15.6,
+        "route_confidence": 0.5,
+        "route_source": "query_routes_v2",
+        "target_domains": [
+          "resource",
+          "course"
+        ],
+        "target_intents": [],
+        "preferred_sources": [
+          "github",
+          "github_resource"
+        ],
+        "preferred_channels": [],
+        "blocked_domains_for_top5": [],
+        "blocked_sources_for_top5": [],
+        "allow_resource_top5": true,
+        "freshness_preference": "none",
+        "alternative_routes": [
+          {
+            "query_type": "campus_alert_search",
+            "score": 0.95
+          },
+          {
+            "query_type": "exam_notice_search",
+            "score": 0.9
+          },
+          {
+            "query_type": "degree_defense_search",
+            "score": 0.85
+          }
+        ],
+        "explanation": "课程资料和复习内容，优先显示GitHub资源。"
+      },
+      "top5": [
+        {
+          "id": "github-yosunpeng-postgraduate_test_njupt-b65d2cfa1c598600bc07",
+          "title": "南京邮电大学研究生期末考试复习资料 · postgraduate\\_test\\_njupt",
+          "domain": "resource",
+          "source": "南京邮电大学研究生期末考试复习资料"
+        },
+        {
+          "id": "jwc-59a29f409eb78f77b1e1",
+          "title": "【教务管理办公室】关于学习慕课的学生加入“慕课堂”的通知（陆续更新中）",
+          "domain": "course",
+          "source": "本科生院 / 教务处"
+        },
+        {
+          "id": "jwc-391500a8447efc7bd72f",
+          "title": "【教务管理办公室】2025-2026学年第二学期部分在线开放课程学习通知（陆续更新中）",
+          "domain": "course",
+          "source": "本科生院 / 教务处"
+        },
+        {
+          "id": "pe-8eab3b6b4aab6002ec5e",
+          "title": "三牌楼校区2015-2016学年第一学期课表",
+          "domain": "course",
+          "source": "体育部"
+        },
+        {
+          "id": "github-NJUPTFreeExams-NJUPT-CST-Free-Exams-6169d0395e43fe5cb864",
+          "title": "【Deprecated】南京邮电大学计算机科学与技术专业历年... · NJUPT-CS-Free-Exams",
+          "domain": "resource",
+          "source": "【Deprecated】南京邮电大学计算机科学与技术专业历年..."
+        }
+      ],
+      "passed": true
+    },
+    {
+      "query": "离散数学",
+      "route_obj": {
+        "raw_query": "离散数学",
+        "normalized_query": "离散数学",
+        "query_type": "resource_search",
+        "route_score": 15.6,
+        "route_confidence": 0.5,
+        "route_source": "query_routes_v2",
+        "target_domains": [
+          "resource",
+          "course"
+        ],
+        "target_intents": [],
+        "preferred_sources": [
+          "github",
+          "github_resource"
+        ],
+        "preferred_channels": [],
+        "blocked_domains_for_top5": [],
+        "blocked_sources_for_top5": [],
+        "allow_resource_top5": true,
+        "freshness_preference": "none",
+        "alternative_routes": [
+          {
+            "query_type": "campus_alert_search",
+            "score": 0.95
+          },
+          {
+            "query_type": "exam_notice_search",
+            "score": 0.9
+          },
+          {
+            "query_type": "degree_defense_search",
+            "score": 0.85
+          }
+        ],
+        "explanation": "课程资料和复习内容，优先显示GitHub资源。"
+      },
+      "top5": [
+        {
+          "id": "github-NJUPTFreeExams-NJUPT-InfoSec-Free-Exams-e6e8024e7e61b78b68d8",
+          "title": "【Deprecated】南京邮电大学信息安全专业历年考试资料... · NJUPT_InfoSec_Free_Exams",
+          "domain": "resource",
+          "source": "【Deprecated】南京邮电大学信息安全专业历年考试资料..."
+        },
+        {
+          "id": "github-yosunpeng-postgraduate_test_njupt-b65d2cfa1c598600bc07",
+          "title": "南京邮电大学研究生期末考试复习资料 · postgraduate\\_test\\_njupt",
+          "domain": "resource",
+          "source": "南京邮电大学研究生期末考试复习资料"
+        },
+        {
+          "id": "github-NJUPTFreeExams-NJUPT-CST-Free-Exams-6169d0395e43fe5cb864",
+          "title": "【Deprecated】南京邮电大学计算机科学与技术专业历年... · NJUPT-CS-Free-Exams",
+          "domain": "resource",
+          "source": "【Deprecated】南京邮电大学计算机科学与技术专业历年..."
+        },
+        {
+          "id": "github-NJUPTFreeExams-NJUPT-TE-Free-Exams-5a117bb9af20dfd99981",
+          "title": "南京邮电大学通信工程专业历年考试资料 · NJUPT-TE-Free-Exams",
+          "domain": "resource",
+          "source": "南京邮电大学通信工程专业历年考试资料"
+        },
+        {
+          "id": "github-NJUPTFreeExams-NJUPT-AUTO-Free-Exams-75ccdaeaf3facc3ffdbd",
+          "title": "南京邮电大学自动化专业历年考试资料 · NJUPT-AUTO-Free-Exams",
+          "domain": "resource",
+          "source": "南京邮电大学自动化专业历年考试资料"
+        }
+      ],
+      "passed": true
+    },
+    {
+      "query": "大创",
+      "route_obj": {
+        "raw_query": "大创",
+        "normalized_query": "大创",
+        "query_type": "innovation_project_search",
+        "route_score": 50.75,
+        "route_confidence": 0.5,
+        "route_source": "query_routes_v2",
+        "target_domains": [
+          "innovation_project",
+          "project"
+        ],
+        "target_intents": [],
+        "preferred_sources": [
+          "cxcy"
+        ],
+        "preferred_channels": [],
+        "blocked_domains_for_top5": [],
+        "blocked_sources_for_top5": [],
+        "allow_resource_top5": true,
+        "freshness_preference": "none",
+        "alternative_routes": [
+          {
+            "query_type": "campus_alert_search",
+            "score": 0.95
+          },
+          {
+            "query_type": "exam_notice_search",
+            "score": 0.9
+          },
+          {
+            "query_type": "scholarship_search",
+            "score": 0.7
+          }
+        ],
+        "explanation": "大创和各类创新项目通知。"
+      },
+      "top5": [
+        {
+          "id": "cxcy-ac6a840bf5e5acb2ae47",
+          "title": "关于组织开展2025年度大学生创新创业训练计划项目申报工作的通知",
+          "domain": "project",
+          "source": "创新创业教育学院"
+        },
+        {
+          "id": "cxcy-18b0923654eab80cce87",
+          "title": "关于组织开展2023年度大学生创新创业训练计划项目申报工作的通知",
+          "domain": "project",
+          "source": "创新创业教育学院"
+        },
+        {
+          "id": "cxcy-c4132762db65faac8b56",
+          "title": "关于组织开展2024年度大学生创新创业训练计划项目申报工作的通知",
+          "domain": "project",
+          "source": "创新创业教育学院"
+        },
+        {
+          "id": "cxcy-42c19e3bc86cd210fe17",
+          "title": "关于2023年度大学生创新创业训练计划项目中期检查及2022年度延期项目结题的通知",
+          "domain": "project",
+          "source": "创新创业教育学院"
+        },
+        {
+          "id": "cxcy-e74fc8fd1735efcc59dd",
+          "title": "关于2024年度大学生创新创业训练计划项目中期检查及2023年度延期项目结题的通知",
+          "domain": "project",
+          "source": "创新创业教育学院"
+        }
+      ],
+      "passed": true
+    },
+    {
+      "query": "停电",
+      "route_obj": {
+        "raw_query": "停电",
+        "normalized_query": "停电",
+        "query_type": "campus_alert_search",
+        "route_score": 50.95,
+        "route_confidence": 0.5,
+        "route_source": "query_routes_v2",
+        "target_domains": [
+          "alert",
+          "logistics"
+        ],
+        "target_intents": [],
+        "preferred_sources": [
+          "hqc",
+          "bwc"
+        ],
+        "preferred_channels": [],
+        "blocked_domains_for_top5": [],
+        "blocked_sources_for_top5": [],
+        "allow_resource_top5": true,
+        "freshness_preference": "very_recent",
+        "alternative_routes": [
+          {
+            "query_type": "exam_notice_search",
+            "score": 0.9
+          },
+          {
+            "query_type": "degree_defense_search",
+            "score": 0.85
+          },
+          {
+            "query_type": "official_notice_search",
+            "score": 0.75
+          }
+        ],
+        "explanation": "校园突发或预警通知（停水停电等）。"
+      },
+      "top5": [
+        {
+          "id": "hqc-44cadcfc99f71a45ed7c",
+          "title": "三牌楼校区停电通知",
+          "domain": "logistics",
+          "source": "后勤管理处"
+        },
+        {
+          "id": "hqc-0d2ca4f4fe0d9bac05c1",
+          "title": "关于寒假期间停电检修的通知",
+          "domain": "logistics",
+          "source": "后勤管理处"
+        },
+        {
+          "id": "hqc-6cc6532cca3bd115388a",
+          "title": "仙林校区停电通知",
+          "domain": "logistics",
+          "source": "后勤管理处"
+        },
+        {
+          "id": "hqc-b279952a9f7b366cb41e",
+          "title": "教室空调关闭通知",
+          "domain": "logistics",
+          "source": "后勤管理处"
+        },
+        {
+          "id": "cwc-5842ee3073edfbdc1182",
+          "title": "关于调整学校财务业务办理点的通知",
+          "domain": "logistics",
+          "source": "财务处"
+        }
+      ],
+      "passed": true
+    },
+    {
+      "query": "校园网",
+      "route_obj": {
+        "raw_query": "校园网",
+        "normalized_query": "校园网",
+        "query_type": "service_search",
+        "route_score": 50.7,
+        "route_confidence": 0.5,
+        "route_source": "query_routes_v2",
+        "target_domains": [
+          "medical_insurance",
+          "life",
+          "logistics",
+          "service",
+          "network"
+        ],
+        "target_intents": [],
+        "preferred_sources": [
+          "hqc",
+          "xxb"
+        ],
+        "preferred_channels": [],
+        "blocked_domains_for_top5": [
+          "innovation_project"
+        ],
+        "blocked_sources_for_top5": [
+          "cxcy"
+        ],
+        "allow_resource_top5": true,
+        "freshness_preference": "none",
+        "alternative_routes": [
+          {
+            "query_type": "campus_alert_search",
+            "score": 0.95
+          },
+          {
+            "query_type": "exam_notice_search",
+            "score": 0.9
+          },
+          {
+            "query_type": "degree_defense_search",
+            "score": 0.85
+          }
+        ],
+        "explanation": "校园生活服务类（如医保、网络等），优先后勤和信息中心。"
+      },
+      "top5": [
+        {
+          "id": "xxb-2652f8ad86b44f71b459",
+          "title": "校园网费用缴费单",
+          "domain": "campus_network",
+          "source": "信息化建设与管理办公室"
+        },
+        {
+          "id": "github-Freedomisgood-NjuptCmcc-2e4d2ee54922589eb084",
+          "title": "校园网一键上网脚本 · 说明：",
+          "domain": "campus_network",
+          "source": "校园网一键上网脚本"
+        },
+        {
+          "id": "github-s235784-NJUPT_AutoLogin-3bfbad0bf26507d2f64a",
+          "title": "南京邮电大学校园网自动登录脚本，支持Linux（OpenWR... · NJUPT_AutoLogin",
+          "domain": "campus_network",
+          "source": "南京邮电大学校园网自动登录脚本，支持Linux（OpenWR..."
+        },
+        {
+          "id": "github-lux-QAQ-NJUPT_Fastlogin-761863a2a7039f75e0eb",
+          "title": "南京邮电大学校园网最快登录脚本 for Android Wi... · NJUPT_Fastlogin",
+          "domain": "campus_network",
+          "source": "南京邮电大学校园网最快登录脚本 for Android Wi..."
+        },
+        {
+          "id": "github-musnows-Njupt-Wifi-Login-e7f0cc5b6e214d0cd1ff",
+          "title": "路由器(刷机) 实现自动连接南京邮电大学校园网 · Njupt-Wifi-Login",
+          "domain": "campus_network",
+          "source": "路由器(刷机) 实现自动连接南京邮电大学校园网"
+        }
+      ],
+      "passed": true
+    }
+  ]
+}
