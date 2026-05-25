@@ -206,6 +206,7 @@ export interface RankedSearchDocument extends SearchDocument {
     score: number;
     score_reason: string;
     score_components?: Record<string, number>;
+    degraded_fallback?: boolean;
 }
 
 export const SearchManifestSourceSchema = z.object({

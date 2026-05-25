@@ -509,16 +509,16 @@ export const rankSearchDocuments = (
     const preferredSources = new Set(routeObj.preferred_sources);
     const allowResourceTop5 = routeObj.allow_resource_top5;
     
-    const badResultTerms = (routeObj as any).bad_result_terms || [];
-    const mustIncludeTerms = (routeObj as any).must_include_terms_for_top_results || [];
-    const top1Exact = (routeObj as any).top1_prefer_exact_title || false;
+    const badResultTerms = routeObj.bad_result_terms || [];
+    const mustIncludeTerms = routeObj.must_include_terms_for_top_results || [];
+    const top1Exact = routeObj.top1_prefer_exact_title || false;
 
     const hybridDocuments = (hybridIndex?.documents || {}) as Record<string, { terms?: Record<string, number>, fields?: Record<string, string> }>;
 
     const aliasPayloads = aliasPayloadsForQuery(trimmed, queryAliases);
     const expandedTerms = aliasTermsFromPayloads(aliasPayloads);
 
-    let candidates = documents.map(document => {
+    const candidates = documents.map(document => {
         const textScore = scoreTextMatch(document, trimmed, expandedTerms);
         const hybridPayload = hybridDocuments[document.id];
         const bm25Proxy = hybridPayload?.terms ? scoreHybridTerms(hybridPayload.terms, [trimmed, ...expandedTerms].join(' ')) : textScore / 24;
@@ -672,7 +672,7 @@ export const rankSearchDocuments = (
         
     validCandidates.forEach(doc => {
         if (doc.isBlocked) {
-            (doc as any).degraded_fallback = true;
+            doc.degraded_fallback = true;
             doc.score_reason += "，目标候选不足，作为降级补位";
         }
     });
