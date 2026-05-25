@@ -48,36 +48,6 @@
         "role": "材料",
         "required": true,
         "sensitive": false
-      },
-      {
-        "name": "关于2026年美国加州大学欧文分校AI实习课程项目.docx",
-        "role": "材料",
-        "required": true,
-        "sensitive": false
-      },
-      {
-        "name": "附件1.1线上AI实习项目简介.doc",
-        "role": "材料",
-        "required": true,
-        "sensitive": false
-      },
-      {
-        "name": "附件1.2AI实习项目完整说明书.docx",
-        "role": "材料",
-        "required": true,
-        "sensitive": false
-      },
-      {
-        "name": "附件1.3 AI实习项目Bryan Muñoz介绍.pdf",
-        "role": "材料",
-        "required": true,
-        "sensitive": false
-      },
-      {
-        "name": "威斯康辛大学麦迪逊分校2026夏秋季报名通知.docx",
-        "role": "材料",
-        "required": true,
-        "sensitive": false
       }
     ],
     "location": {
@@ -106,7 +76,7 @@
       },
       {
         "field": "materials",
-        "text": "附件/材料：{'name': '南京邮电大学本科生海外访学申请表', 'role': '申请表', 'required': True, 'sensitive': False}、关于2026年美国加州大学欧文分校AI实习课程项目.docx、附件1.1线上AI实习项目简介.doc、附件1.2AI实习项目完整说明书."
+        "text": "附件/材料：{'name': '南京邮电大学本科生海外访学申请表', 'role': '申请表', 'required': True, 'sensitive': False}"
       }
     ],
     "risk": {
@@ -158,34 +128,9 @@
       "published_at": "2026-03-27",
       "deadline": "2026-04-03T16:00:00+08:00",
       "lifecycle": "expired",
-      "urgency_days": -52
+      "urgency_days": -53
     },
-    "materials": [
-      {
-        "name": "附件1：我校开设的在线开放课程和校内课程对照表.xlsx",
-        "role": "材料",
-        "required": true,
-        "sensitive": false
-      },
-      {
-        "name": "附件2：2025-2026-2校际联盟在线开放课程（任选课）.docx",
-        "role": "材料",
-        "required": true,
-        "sensitive": false
-      },
-      {
-        "name": "附件3：2025-2026-2校际联盟在线开放课程课程简介.docx",
-        "role": "材料",
-        "required": true,
-        "sensitive": false
-      },
-      {
-        "name": "附件4：校际联盟-超星（学习通）学习方式.pdf",
-        "role": "材料",
-        "required": true,
-        "sensitive": false
-      }
-    ],
+    "materials": [],
     "location": {
       "place": null,
       "online": null,
@@ -217,10 +162,6 @@
       {
         "field": "deadline",
         "text": "2026年3月30日9：00至2026年4月3日16：00"
-      },
-      {
-        "field": "materials",
-        "text": "附件/材料：附件1：我校开设的在线开放课程和校内课程对照表.xlsx、附件2：2025-2026-2校际联盟在线开放课程（任选课）.docx、附件3：2025-2026-2校际联盟在线开放课程课程简介.docx、附件4：校际联盟-超星（学习通）学习方式.pdf"
       }
     ],
     "risk": {
@@ -274,14 +215,7 @@
       "lifecycle": "unknown",
       "urgency_days": null
     },
-    "materials": [
-      {
-        "name": "附件-2025-2026学年第二学期中国大学MOOC平台慕课安排表（慕课堂）(20260317更新).xlsx",
-        "role": "材料",
-        "required": true,
-        "sensitive": false
-      }
-    ],
+    "materials": [],
     "location": {
       "place": null,
       "online": null,
@@ -305,10 +239,6 @@
       {
         "field": "action",
         "text": "务必按照任课教师要求，加入课程对应的慕课堂，否则线上成绩将以零分计算。"
-      },
-      {
-        "field": "materials",
-        "text": "附件/材料：附件-2025-2026学年第二学期中国大学MOOC平台慕课安排表（慕课堂）(20260317更新).xlsx"
       }
     ],
     "risk": {
@@ -362,26 +292,7 @@
       "lifecycle": "active",
       "urgency_days": null
     },
-    "materials": [
-      {
-        "name": "2025-2026学年第二学期集中考试周1安排表（学校组织）-学生用表.xlsx",
-        "role": "材料",
-        "required": false,
-        "sensitive": false
-      },
-      {
-        "name": "2025-2026学年第二学期考试安排表（学校组织17-18周）-学生用表.xlsx",
-        "role": "材料",
-        "required": false,
-        "sensitive": false
-      },
-      {
-        "name": "2025-2026学年第二学期考试安排表（学院组织）-学生用表.xlsx",
-        "role": "材料",
-        "required": false,
-        "sensitive": false
-      }
-    ],
+    "materials": [],
     "location": {
       "place": null,
       "online": null,
@@ -401,10 +312,6 @@
       {
         "field": "audience",
         "text": "现公布2025-2026学年第二学期考试安排表，考试分为学校组织和学院组织，请及时通知相关学生参加考试。"
-      },
-      {
-        "field": "materials",
-        "text": "附件/材料：2025-2026学年第二学期集中考试周1安排表（学校组织）-学生用表.xlsx、2025-2026学年第二学期考试安排表（学校组织17-18周）-学生用表.xlsx、2025-2026学年第二学期考试安排表（学院组织）-学生用表.xlsx"
       }
     ],
     "risk": {
@@ -1332,32 +1239,7 @@
       "lifecycle": "active",
       "urgency_days": null
     },
-    "materials": [
-      {
-        "name": "附件1：《南京邮电大学党建与思想政治教育研究项目管理办法》（党委宣发〔2026〕4号）",
-        "role": "材料",
-        "required": false,
-        "sensitive": false
-      },
-      {
-        "name": "附件2：2026年学校党建与思想政治教育研究项目课题指南",
-        "role": "材料",
-        "required": false,
-        "sensitive": false
-      },
-      {
-        "name": "附件3、4、5.zip",
-        "role": "材料",
-        "required": false,
-        "sensitive": false
-      },
-      {
-        "name": "附件6、7、8.zip",
-        "role": "材料",
-        "required": false,
-        "sensitive": false
-      }
-    ],
+    "materials": [],
     "location": {
       "place": null,
       "online": null,
@@ -1377,10 +1259,6 @@
       {
         "field": "audience",
         "text": "各基层党委、党总支、直属党支部，各单位、各部门： 为深入学习习近平新时代中国特色社会主义思想，全面贯彻习近平总书记关于教育的重要论述和对江苏工作的重要讲话精神，深入推进马克思主义理论研究和建设工程，聚焦新时代高校党的建设与思想政治教育研究前沿，着力产出一批高质量理论研究成果，有力支撑服务学校高质量发展，经研究，决定开展2026年学校党建与思想政治教育研究项目"
-      },
-      {
-        "field": "materials",
-        "text": "附件/材料：附件1：《南京邮电大学党建与思想政治教育研究项目管理办法》（党委宣发〔2026〕4号）、附件2：2026年学校党建与思想政治教育研究项目课题指南、附件3、4、5.zip、附件6、7、8.zip"
       }
     ],
     "risk": {
@@ -1768,7 +1646,7 @@
     },
     "source": {
       "source_id": "cs",
-      "channel_id": "cs_competition",
+      "channel_id": "cs_academic",
       "authority": 0.78,
       "official": true
     },
@@ -1847,7 +1725,7 @@
     },
     "source": {
       "source_id": "cs",
-      "channel_id": "cs_competition",
+      "channel_id": "cs_academic",
       "authority": 0.78,
       "official": true
     },
@@ -1926,7 +1804,7 @@
     },
     "source": {
       "source_id": "cs",
-      "channel_id": "cs_competition",
+      "channel_id": "cs_academic",
       "authority": 0.78,
       "official": true
     },
@@ -2235,14 +2113,7 @@
       "lifecycle": "unknown",
       "urgency_days": null
     },
-    "materials": [
-      {
-        "name": "关于举办“第四届全国节约用水知识大赛”的函.pdf",
-        "role": "材料",
-        "required": true,
-        "sensitive": false
-      }
-    ],
+    "materials": [],
     "location": {
       "place": null,
       "online": null,
@@ -2270,10 +2141,6 @@
       {
         "field": "action",
         "text": "全校师生均可参与。"
-      },
-      {
-        "field": "materials",
-        "text": "附件/材料：关于举办“第四届全国节约用水知识大赛”的函.pdf"
       }
     ],
     "risk": {

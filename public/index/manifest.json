@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-05-25T07:53:02.665392+08:00",
-  "total_documents": 154,
+  "generated_at": "2026-05-25T17:52:59.328814+08:00",
+  "total_documents": 153,
   "strategy": "hytask-rag-source-channel-taskframe-hybrid-index-v1",
   "semantic_pipeline_version": "semantic-router-v2",
   "llm_schema_version": "hytask-taskframe-v2.1",
@@ -12,19 +12,19 @@
   "llm_batch_max_output_tokens": 60000,
   "llm_stats": {
     "cache_reused": 0,
-    "llm_reused": 0,
-    "llm_attempted": 246,
-    "llm_reprocessed": 241,
+    "llm_reused": 248,
+    "llm_attempted": 4,
+    "llm_reprocessed": 3,
     "llm_failed": 1,
     "llm_fallback": 48,
     "llm_skipped_by_limit": 0,
-    "llm_batches_attempted": 55,
-    "llm_batch_docs_attempted": 246,
-    "candidate_llm_cache_reused": 0,
+    "llm_batches_attempted": 5,
+    "llm_batch_docs_attempted": 4,
+    "candidate_llm_cache_reused": 248,
     "restricted": 12
   },
   "semantic_mode_counts": {
-    "llm": 149,
+    "llm": 148,
     "heuristic": 3,
     "guarded_metadata": 2,
     "heuristic_degraded": 0,
@@ -32,72 +32,72 @@
   },
   "field_source_counts": {
     "category": {
-      "llm": 104,
+      "llm": 103,
       "display_mapping": 45,
       "heuristic": 3,
       "rule_guard": 2
     },
     "domain": {
-      "llm": 149,
+      "llm": 148,
       "heuristic": 3,
       "rule_guard": 2
     },
     "intent": {
-      "llm": 149,
+      "llm": 148,
       "heuristic": 3,
       "rule_guard": 2
     },
     "deadline": {
-      "llm": 149,
+      "llm": 148,
       "heuristic": 3,
       "rule_guard": 2
     },
     "action_required": {
-      "llm": 149,
+      "llm": 148,
       "heuristic": 3,
       "rule_guard": 2
     },
     "action_summary": {
-      "llm": 149,
+      "llm": 148,
       "heuristic": 3,
       "rule_guard": 2
     },
     "required_materials": {
-      "llm": 149,
+      "llm": 148,
       "heuristic": 3,
       "rule_guard": 2
     },
     "summary": {
-      "llm": 149,
+      "llm": 148,
       "heuristic": 3,
       "rule_guard": 2
     },
     "evidence": {
-      "llm": 149,
+      "llm": 148,
       "heuristic": 3,
       "rule_guard": 2
     },
     "sensitive": {
-      "llm": 149,
+      "llm": 148,
       "heuristic": 3,
       "rule_guard": 2
     },
     "review_required": {
-      "llm": 149,
+      "llm": 148,
       "heuristic": 3,
       "rule_guard": 2
     },
     "student_score": {
-      "hybrid_rank_feature": 149,
+      "hybrid_rank_feature": 148,
       "rule_guard": 5
     },
     "importance_score": {
-      "hybrid_rank_feature": 149,
+      "hybrid_rank_feature": 148,
       "rule_guard": 5
     },
     "task_frames": {
       "llm_raw_task_frame": 23,
-      "empty_not_applicable": 126,
+      "empty_not_applicable": 125,
       "heuristic_rule_frame": 3,
       "guarded_metadata_empty": 2
     }
@@ -122,8 +122,8 @@
     "importance_score": 0,
     "task_frames": 0
   },
-  "hybrid_score_field_count": 149,
-  "training_eligible_count": 136,
+  "hybrid_score_field_count": 148,
+  "training_eligible_count": 135,
   "heuristic_degraded_count": 0,
   "llm_purity_rate": 1.0,
   "source_count": 30,
@@ -147,9 +147,9 @@
   "restricted_count": 2,
   "sensitive_count": 5,
   "hybrid_index": {
-    "doc_count": 154,
+    "doc_count": 153,
     "task_frame_count": 49,
-    "avg_doc_len": 648.5909
+    "avg_doc_len": 665.0327
   },
   "sources": [
     {
@@ -234,7 +234,7 @@
           "priority": 0.88,
           "student_value": 0.88,
           "audit_status": "chrome_audited",
-          "status": "warning_filtered_all",
+          "status": "error_fetch_failed",
           "documents": 0,
           "candidates": 1,
           "list_errors": [
@@ -244,7 +244,7 @@
       ],
       "status": "ok",
       "documents": 12,
-      "last_fetch_at": "2026-05-25T07:53:02.665392+08:00",
+      "last_fetch_at": "2026-05-25T17:52:59.328814+08:00",
       "list_errors": [
         "http://jwc.njupt.edu.cn/2025/0904/c1528a288083/page.htm: 412 Client Error: Precondition Failed for url: http://jwc.njupt.edu.cn/2025/0904/c1528a288083/page.htm"
       ],
@@ -330,7 +330,7 @@
       ],
       "status": "ok",
       "documents": 6,
-      "last_fetch_at": "2026-05-25T07:53:02.665392+08:00",
+      "last_fetch_at": "2026-05-25T17:52:59.328814+08:00",
       "candidates": 14,
       "filtered_out": 8
     },
@@ -352,10 +352,8 @@
           "audit_status": "chrome_audited",
           "status": "ok_with_docs",
           "documents": 13,
-          "candidates": 30,
-          "list_errors": [
-            "https://pg.njupt.edu.cn/967/list2.htm: 502 Server Error: Bad Gateway for url: https://pg.njupt.edu.cn/967/list2.htm"
-          ]
+          "candidates": 36,
+          "list_errors": []
         },
         {
           "id": "pg_degree",
@@ -404,10 +402,7 @@
       ],
       "status": "ok",
       "documents": 7,
-      "last_fetch_at": "2026-05-25T07:53:02.665392+08:00",
-      "list_errors": [
-        "https://pg.njupt.edu.cn/967/list2.htm: 502 Server Error: Bad Gateway for url: https://pg.njupt.edu.cn/967/list2.htm"
-      ],
+      "last_fetch_at": "2026-05-25T17:52:59.328814+08:00",
       "candidates": 13,
       "filtered_out": 6
     },
@@ -468,7 +463,7 @@
       ],
       "status": "ok",
       "documents": 5,
-      "last_fetch_at": "2026-05-25T07:53:02.665392+08:00",
+      "last_fetch_at": "2026-05-25T17:52:59.328814+08:00",
       "candidates": 14,
       "filtered_out": 9
     },
@@ -489,7 +484,7 @@
           "student_value": 0.92,
           "audit_status": "chrome_audited",
           "status": "ok_with_docs",
-          "documents": 11,
+          "documents": 13,
           "candidates": 36,
           "list_errors": []
         },
@@ -529,9 +524,9 @@
       ],
       "status": "ok",
       "documents": 0,
-      "last_fetch_at": "2026-05-25T07:53:02.665392+08:00",
-      "candidates": 11,
-      "filtered_out": 11
+      "last_fetch_at": "2026-05-25T17:52:59.328814+08:00",
+      "candidates": 13,
+      "filtered_out": 13
     },
     {
       "id": "cxcy",
@@ -601,7 +596,7 @@
       ],
       "status": "ok",
       "documents": 11,
-      "last_fetch_at": "2026-05-25T07:53:02.665392+08:00",
+      "last_fetch_at": "2026-05-25T17:52:59.328814+08:00",
       "candidates": 14,
       "filtered_out": 3
     },
@@ -621,7 +616,7 @@
           "priority": 0.9,
           "student_value": 0.92,
           "audit_status": "chrome_audited",
-          "status": "ok_no_recent_docs",
+          "status": "ok",
           "documents": 0
         },
         {
@@ -630,7 +625,7 @@
           "priority": 0.88,
           "student_value": 0.9,
           "audit_status": "chrome_audited",
-          "status": "ok_no_recent_docs",
+          "status": "ok",
           "documents": 0
         },
         {
@@ -639,13 +634,13 @@
           "priority": 0.84,
           "student_value": 0.86,
           "audit_status": "chrome_audited",
-          "status": "ok_no_recent_docs",
+          "status": "ok",
           "documents": 0
         }
       ],
       "status": "ok",
       "documents": 18,
-      "last_fetch_at": "2026-05-25T07:53:02.665392+08:00"
+      "last_fetch_at": "2026-05-25T17:52:59.328814+08:00"
     },
     {
       "id": "lib",
@@ -704,7 +699,7 @@
       ],
       "status": "ok",
       "documents": 12,
-      "last_fetch_at": "2026-05-25T07:53:02.665392+08:00",
+      "last_fetch_at": "2026-05-25T17:52:59.328814+08:00",
       "candidates": 14,
       "filtered_out": 2
     },
@@ -765,7 +760,7 @@
       ],
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-25T07:53:02.665392+08:00",
+      "last_fetch_at": "2026-05-25T17:52:59.328814+08:00",
       "candidates": 12,
       "filtered_out": 11
     },
@@ -837,7 +832,7 @@
       ],
       "status": "ok",
       "documents": 8,
-      "last_fetch_at": "2026-05-25T07:53:02.665392+08:00",
+      "last_fetch_at": "2026-05-25T17:52:59.328814+08:00",
       "candidates": 14,
       "filtered_out": 6
     },
@@ -887,7 +882,7 @@
       ],
       "status": "ok",
       "documents": 3,
-      "last_fetch_at": "2026-05-25T07:53:02.665392+08:00",
+      "last_fetch_at": "2026-05-25T17:52:59.328814+08:00",
       "candidates": 14,
       "filtered_out": 11
     },
@@ -925,10 +920,10 @@
         }
       ],
       "status": "ok",
-      "documents": 7,
-      "last_fetch_at": "2026-05-25T07:53:02.665392+08:00",
+      "documents": 6,
+      "last_fetch_at": "2026-05-25T17:52:59.328814+08:00",
       "candidates": 14,
-      "filtered_out": 7
+      "filtered_out": 8
     },
     {
       "id": "xxgk",
@@ -976,7 +971,7 @@
       ],
       "status": "ok",
       "documents": 0,
-      "last_fetch_at": "2026-05-25T07:53:02.665392+08:00",
+      "last_fetch_at": "2026-05-25T17:52:59.328814+08:00",
       "candidates": 0,
       "filtered_out": 0
     },
@@ -1037,7 +1032,7 @@
       ],
       "status": "ok",
       "documents": 4,
-      "last_fetch_at": "2026-05-25T07:53:02.665392+08:00",
+      "last_fetch_at": "2026-05-25T17:52:59.328814+08:00",
       "candidates": 14,
       "filtered_out": 10
     },
@@ -1109,7 +1104,7 @@
       ],
       "status": "ok",
       "documents": 6,
-      "last_fetch_at": "2026-05-25T07:53:02.665392+08:00",
+      "last_fetch_at": "2026-05-25T17:52:59.328814+08:00",
       "candidates": 8,
       "filtered_out": 2
     },
@@ -1170,7 +1165,7 @@
       ],
       "status": "ok",
       "documents": 2,
-      "last_fetch_at": "2026-05-25T07:53:02.665392+08:00",
+      "last_fetch_at": "2026-05-25T17:52:59.328814+08:00",
       "candidates": 6,
       "filtered_out": 4
     },
@@ -1209,7 +1204,7 @@
       ],
       "status": "ok",
       "documents": 3,
-      "last_fetch_at": "2026-05-25T07:53:02.665392+08:00",
+      "last_fetch_at": "2026-05-25T17:52:59.328814+08:00",
       "candidates": 13,
       "filtered_out": 10
     },
@@ -1259,7 +1254,7 @@
       ],
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-25T07:53:02.665392+08:00",
+      "last_fetch_at": "2026-05-25T17:52:59.328814+08:00",
       "candidates": 14,
       "filtered_out": 13
     },
@@ -1320,7 +1315,7 @@
       ],
       "status": "ok",
       "documents": 3,
-      "last_fetch_at": "2026-05-25T07:53:02.665392+08:00",
+      "last_fetch_at": "2026-05-25T17:52:59.328814+08:00",
       "candidates": 12,
       "filtered_out": 9
     },
@@ -1340,12 +1335,10 @@
           "priority": 0.78,
           "student_value": 0.78,
           "audit_status": "manual_seeded",
-          "status": "ok_no_recent_docs",
-          "documents": 0,
-          "candidates": 0,
-          "list_errors": [
-            "https://cs.njupt.edu.cn/tzgg/list.htm: 502 Server Error: Bad Gateway for url: https://cs.njupt.edu.cn/tzgg/list.htm"
-          ]
+          "status": "ok_with_docs",
+          "documents": 4,
+          "candidates": 4,
+          "list_errors": []
         },
         {
           "id": "cs_competition",
@@ -1360,13 +1353,10 @@
         }
       ],
       "status": "ok",
-      "documents": 3,
-      "last_fetch_at": "2026-05-25T07:53:02.665392+08:00",
-      "list_errors": [
-        "https://cs.njupt.edu.cn/tzgg/list.htm: 502 Server Error: Bad Gateway for url: https://cs.njupt.edu.cn/tzgg/list.htm"
-      ],
-      "candidates": 4,
-      "filtered_out": 1
+      "documents": 6,
+      "last_fetch_at": "2026-05-25T17:52:59.328814+08:00",
+      "candidates": 8,
+      "filtered_out": 2
     },
     {
       "id": "scie",
@@ -1403,7 +1393,7 @@
       ],
       "status": "ok",
       "documents": 0,
-      "last_fetch_at": "2026-05-25T07:53:02.665392+08:00",
+      "last_fetch_at": "2026-05-25T17:52:59.328814+08:00",
       "candidates": 0,
       "filtered_out": 0
     },
@@ -1442,7 +1432,7 @@
       ],
       "status": "ok",
       "documents": 0,
-      "last_fetch_at": "2026-05-25T07:53:02.665392+08:00",
+      "last_fetch_at": "2026-05-25T17:52:59.328814+08:00",
       "candidates": 0,
       "filtered_out": 0
     },
@@ -1481,7 +1471,7 @@
       ],
       "status": "ok",
       "documents": 0,
-      "last_fetch_at": "2026-05-25T07:53:02.665392+08:00",
+      "last_fetch_at": "2026-05-25T17:52:59.328814+08:00",
       "candidates": 0,
       "filtered_out": 0
     },
@@ -1520,7 +1510,7 @@
       ],
       "status": "ok",
       "documents": 0,
-      "last_fetch_at": "2026-05-25T07:53:02.665392+08:00",
+      "last_fetch_at": "2026-05-25T17:52:59.328814+08:00",
       "candidates": 0,
       "filtered_out": 0
     },
@@ -1559,7 +1549,7 @@
       ],
       "status": "ok",
       "documents": 0,
-      "last_fetch_at": "2026-05-25T07:53:02.665392+08:00",
+      "last_fetch_at": "2026-05-25T17:52:59.328814+08:00",
       "candidates": 0,
       "filtered_out": 0
     },
@@ -1598,7 +1588,7 @@
       ],
       "status": "ok",
       "documents": 0,
-      "last_fetch_at": "2026-05-25T07:53:02.665392+08:00",
+      "last_fetch_at": "2026-05-25T17:52:59.328814+08:00",
       "candidates": 0,
       "filtered_out": 0
     },
@@ -1637,7 +1627,7 @@
       ],
       "status": "ok",
       "documents": 0,
-      "last_fetch_at": "2026-05-25T07:53:02.665392+08:00",
+      "last_fetch_at": "2026-05-25T17:52:59.328814+08:00",
       "candidates": 0,
       "filtered_out": 0
     },
@@ -1676,7 +1666,7 @@
       ],
       "status": "ok",
       "documents": 3,
-      "last_fetch_at": "2026-05-25T07:53:02.665392+08:00",
+      "last_fetch_at": "2026-05-25T17:52:59.328814+08:00",
       "candidates": 13,
       "filtered_out": 10
     },
@@ -1715,7 +1705,7 @@
       ],
       "status": "ok",
       "documents": 5,
-      "last_fetch_at": "2026-05-25T07:53:02.665392+08:00",
+      "last_fetch_at": "2026-05-25T17:52:59.328814+08:00",
       "candidates": 14,
       "filtered_out": 9
     },
@@ -1754,7 +1744,7 @@
       ],
       "status": "ok",
       "documents": 0,
-      "last_fetch_at": "2026-05-25T07:53:02.665392+08:00",
+      "last_fetch_at": "2026-05-25T17:52:59.328814+08:00",
       "candidates": 0,
       "filtered_out": 0
     },
@@ -1765,7 +1755,7 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 2,
-      "last_fetch_at": "2026-05-25T07:53:02.665392+08:00",
+      "last_fetch_at": "2026-05-25T17:52:59.328814+08:00",
       "candidates": 2
     },
     {
@@ -1775,7 +1765,7 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-25T07:53:02.665392+08:00",
+      "last_fetch_at": "2026-05-25T17:52:59.328814+08:00",
       "candidates": 1
     },
     {
@@ -1785,7 +1775,7 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 5,
-      "last_fetch_at": "2026-05-25T07:53:02.665392+08:00",
+      "last_fetch_at": "2026-05-25T17:52:59.328814+08:00",
       "candidates": 5
     },
     {
@@ -1795,7 +1785,7 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-25T07:53:02.665392+08:00",
+      "last_fetch_at": "2026-05-25T17:52:59.328814+08:00",
       "candidates": 1
     },
     {
@@ -1805,7 +1795,7 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-25T07:53:02.665392+08:00",
+      "last_fetch_at": "2026-05-25T17:52:59.328814+08:00",
       "candidates": 1
     },
     {
@@ -1815,7 +1805,7 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-25T07:53:02.665392+08:00",
+      "last_fetch_at": "2026-05-25T17:52:59.328814+08:00",
       "candidates": 1
     },
     {
@@ -1825,7 +1815,7 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-25T07:53:02.665392+08:00",
+      "last_fetch_at": "2026-05-25T17:52:59.328814+08:00",
       "candidates": 1
     },
     {
@@ -1835,7 +1825,7 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-25T07:53:02.665392+08:00",
+      "last_fetch_at": "2026-05-25T17:52:59.328814+08:00",
       "candidates": 1
     },
     {
@@ -1845,7 +1835,7 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-25T07:53:02.665392+08:00",
+      "last_fetch_at": "2026-05-25T17:52:59.328814+08:00",
       "candidates": 1
     },
     {
@@ -1855,7 +1845,7 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-25T07:53:02.665392+08:00",
+      "last_fetch_at": "2026-05-25T17:52:59.328814+08:00",
       "candidates": 1
     },
     {
@@ -1865,7 +1855,7 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 3,
-      "last_fetch_at": "2026-05-25T07:53:02.665392+08:00",
+      "last_fetch_at": "2026-05-25T17:52:59.328814+08:00",
       "candidates": 3
     },
     {
@@ -1875,7 +1865,7 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-25T07:53:02.665392+08:00",
+      "last_fetch_at": "2026-05-25T17:52:59.328814+08:00",
       "candidates": 1
     },
     {
@@ -1885,7 +1875,7 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-25T07:53:02.665392+08:00",
+      "last_fetch_at": "2026-05-25T17:52:59.328814+08:00",
       "candidates": 1
     },
     {
@@ -1895,7 +1885,7 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-25T07:53:02.665392+08:00",
+      "last_fetch_at": "2026-05-25T17:52:59.328814+08:00",
       "candidates": 1
     },
     {
@@ -1905,7 +1895,7 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-25T07:53:02.665392+08:00",
+      "last_fetch_at": "2026-05-25T17:52:59.328814+08:00",
       "candidates": 1
     },
     {
@@ -1915,7 +1905,7 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-25T07:53:02.665392+08:00",
+      "last_fetch_at": "2026-05-25T17:52:59.328814+08:00",
       "candidates": 1
     },
     {
@@ -1925,7 +1915,7 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-25T07:53:02.665392+08:00",
+      "last_fetch_at": "2026-05-25T17:52:59.328814+08:00",
       "candidates": 1
     },
     {
@@ -1935,7 +1925,7 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-25T07:53:02.665392+08:00",
+      "last_fetch_at": "2026-05-25T17:52:59.328814+08:00",
       "candidates": 1
     },
     {
@@ -1945,7 +1935,7 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 2,
-      "last_fetch_at": "2026-05-25T07:53:02.665392+08:00",
+      "last_fetch_at": "2026-05-25T17:52:59.328814+08:00",
       "candidates": 2
     },
     {
@@ -1955,7 +1945,7 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-25T07:53:02.665392+08:00",
+      "last_fetch_at": "2026-05-25T17:52:59.328814+08:00",
       "candidates": 1
     },
     {
@@ -1965,7 +1955,7 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-25T07:53:02.665392+08:00",
+      "last_fetch_at": "2026-05-25T17:52:59.328814+08:00",
       "candidates": 1
     },
     {
@@ -1975,7 +1965,7 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 2,
-      "last_fetch_at": "2026-05-25T07:53:02.665392+08:00",
+      "last_fetch_at": "2026-05-25T17:52:59.328814+08:00",
       "candidates": 2
     },
     {
@@ -1985,7 +1975,7 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-25T07:53:02.665392+08:00",
+      "last_fetch_at": "2026-05-25T17:52:59.328814+08:00",
       "candidates": 1
     },
     {
@@ -1995,7 +1985,7 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-25T07:53:02.665392+08:00",
+      "last_fetch_at": "2026-05-25T17:52:59.328814+08:00",
       "candidates": 1
     },
     {
@@ -2005,7 +1995,7 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-25T07:53:02.665392+08:00",
+      "last_fetch_at": "2026-05-25T17:52:59.328814+08:00",
       "candidates": 1
     },
     {
@@ -2015,7 +2005,7 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-25T07:53:02.665392+08:00",
+      "last_fetch_at": "2026-05-25T17:52:59.328814+08:00",
       "candidates": 1
     },
     {
@@ -2025,7 +2015,7 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-25T07:53:02.665392+08:00",
+      "last_fetch_at": "2026-05-25T17:52:59.328814+08:00",
       "candidates": 1
     },
     {
@@ -2035,7 +2025,7 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-25T07:53:02.665392+08:00",
+      "last_fetch_at": "2026-05-25T17:52:59.328814+08:00",
       "candidates": 1
     },
     {
@@ -2045,7 +2035,7 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-25T07:53:02.665392+08:00",
+      "last_fetch_at": "2026-05-25T17:52:59.328814+08:00",
       "candidates": 1
     },
     {
@@ -2055,7 +2045,7 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-25T07:53:02.665392+08:00",
+      "last_fetch_at": "2026-05-25T17:52:59.328814+08:00",
       "warning": "GitHub fetch failed; reused stale cached documents: name 'provider_chain' is not defined"
     },
     {
@@ -2065,7 +2055,7 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-25T07:53:02.665392+08:00",
+      "last_fetch_at": "2026-05-25T17:52:59.328814+08:00",
       "candidates": 1
     },
     {
@@ -2075,7 +2065,7 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-25T07:53:02.665392+08:00",
+      "last_fetch_at": "2026-05-25T17:52:59.328814+08:00",
       "candidates": 1
     }
   ]

@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-05-25T15:13:52.581658",
+  "timestamp": "2026-05-25T10:04:21.352250",
   "thresholds": {
     "route_fixture": 1.0,
     "critical_top1_match_rate": 1.0,
