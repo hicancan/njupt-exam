@@ -340,7 +340,7 @@
       "published_at": "2026-05-11",
       "deadline": "2026-05-28T23:59:00+08:00",
       "lifecycle": "active",
-      "urgency_days": 3
+      "urgency_days": 2
     },
     "materials": [],
     "location": {
@@ -3979,7 +3979,7 @@
       "published_at": null,
       "deadline": "2026-03-31T23:59:00+08:00",
       "lifecycle": "expired",
-      "urgency_days": -55
+      "urgency_days": -56
     },
     "materials": [],
     "location": {
@@ -4517,7 +4517,7 @@
       "published_at": null,
       "deadline": "2026-01-23T23:59:00+08:00",
       "lifecycle": "expired",
-      "urgency_days": -122
+      "urgency_days": -123
     },
     "materials": [],
     "location": {
@@ -4598,7 +4598,7 @@
       "published_at": null,
       "deadline": "2025-07-06T23:59:00+08:00",
       "lifecycle": "expired",
-      "urgency_days": -323
+      "urgency_days": -324
     },
     "materials": [],
     "location": {
@@ -4679,7 +4679,7 @@
       "published_at": null,
       "deadline": "2025-01-14T23:59:00+08:00",
       "lifecycle": "expired",
-      "urgency_days": -496
+      "urgency_days": -497
     },
     "materials": [],
     "location": {
