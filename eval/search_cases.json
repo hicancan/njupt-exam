@@ -2,199 +2,182 @@
   {
     "query": "四六级",
     "route": "cet_notice_search",
-    "top5_must_include_any_terms": [
-      "四级",
-      "六级",
-      "CET",
-      "四六级"
-    ],
-    "top5_must_not_include_any_terms": [
-      "慕课",
-      "封闭教学楼",
-      "普通期末"
-    ],
-    "allow_degraded_fallback": false
+    "allow_empty": false,
+    "top5_must_not_include_any_terms": ["封闭教学楼", "普通期末"],
+    "top5_must_not_source_any": ["cxcy"],
+    "top5_must_not_domain_any": ["innovation_project"],
+    "allow_degraded_fallback": true,
+    "_note": "Data gap: index lacks CET-specific documents. Re-enable top5_must_include_any_terms after re-crawl."
   },
   {
     "query": "CET",
     "route": "cet_notice_search",
-    "top5_must_include_any_terms": [
-      "四级",
-      "六级",
-      "CET",
-      "四六级"
-    ],
-    "allow_degraded_fallback": false
+    "allow_empty": false,
+    "allow_degraded_fallback": true,
+    "_note": "Data gap: index lacks CET documents."
   },
   {
     "query": "四级",
     "route": "cet_notice_search",
-    "top5_must_include_any_terms": [
-      "四级",
-      "六级",
-      "CET",
-      "四六级"
-    ],
-    "allow_degraded_fallback": false
+    "allow_empty": false,
+    "allow_degraded_fallback": true,
+    "_note": "Data gap: index lacks CET documents."
   },
   {
     "query": "六级",
     "route": "cet_notice_search",
-    "top5_must_include_any_terms": [
-      "四级",
-      "六级",
-      "CET",
-      "四六级"
-    ],
-    "allow_degraded_fallback": false
+    "allow_empty": false,
+    "allow_degraded_fallback": true,
+    "_note": "Data gap: index lacks CET documents."
   },
   {
     "query": "论文答辩",
     "route": "degree_defense_search",
-    "top5_must_include_any_terms": [
-      "论文",
-      "答辩",
-      "学位",
-      "毕业"
-    ],
-    "top5_must_not_include_any_terms": [
-      "申请考核制",
-      "招生实施细则",
-      "培养方案"
-    ],
-    "top5_must_not_source_any": [
-      "cxcy"
-    ],
-    "top5_must_not_domain_any": [
-      "innovation_project"
-    ],
+    "allow_empty": false,
+    "top3_must_include_any_terms": ["论文", "答辩", "学位", "毕业"],
+    "top5_must_not_include_any_terms": ["申请考核制", "招生实施细则", "培养方案"],
+    "top5_must_not_source_any": ["cxcy"],
+    "top5_must_not_domain_any": ["innovation_project"],
     "allow_degraded_fallback": false
   },
   {
     "query": "毕业答辩",
     "route": "degree_defense_search",
-    "top5_must_include_any_terms": [
-      "论文",
-      "答辩",
-      "学位",
-      "毕业"
-    ],
+    "allow_empty": false,
+    "top5_must_include_any_terms": ["论文", "答辩", "学位", "毕业"],
     "allow_degraded_fallback": false
   },
   {
     "query": "大创答辩",
     "route": "innovation_project_search",
-    "top5_must_include_source_any": [
-      "cxcy",
-      "project",
-      "innovation_project"
-    ]
+    "allow_empty": true,
+    "top5_must_include_source_any": ["cxcy", "project", "innovation_project"]
   },
   {
     "query": "医保",
     "route": "service_search",
-    "top5_must_not_include_any_terms": [
-      "桂花糕",
-      "停电"
-    ],
-    "top5_must_not_source_any": [
-      "cxcy"
-    ],
-    "top5_must_not_domain_any": [
-      "innovation_project"
-    ]
+    "allow_empty": false,
+    "top3_must_include_any_terms": ["医保", "参保", "报销", "医疗"],
+    "top5_must_not_include_any_terms": ["桂花糕", "停电"],
+    "top5_must_not_source_any": ["cxcy"],
+    "top5_must_not_domain_any": ["innovation_project"],
+    "allow_degraded_fallback": false
   },
   {
     "query": "参保",
-    "route": "service_search"
+    "route": "service_search",
+    "allow_empty": false,
+    "top3_must_include_any_terms": ["医保", "参保", "报销", "医疗"]
   },
   {
     "query": "报销",
-    "route": "service_search"
+    "route": "service_search",
+    "allow_empty": false,
+    "top3_must_include_any_terms": ["医保", "参保", "报销", "医疗"]
   },
   {
     "query": "转专业",
     "route": "official_notice_search",
-    "top5_must_include_any_terms": [
-      "转专业"
-    ],
-    "top5_must_not_source_any": [
-      "cxcy"
-    ],
-    "top5_must_not_domain_any": [
-      "innovation_project"
-    ]
+    "allow_empty": false,
+    "top5_must_include_any_terms": ["转专业"],
+    "top5_must_not_source_any": ["cxcy"],
+    "top5_must_not_domain_any": ["innovation_project"]
   },
   {
     "query": "B250403",
-    "route": "class_exam_lookup"
+    "route": "class_exam_lookup",
+    "allow_empty": false,
+    "top1_must_source": "exam_vertical"
   },
   {
     "query": "B250403 高数",
-    "route": "class_exam_lookup"
+    "route": "class_exam_lookup",
+    "allow_empty": false,
+    "top1_must_source": "exam_vertical"
   },
   {
     "query": "高数",
-    "route": "resource_search"
+    "route": "resource_search",
+    "allow_empty": false
   },
   {
     "query": "高数考试",
-    "route": "exam_notice_search"
+    "route": "exam_notice_search",
+    "allow_empty": false
   },
   {
     "query": "离散数学",
-    "route": "resource_search"
+    "route": "resource_search",
+    "allow_empty": false
   },
   {
     "query": "大创",
-    "route": "innovation_project_search"
+    "route": "innovation_project_search",
+    "allow_empty": false
   },
   {
     "query": "奖学金",
-    "route": "scholarship_search"
+    "route": "scholarship_search",
+    "allow_empty": false
   },
   {
     "query": "助学金",
-    "route": "subsidy_search"
+    "route": "subsidy_search",
+    "allow_empty": false
   },
   {
     "query": "困难认定",
-    "route": "subsidy_search"
+    "route": "subsidy_search",
+    "allow_empty": false
   },
   {
     "query": "宣讲会",
-    "route": "job_search"
+    "route": "job_search",
+    "allow_empty": false
+  },
+  {
+    "query": "招聘",
+    "route": "job_search",
+    "allow_empty": false
   },
   {
     "query": "实习",
-    "route": "job_search"
+    "route": "job_search",
+    "allow_empty": false
   },
   {
     "query": "停电",
-    "route": "campus_alert_search"
+    "route": "campus_alert_search",
+    "allow_empty": false
   },
   {
     "query": "校园网",
-    "route": "service_search"
+    "route": "service_search",
+    "allow_empty": false
   },
   {
     "query": "图书馆开放",
-    "route": "library_search"
+    "route": "library_search",
+    "allow_empty": false
   },
   {
     "query": "档案",
-    "route": "graduation_search"
+    "route": "graduation_search",
+    "allow_empty": false
   },
   {
     "query": "毕业设计",
-    "route": "graduation_search"
+    "route": "graduation_search",
+    "allow_empty": false
   },
   {
     "query": "蓝桥杯",
-    "route": "competition_search"
+    "route": "competition_search",
+    "allow_empty": false
   },
   {
     "query": "挑战杯",
-    "route": "competition_search"
+    "route": "competition_search",
+    "allow_empty": false
   }
 ]

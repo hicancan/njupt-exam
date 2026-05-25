@@ -84,6 +84,7 @@ def route_query(raw_query: str, routes: List[Dict[str, Any]]) -> Dict[str, Any]:
         "must_include_terms_for_top_results": best_route.get("must_include_terms_for_top_results", []),
         "allow_resource_top5": best_route.get("allow_resource_top5", True),
         "freshness_preference": best_route.get("freshness_preference", "none"),
+        "top1_prefer_exact_title": best_route.get("top1_prefer_exact_title", False),
         "alternative_routes": alt_routes,
         "explanation": best_route.get("explanation", "")
     }

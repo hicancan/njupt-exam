@@ -1,0 +1,677 @@
+[
+  {
+    "query": "四六级",
+    "route_type": "cet_notice_search",
+    "top1_prefer_exact_title": false,
+    "top5_ids": [
+      "github-Wonz5130-NJUPT-Yellow-Page-6b26212a59d0020a7963",
+      "github-ZsgsDesign-NOJ-5f8e81f797dee6252ca7"
+    ],
+    "top5_titles": [
+      ":yum:南京邮电大学黄页 · NJUPT-Yellow-Page",
+      "⚡ The most advanced open-sourc... · Contributor Covenant Code of Conduct"
+    ],
+    "top5_sources": [
+      "github:Wonz5130/NJUPT-Yellow-Page",
+      "github:ZsgsDesign/NOJ"
+    ],
+    "expected_route": "cet_notice_search",
+    "route_match": true
+  },
+  {
+    "query": "CET",
+    "route_type": "cet_notice_search",
+    "top1_prefer_exact_title": false,
+    "top5_ids": [
+      "github-ZsgsDesign-NOJ-5f8e81f797dee6252ca7"
+    ],
+    "top5_titles": [
+      "⚡ The most advanced open-sourc... · Contributor Covenant Code of Conduct"
+    ],
+    "top5_sources": [
+      "github:ZsgsDesign/NOJ"
+    ],
+    "expected_route": "cet_notice_search",
+    "route_match": true
+  },
+  {
+    "query": "四级",
+    "route_type": "cet_notice_search",
+    "top1_prefer_exact_title": false,
+    "top5_ids": [],
+    "top5_titles": [],
+    "top5_sources": [],
+    "expected_route": "cet_notice_search",
+    "route_match": true
+  },
+  {
+    "query": "六级",
+    "route_type": "cet_notice_search",
+    "top1_prefer_exact_title": false,
+    "top5_ids": [
+      "github-Wonz5130-NJUPT-Yellow-Page-6b26212a59d0020a7963"
+    ],
+    "top5_titles": [
+      ":yum:南京邮电大学黄页 · NJUPT-Yellow-Page"
+    ],
+    "top5_sources": [
+      "github:Wonz5130/NJUPT-Yellow-Page"
+    ],
+    "expected_route": "cet_notice_search",
+    "route_match": true
+  },
+  {
+    "query": "论文答辩",
+    "route_type": "degree_defense_search",
+    "top1_prefer_exact_title": false,
+    "top5_ids": [],
+    "top5_titles": [],
+    "top5_sources": [],
+    "expected_route": "degree_defense_search",
+    "route_match": true
+  },
+  {
+    "query": "毕业答辩",
+    "route_type": "degree_defense_search",
+    "top1_prefer_exact_title": false,
+    "top5_ids": [],
+    "top5_titles": [],
+    "top5_sources": [],
+    "expected_route": "degree_defense_search",
+    "route_match": true
+  },
+  {
+    "query": "大创答辩",
+    "route_type": "innovation_project_search",
+    "top1_prefer_exact_title": false,
+    "top5_ids": [
+      "cxcy-3dfeb8f05ac3e0d231fb",
+      "cxcy-c4132762db65faac8b56",
+      "cxcy-ac6a840bf5e5acb2ae47",
+      "cxcy-18b0923654eab80cce87",
+      "cxcy-42c19e3bc86cd210fe17"
+    ],
+    "top5_titles": [
+      "关于做好2023年度大学生创新创业训练计划项目结题验收工作的通知",
+      "关于组织开展2024年度大学生创新创业训练计划项目申报工作的通知",
+      "关于组织开展2025年度大学生创新创业训练计划项目申报工作的通知",
+      "关于组织开展2023年度大学生创新创业训练计划项目申报工作的通知",
+      "关于2023年度大学生创新创业训练计划项目中期检查及2022年度延期项目结题的通知"
+    ],
+    "top5_sources": [
+      "cxcy",
+      "cxcy",
+      "cxcy",
+      "cxcy",
+      "cxcy"
+    ],
+    "expected_route": "innovation_project_search",
+    "route_match": true
+  },
+  {
+    "query": "医保",
+    "route_type": "service_search",
+    "top1_prefer_exact_title": false,
+    "top5_ids": [
+      "hqc-edfe9e6977f742324c51",
+      "xsc-5ac8a7b37d2f300d28ce",
+      "ygb-cc83b3e083a981d7092d"
+    ],
+    "top5_titles": [
+      "关于参保学生外地门（急）诊医疗费用零星报销的通知",
+      "南京市暨栖霞区市区人才政策进高校系列活动走进南京邮电大学",
+      "南京邮电大学经济困难研究生认定及资助管理办法"
+    ],
+    "top5_sources": [
+      "hqc",
+      "xsc",
+      "ygb"
+    ],
+    "expected_route": "service_search",
+    "route_match": true
+  },
+  {
+    "query": "参保",
+    "route_type": "service_search",
+    "top1_prefer_exact_title": false,
+    "top5_ids": [
+      "hqc-edfe9e6977f742324c51"
+    ],
+    "top5_titles": [
+      "关于参保学生外地门（急）诊医疗费用零星报销的通知"
+    ],
+    "top5_sources": [
+      "hqc"
+    ],
+    "expected_route": "service_search",
+    "route_match": true
+  },
+  {
+    "query": "报销",
+    "route_type": "service_search",
+    "top1_prefer_exact_title": false,
+    "top5_ids": [
+      "hqc-edfe9e6977f742324c51",
+      "cwc-269bc4ce4ecc08fc1f5a"
+    ],
+    "top5_titles": [
+      "关于参保学生外地门（急）诊医疗费用零星报销的通知",
+      "关于全面启用铁路、航空运输电子发票报销的通知"
+    ],
+    "top5_sources": [
+      "hqc",
+      "cwc"
+    ],
+    "expected_route": "service_search",
+    "route_match": true
+  },
+  {
+    "query": "转专业",
+    "route_type": "official_notice_search",
+    "top1_prefer_exact_title": false,
+    "top5_ids": [
+      "jwc-68a41687f15408883b85"
+    ],
+    "top5_titles": [
+      "南京邮电大学本科生转专业管理办法（2025年9月18日修订） 2025-09-26"
+    ],
+    "top5_sources": [
+      "jwc"
+    ],
+    "expected_route": "official_notice_search",
+    "route_match": true
+  },
+  {
+    "query": "B250403",
+    "route_type": "class_exam_lookup",
+    "top1_prefer_exact_title": true,
+    "top5_ids": [
+      "exam-2025-2026学年第二学期考试安排表（学校组织17-18周）-学生用表.xlsx-1794",
+      "exam-2025-2026学年第二学期考试安排表（学校组织17-18周）-学生用表.xlsx-5161",
+      "exam-2025-2026学年第二学期考试安排表（学校组织17-18周）-学生用表.xlsx-5162",
+      "exam-2025-2026学年第二学期考试安排表（学校组织17-18周）-学生用表.xlsx-3402",
+      "exam-2025-2026学年第二学期考试安排表（学校组织17-18周）-学生用表.xlsx-4174"
+    ],
+    "top5_titles": [
+      "B250403 离散数学 考试安排",
+      "B250403 大学英语III 考试安排",
+      "B250403 大学英语III 考试安排",
+      "B250403 大学物理(上) 考试安排",
+      "B250403 思想道德与法治 考试安排"
+    ],
+    "top5_sources": [
+      "exam_vertical",
+      "exam_vertical",
+      "exam_vertical",
+      "exam_vertical",
+      "exam_vertical"
+    ],
+    "expected_route": "class_exam_lookup",
+    "route_match": true
+  },
+  {
+    "query": "B250403 高数",
+    "route_type": "class_exam_lookup",
+    "top1_prefer_exact_title": true,
+    "top5_ids": [
+      "exam-2025-2026学年第二学期考试安排表（学校组织17-18周）-学生用表.xlsx-2382",
+      "exam-2025-2026学年第二学期考试安排表（学校组织17-18周）-学生用表.xlsx-1794",
+      "exam-2025-2026学年第二学期考试安排表（学校组织17-18周）-学生用表.xlsx-5161",
+      "exam-2025-2026学年第二学期考试安排表（学校组织17-18周）-学生用表.xlsx-5162",
+      "exam-2025-2026学年第二学期考试安排表（学校组织17-18周）-学生用表.xlsx-3402"
+    ],
+    "top5_titles": [
+      "B250403 高等数学A（Ⅰ）下 考试安排",
+      "B250403 离散数学 考试安排",
+      "B250403 大学英语III 考试安排",
+      "B250403 大学英语III 考试安排",
+      "B250403 大学物理(上) 考试安排"
+    ],
+    "top5_sources": [
+      "exam_vertical",
+      "exam_vertical",
+      "exam_vertical",
+      "exam_vertical",
+      "exam_vertical"
+    ],
+    "expected_route": "class_exam_lookup",
+    "route_match": true
+  },
+  {
+    "query": "高数",
+    "route_type": "resource_search",
+    "top1_prefer_exact_title": false,
+    "top5_ids": [
+      "github-NJUPTFreeExams-NJUPT-CST-Free-Exams-6169d0395e43fe5cb864",
+      "exam-2025-2026学年第二学期考试安排表（学校组织17-18周）-学生用表.xlsx-2646",
+      "exam-2025-2026学年第二学期考试安排表（学校组织17-18周）-学生用表.xlsx-2647",
+      "exam-2025-2026学年第二学期考试安排表（学校组织17-18周）-学生用表.xlsx-2648",
+      "exam-2025-2026学年第二学期考试安排表（学校组织17-18周）-学生用表.xlsx-2649"
+    ],
+    "top5_titles": [
+      "【Deprecated】南京邮电大学计算机科学与技术专业历年... · NJUPT-CS-Free-Exams",
+      "B211103(CW) 高等数学B（下） 考试安排",
+      "B211106(CW) 高等数学B（下） 考试安排",
+      "B211107(RL) 高等数学B（下） 考试安排",
+      "B221304(CW) 高等数学B（下） 考试安排"
+    ],
+    "top5_sources": [
+      "github:NJUPTFreeExams/NJUPT-CST-Free-Exams",
+      "exam_vertical",
+      "exam_vertical",
+      "exam_vertical",
+      "exam_vertical"
+    ],
+    "expected_route": "resource_search",
+    "route_match": true
+  },
+  {
+    "query": "高数考试",
+    "route_type": "exam_notice_search",
+    "top1_prefer_exact_title": false,
+    "top5_ids": [
+      "exam-2025-2026学年第二学期考试安排表（学校组织17-18周）-学生用表.xlsx-2646",
+      "exam-2025-2026学年第二学期考试安排表（学校组织17-18周）-学生用表.xlsx-2647",
+      "exam-2025-2026学年第二学期考试安排表（学校组织17-18周）-学生用表.xlsx-2648",
+      "exam-2025-2026学年第二学期考试安排表（学校组织17-18周）-学生用表.xlsx-2649",
+      "exam-2025-2026学年第二学期考试安排表（学校组织17-18周）-学生用表.xlsx-2650"
+    ],
+    "top5_titles": [
+      "B211103(CW) 高等数学B（下） 考试安排",
+      "B211106(CW) 高等数学B（下） 考试安排",
+      "B211107(RL) 高等数学B（下） 考试安排",
+      "B221304(CW) 高等数学B（下） 考试安排",
+      "B221305(CW) 高等数学B（下） 考试安排"
+    ],
+    "top5_sources": [
+      "exam_vertical",
+      "exam_vertical",
+      "exam_vertical",
+      "exam_vertical",
+      "exam_vertical"
+    ],
+    "expected_route": "exam_notice_search",
+    "route_match": true
+  },
+  {
+    "query": "离散数学",
+    "route_type": "resource_search",
+    "top1_prefer_exact_title": false,
+    "top5_ids": [
+      "exam-2025-2026学年第二学期考试安排表（学校组织17-18周）-学生用表.xlsx-1776",
+      "exam-2025-2026学年第二学期考试安排表（学校组织17-18周）-学生用表.xlsx-1777",
+      "exam-2025-2026学年第二学期考试安排表（学校组织17-18周）-学生用表.xlsx-1778",
+      "exam-2025-2026学年第二学期考试安排表（学校组织17-18周）-学生用表.xlsx-1779",
+      "exam-2025-2026学年第二学期考试安排表（学校组织17-18周）-学生用表.xlsx-1780"
+    ],
+    "top5_titles": [
+      "B220423 离散数学 考试安排",
+      "B230401 离散数学 考试安排",
+      "B230404 离散数学 考试安排",
+      "B230405 离散数学 考试安排",
+      "B230415 离散数学 考试安排"
+    ],
+    "top5_sources": [
+      "exam_vertical",
+      "exam_vertical",
+      "exam_vertical",
+      "exam_vertical",
+      "exam_vertical"
+    ],
+    "expected_route": "resource_search",
+    "route_match": true
+  },
+  {
+    "query": "大创",
+    "route_type": "innovation_project_search",
+    "top1_prefer_exact_title": false,
+    "top5_ids": [
+      "cxcy-3dfeb8f05ac3e0d231fb",
+      "cxcy-c4132762db65faac8b56",
+      "cxcy-ac6a840bf5e5acb2ae47",
+      "cxcy-18b0923654eab80cce87",
+      "cxcy-42c19e3bc86cd210fe17"
+    ],
+    "top5_titles": [
+      "关于做好2023年度大学生创新创业训练计划项目结题验收工作的通知",
+      "关于组织开展2024年度大学生创新创业训练计划项目申报工作的通知",
+      "关于组织开展2025年度大学生创新创业训练计划项目申报工作的通知",
+      "关于组织开展2023年度大学生创新创业训练计划项目申报工作的通知",
+      "关于2023年度大学生创新创业训练计划项目中期检查及2022年度延期项目结题的通知"
+    ],
+    "top5_sources": [
+      "cxcy",
+      "cxcy",
+      "cxcy",
+      "cxcy",
+      "cxcy"
+    ],
+    "expected_route": "innovation_project_search",
+    "route_match": true
+  },
+  {
+    "query": "奖学金",
+    "route_type": "scholarship_search",
+    "top1_prefer_exact_title": false,
+    "top5_ids": [
+      "xsc-1624f141fe26342ee80b",
+      "ygb-2d1cbb54989b3129a211",
+      "xsc-4d899ea5ef4f3625c66d",
+      "ygb-56099b105a3cc0139b86",
+      "bc-c7dc72d8038a09655ec9"
+    ],
+    "top5_titles": [
+      "南邮师生赴小米南京科技园开展“思源之旅”主题教育活动",
+      "我校举行首届“研究生学术创新嘉年华”启动仪式暨研究生表彰大会",
+      "南邮举行2025年学生表彰大会",
+      "我校第六届研究生“十大学术之星”终评风采展示活动圆满举行",
+      "院发〔2020〕14号：南京邮电大学管理学院本科生出国（境）深造资助管理办法（试行）"
+    ],
+    "top5_sources": [
+      "xsc",
+      "ygb",
+      "xsc",
+      "ygb",
+      "bc"
+    ],
+    "expected_route": "scholarship_search",
+    "route_match": true
+  },
+  {
+    "query": "助学金",
+    "route_type": "subsidy_search",
+    "top1_prefer_exact_title": false,
+    "top5_ids": [
+      "ygb-cc83b3e083a981d7092d",
+      "njupt_notice-6554d92219634f721faf",
+      "xsc-1624f141fe26342ee80b",
+      "bc-92e1118322b55c02bda3",
+      "bc-c7dc72d8038a09655ec9"
+    ],
+    "top5_titles": [
+      "南京邮电大学经济困难研究生认定及资助管理办法",
+      "2026 05.21 关于遴选第十四批“南邮-紫金科创学生创业基金” 资助项目的通知",
+      "南邮师生赴小米南京科技园开展“思源之旅”主题教育活动",
+      "院发〔2020〕15号：南京邮电大学管理学院学生出国（境）访学资助管理办法（试行）",
+      "院发〔2020〕14号：南京邮电大学管理学院本科生出国（境）深造资助管理办法（试行）"
+    ],
+    "top5_sources": [
+      "ygb",
+      "njupt_notice",
+      "xsc",
+      "bc",
+      "bc"
+    ],
+    "expected_route": "subsidy_search",
+    "route_match": true
+  },
+  {
+    "query": "困难认定",
+    "route_type": "subsidy_search",
+    "top1_prefer_exact_title": false,
+    "top5_ids": [
+      "ygb-cc83b3e083a981d7092d",
+      "njupt_notice-6554d92219634f721faf",
+      "bc-92e1118322b55c02bda3",
+      "bc-c7dc72d8038a09655ec9",
+      "xsc-1624f141fe26342ee80b"
+    ],
+    "top5_titles": [
+      "南京邮电大学经济困难研究生认定及资助管理办法",
+      "2026 05.21 关于遴选第十四批“南邮-紫金科创学生创业基金” 资助项目的通知",
+      "院发〔2020〕15号：南京邮电大学管理学院学生出国（境）访学资助管理办法（试行）",
+      "院发〔2020〕14号：南京邮电大学管理学院本科生出国（境）深造资助管理办法（试行）",
+      "南邮师生赴小米南京科技园开展“思源之旅”主题教育活动"
+    ],
+    "top5_sources": [
+      "ygb",
+      "njupt_notice",
+      "bc",
+      "bc",
+      "xsc"
+    ],
+    "expected_route": "subsidy_search",
+    "route_match": true
+  },
+  {
+    "query": "宣讲会",
+    "route_type": "job_search",
+    "top1_prefer_exact_title": false,
+    "top5_ids": [
+      "job-6b5a43035e1c693fbb4b",
+      "job-ce4500e0b0dad687f8d2",
+      "job-cb39d4504f396ce1a5a3",
+      "job-67dc85ca08fe979eb024",
+      "job-b0e2b8b567544887e8c7"
+    ],
+    "top5_titles": [
+      "积成电子2026届春招宣讲会",
+      "（第五场）“信息报国 邮你同行”南京邮电大学2026届毕业生“春季促就业攻坚行动”系列专场招聘会",
+      "海康威视2027超新星实习生招聘",
+      "（第四场）“信息报国 邮你同行”南京邮电大学2026届毕业生“春季促就业攻坚行动”系列专场招聘会",
+      "（第三场）“信息报国 邮你同行”南京邮电大学2026届毕业生“春季促就业攻坚行动”系列专场招聘会"
+    ],
+    "top5_sources": [
+      "job",
+      "job",
+      "job",
+      "job",
+      "job"
+    ],
+    "expected_route": "job_search",
+    "route_match": true
+  },
+  {
+    "query": "招聘",
+    "route_type": "job_search",
+    "top1_prefer_exact_title": false,
+    "top5_ids": [
+      "job-ce4500e0b0dad687f8d2",
+      "job-67dc85ca08fe979eb024",
+      "job-b0e2b8b567544887e8c7",
+      "job-af73d8b77101ce20b005",
+      "job-85fe09dc12906fa9d158"
+    ],
+    "top5_titles": [
+      "（第五场）“信息报国 邮你同行”南京邮电大学2026届毕业生“春季促就业攻坚行动”系列专场招聘会",
+      "（第四场）“信息报国 邮你同行”南京邮电大学2026届毕业生“春季促就业攻坚行动”系列专场招聘会",
+      "（第三场）“信息报国 邮你同行”南京邮电大学2026届毕业生“春季促就业攻坚行动”系列专场招聘会",
+      "（第二场）“信息报国 邮你同行”南京邮电大学2026届毕业生“春季促就业攻坚行动”系列专场招聘会",
+      "（第一场）“信息报国 邮你同行”南京邮电大学2026届毕业生“春季促就业攻坚行动”系列专场招聘会"
+    ],
+    "top5_sources": [
+      "job",
+      "job",
+      "job",
+      "job",
+      "job"
+    ],
+    "expected_route": "job_search",
+    "route_match": true
+  },
+  {
+    "query": "实习",
+    "route_type": "job_search",
+    "top1_prefer_exact_title": false,
+    "top5_ids": [
+      "job-cb39d4504f396ce1a5a3",
+      "job-ce4500e0b0dad687f8d2",
+      "job-67dc85ca08fe979eb024",
+      "job-b0e2b8b567544887e8c7",
+      "job-af73d8b77101ce20b005"
+    ],
+    "top5_titles": [
+      "海康威视2027超新星实习生招聘",
+      "（第五场）“信息报国 邮你同行”南京邮电大学2026届毕业生“春季促就业攻坚行动”系列专场招聘会",
+      "（第四场）“信息报国 邮你同行”南京邮电大学2026届毕业生“春季促就业攻坚行动”系列专场招聘会",
+      "（第三场）“信息报国 邮你同行”南京邮电大学2026届毕业生“春季促就业攻坚行动”系列专场招聘会",
+      "（第二场）“信息报国 邮你同行”南京邮电大学2026届毕业生“春季促就业攻坚行动”系列专场招聘会"
+    ],
+    "top5_sources": [
+      "job",
+      "job",
+      "job",
+      "job",
+      "job"
+    ],
+    "expected_route": "job_search",
+    "route_match": true
+  },
+  {
+    "query": "停电",
+    "route_type": "campus_alert_search",
+    "top1_prefer_exact_title": false,
+    "top5_ids": [
+      "hqc-6cc6532cca3bd115388a",
+      "hqc-0d2ca4f4fe0d9bac05c1",
+      "hqc-44cadcfc99f71a45ed7c",
+      "hqc-ec3775e276c31fc7153f",
+      "hqc-b279952a9f7b366cb41e"
+    ],
+    "top5_titles": [
+      "仙林校区停电通知",
+      "关于寒假期间停电检修的通知",
+      "三牌楼校区停电通知",
+      "关于更换仙林竹苑洗浴卡机的通知",
+      "教室空调关闭通知"
+    ],
+    "top5_sources": [
+      "hqc",
+      "hqc",
+      "hqc",
+      "hqc",
+      "hqc"
+    ],
+    "expected_route": "campus_alert_search",
+    "route_match": true
+  },
+  {
+    "query": "校园网",
+    "route_type": "service_search",
+    "top1_prefer_exact_title": false,
+    "top5_ids": [
+      "xxb-2652f8ad86b44f71b459",
+      "xxb-041dc94e61b52ad09e93",
+      "github-hicancan-njupt-net-7f980de7a96003335a87",
+      "github-s235784-NJUPT_AutoLogin-3bfbad0bf26507d2f64a",
+      "github-Freedomisgood-NjuptCmcc-2e4d2ee54922589eb084"
+    ],
+    "top5_titles": [
+      "校园网费用缴费单",
+      "常见问题FAQ",
+      "njupt-net 校园网络工具 · njupt-net",
+      "南京邮电大学校园网自动登录脚本，支持Linux（OpenWR... · NJUPT_AutoLogin",
+      "校园网一键上网脚本 · 说明："
+    ],
+    "top5_sources": [
+      "xxb",
+      "xxb",
+      "github:hicancan/njupt-net",
+      "github:s235784/NJUPT_AutoLogin",
+      "github:Freedomisgood/NjuptCmcc"
+    ],
+    "expected_route": "service_search",
+    "route_match": true
+  },
+  {
+    "query": "图书馆开放",
+    "route_type": "library_search",
+    "top1_prefer_exact_title": false,
+    "top5_ids": [
+      "lib-e8acaaa1135301e4a4b0",
+      "lib-09c9e68fc3e5b4646620",
+      "lib-11d97c68bd141c921e9a",
+      "lib-a9f1db0b16e99696466c",
+      "lib-218f5492ea9dec3ae5a5"
+    ],
+    "top5_titles": [
+      "关于临时延长图书馆开放时间的通知",
+      "2026年寒假图书馆开放通知",
+      "图书馆关于2026年“五一”劳动节开放安排的通知",
+      "图书馆关于2026年清明节开放安排的通知",
+      "图书馆关于2026年元旦期间开放安排的通知"
+    ],
+    "top5_sources": [
+      "lib",
+      "lib",
+      "lib",
+      "lib",
+      "lib"
+    ],
+    "expected_route": "library_search",
+    "route_match": true
+  },
+  {
+    "query": "档案",
+    "route_type": "graduation_search",
+    "top1_prefer_exact_title": false,
+    "top5_ids": [
+      "archives-b38698c994ad71856b52",
+      "lib-f3e58588ec5a3b984b8b",
+      "ygb-cc83b3e083a981d7092d",
+      "lib-0babdf8811b922d892a5"
+    ],
+    "top5_titles": [
+      "档案馆2025年暑假工作安排",
+      "图书馆、档案馆成功举办“品读金陵文脉，邂逅古都风华”主题品读会",
+      "南京邮电大学经济困难研究生认定及资助管理办法",
+      "南京工业大学图书馆赵乃瑄研究馆员受邀来我馆开展学术报告"
+    ],
+    "top5_sources": [
+      "archives",
+      "lib",
+      "ygb",
+      "lib"
+    ],
+    "expected_route": "graduation_search",
+    "route_match": true
+  },
+  {
+    "query": "毕业设计",
+    "route_type": "graduation_search",
+    "top1_prefer_exact_title": false,
+    "top5_ids": [
+      "github-dhiyu-NJUPT-Bachelor-6c0dfd18c09b68d15b36",
+      "github-ace-trump-tech-NJUPT-Graduation-thesis-45f54f0688c8a8d0c82d",
+      "github-gzr-lgtm-NJUPThesis-Bachelor-afd91b3fbe9d32896279",
+      "cxcy-c4132762db65faac8b56",
+      "cxcy-ac6a840bf5e5acb2ae47"
+    ],
+    "top5_titles": [
+      "南京邮电大学本科生毕业设计Latex模板 · 南京邮电大学本科毕业设计Latex模板",
+      "南京邮电大学毕业论文模板（能毕业就行，有时间多回去陪陪家人） · 南京邮电大学毕业论文模板",
+      "LaTeX template for NJUPT Under... · NUPThesis",
+      "关于组织开展2024年度大学生创新创业训练计划项目申报工作的通知",
+      "关于组织开展2025年度大学生创新创业训练计划项目申报工作的通知"
+    ],
+    "top5_sources": [
+      "github:dhiyu/NJUPT-Bachelor",
+      "github:ace-trump-tech/NJUPT-Graduation-thesis",
+      "github:gzr-lgtm/NJUPThesis-Bachelor",
+      "cxcy",
+      "cxcy"
+    ],
+    "expected_route": "graduation_search",
+    "route_match": true
+  },
+  {
+    "query": "蓝桥杯",
+    "route_type": "competition_search",
+    "top1_prefer_exact_title": false,
+    "top5_ids": [],
+    "top5_titles": [],
+    "top5_sources": [],
+    "expected_route": "competition_search",
+    "route_match": true
+  },
+  {
+    "query": "挑战杯",
+    "route_type": "competition_search",
+    "top1_prefer_exact_title": false,
+    "top5_ids": [],
+    "top5_titles": [],
+    "top5_sources": [],
+    "expected_route": "competition_search",
+    "route_match": true
+  }
+]

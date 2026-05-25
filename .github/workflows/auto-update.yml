@@ -105,9 +105,34 @@ jobs:
 
       - name: Python integrity checks
         run: |
-          python -m py_compile scripts/update_search_index.py scripts/core/llm_scorer.py scripts/core/semantic_pipeline.py scripts/core/evidence_pack.py scripts/core/rule_guard.py scripts/core/hybrid_ranker.py scripts/core/query_expander.py scripts/core/task_extractor.py scripts/models/canonical_document.py scripts/models/source_graph.py scripts/models/task_frame.py scripts/models/hybrid_index.py scripts/utils/validate_search_index.py scripts/eval/eval_search.py scripts/eval/query_smoke_test.py scripts/eval/eval_llm_quality.py
+          python -m py_compile \
+            scripts/update_search_index.py \
+            scripts/core/llm_scorer.py \
+            scripts/core/semantic_pipeline.py \
+            scripts/core/evidence_pack.py \
+            scripts/core/rule_guard.py \
+            scripts/core/hybrid_ranker.py \
+            scripts/core/query_expander.py \
+            scripts/core/task_extractor.py \
+            scripts/models/canonical_document.py \
+            scripts/models/source_graph.py \
+            scripts/models/task_frame.py \
+            scripts/models/hybrid_index.py \
+            scripts/search/query_router.py \
+            scripts/search/vertical_ranker.py \
+            scripts/eval/eval_product_search.py \
+            scripts/eval/eval_search_parity.py \
+            scripts/eval/eval_search.py \
+            scripts/eval/query_smoke_test.py \
+            scripts/eval/eval_llm_quality.py \
+            scripts/utils/validate_search_index.py \
+            scripts/utils/validate_query_routes.py
           python scripts/test_llm_batching.py
           python -m unittest discover -s tests
+
+      - name: Validate Query Routes
+        run: |
+          python scripts/utils/validate_query_routes.py
 
       - name: Validate Campus Search Index
         run: |
@@ -115,7 +140,14 @@ jobs:
           python scripts/eval/eval_search.py --write-report
           python scripts/eval/query_smoke_test.py
           python scripts/eval/eval_llm_quality.py
+
+      - name: Product Search Gate
+        run: |
           python scripts/eval/eval_product_search.py
+
+      - name: Search Parity Check
+        run: |
+          python scripts/eval/eval_search_parity.py
           
       - name: Check for changes
         id: git-check

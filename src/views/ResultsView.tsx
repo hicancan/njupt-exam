@@ -350,6 +350,11 @@ export function ResultsView({
                                         ? `当前理解：${getRouteName(routeInfo.query_type)} | 找到 ${filteredResults.length} 条结果`
                                         : '未输入关键词时展示近期高价值校园信息。'}
                                 </p>
+                                {filteredResults.some(r => (r as { degraded_fallback?: boolean }).degraded_fallback) && (
+                                    <p className="mt-1 text-xs text-[#e37400] dark:text-[#fdd663] bg-[#fef7e0] dark:bg-[#3d2e00] p-2 rounded">
+                                        部分结果来自降级匹配，可能不完全匹配您的查询意图。当前索引中缺少直接相关的内容。
+                                    </p>
+                                )}
                             </div>
                             <div className="flex flex-wrap gap-2">
                                 <select

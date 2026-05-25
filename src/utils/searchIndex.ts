@@ -528,7 +528,7 @@ export const rankSearchDocuments = (
             [trimmed, ...expandedTerms].join(' '),
             document.task_frames.map(frame => `${frame.what} ${frame.action.summary || ''} ${frame.evidence.map(item => item.text).join(' ')}`).join(' ')
         ) : 0;
-        
+
         const domain = normalize(document.domain);
         const intent = normalize(document.intent);
         const source = normalize(document.source);
@@ -536,8 +536,21 @@ export const rankSearchDocuments = (
         const title = normalize(document.title);
         const content = normalize(document.content);
         const fullText = title + ' ' + content;
-        
-        const isExactTitle = title.includes(normalize(trimmed));
+
+        let isExactTitle = title.includes(normalize(trimmed));
+
+        // class_exam_lookup: also match class_name for "B250403 高数" style queries
+        if (!isExactTitle && routeObj.query_type === 'class_exam_lookup' && top1Exact) {
+            const docClass = (document.class_name || '').toLowerCase();
+            if (docClass) {
+                for (const word of trimmed.toLowerCase().split(/\s+/)) {
+                    if (word.length >= 7 && docClass.includes(word)) {
+                        isExactTitle = true;
+                        break;
+                    }
+                }
+            }
+        }
 
         let tier = 'C';
         if (top1Exact && isExactTitle) {
@@ -547,7 +560,7 @@ export const rankSearchDocuments = (
         } else if (targetDomains.has(domain) || targetIntents.has(intent) || isExactTitle) {
             tier = 'B';
         } else if (targetDomains.size === 0 && targetIntents.size === 0) {
-            tier = 'A'; 
+            tier = 'A';
         }
 
         let isBlocked = false;
@@ -562,7 +575,7 @@ export const rankSearchDocuments = (
                 break;
             }
         }
-        
+
         if (mustIncludeTerms.length > 0) {
             let hasAny = false;
             for (const term of mustIncludeTerms) {
@@ -573,8 +586,6 @@ export const rankSearchDocuments = (
             }
             if (!hasAny) isBlocked = true;
         }
-
-        if (isBlocked) return null;
 
         let tierMultiplier = 1.0;
         if (tier === 'A') tierMultiplier = 2.0;
@@ -590,7 +601,7 @@ export const rankSearchDocuments = (
                 tier = 'A';
             }
         }
-        
+
         const rawMatchScore =
             0.3 * Math.min(1, bm25Proxy) +
             0.25 * fieldScore +
@@ -598,7 +609,7 @@ export const rankSearchDocuments = (
             0.15 * Math.max(taskFrameScore, overlapScore(expandedTerms.join(' '), document.content));
 
         const hasMatch = textScore > 0 || rawMatchScore > 0;
-        
+
         let utilityScore =
             (0.42 * document.student_score) +
             (0.3 * document.importance_score) +
@@ -607,7 +618,7 @@ export const rankSearchDocuments = (
         const riskPenalty = (document.sensitive ? 0.5 : 0) + (document.review_required ? 0.25 : 0) + (document.status === 'restricted' ? 0.5 : 0);
         utilityScore = Math.max(0, utilityScore - riskPenalty);
 
-        const hybridScore = hasMatch 
+        const hybridScore = hasMatch
             ? rawMatchScore + 0.2 * Math.min(1, utilityScore) - 0.05 * Math.min(1, riskPenalty)
             : 0;
 
@@ -621,9 +632,12 @@ export const rankSearchDocuments = (
             sourceTypeWeight(document.source_type) *
             deadlineUrgencyWeight(document.deadline) *
             tierMultiplier : 0;
-            
+
         if (top1Exact && isExactTitle) {
             weightedScore += 10.0;
+            if (routeObj.query_type === 'class_exam_lookup' && document.source_id === 'exam_vertical') {
+                weightedScore += 20.0;
+            }
         }
 
         const components = {
@@ -635,6 +649,8 @@ export const rankSearchDocuments = (
             risk_penalty: Math.min(1, riskPenalty),
             tier: tierMultiplier
         };
+
+        if (weightedScore <= 0) return null;
 
         return {
             ...document,
@@ -655,27 +671,49 @@ export const rankSearchDocuments = (
         } as RankedSearchDocument & { isBlocked: boolean, tierCategory: string };
     });
 
-    const validCandidates = candidates
-        .filter((doc): doc is RankedSearchDocument & { isBlocked: boolean, tierCategory: string } => doc !== null && doc.score > 0)
-        .sort((a, b) => {
-            const aBlocked = a.isBlocked ? 1 : 0;
-            const bBlocked = b.isBlocked ? 1 : 0;
-            if (aBlocked !== bBlocked) return aBlocked - bBlocked;
-            
-            const aTierVal = a.tierCategory === 'A' ? 2 : (a.tierCategory === 'B' ? 1 : 0);
-            const bTierVal = b.tierCategory === 'A' ? 2 : (b.tierCategory === 'B' ? 1 : 0);
-            if (aTierVal !== bTierVal) return bTierVal - aTierVal;
-            
-            if (b.score !== a.score) return b.score - a.score;
-            return dateSortValue(b.published_at) - dateSortValue(a.published_at);
-        });
-        
-    validCandidates.forEach(doc => {
+    // 4-bucket assembly for degraded fallback
+    const strong: (RankedSearchDocument & { isBlocked: boolean; tierCategory: string })[] = [];
+    const weak: (RankedSearchDocument & { isBlocked: boolean; tierCategory: string })[] = [];
+    const fallbackCandidates: (RankedSearchDocument & { isBlocked: boolean; tierCategory: string })[] = [];
+    const blockedCandidates: (RankedSearchDocument & { isBlocked: boolean; tierCategory: string })[] = [];
+
+    for (const doc of candidates) {
+        if (!doc) continue;
         if (doc.isBlocked) {
+            blockedCandidates.push(doc);
+        } else if (doc.tierCategory === 'A') {
+            strong.push(doc);
+        } else if (doc.tierCategory === 'B') {
+            weak.push(doc);
+        } else {
+            fallbackCandidates.push(doc);
+        }
+    }
+
+    const sortFn = (a: RankedSearchDocument, b: RankedSearchDocument) => {
+        if (b.score !== a.score) return b.score - a.score;
+        return dateSortValue(b.published_at) - dateSortValue(a.published_at);
+    };
+    strong.sort(sortFn);
+    weak.sort(sortFn);
+    fallbackCandidates.sort(sortFn);
+    blockedCandidates.sort(sortFn);
+
+    const MAX_RESULTS = 30;
+    const validCandidates: (RankedSearchDocument & { isBlocked: boolean; tierCategory: string })[] = [
+        ...strong,
+        ...weak,
+        ...fallbackCandidates,
+    ].slice(0, MAX_RESULTS);
+
+    if (validCandidates.length < MAX_RESULTS) {
+        for (const doc of blockedCandidates) {
+            if (validCandidates.length >= MAX_RESULTS) break;
             doc.degraded_fallback = true;
             doc.score_reason += "，目标候选不足，作为降级补位";
+            validCandidates.push(doc);
         }
-    });
+    }
 
     return validCandidates;
 };

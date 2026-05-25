@@ -63,22 +63,28 @@ def vertical_rank_documents(
     doc_lookup = {str(document.get("id")): document for document in documents}
     
     scored_results = []
-    
+
     target_domains = set(route.get("target_domains", []))
     preferred_sources = set(route.get("preferred_sources", []))
     preferred_channels = set(route.get("preferred_channels", []))
     blocked_domains = set(route.get("blocked_domains_for_top5", []))
     blocked_sources = set(route.get("blocked_sources_for_top5", []))
     allow_resource = route.get("allow_resource_top5", True)
-    
+
     bad_result_terms = route.get("bad_result_terms", [])
     must_include_terms = route.get("must_include_terms_for_top_results", [])
     top1_exact = route.get("top1_prefer_exact_title", False)
-    
+
+    # 4-bucket approach for degraded fallback
+    strong: List[Dict[str, Any]] = []   # Tier A
+    weak: List[Dict[str, Any]] = []     # Tier B
+    fallback: List[Dict[str, Any]] = [] # Tier C
+    blocked_candidates: List[Dict[str, Any]] = []  # blocked but kept for backfill
+
     for doc_id, document in doc_lookup.items():
         index_payload = (hybrid_index.get("documents") or {}).get(doc_id, {})
         components = score_components_vertical(document, index_payload, understood, route, bm25.get(doc_id, 0.0), field_weights)
-        
+
         total = (
             base_weights["bm25"] * components["bm25"]
             + base_weights["field"] * components["field"]
@@ -88,28 +94,40 @@ def vertical_rank_documents(
             + base_weights["utility"] * components["utility"]
             - base_weights["risk_penalty"] * components["risk_penalty"]
         )
-        
+
         if total <= 0:
             continue
-            
+
         doc_domain = str(document.get("domain", ""))
         doc_source = str(document.get("source", ""))
         doc_channel = str(document.get("channel", ""))
         doc_title = str(document.get("title", ""))
         doc_content = str(document.get("content", ""))
         doc_text = (doc_title + " " + doc_content).lower()
-        
+
         tier = "C"
         is_exact_title = understood["normalized_query"].lower() in doc_title.lower()
-        
+
+        # class_exam_lookup: also match class_name field for "B250403 高数" style queries
+        if not is_exact_title and route.get("query_type") == "class_exam_lookup" and top1_exact:
+            doc_class = str(document.get("class_name", "")).lower()
+            if doc_class:
+                for word in understood["normalized_query"].lower().split():
+                    if len(word) >= 7 and word in doc_class:
+                        is_exact_title = True
+                        break
+
         if top1_exact and is_exact_title:
             tier = "A"
             total += 10.0
+            # class_exam_lookup: ensure exam_vertical docs rank top1
+            if route.get("query_type") == "class_exam_lookup" and document.get("source_id") == "exam_vertical":
+                total += 20.0
         elif doc_domain in target_domains or doc_source in preferred_sources or doc_channel in preferred_channels or is_exact_title:
             tier = "A"
         elif understood["target_domains"] and doc_domain in understood["target_domains"]:
             tier = "B"
-            
+
         is_blocked_for_top5 = False
         if doc_domain in blocked_domains and not is_exact_title:
             is_blocked_for_top5 = True
@@ -124,46 +142,63 @@ def vertical_rank_documents(
             is_blocked_for_top5 = True
         if not allow_resource and document.get("source_type") == "github_resource":
             is_blocked_for_top5 = True
-            
+
         if any(bt.lower() in doc_text for bt in bad_result_terms):
             is_blocked_for_top5 = True
-            
+
         if must_include_terms:
             if not any(mt.lower() in doc_text for mt in must_include_terms):
                 is_blocked_for_top5 = True
-            
-        if is_blocked_for_top5:
-            continue
-            
+
         if tier == "C":
-            total *= 0.5 
-            
-        scored_results.append({
+            total *= 0.5
+
+        result_entry = {
             **document,
             "score": round(total, 6),
             "tier": tier,
-            "is_blocked_for_top5": False,
+            "is_blocked_for_top5": is_blocked_for_top5,
             "score_components": components,
-            "score_reason": build_chinese_reason(document, components, route, tier, False),
-            "degraded_fallback": False
-        })
-        
-    scored_results.sort(key=lambda item: (
-        0 if item["is_blocked_for_top5"] else 1,
-        2 if item["tier"] == "A" else (1 if item["tier"] == "B" else 0),
-        item["score"],
-        item.get("published_at") or ""
-    ), reverse=True)
-    
-    if limit:
-        scored_results = scored_results[:limit]
-        
-    for i, doc in enumerate(scored_results):
-        if doc["is_blocked_for_top5"]:
+            "score_reason": build_chinese_reason(document, components, route, tier, is_blocked_for_top5),
+            "degraded_fallback": False,
+        }
+
+        if is_blocked_for_top5:
+            blocked_candidates.append(result_entry)
+        elif tier == "A":
+            strong.append(result_entry)
+        elif tier == "B":
+            weak.append(result_entry)
+        else:
+            fallback.append(result_entry)
+
+    # Sort each bucket by score descending
+    sort_key = lambda item: (item["score"], item.get("published_at") or "")
+    strong.sort(key=sort_key, reverse=True)
+    weak.sort(key=sort_key, reverse=True)
+    fallback.sort(key=sort_key, reverse=True)
+    blocked_candidates.sort(key=sort_key, reverse=True)
+
+    # Assemble: strong -> weak -> fallback -> blocked (backfill only when needed)
+    final_limit = limit if limit is not None else len(doc_lookup)
+
+    scored_results = _take(strong, final_limit)
+    if len(scored_results) < final_limit:
+        scored_results += _take(weak, final_limit - len(scored_results))
+    if len(scored_results) < final_limit:
+        scored_results += _take(fallback, final_limit - len(scored_results))
+    if len(scored_results) < final_limit:
+        for doc in _take(blocked_candidates, final_limit - len(scored_results)):
             doc["degraded_fallback"] = True
             doc["score_reason"] += "，目标候选不足，作为降级补位"
-            
+            scored_results.append(doc)
+
     return scored_results
+
+
+def _take(items: List[Dict[str, Any]], n: int) -> List[Dict[str, Any]]:
+    return items[:n]
+
 
 def score_components_vertical(
     document: Dict[str, Any],

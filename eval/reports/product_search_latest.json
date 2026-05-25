@@ -1,11 +1,13 @@
 {
-  "timestamp": "2026-05-25T10:38:05.439539",
-  "total_cases": 29,
+  "timestamp": "2026-05-25T11:58:17.596849",
+  "total_cases": 30,
   "route_accuracy": 1.0,
   "bad_top5_rate": 0.0,
   "blocked_source_violations": 0,
   "blocked_domain_violations": 0,
-  "degraded_fallback_count": 0,
+  "degraded_fallback_count": 4,
+  "empty_result_violation_count": 0,
+  "exam_vertical_top1_accuracy": 1.0,
   "errors": [],
   "case_details": [
     {
@@ -42,28 +44,46 @@
           "cxcy",
           "github"
         ],
-        "bad_result_terms": [
-          "慕课",
-          "封闭教学楼",
-          "普通期末"
-        ],
-        "must_include_terms_for_top_results": [
-          "CET",
-          "四级",
-          "六级",
-          "四六级"
-        ],
+        "bad_result_terms": [],
+        "must_include_terms_for_top_results": [],
         "allow_resource_top5": false,
         "freshness_preference": "recent",
-        "alternative_routes": [
-          {
-            "query_type": "exam_notice_search",
-            "score": 100.9
-          }
-        ],
-        "explanation": "考试类通知（如四六级、期末安排等），优先显示教务处和官方考试通知。"
+        "top1_prefer_exact_title": false,
+        "alternative_routes": [],
+        "explanation": "四六级考试类通知，优先显示教务处和官方考试通知。"
       },
-      "top5": [],
+      "top5": [
+        {
+          "id": "jwc-7302a28b49d7e92c069f",
+          "title": "【教务管理办公室】2025-2026学年第二学期在线开放课程（慕课）线下考试报名通知",
+          "domain": "exam",
+          "source": "本科生院 / 教务处"
+        },
+        {
+          "id": "jwc-5b4427b16b11f6941a73",
+          "title": "【教务管理办公室】2025-2026学年第二学期考试安排表",
+          "domain": "exam",
+          "source": "本科生院 / 教务处"
+        },
+        {
+          "id": "exam-2025-2026学年第二学期考试安排表（学校组织17-18周）-学生用表.xlsx-5076",
+          "title": "B231103 大学英语III 考试安排",
+          "domain": "exam",
+          "source": "考试垂直频道"
+        },
+        {
+          "id": "exam-2025-2026学年第二学期考试安排表（学校组织17-18周）-学生用表.xlsx-5077",
+          "title": "B251301 大学英语III 考试安排",
+          "domain": "exam",
+          "source": "考试垂直频道"
+        },
+        {
+          "id": "exam-2025-2026学年第二学期考试安排表（学校组织17-18周）-学生用表.xlsx-5078",
+          "title": "B251302 大学英语III 考试安排",
+          "domain": "exam",
+          "source": "考试垂直频道"
+        }
+      ],
       "passed": true
     },
     {
@@ -100,28 +120,46 @@
           "cxcy",
           "github"
         ],
-        "bad_result_terms": [
-          "慕课",
-          "封闭教学楼",
-          "普通期末"
-        ],
-        "must_include_terms_for_top_results": [
-          "CET",
-          "四级",
-          "六级",
-          "四六级"
-        ],
+        "bad_result_terms": [],
+        "must_include_terms_for_top_results": [],
         "allow_resource_top5": false,
         "freshness_preference": "recent",
-        "alternative_routes": [
-          {
-            "query_type": "exam_notice_search",
-            "score": 50.9
-          }
-        ],
-        "explanation": "考试类通知（如四六级、期末安排等），优先显示教务处和官方考试通知。"
+        "top1_prefer_exact_title": false,
+        "alternative_routes": [],
+        "explanation": "四六级考试类通知，优先显示教务处和官方考试通知。"
       },
-      "top5": [],
+      "top5": [
+        {
+          "id": "jwc-7302a28b49d7e92c069f",
+          "title": "【教务管理办公室】2025-2026学年第二学期在线开放课程（慕课）线下考试报名通知",
+          "domain": "exam",
+          "source": "本科生院 / 教务处"
+        },
+        {
+          "id": "jwc-5b4427b16b11f6941a73",
+          "title": "【教务管理办公室】2025-2026学年第二学期考试安排表",
+          "domain": "exam",
+          "source": "本科生院 / 教务处"
+        },
+        {
+          "id": "exam-2025-2026学年第二学期考试安排表（学校组织17-18周）-学生用表.xlsx-5076",
+          "title": "B231103 大学英语III 考试安排",
+          "domain": "exam",
+          "source": "考试垂直频道"
+        },
+        {
+          "id": "exam-2025-2026学年第二学期考试安排表（学校组织17-18周）-学生用表.xlsx-5077",
+          "title": "B251301 大学英语III 考试安排",
+          "domain": "exam",
+          "source": "考试垂直频道"
+        },
+        {
+          "id": "exam-2025-2026学年第二学期考试安排表（学校组织17-18周）-学生用表.xlsx-5078",
+          "title": "B251302 大学英语III 考试安排",
+          "domain": "exam",
+          "source": "考试垂直频道"
+        }
+      ],
       "passed": true
     },
     {
@@ -158,28 +196,46 @@
           "cxcy",
           "github"
         ],
-        "bad_result_terms": [
-          "慕课",
-          "封闭教学楼",
-          "普通期末"
-        ],
-        "must_include_terms_for_top_results": [
-          "CET",
-          "四级",
-          "六级",
-          "四六级"
-        ],
+        "bad_result_terms": [],
+        "must_include_terms_for_top_results": [],
         "allow_resource_top5": false,
         "freshness_preference": "recent",
-        "alternative_routes": [
-          {
-            "query_type": "exam_notice_search",
-            "score": 50.9
-          }
-        ],
-        "explanation": "考试类通知（如四六级、期末安排等），优先显示教务处和官方考试通知。"
+        "top1_prefer_exact_title": false,
+        "alternative_routes": [],
+        "explanation": "四六级考试类通知，优先显示教务处和官方考试通知。"
       },
-      "top5": [],
+      "top5": [
+        {
+          "id": "jwc-5b4427b16b11f6941a73",
+          "title": "【教务管理办公室】2025-2026学年第二学期考试安排表",
+          "domain": "exam",
+          "source": "本科生院 / 教务处"
+        },
+        {
+          "id": "jwc-7302a28b49d7e92c069f",
+          "title": "【教务管理办公室】2025-2026学年第二学期在线开放课程（慕课）线下考试报名通知",
+          "domain": "exam",
+          "source": "本科生院 / 教务处"
+        },
+        {
+          "id": "jwc-3169f05504d4bfad9732",
+          "title": "【教务管理办公室】关于做好2025-2026学年第二学期期末考试工作安排的通知",
+          "domain": "exam",
+          "source": "本科生院 / 教务处"
+        },
+        {
+          "id": "njupt_notice-7011710a55e2cbd7660c",
+          "title": "2025 12.17 关于第15周周末封闭仙林校区部分教学楼的通知",
+          "domain": "exam",
+          "source": "南邮官网通知通告"
+        },
+        {
+          "id": "exam-2025-2026学年第二学期考试安排表（学院组织）-学生用表.xlsx-933",
+          "title": "B230417 计算机系统基础Ⅰ（混合式） 考试安排",
+          "domain": "exam",
+          "source": "考试垂直频道"
+        }
+      ],
       "passed": true
     },
     {
@@ -216,28 +272,46 @@
           "cxcy",
           "github"
         ],
-        "bad_result_terms": [
-          "慕课",
-          "封闭教学楼",
-          "普通期末"
-        ],
-        "must_include_terms_for_top_results": [
-          "CET",
-          "四级",
-          "六级",
-          "四六级"
-        ],
+        "bad_result_terms": [],
+        "must_include_terms_for_top_results": [],
         "allow_resource_top5": false,
         "freshness_preference": "recent",
-        "alternative_routes": [
-          {
-            "query_type": "exam_notice_search",
-            "score": 50.9
-          }
-        ],
-        "explanation": "考试类通知（如四六级、期末安排等），优先显示教务处和官方考试通知。"
+        "top1_prefer_exact_title": false,
+        "alternative_routes": [],
+        "explanation": "四六级考试类通知，优先显示教务处和官方考试通知。"
       },
-      "top5": [],
+      "top5": [
+        {
+          "id": "jwc-5b4427b16b11f6941a73",
+          "title": "【教务管理办公室】2025-2026学年第二学期考试安排表",
+          "domain": "exam",
+          "source": "本科生院 / 教务处"
+        },
+        {
+          "id": "jwc-7302a28b49d7e92c069f",
+          "title": "【教务管理办公室】2025-2026学年第二学期在线开放课程（慕课）线下考试报名通知",
+          "domain": "exam",
+          "source": "本科生院 / 教务处"
+        },
+        {
+          "id": "jwc-3169f05504d4bfad9732",
+          "title": "【教务管理办公室】关于做好2025-2026学年第二学期期末考试工作安排的通知",
+          "domain": "exam",
+          "source": "本科生院 / 教务处"
+        },
+        {
+          "id": "njupt_notice-7011710a55e2cbd7660c",
+          "title": "2025 12.17 关于第15周周末封闭仙林校区部分教学楼的通知",
+          "domain": "exam",
+          "source": "南邮官网通知通告"
+        },
+        {
+          "id": "exam-2025-2026学年第二学期考试安排表（学院组织）-学生用表.xlsx-933",
+          "title": "B230417 计算机系统基础Ⅰ（混合式） 考试安排",
+          "domain": "exam",
+          "source": "考试垂直频道"
+        }
+      ],
       "passed": true
     },
     {
@@ -269,11 +343,9 @@
           "jwc_degree"
         ],
         "blocked_domains_for_top5": [
-          "innovation_project",
           "innovation_project"
         ],
         "blocked_sources_for_top5": [
-          "cxcy",
           "cxcy"
         ],
         "bad_result_terms": [
@@ -289,6 +361,7 @@
         ],
         "allow_resource_top5": false,
         "freshness_preference": "recent",
+        "top1_prefer_exact_title": false,
         "alternative_routes": [],
         "explanation": "学位论文/毕业论文答辩类查询优先研究生院、学院和学位相关通知。"
       },
@@ -318,10 +391,10 @@
           "source": "图书馆"
         },
         {
-          "id": "job-ce4500e0b0dad687f8d2",
-          "title": "（第五场）“信息报国 邮你同行”南京邮电大学2026届毕业生“春季促就业攻坚行动”系列专场招聘会",
-          "domain": "employment",
-          "source": "就业信息网"
+          "id": "exam-2025-2026学年第二学期考试安排表（学校组织17-18周）-学生用表.xlsx-4418",
+          "title": "B251308 中国文化概论 考试安排",
+          "domain": "exam",
+          "source": "考试垂直频道"
         }
       ],
       "passed": true
@@ -332,8 +405,8 @@
         "raw_query": "毕业答辩",
         "normalized_query": "毕业答辩",
         "query_type": "degree_defense_search",
-        "route_score": 115.85,
-        "route_confidence": 0.95,
+        "route_score": 65.85,
+        "route_confidence": 0.8,
         "route_source": "query_routes_v2",
         "target_domains": [
           "degree",
@@ -355,11 +428,9 @@
           "jwc_degree"
         ],
         "blocked_domains_for_top5": [
-          "innovation_project",
           "innovation_project"
         ],
         "blocked_sources_for_top5": [
-          "cxcy",
           "cxcy"
         ],
         "bad_result_terms": [
@@ -375,6 +446,7 @@
         ],
         "allow_resource_top5": false,
         "freshness_preference": "recent",
+        "top1_prefer_exact_title": false,
         "alternative_routes": [
           {
             "query_type": "graduation_search",
@@ -409,10 +481,10 @@
           "source": "图书馆"
         },
         {
-          "id": "job-ce4500e0b0dad687f8d2",
-          "title": "（第五场）“信息报国 邮你同行”南京邮电大学2026届毕业生“春季促就业攻坚行动”系列专场招聘会",
-          "domain": "employment",
-          "source": "就业信息网"
+          "id": "exam-2025-2026学年第二学期考试安排表（学校组织17-18周）-学生用表.xlsx-4418",
+          "title": "B251308 中国文化概论 考试安排",
+          "domain": "exam",
+          "source": "考试垂直频道"
         }
       ],
       "passed": true
@@ -441,6 +513,7 @@
         "must_include_terms_for_top_results": [],
         "allow_resource_top5": true,
         "freshness_preference": "none",
+        "top1_prefer_exact_title": false,
         "alternative_routes": [],
         "explanation": "大创和各类创新项目通知。"
       },
@@ -491,8 +564,7 @@
           "medical_insurance",
           "life",
           "logistics",
-          "service",
-          "network"
+          "campus_network"
         ],
         "target_intents": [],
         "preferred_sources": [
@@ -501,11 +573,9 @@
         ],
         "preferred_channels": [],
         "blocked_domains_for_top5": [
-          "innovation_project",
           "innovation_project"
         ],
         "blocked_sources_for_top5": [
-          "cxcy",
           "cxcy"
         ],
         "bad_result_terms": [
@@ -515,6 +585,7 @@
         "must_include_terms_for_top_results": [],
         "allow_resource_top5": true,
         "freshness_preference": "none",
+        "top1_prefer_exact_title": false,
         "alternative_routes": [],
         "explanation": "校园生活服务类（如医保、网络等），优先后勤和信息中心。"
       },
@@ -524,6 +595,18 @@
           "title": "关于参保学生外地门（急）诊医疗费用零星报销的通知",
           "domain": "medical_insurance",
           "source": "后勤管理处"
+        },
+        {
+          "id": "xxb-041dc94e61b52ad09e93",
+          "title": "常见问题FAQ",
+          "domain": "campus_network",
+          "source": "信息化建设与管理办公室"
+        },
+        {
+          "id": "xxb-2652f8ad86b44f71b459",
+          "title": "校园网费用缴费单",
+          "domain": "campus_network",
+          "source": "信息化建设与管理办公室"
         },
         {
           "id": "hqc-ec3775e276c31fc7153f",
@@ -536,18 +619,6 @@
           "title": "教室空调关闭通知",
           "domain": "logistics",
           "source": "后勤管理处"
-        },
-        {
-          "id": "hqc-7256c33e2b10e787d6a0",
-          "title": "关于梅苑、李苑和北荷的洗浴卡机的通知",
-          "domain": "life",
-          "source": "后勤管理处"
-        },
-        {
-          "id": "cwc-5842ee3073edfbdc1182",
-          "title": "关于调整学校财务业务办理点的通知",
-          "domain": "logistics",
-          "source": "财务处"
         }
       ],
       "passed": true
@@ -565,8 +636,7 @@
           "medical_insurance",
           "life",
           "logistics",
-          "service",
-          "network"
+          "campus_network"
         ],
         "target_intents": [],
         "preferred_sources": [
@@ -575,11 +645,9 @@
         ],
         "preferred_channels": [],
         "blocked_domains_for_top5": [
-          "innovation_project",
           "innovation_project"
         ],
         "blocked_sources_for_top5": [
-          "cxcy",
           "cxcy"
         ],
         "bad_result_terms": [
@@ -589,6 +657,7 @@
         "must_include_terms_for_top_results": [],
         "allow_resource_top5": true,
         "freshness_preference": "none",
+        "top1_prefer_exact_title": false,
         "alternative_routes": [],
         "explanation": "校园生活服务类（如医保、网络等），优先后勤和信息中心。"
       },
@@ -598,6 +667,18 @@
           "title": "关于参保学生外地门（急）诊医疗费用零星报销的通知",
           "domain": "medical_insurance",
           "source": "后勤管理处"
+        },
+        {
+          "id": "xxb-041dc94e61b52ad09e93",
+          "title": "常见问题FAQ",
+          "domain": "campus_network",
+          "source": "信息化建设与管理办公室"
+        },
+        {
+          "id": "xxb-2652f8ad86b44f71b459",
+          "title": "校园网费用缴费单",
+          "domain": "campus_network",
+          "source": "信息化建设与管理办公室"
         },
         {
           "id": "hqc-ec3775e276c31fc7153f",
@@ -610,18 +691,6 @@
           "title": "教室空调关闭通知",
           "domain": "logistics",
           "source": "后勤管理处"
-        },
-        {
-          "id": "hqc-7256c33e2b10e787d6a0",
-          "title": "关于梅苑、李苑和北荷的洗浴卡机的通知",
-          "domain": "life",
-          "source": "后勤管理处"
-        },
-        {
-          "id": "cwc-5842ee3073edfbdc1182",
-          "title": "关于调整学校财务业务办理点的通知",
-          "domain": "logistics",
-          "source": "财务处"
         }
       ],
       "passed": true
@@ -639,8 +708,7 @@
           "medical_insurance",
           "life",
           "logistics",
-          "service",
-          "network"
+          "campus_network"
         ],
         "target_intents": [],
         "preferred_sources": [
@@ -649,11 +717,9 @@
         ],
         "preferred_channels": [],
         "blocked_domains_for_top5": [
-          "innovation_project",
           "innovation_project"
         ],
         "blocked_sources_for_top5": [
-          "cxcy",
           "cxcy"
         ],
         "bad_result_terms": [
@@ -663,6 +729,7 @@
         "must_include_terms_for_top_results": [],
         "allow_resource_top5": true,
         "freshness_preference": "none",
+        "top1_prefer_exact_title": false,
         "alternative_routes": [],
         "explanation": "校园生活服务类（如医保、网络等），优先后勤和信息中心。"
       },
@@ -680,20 +747,20 @@
           "source": "财务处"
         },
         {
+          "id": "xxb-041dc94e61b52ad09e93",
+          "title": "常见问题FAQ",
+          "domain": "campus_network",
+          "source": "信息化建设与管理办公室"
+        },
+        {
+          "id": "xxb-2652f8ad86b44f71b459",
+          "title": "校园网费用缴费单",
+          "domain": "campus_network",
+          "source": "信息化建设与管理办公室"
+        },
+        {
           "id": "hqc-ec3775e276c31fc7153f",
           "title": "关于更换仙林竹苑洗浴卡机的通知",
-          "domain": "life",
-          "source": "后勤管理处"
-        },
-        {
-          "id": "hqc-b279952a9f7b366cb41e",
-          "title": "教室空调关闭通知",
-          "domain": "logistics",
-          "source": "后勤管理处"
-        },
-        {
-          "id": "hqc-7256c33e2b10e787d6a0",
-          "title": "关于梅苑、李苑和北荷的洗浴卡机的通知",
           "domain": "life",
           "source": "后勤管理处"
         }
@@ -711,7 +778,7 @@
         "route_source": "query_routes_v2",
         "target_domains": [
           "academic",
-          "official"
+          "policy"
         ],
         "target_intents": [],
         "preferred_sources": [
@@ -733,6 +800,7 @@
         ],
         "allow_resource_top5": true,
         "freshness_preference": "none",
+        "top1_prefer_exact_title": false,
         "alternative_routes": [],
         "explanation": "官方学籍/学业通知，优先教务处或学生处。"
       },
@@ -740,6 +808,30 @@
         {
           "id": "jwc-68a41687f15408883b85",
           "title": "南京邮电大学本科生转专业管理办法（2025年9月18日修订） 2025-09-26",
+          "domain": "course",
+          "source": "本科生院 / 教务处"
+        },
+        {
+          "id": "cs-aa700cc880aa734ce178",
+          "title": "电子信息专业学位（计算机技术方向） 2026年申请考核制博士研究生招生实施细则",
+          "domain": "academic",
+          "source": "计算机学院"
+        },
+        {
+          "id": "jwc-59a29f409eb78f77b1e1",
+          "title": "【教务管理办公室】关于学习慕课的学生加入“慕课堂”的通知（陆续更新中）",
+          "domain": "course",
+          "source": "本科生院 / 教务处"
+        },
+        {
+          "id": "jwc-391500a8447efc7bd72f",
+          "title": "【教务管理办公室】2025-2026学年第二学期部分在线开放课程学习通知（陆续更新中）",
+          "domain": "course",
+          "source": "本科生院 / 教务处"
+        },
+        {
+          "id": "jwc-0a6ad54c429cb12be8a9",
+          "title": "南京邮电大学在线课程中心",
           "domain": "course",
           "source": "本科生院 / 教务处"
         }
@@ -769,39 +861,40 @@
         "must_include_terms_for_top_results": [],
         "allow_resource_top5": true,
         "freshness_preference": "none",
+        "top1_prefer_exact_title": true,
         "alternative_routes": [],
         "explanation": "班级具体考试查询，优先展示垂直考试频道的精确匹配结果。"
       },
       "top5": [
         {
-          "id": "jwc-5b4427b16b11f6941a73",
-          "title": "【教务管理办公室】2025-2026学年第二学期考试安排表",
+          "id": "exam-2025-2026学年第二学期考试安排表（学校组织17-18周）-学生用表.xlsx-1794",
+          "title": "B250403 离散数学 考试安排",
           "domain": "exam",
-          "source": "本科生院 / 教务处"
+          "source": "考试垂直频道"
         },
         {
-          "id": "jwc-7302a28b49d7e92c069f",
-          "title": "【教务管理办公室】2025-2026学年第二学期在线开放课程（慕课）线下考试报名通知",
+          "id": "exam-2025-2026学年第二学期考试安排表（学校组织17-18周）-学生用表.xlsx-5161",
+          "title": "B250403 大学英语III 考试安排",
           "domain": "exam",
-          "source": "本科生院 / 教务处"
+          "source": "考试垂直频道"
         },
         {
-          "id": "jwc-3169f05504d4bfad9732",
-          "title": "【教务管理办公室】关于做好2025-2026学年第二学期期末考试工作安排的通知",
+          "id": "exam-2025-2026学年第二学期考试安排表（学校组织17-18周）-学生用表.xlsx-5162",
+          "title": "B250403 大学英语III 考试安排",
           "domain": "exam",
-          "source": "本科生院 / 教务处"
+          "source": "考试垂直频道"
         },
         {
-          "id": "njupt_notice-7011710a55e2cbd7660c",
-          "title": "2025 12.17 关于第15周周末封闭仙林校区部分教学楼的通知",
+          "id": "exam-2025-2026学年第二学期考试安排表（学校组织17-18周）-学生用表.xlsx-3402",
+          "title": "B250403 大学物理(上) 考试安排",
           "domain": "exam",
-          "source": "南邮官网通知通告"
+          "source": "考试垂直频道"
         },
         {
-          "id": "simp-916527c5424f64b391da",
-          "title": "现代邮政学院2025年硕士研究生复试须知",
+          "id": "exam-2025-2026学年第二学期考试安排表（学校组织17-18周）-学生用表.xlsx-4174",
+          "title": "B250403 思想道德与法治 考试安排",
           "domain": "exam",
-          "source": "现代邮政学院 / 智慧交通学院"
+          "source": "考试垂直频道"
         }
       ],
       "passed": true
@@ -829,6 +922,7 @@
         "must_include_terms_for_top_results": [],
         "allow_resource_top5": true,
         "freshness_preference": "none",
+        "top1_prefer_exact_title": true,
         "alternative_routes": [
           {
             "query_type": "resource_search",
@@ -839,34 +933,34 @@
       },
       "top5": [
         {
-          "id": "jwc-5b4427b16b11f6941a73",
-          "title": "【教务管理办公室】2025-2026学年第二学期考试安排表",
+          "id": "exam-2025-2026学年第二学期考试安排表（学校组织17-18周）-学生用表.xlsx-2382",
+          "title": "B250403 高等数学A（Ⅰ）下 考试安排",
           "domain": "exam",
-          "source": "本科生院 / 教务处"
+          "source": "考试垂直频道"
         },
         {
-          "id": "jwc-3169f05504d4bfad9732",
-          "title": "【教务管理办公室】关于做好2025-2026学年第二学期期末考试工作安排的通知",
+          "id": "exam-2025-2026学年第二学期考试安排表（学校组织17-18周）-学生用表.xlsx-1794",
+          "title": "B250403 离散数学 考试安排",
           "domain": "exam",
-          "source": "本科生院 / 教务处"
+          "source": "考试垂直频道"
         },
         {
-          "id": "jwc-7302a28b49d7e92c069f",
-          "title": "【教务管理办公室】2025-2026学年第二学期在线开放课程（慕课）线下考试报名通知",
+          "id": "exam-2025-2026学年第二学期考试安排表（学校组织17-18周）-学生用表.xlsx-5161",
+          "title": "B250403 大学英语III 考试安排",
           "domain": "exam",
-          "source": "本科生院 / 教务处"
+          "source": "考试垂直频道"
         },
         {
-          "id": "njupt_notice-7011710a55e2cbd7660c",
-          "title": "2025 12.17 关于第15周周末封闭仙林校区部分教学楼的通知",
+          "id": "exam-2025-2026学年第二学期考试安排表（学校组织17-18周）-学生用表.xlsx-5162",
+          "title": "B250403 大学英语III 考试安排",
           "domain": "exam",
-          "source": "南邮官网通知通告"
+          "source": "考试垂直频道"
         },
         {
-          "id": "simp-916527c5424f64b391da",
-          "title": "现代邮政学院2025年硕士研究生复试须知",
+          "id": "exam-2025-2026学年第二学期考试安排表（学校组织17-18周）-学生用表.xlsx-3402",
+          "title": "B250403 大学物理(上) 考试安排",
           "domain": "exam",
-          "source": "现代邮政学院 / 智慧交通学院"
+          "source": "考试垂直频道"
         }
       ],
       "passed": true
@@ -896,6 +990,7 @@
         "must_include_terms_for_top_results": [],
         "allow_resource_top5": true,
         "freshness_preference": "none",
+        "top1_prefer_exact_title": false,
         "alternative_routes": [],
         "explanation": "课程资料和复习内容，优先显示GitHub资源。"
       },
@@ -939,7 +1034,7 @@
         "raw_query": "高数考试",
         "normalized_query": "高数考试",
         "query_type": "exam_notice_search",
-        "route_score": 15.9,
+        "route_score": 50.9,
         "route_confidence": 0.5,
         "route_source": "query_routes_v2",
         "target_domains": [
@@ -971,6 +1066,7 @@
         "must_include_terms_for_top_results": [],
         "allow_resource_top5": false,
         "freshness_preference": "recent",
+        "top1_prefer_exact_title": false,
         "alternative_routes": [
           {
             "query_type": "resource_search",
@@ -1038,6 +1134,7 @@
         "must_include_terms_for_top_results": [],
         "allow_resource_top5": true,
         "freshness_preference": "none",
+        "top1_prefer_exact_title": false,
         "alternative_routes": [],
         "explanation": "课程资料和复习内容，优先显示GitHub资源。"
       },
@@ -1099,6 +1196,7 @@
         "must_include_terms_for_top_results": [],
         "allow_resource_top5": true,
         "freshness_preference": "none",
+        "top1_prefer_exact_title": false,
         "alternative_routes": [],
         "explanation": "大创和各类创新项目通知。"
       },
@@ -1160,6 +1258,7 @@
         "must_include_terms_for_top_results": [],
         "allow_resource_top5": true,
         "freshness_preference": "none",
+        "top1_prefer_exact_title": false,
         "alternative_routes": [],
         "explanation": "奖学金及评优通知。"
       },
@@ -1220,6 +1319,7 @@
         "must_include_terms_for_top_results": [],
         "allow_resource_top5": true,
         "freshness_preference": "none",
+        "top1_prefer_exact_title": false,
         "alternative_routes": [],
         "explanation": "助学金和困难认定等资助政策。"
       },
@@ -1280,6 +1380,7 @@
         "must_include_terms_for_top_results": [],
         "allow_resource_top5": true,
         "freshness_preference": "none",
+        "top1_prefer_exact_title": false,
         "alternative_routes": [],
         "explanation": "助学金和困难认定等资助政策。"
       },
@@ -1327,8 +1428,7 @@
         "route_confidence": 0.5,
         "route_source": "query_routes_v2",
         "target_domains": [
-          "job",
-          "career"
+          "employment"
         ],
         "target_intents": [],
         "preferred_sources": [
@@ -1341,6 +1441,7 @@
         "must_include_terms_for_top_results": [],
         "allow_resource_top5": true,
         "freshness_preference": "none",
+        "top1_prefer_exact_title": false,
         "alternative_routes": [],
         "explanation": "校园招聘和就业信息。"
       },
@@ -1348,12 +1449,6 @@
         {
           "id": "job-6b5a43035e1c693fbb4b",
           "title": "积成电子2026届春招宣讲会",
-          "domain": "employment",
-          "source": "就业信息网"
-        },
-        {
-          "id": "job-d7f60712cb9c969a9b36",
-          "title": "2026群发光芯春季校招宣讲会（光电硕博专场）",
           "domain": "employment",
           "source": "就业信息网"
         },
@@ -1374,6 +1469,73 @@
           "title": "海康威视2027超新星实习生招聘",
           "domain": "employment",
           "source": "就业信息网"
+        },
+        {
+          "id": "job-d7f60712cb9c969a9b36",
+          "title": "2026群发光芯春季校招宣讲会（光电硕博专场）",
+          "domain": "employment",
+          "source": "就业信息网"
+        }
+      ],
+      "passed": true
+    },
+    {
+      "query": "招聘",
+      "route_obj": {
+        "raw_query": "招聘",
+        "normalized_query": "招聘",
+        "query_type": "job_search",
+        "route_score": 50.7,
+        "route_confidence": 0.5,
+        "route_source": "query_routes_v2",
+        "target_domains": [
+          "employment"
+        ],
+        "target_intents": [],
+        "preferred_sources": [
+          "job"
+        ],
+        "preferred_channels": [],
+        "blocked_domains_for_top5": [],
+        "blocked_sources_for_top5": [],
+        "bad_result_terms": [],
+        "must_include_terms_for_top_results": [],
+        "allow_resource_top5": true,
+        "freshness_preference": "none",
+        "top1_prefer_exact_title": false,
+        "alternative_routes": [],
+        "explanation": "校园招聘和就业信息。"
+      },
+      "top5": [
+        {
+          "id": "job-286aa0035d13ca9a1f18",
+          "title": "南京邮电大学2026年信息文科类专业联合春季招聘会",
+          "domain": "employment",
+          "source": "就业信息网"
+        },
+        {
+          "id": "job-ce4500e0b0dad687f8d2",
+          "title": "（第五场）“信息报国 邮你同行”南京邮电大学2026届毕业生“春季促就业攻坚行动”系列专场招聘会",
+          "domain": "employment",
+          "source": "就业信息网"
+        },
+        {
+          "id": "job-67dc85ca08fe979eb024",
+          "title": "（第四场）“信息报国 邮你同行”南京邮电大学2026届毕业生“春季促就业攻坚行动”系列专场招聘会",
+          "domain": "employment",
+          "source": "就业信息网"
+        },
+        {
+          "id": "job-b0e2b8b567544887e8c7",
+          "title": "（第三场）“信息报国 邮你同行”南京邮电大学2026届毕业生“春季促就业攻坚行动”系列专场招聘会",
+          "domain": "employment",
+          "source": "就业信息网"
+        },
+        {
+          "id": "job-af73d8b77101ce20b005",
+          "title": "（第二场）“信息报国 邮你同行”南京邮电大学2026届毕业生“春季促就业攻坚行动”系列专场招聘会",
+          "domain": "employment",
+          "source": "就业信息网"
         }
       ],
       "passed": true
@@ -1388,8 +1550,7 @@
         "route_confidence": 0.5,
         "route_source": "query_routes_v2",
         "target_domains": [
-          "job",
-          "career"
+          "employment"
         ],
         "target_intents": [],
         "preferred_sources": [
@@ -1402,6 +1563,7 @@
         "must_include_terms_for_top_results": [],
         "allow_resource_top5": true,
         "freshness_preference": "none",
+        "top1_prefer_exact_title": false,
         "alternative_routes": [],
         "explanation": "校园招聘和就业信息。"
       },
@@ -1449,7 +1611,7 @@
         "route_confidence": 0.5,
         "route_source": "query_routes_v2",
         "target_domains": [
-          "alert",
+          "life",
           "logistics"
         ],
         "target_intents": [],
@@ -1464,6 +1626,7 @@
         "must_include_terms_for_top_results": [],
         "allow_resource_top5": true,
         "freshness_preference": "very_recent",
+        "top1_prefer_exact_title": false,
         "alternative_routes": [],
         "explanation": "校园突发或预警通知（停水停电等）。"
       },
@@ -1493,10 +1656,10 @@
           "source": "后勤管理处"
         },
         {
-          "id": "cwc-5842ee3073edfbdc1182",
-          "title": "关于调整学校财务业务办理点的通知",
-          "domain": "logistics",
-          "source": "财务处"
+          "id": "hqc-ec3775e276c31fc7153f",
+          "title": "关于更换仙林竹苑洗浴卡机的通知",
+          "domain": "life",
+          "source": "后勤管理处"
         }
       ],
       "passed": true
@@ -1514,8 +1677,7 @@
           "medical_insurance",
           "life",
           "logistics",
-          "service",
-          "network"
+          "campus_network"
         ],
         "target_intents": [],
         "preferred_sources": [
@@ -1524,11 +1686,9 @@
         ],
         "preferred_channels": [],
         "blocked_domains_for_top5": [
-          "innovation_project",
           "innovation_project"
         ],
         "blocked_sources_for_top5": [
-          "cxcy",
           "cxcy"
         ],
         "bad_result_terms": [
@@ -1538,6 +1698,7 @@
         "must_include_terms_for_top_results": [],
         "allow_resource_top5": true,
         "freshness_preference": "none",
+        "top1_prefer_exact_title": false,
         "alternative_routes": [],
         "explanation": "校园生活服务类（如医保、网络等），优先后勤和信息中心。"
       },
@@ -1545,6 +1706,12 @@
         {
           "id": "xxb-2652f8ad86b44f71b459",
           "title": "校园网费用缴费单",
+          "domain": "campus_network",
+          "source": "信息化建设与管理办公室"
+        },
+        {
+          "id": "xxb-041dc94e61b52ad09e93",
+          "title": "常见问题FAQ",
           "domain": "campus_network",
           "source": "信息化建设与管理办公室"
         },
@@ -1565,12 +1732,6 @@
           "title": "南京邮电大学校园网最快登录脚本 for Android Wi... · NJUPT_Fastlogin",
           "domain": "campus_network",
           "source": "南京邮电大学校园网最快登录脚本 for Android Wi..."
-        },
-        {
-          "id": "github-musnows-Njupt-Wifi-Login-e7f0cc5b6e214d0cd1ff",
-          "title": "路由器(刷机) 实现自动连接南京邮电大学校园网 · Njupt-Wifi-Login",
-          "domain": "campus_network",
-          "source": "路由器(刷机) 实现自动连接南京邮电大学校园网"
         }
       ],
       "passed": true
@@ -1598,6 +1759,7 @@
         "must_include_terms_for_top_results": [],
         "allow_resource_top5": true,
         "freshness_preference": "none",
+        "top1_prefer_exact_title": false,
         "alternative_routes": [],
         "explanation": "图书馆相关通知和资源。"
       },
@@ -1645,7 +1807,7 @@
         "route_confidence": 0.5,
         "route_source": "query_routes_v2",
         "target_domains": [
-          "graduation"
+          "degree"
         ],
         "target_intents": [],
         "preferred_sources": [
@@ -1660,6 +1822,7 @@
         "must_include_terms_for_top_results": [],
         "allow_resource_top5": true,
         "freshness_preference": "none",
+        "top1_prefer_exact_title": false,
         "alternative_routes": [],
         "explanation": "毕业和离校相关事宜。"
       },
@@ -1707,7 +1870,7 @@
         "route_confidence": 0.5,
         "route_source": "query_routes_v2",
         "target_domains": [
-          "graduation"
+          "degree"
         ],
         "target_intents": [],
         "preferred_sources": [
@@ -1722,6 +1885,7 @@
         "must_include_terms_for_top_results": [],
         "allow_resource_top5": true,
         "freshness_preference": "none",
+        "top1_prefer_exact_title": false,
         "alternative_routes": [],
         "explanation": "毕业和离校相关事宜。"
       },
@@ -1780,6 +1944,7 @@
         "must_include_terms_for_top_results": [],
         "allow_resource_top5": true,
         "freshness_preference": "none",
+        "top1_prefer_exact_title": false,
         "alternative_routes": [],
         "explanation": "各类学科竞赛和比赛通知。"
       },
@@ -1838,6 +2003,7 @@
         "must_include_terms_for_top_results": [],
         "allow_resource_top5": true,
         "freshness_preference": "none",
+        "top1_prefer_exact_title": false,
         "alternative_routes": [],
         "explanation": "各类学科竞赛和比赛通知。"
       },
