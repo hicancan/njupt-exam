@@ -349,21 +349,30 @@ export const recallSearchDocuments = (
 
     const route = routeQuery(trimmed);
     const terms = queryTerms(trimmed, queryAliases);
-    const recalled: RankedSearchDocument[] = [];
+    const normalizedQuery = normalize(trimmed);
+    const queryFirst: RankedSearchDocument[] = [];
+    const aliasOnly: RankedSearchDocument[] = [];
 
     for (const document of documents) {
         const reasons = recallReasons(document, trimmed, terms, route);
         if (reasons.length === 0) continue;
-        recalled.push({
+        const ranked = {
             ...document,
             score: 1,
             score_reason: recallReasonText(document, reasons)
-        });
+        };
+        const normalizedText = normalize(documentRecallText(document));
+        if (normalizedQuery && normalizedText.includes(normalizedQuery)) {
+            queryFirst.push(ranked);
+        } else {
+            aliasOnly.push(ranked);
+        }
     }
 
-    return recalled
-        .sort(compareByPublishedAtDesc)
-        .slice(0, limit);
+    queryFirst.sort(compareByPublishedAtDesc);
+    aliasOnly.sort(compareByPublishedAtDesc);
+
+    return [...queryFirst, ...aliasOnly].slice(0, limit);
 };
 
 export const getDomainLabel = (domain: SearchDomain): string => DOMAIN_LABELS[domain] || domain;

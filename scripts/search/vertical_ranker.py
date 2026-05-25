@@ -32,20 +32,29 @@ def recall_documents(
     terms = query_terms(trimmed, query_aliases or {})
     recalled: List[Dict[str, Any]] = []
 
+    normalized_query = normalize(trimmed)
+    query_first: List[Dict[str, Any]] = []
+    alias_only: List[Dict[str, Any]] = []
+
     for document in documents:
         reasons = recall_reasons(document, trimmed, terms, route)
         if not reasons:
             continue
-        recalled.append(
-            {
-                **document,
-                "score": 1.0,
-                "score_reason": recall_reason_text(document, reasons),
-            }
-        )
+        ranked = {
+            **document,
+            "score": 1.0,
+            "score_reason": recall_reason_text(document, reasons),
+        }
+        normalized_text = normalize(document_recall_text(document))
+        if normalized_query and normalized_query in normalized_text:
+            query_first.append(ranked)
+        else:
+            alias_only.append(ranked)
 
-    recalled.sort(key=lambda item: (-date_sort_value(item.get("published_at")), str(item.get("id") or "")))
-    return recalled[: limit or 30]
+    query_first.sort(key=lambda item: (-date_sort_value(item.get("published_at")), str(item.get("id") or "")))
+    alias_only.sort(key=lambda item: (-date_sort_value(item.get("published_at")), str(item.get("id") or "")))
+
+    return (query_first + alias_only)[: limit or 30]
 
 
 def vertical_rank_documents(
