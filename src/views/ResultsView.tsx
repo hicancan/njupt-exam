@@ -263,12 +263,12 @@ export function ResultsView({
 
             return true;
         });
-    }, [domainFilter, intentFilter, results, classMode]);
+    }, [activeTab, domainFilter, intentFilter, results, classMode]);
     const [visibleCount, setVisibleCount] = useState(20);
     useEffect(() => {
         // eslint-disable-next-line react-hooks/set-state-in-effect
         setVisibleCount(20);
-    }, [query, domainFilter, intentFilter]);
+    }, [query, activeTab, domainFilter, intentFilter]);
 
     const visibleResults = filteredResults.slice(0, visibleCount);
 

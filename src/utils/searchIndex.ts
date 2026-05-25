@@ -212,13 +212,6 @@ const aliasPayloadsForQuery = (query: string, queryAliases: Record<string, unkno
     return payloads;
 };
 
-const inferQueryType = (query: string, domains: Set<string>, intents: Set<string>): 'exam' | 'resource' | 'task' | 'general' => {
-    const q = query.toLowerCase();
-    if (q.includes('考试') || domains.has('exam') || intents.has('schedule')) return 'exam';
-    if (['资料', '题', '复习', '卷', '课件'].some(t => q.includes(t)) || domains.has('resource')) return 'resource';
-    if (['报名', '申请', '提交', '参加'].some(t => q.includes(t)) || ['apply', 'register', 'submit', 'attend'].some(i => intents.has(i))) return 'task';
-    return 'general';
-};
 
 const aliasTermsFromPayloads = (payloads: QueryAliasPayload[]): string[] => {
     const terms: string[] = [];
@@ -230,25 +223,7 @@ const aliasTermsFromPayloads = (payloads: QueryAliasPayload[]): string[] => {
     return Array.from(new Set(terms.filter(Boolean)));
 };
 
-const targetDomainsFromPayloads = (payloads: QueryAliasPayload[]): Set<string> => {
-    const domains: string[] = [];
-    for (const payload of payloads) {
-        if (Array.isArray(payload.domains)) {
-            domains.push(...payload.domains.map(String));
-        }
-    }
-    return new Set(domains.map(normalize).filter(Boolean));
-};
 
-const targetIntentsFromPayloads = (payloads: QueryAliasPayload[]): Set<string> => {
-    const intents: string[] = [];
-    for (const payload of payloads) {
-        if (Array.isArray(payload.intents)) {
-            intents.push(...payload.intents.map(String));
-        }
-    }
-    return new Set(intents.map(normalize).filter(Boolean));
-};
 
 const scoreTextMatch = (document: SearchDocument, query: string, expandedTerms: string[] = []): number => {
     const tokens = tokenize([query, ...expandedTerms].join(' '));
