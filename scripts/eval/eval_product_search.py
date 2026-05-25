@@ -1,7 +1,9 @@
+import argparse
 import json
 import os
 import sys
 from datetime import datetime, timezone, timedelta
+from typing import Any, Dict, Iterable, List, Optional, Tuple
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 sys.path.insert(0, os.path.join(BASE_DIR, "scripts"))
@@ -11,23 +13,30 @@ from search.query_router import route_query, load_query_routes
 
 BEIJING_TZ = timezone(timedelta(hours=8))
 
+STATUS_STRICT_PASS = "strict_pass"
+STATUS_DATA_GAP = "data_gap"
+STATUS_DEGRADED_PASS = "degraded_pass"
+STATUS_FAIL = "fail"
 
-def load_json(path):
+
+def load_json(path: str) -> Any:
     with open(path, "r", encoding="utf-8") as f:
         return json.load(f)
 
 
-def _days_from_now(date_like):
+def _days_from_now(date_like: Any) -> Optional[float]:
     if not date_like:
         return None
     try:
         dt = datetime.fromisoformat(str(date_like))
+        if dt.tzinfo is None:
+            dt = dt.replace(tzinfo=BEIJING_TZ)
         return (datetime.now(BEIJING_TZ) - dt).total_seconds() / 86400
     except (ValueError, TypeError):
         return None
 
 
-def _calc_freshness(date_like):
+def _calc_freshness(date_like: Any) -> float:
     days = _days_from_now(date_like)
     if days is None:
         return 0.45
@@ -46,294 +55,484 @@ def _calc_freshness(date_like):
     return 0.42
 
 
-def build_exam_documents_py(exams):
-    """Mirrors TypeScript buildExamDocuments in searchIndex.ts."""
+def build_exam_documents_py(exams: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+    """Mirrors TypeScript buildExamDocuments in searchIndex.ts for Python gates."""
     documents = []
     for exam in exams:
         title = f"{exam.get('class_name', '')} {exam.get('course_name', '')} 考试安排"
         content = " ".join(
             str(exam.get(k, "") or "")
-            for k in ["class_name", "course_name", "course_code", "teacher", "location",
-                       "raw_time", "campus", "school", "student_school", "major", "grade", "notes"]
+            for k in [
+                "class_name",
+                "course_name",
+                "course_code",
+                "teacher",
+                "location",
+                "raw_time",
+                "campus",
+                "school",
+                "student_school",
+                "major",
+                "grade",
+                "notes",
+            ]
         )
         raw_time = exam.get("raw_time") or ""
         location = exam.get("location") or ""
         exam_id = exam.get("id", "")
         published_at = exam.get("date") or exam.get("start_timestamp")
 
-        documents.append({
-            "id": f"exam-{exam_id}",
-            "kind": "exam",
-            "source_id": "exam_vertical",
-            "channel_id": "exam_schedule",
-            "channel": "考试安排",
-            "title": title,
-            "url": f"?class={exam.get('class_name', '')}",
-            "source": "考试垂直频道",
-            "source_domain": "jwc.njupt.edu.cn",
-            "source_type": "exam_vertical",
-            "category": "考试",
-            "domain": "exam",
-            "intent": "schedule",
-            "lifecycle": "active",
-            "evidence": [raw_time or location or title],
-            "confidence": 0.6 if exam.get("parse_error") else 0.98,
-            "sub_category": None,
-            "deadline": None,
-            "action_required": False,
-            "action_type": None,
-            "action_summary": None,
-            "required_materials": [],
-            "sensitive": False,
-            "sensitive_types": [],
-            "review_required": False,
-            "risk_flags": [],
-            "audience": ["本科生"],
-            "published_at": published_at,
-            "content": content or title,
-            "summary": f"{raw_time or '时间待确认'} · {location or '地点待确认'}",
-            "attachments": [],
-            "student_score": 1.0,
-            "freshness_score": _calc_freshness(exam.get("date") or exam.get("start_timestamp")),
-            "importance_score": 0.94,
-            "source_weight": 1.0,
-            "tags": ["考试", "期末", exam.get("class_name", ""), exam.get("course_name", ""),
-                      exam.get("campus", ""), exam.get("major", "")],
-            "hash": exam_id,
-            "class_name": exam.get("class_name"),
-            "exam_id": exam_id,
-        })
+        documents.append(
+            {
+                "id": f"exam-{exam_id}",
+                "kind": "exam",
+                "source_id": "exam_vertical",
+                "channel_id": "exam_schedule",
+                "channel": "考试安排",
+                "title": title,
+                "url": f"?class={exam.get('class_name', '')}",
+                "source": "考试垂直频道",
+                "source_domain": "jwc.njupt.edu.cn",
+                "source_type": "exam_vertical",
+                "category": "考试",
+                "domain": "exam",
+                "intent": "schedule",
+                "lifecycle": "active",
+                "evidence": [raw_time or location or title],
+                "confidence": 0.6 if exam.get("parse_error") else 0.98,
+                "sub_category": None,
+                "deadline": None,
+                "action_required": False,
+                "action_type": None,
+                "action_summary": None,
+                "required_materials": [],
+                "sensitive": False,
+                "sensitive_types": [],
+                "review_required": False,
+                "risk_flags": [],
+                "audience": ["本科生"],
+                "published_at": published_at,
+                "content": content or title,
+                "summary": f"{raw_time or '时间待确认'} · {location or '地点待确认'}",
+                "attachments": [],
+                "student_score": 1.0,
+                "freshness_score": _calc_freshness(published_at),
+                "importance_score": 0.94,
+                "source_weight": 1.0,
+                "tags": [
+                    item
+                    for item in [
+                        "考试",
+                        "期末",
+                        exam.get("class_name", ""),
+                        exam.get("course_name", ""),
+                        exam.get("campus", ""),
+                        exam.get("major", ""),
+                    ]
+                    if item
+                ],
+                "hash": exam_id,
+                "class_name": exam.get("class_name"),
+                "exam_id": exam_id,
+            }
+        )
     return documents
 
 
-def evaluate_cases():
+def load_documents() -> Tuple[List[Dict[str, Any]], Dict[str, Dict[str, Any]]]:
+    documents = load_json(os.path.join(BASE_DIR, "public", "index", "documents.json"))
+    exam_data_path = os.path.join(BASE_DIR, "public", "data", "all_exams.json")
+    if os.path.exists(exam_data_path):
+        documents = documents + build_exam_documents_py(load_json(exam_data_path))
+    return documents, {str(doc.get("id", "")): doc for doc in documents}
+
+
+def _norm(value: Any) -> str:
+    return str(value or "").lower()
+
+
+def _doc_text(doc: Dict[str, Any]) -> str:
+    parts: List[str] = [
+        str(doc.get("title", "")),
+        str(doc.get("summary", "")),
+        str(doc.get("content", "")),
+        str(doc.get("source", "")),
+        str(doc.get("source_id", "")),
+        str(doc.get("channel", "")),
+        str(doc.get("channel_id", "")),
+        str(doc.get("domain", "")),
+        str(doc.get("intent", "")),
+    ]
+    parts.extend(str(item) for item in doc.get("tags", []) or [])
+    parts.extend(str(item) for item in doc.get("evidence", []) or [])
+    return " ".join(parts).lower()
+
+
+def _doc_display_text(doc: Dict[str, Any]) -> str:
+    parts: List[str] = [
+        str(doc.get("title", "")),
+        str(doc.get("summary", "")),
+    ]
+    parts.extend(str(item) for item in doc.get("tags", []) or [])
+    return " ".join(parts).lower()
+
+
+def _contains_any(text: str, terms: Iterable[str]) -> bool:
+    return any(_norm(term) in text for term in terms if str(term).strip())
+
+
+def _matches_all_groups(text: str, groups: Iterable[Iterable[str]]) -> bool:
+    return all(_contains_any(text, group) for group in groups)
+
+
+def _terms(case: Dict[str, Any], *keys: str) -> List[str]:
+    result: List[str] = []
+    for key in keys:
+        result.extend(str(item) for item in case.get(key, []) or [])
+    return result
+
+
+def _is_relevant(doc: Dict[str, Any], case: Dict[str, Any]) -> bool:
+    text = _doc_text(doc)
+    groups = case.get("relevance_terms_all_groups", []) or []
+    any_terms = _terms(case, "relevance_terms_any")
+
+    if groups and not _matches_all_groups(text, groups):
+        return False
+    if any_terms and not _contains_any(text, any_terms):
+        return False
+
+    # Backward-compatible fields are treated as weak relevance only when the
+    # v1.3 fields are absent.
+    if not groups and not any_terms:
+        legacy_terms = _terms(case, "top3_must_include_any_terms", "top5_must_include_any_terms")
+        if legacy_terms:
+            return _contains_any(text, legacy_terms)
+    return True
+
+
+def _source_matches(doc: Dict[str, Any], expected: str) -> bool:
+    values = {str(doc.get("source", "")), str(doc.get("source_id", ""))}
+    return any(value == expected or value.startswith(f"{expected}:") for value in values)
+
+
+def _source_matches_any(doc: Dict[str, Any], expected_values: Iterable[str]) -> bool:
+    return any(_source_matches(doc, str(expected)) for expected in expected_values)
+
+
+def _simplify_doc(doc: Dict[str, Any]) -> Dict[str, Any]:
+    return {
+        "id": doc.get("id"),
+        "title": doc.get("title"),
+        "domain": doc.get("domain"),
+        "intent": doc.get("intent"),
+        "source": doc.get("source"),
+        "source_id": doc.get("source_id"),
+        "channel_id": doc.get("channel_id"),
+        "kind": doc.get("kind"),
+        "degraded_fallback": bool(doc.get("degraded_fallback")),
+    }
+
+
+def _load_manifest_channels() -> Dict[str, Dict[str, Any]]:
+    manifest = load_json(os.path.join(BASE_DIR, "public", "index", "manifest.json"))
+    channels: Dict[str, Dict[str, Any]] = {}
+    for source in manifest.get("sources", []) or []:
+        for channel in source.get("channels", []) or []:
+            channels[str(channel.get("id"))] = {
+                **channel,
+                "source_id": source.get("id"),
+                "source_name": source.get("name"),
+            }
+    return channels
+
+
+def _coverage_gap_channels(
+    case: Dict[str, Any],
+    notice_documents: List[Dict[str, Any]],
+    channels: Dict[str, Dict[str, Any]],
+) -> List[str]:
+    coverage_channels = [str(item) for item in case.get("coverage_channels", []) or []]
+    if not coverage_channels:
+        return []
+
+    gap_channels: List[str] = []
+    for channel_id in coverage_channels:
+        channel = channels.get(channel_id, {})
+        channel_docs = [doc for doc in notice_documents if str(doc.get("channel_id")) == channel_id]
+        docs_count = int(channel.get("documents", len(channel_docs)) or 0)
+        status = str(channel.get("status", "missing"))
+
+        hard_empty = docs_count == 0 or status == "warning_filtered_all" or status == "missing"
+        has_relevant_doc = any(_is_relevant(doc, case) for doc in channel_docs)
+        if hard_empty or not has_relevant_doc:
+            gap_channels.append(channel_id)
+
+    return gap_channels
+
+
+def _evaluate_result_set(
+    case: Dict[str, Any],
+    top5: List[Dict[str, Any]],
+    route_ok: bool,
+    route_obj: Dict[str, Any],
+    label: str,
+) -> Dict[str, Any]:
+    reasons: List[str] = []
+    degraded = any(bool(doc.get("degraded_fallback")) for doc in top5)
+    top3 = top5[:3]
+    top1 = top5[0] if top5 else None
+
+    if not route_ok:
+        reasons.append(f"{label}: route mismatch expected {case.get('route')}, got {route_obj.get('query_type')}")
+
+    if not top5 and not case.get("allow_empty", False):
+        reasons.append(f"{label}: top5 is empty")
+
+    if top1:
+        top1_source = case.get("top1_must_source")
+        if top1_source and not _source_matches(top1, str(top1_source)):
+            reasons.append(f"{label}: top1 source is {top1.get('source_id') or top1.get('source')}, expected {top1_source}")
+
+        top1_domains = set(case.get("top1_must_domain_any", []) or [])
+        if top1_domains and top1.get("domain") not in top1_domains:
+            reasons.append(f"{label}: top1 domain {top1.get('domain')} not in {sorted(top1_domains)}")
+
+        top1_terms = _terms(case, "top1_must_include_any_terms", "top1_should_include_any_terms")
+        if top1_terms and not _contains_any(_doc_text(top1), top1_terms):
+            reasons.append(f"{label}: top1 does not contain any of {top1_terms}")
+    elif case.get("top1_must_source") or case.get("top1_must_include_any_terms"):
+        reasons.append(f"{label}: top1 requirement cannot be checked because top5 is empty")
+
+    top3_min = case.get("top3_min_relevant_count")
+    if top3_min is None and case.get("top3_must_include_any_terms"):
+        top3_min = 1
+    if top3_min is not None:
+        relevant = sum(1 for doc in top3 if _is_relevant(doc, case))
+        if relevant < int(top3_min):
+            reasons.append(f"{label}: top3 relevant count {relevant} < {top3_min}")
+
+    top5_min = case.get("top5_min_relevant_count")
+    if top5_min is None and case.get("top5_must_include_any_terms"):
+        top5_min = 1
+    if top5_min is not None:
+        relevant = sum(1 for doc in top5 if _is_relevant(doc, case))
+        if relevant < int(top5_min):
+            reasons.append(f"{label}: top5 relevant count {relevant} < {top5_min}")
+
+    required_sources = set(case.get("top5_must_include_source_any", []) or [])
+    if required_sources and not any(_source_matches_any(doc, required_sources) for doc in top5):
+        reasons.append(f"{label}: top5 missing required source {sorted(required_sources)}")
+
+    required_domains = set(case.get("top5_must_include_domain_any", []) or [])
+    if required_domains and not any(doc.get("domain") in required_domains for doc in top5):
+        reasons.append(f"{label}: top5 missing required domain {sorted(required_domains)}")
+
+    forbidden_terms = _terms(case, "forbidden_terms", "top5_must_not_include_any_terms")
+    forbidden_sources = set(case.get("forbidden_sources", []) or []) | set(case.get("top5_must_not_source_any", []) or [])
+    forbidden_domains = set(case.get("forbidden_domains", []) or []) | set(case.get("top5_must_not_domain_any", []) or [])
+    for doc in top5:
+        text = _doc_display_text(doc)
+        for term in forbidden_terms:
+            if _norm(term) in text:
+                reasons.append(f"{label}: doc '{doc.get('title')}' contains forbidden term '{term}'")
+        if _source_matches_any(doc, forbidden_sources):
+            reasons.append(f"{label}: doc '{doc.get('title')}' uses forbidden source")
+        if doc.get("domain") in forbidden_domains:
+            reasons.append(f"{label}: doc '{doc.get('title')}' uses forbidden domain")
+
+    if degraded and not case.get("allow_degraded_fallback", True):
+        reasons.append(f"{label}: degraded fallback is not allowed")
+
+    return {
+        "passed": len(reasons) == 0,
+        "degraded": degraded,
+        "failure_reasons": reasons,
+    }
+
+
+def _frontend_top5(
+    case: Dict[str, Any],
+    ts_results_by_query: Dict[str, Dict[str, Any]],
+    document_lookup: Dict[str, Dict[str, Any]],
+) -> Tuple[List[Dict[str, Any]], bool, Dict[str, Any]]:
+    ts_case = ts_results_by_query.get(case["query"])
+    if not ts_case:
+        return [], False, {"query_type": None}
+    top5 = [document_lookup[doc_id] for doc_id in ts_case.get("top5_ids", []) if doc_id in document_lookup]
+    route_obj = {
+        "query_type": ts_case.get("route_type"),
+        "top1_prefer_exact_title": ts_case.get("top1_prefer_exact_title"),
+    }
+    return top5, bool(ts_case.get("route_match")), route_obj
+
+
+def evaluate_cases(mode: str, ts_results_path: Optional[str], max_data_gap_groups: int) -> Dict[str, Any]:
     index_dir = os.path.join(BASE_DIR, "public", "index")
-    documents = load_json(os.path.join(index_dir, "documents.json"))
+    notice_documents = load_json(os.path.join(index_dir, "documents.json"))
+    documents, document_lookup = load_documents()
     hybrid_index = load_json(os.path.join(index_dir, "hybrid_index.json"))
     query_aliases = load_json(os.path.join(BASE_DIR, "config", "query_aliases.json"))
     ranking_weights = load_json(os.path.join(BASE_DIR, "config", "ranking_weights.json"))
     routes = load_query_routes(os.path.join(BASE_DIR, "config", "query_routes.json"))
-
-    # Inject exam_vertical documents (mirrors frontend buildExamDocuments)
-    exam_data_path = os.path.join(BASE_DIR, "public", "data", "all_exams.json")
-    if os.path.exists(exam_data_path):
-        exam_data = load_json(exam_data_path)
-        exam_docs = build_exam_documents_py(exam_data)
-        documents = documents + exam_docs
-
+    channels = _load_manifest_channels()
     cases = load_json(os.path.join(BASE_DIR, "eval", "search_cases.json"))
-    
-    total = len(cases)
+
+    selected_modes = [mode] if mode in {"python", "frontend"} else ["python", "frontend"]
+    blocking_modes = ["frontend"] if mode == "both" else selected_modes
+    ts_results_by_query: Dict[str, Dict[str, Any]] = {}
+    if "frontend" in selected_modes:
+        if not ts_results_path or not os.path.exists(ts_results_path):
+            raise FileNotFoundError("--ts-results is required when mode is frontend or both")
+        ts_results = load_json(ts_results_path)
+        ts_results_by_query = {item["query"]: item for item in ts_results}
+
+    status_counts = {STATUS_STRICT_PASS: 0, STATUS_DATA_GAP: 0, STATUS_DEGRADED_PASS: 0, STATUS_FAIL: 0}
+    data_gap_cases: List[str] = []
+    data_gap_channels: Dict[str, List[str]] = {}
+    data_gap_groups: set[str] = set()
     route_correct = 0
-    bad_top5_count = 0
-    blocked_source_violations = 0
-    blocked_domain_violations = 0
-    degraded_fallback_count = 0
-    empty_result_violation_count = 0
-    exam_vertical_top1_correct = 0
-    exam_vertical_top1_total = 0
-
-    errors = []
-
-    from datetime import datetime
-
-    report = {
-        "timestamp": datetime.now().isoformat(),
-        "total_cases": total,
-        "route_accuracy": 0,
-        "bad_top5_rate": 0,
-        "blocked_source_violations": 0,
-        "blocked_domain_violations": 0,
-        "degraded_fallback_count": 0,
-        "empty_result_violation_count": 0,
-        "exam_vertical_top1_accuracy": 0,
-        "errors": [],
-        "case_details": []
-    }
+    case_details: List[Dict[str, Any]] = []
 
     for case in cases:
         query = case["query"]
         expected_route = case.get("route")
-        allow_empty = case.get("allow_empty", False)
-
-        # Check Route Accuracy
-        route_obj = route_query(query, routes)
-        if expected_route and route_obj["query_type"] == expected_route:
+        py_route_obj = route_query(query, routes)
+        py_route_ok = not expected_route or py_route_obj["query_type"] == expected_route
+        if py_route_ok:
             route_correct += 1
-        elif expected_route:
-            errors.append(f"Route mismatch for '{query}': expected {expected_route}, got {route_obj['query_type']}")
 
-        ranked = vertical_rank_documents(query, documents, hybrid_index, query_aliases, ranking_weights, limit=5)
-        top5 = ranked[:5]
-        top3 = ranked[:3] if len(ranked) >= 3 else ranked
-        top1 = ranked[0] if ranked else None
+        python_top5: List[Dict[str, Any]] = []
+        frontend_top5: List[Dict[str, Any]] = []
+        evals: Dict[str, Dict[str, Any]] = {}
 
-        top1_must_domain = set(case.get("top1_must_domain_any", []))
-        top1_must_source = case.get("top1_must_source")
-        top1_should_include_any_terms = case.get("top1_should_include_any_terms", [])
+        if "python" in selected_modes:
+            python_top5 = vertical_rank_documents(query, documents, hybrid_index, query_aliases, ranking_weights, limit=5)
+            evals["python"] = _evaluate_result_set(case, python_top5, py_route_ok, py_route_obj, "python")
 
-        top5_must_include_source = set(case.get("top5_must_include_source_any", []))
-        top5_must_include_domain = set(case.get("top5_must_include_domain_any", []))
-        top5_must_not_source = set(case.get("top5_must_not_source_any", []))
-        top5_must_not_domain = set(case.get("top5_must_not_domain_any", []))
+        if "frontend" in selected_modes:
+            frontend_top5, frontend_route_ok, frontend_route_obj = _frontend_top5(case, ts_results_by_query, document_lookup)
+            evals["frontend"] = _evaluate_result_set(case, frontend_top5, frontend_route_ok, frontend_route_obj, "frontend")
 
-        top3_must_include_any_terms = case.get("top3_must_include_any_terms", [])
-        top5_must_include_any_terms = case.get("top5_must_include_any_terms", [])
-        top5_must_not_include_any_terms = case.get("top5_must_not_include_any_terms", [])
+        blocking_evals = [evals[name] for name in blocking_modes if name in evals]
+        selected_pass = all(result["passed"] for result in blocking_evals)
+        selected_degraded = any(result["degraded"] for result in blocking_evals)
+        failure_reasons = [reason for result in evals.values() for reason in result["failure_reasons"]]
+        blocking_failure_reasons = [reason for result in blocking_evals for reason in result["failure_reasons"]]
 
-        allow_degraded_fallback = case.get("allow_degraded_fallback", True)
+        gap_channels = _coverage_gap_channels(case, notice_documents, channels)
+        is_data_gap = (
+            not selected_pass
+            and bool(case.get("data_gap_allowed", False))
+            and bool(case.get("coverage_channels"))
+            and set(gap_channels) == set(str(item) for item in case.get("coverage_channels", []) or [])
+        )
 
-        case_failed = False
+        if selected_pass and selected_degraded:
+            status = STATUS_DEGRADED_PASS
+        elif selected_pass:
+            status = STATUS_STRICT_PASS
+        elif is_data_gap:
+            status = STATUS_DATA_GAP
+            data_gap_cases.append(query)
+            data_gap_channels[query] = gap_channels
+            data_gap_groups.add(str(case.get("data_gap_group") or query))
+        else:
+            status = STATUS_FAIL
 
-        # Empty check
-        if not top5 and not allow_empty:
-            empty_result_violation_count += 1
-            errors.append(f"Query '{query}': top5 is empty but allow_empty=false")
-            case_failed = True
+        status_counts[status] += 1
+        case_details.append(
+            {
+                "query": query,
+                "status": status,
+                "python_pass": evals.get("python", {}).get("passed", False),
+                "frontend_pass": evals.get("frontend", {}).get("passed", False),
+                "python_top5": [_simplify_doc(doc) for doc in python_top5],
+                "frontend_top5": [_simplify_doc(doc) for doc in frontend_top5],
+                "failure_reasons": failure_reasons,
+                "blocking_failure_reasons": blocking_failure_reasons,
+                "non_blocking_failure_reasons": [
+                    reason for reason in failure_reasons if reason not in blocking_failure_reasons
+                ],
+                "data_gap_channels": gap_channels if status == STATUS_DATA_GAP else [],
+                "route_obj": py_route_obj,
+            }
+        )
 
-        # Track exam_vertical top1 accuracy
-        if expected_route == "class_exam_lookup" and top1:
-            exam_vertical_top1_total += 1
-            src = top1.get("source_id") or top1.get("source", "")
-            if src == "exam_vertical":
-                exam_vertical_top1_correct += 1
-            else:
-                errors.append(f"Query '{query}': top1 source '{src}' != exam_vertical")
-                case_failed = True
+    report = {
+        "timestamp": datetime.now(BEIJING_TZ).isoformat(),
+        "mode": mode,
+        "evaluated_modes": selected_modes,
+        "blocking_modes": blocking_modes,
+        "total_cases": len(cases),
+        "route_accuracy": route_correct / len(cases) if cases else 0,
+        "status_counts": status_counts,
+        "strict_pass_count": status_counts[STATUS_STRICT_PASS],
+        "data_gap_count": len(data_gap_groups),
+        "data_gap_case_count": len(data_gap_cases),
+        "degraded_pass_count": status_counts[STATUS_DEGRADED_PASS],
+        "fail_count": status_counts[STATUS_FAIL],
+        "data_gap_cases": data_gap_cases,
+        "data_gap_channels": data_gap_channels,
+        "data_gap_groups": sorted(data_gap_groups),
+        "max_data_gap_groups": max_data_gap_groups,
+        "case_details": case_details,
+    }
 
-        if top1_must_domain and top1:
-            if top1.get("domain") not in top1_must_domain:
-                errors.append(f"Query '{query}': top1 domain {top1.get('domain')} not in {top1_must_domain}")
-                case_failed = True
-
-        if top1_must_source and top1:
-            if top1.get("source") != top1_must_source and top1.get("source_id") != top1_must_source:
-                errors.append(f"Query '{query}': top1 source {top1.get('source')} != {top1_must_source}")
-                case_failed = True
-
-        if top1_should_include_any_terms and top1:
-            text = (str(top1.get("title", "")) + " " + str(top1.get("content", ""))).lower()
-            if not any(term.lower() in text for term in top1_should_include_any_terms):
-                errors.append(f"Query '{query}': top1 text does not contain any of {top1_should_include_any_terms}")
-                case_failed = True
-
-        # top3_must_include_any_terms: AT LEAST one doc in top3 must include any term
-        if top3_must_include_any_terms and top3:
-            any_hit = False
-            for doc in top3:
-                text = (str(doc.get("title", "")) + " " + str(doc.get("content", ""))).lower()
-                if any(term.lower() in text for term in top3_must_include_any_terms):
-                    any_hit = True
-                    break
-            if not any_hit:
-                errors.append(f"Query '{query}': top3 docs do not contain any of {top3_must_include_any_terms}")
-                case_failed = True
-
-        if top5_must_include_source:
-            found = any(doc.get("source") in top5_must_include_source or doc.get("source_id") in top5_must_include_source for doc in top5)
-            if not found:
-                errors.append(f"Query '{query}': top5 missing required sources {top5_must_include_source}")
-                case_failed = True
-
-        if top5_must_include_domain:
-            found = any(doc.get("domain") in top5_must_include_domain for doc in top5)
-            if not found:
-                errors.append(f"Query '{query}': top5 missing required domains {top5_must_include_domain}")
-                case_failed = True
-
-        # top5_must_include_any_terms: AT LEAST one doc in top5 must include any term
-        if top5_must_include_any_terms:
-            any_hit = any(
-                any(term.lower() in (str(doc.get("title", "")) + " " + str(doc.get("content", ""))).lower()
-                    for term in top5_must_include_any_terms)
-                for doc in top5
-            )
-            if not any_hit:
-                errors.append(f"Query '{query}': no doc in top5 contains any of {top5_must_include_any_terms}")
-                case_failed = True
-
-        for doc in top5:
-            text = (str(doc.get("title", "")) + " " + str(doc.get("content", ""))).lower()
-
-            if top5_must_not_include_any_terms:
-                for term in top5_must_not_include_any_terms:
-                    if term.lower() in text:
-                        errors.append(f"Query '{query}': doc '{doc.get('title')}' contains forbidden term '{term}'")
-                        case_failed = True
-
-            if top5_must_not_source and (doc.get("source") in top5_must_not_source or doc.get("source_id") in top5_must_not_source):
-                blocked_source_violations += 1
-                errors.append(f"Query '{query}': top5 contains blocked source '{doc.get('source')}' - {doc.get('title')}")
-                case_failed = True
-
-            if top5_must_not_domain and doc.get("domain") in top5_must_not_domain:
-                blocked_domain_violations += 1
-                errors.append(f"Query '{query}': top5 contains blocked domain '{doc.get('domain')}' - {doc.get('title')}")
-                case_failed = True
-
-            if doc.get("degraded_fallback"):
-                degraded_fallback_count += 1
-                if not allow_degraded_fallback:
-                    errors.append(f"Query '{query}': degraded fallback not allowed, but doc '{doc.get('title')}' is fallback.")
-                    case_failed = True
-
-        if case_failed:
-            bad_top5_count += 1
-
-        report["case_details"].append({
-            "query": query,
-            "route_obj": route_obj,
-            "top5": [
-                {"id": doc.get("id"), "title": doc.get("title"), "domain": doc.get("domain"), "source": doc.get("source")}
-                for doc in top5
-            ],
-            "passed": not case_failed
-        })
-
-    report["route_accuracy"] = route_correct / total if total else 0
-    report["bad_top5_rate"] = bad_top5_count / total if total else 0
-    report["blocked_source_violations"] = blocked_source_violations
-    report["blocked_domain_violations"] = blocked_domain_violations
-    report["degraded_fallback_count"] = degraded_fallback_count
-    report["empty_result_violation_count"] = empty_result_violation_count
-    report["exam_vertical_top1_accuracy"] = exam_vertical_top1_correct / exam_vertical_top1_total if exam_vertical_top1_total else 1.0
-    report["errors"] = errors
-    
     reports_dir = os.path.join(BASE_DIR, "eval", "reports")
     os.makedirs(reports_dir, exist_ok=True)
     report_path = os.path.join(reports_dir, "product_search_latest.json")
     with open(report_path, "w", encoding="utf-8") as f:
         json.dump(report, f, ensure_ascii=False, indent=2)
+    report["report_path"] = report_path
+    return report
 
-    print("=== Product Search Gate Results ===")
-    print(f"Total Cases: {total}")
-    print(f"Route Accuracy: {route_correct}/{total} ({(report['route_accuracy'])*100:.1f}%)")
-    print(f"Bad Top5 Count: {bad_top5_count}")
-    print(f"Blocked Source Violations: {blocked_source_violations}")
-    print(f"Blocked Domain Violations: {blocked_domain_violations}")
-    print(f"Degraded Fallbacks: {degraded_fallback_count}")
-    print(f"Empty Result Violations: {empty_result_violation_count}")
-    print(f"Exam Vertical Top1 Accuracy: {report['exam_vertical_top1_accuracy']:.2f}")
-    print(f"Report saved to: {report_path}")
 
-    if errors:
-        print("\nErrors Found:")
-        for err in errors:
-            print(f" - {err}")
+def main() -> None:
+    parser = argparse.ArgumentParser(description="Product Search Quality Gate")
+    parser.add_argument("--mode", choices=["python", "frontend", "both"], default="python")
+    parser.add_argument("--ts-results", default=None, help="JSON from eval_frontend_search.ts")
+    parser.add_argument("--max-data-gap-groups", type=int, default=3)
+    args = parser.parse_args()
 
-    failed = (
-        bad_top5_count > 0
-        or blocked_source_violations > 0
-        or blocked_domain_violations > 0
-        or empty_result_violation_count > 0
-        or route_correct < total
-        or (exam_vertical_top1_total > 0 and exam_vertical_top1_correct < exam_vertical_top1_total)
-    )
-    if failed:
-        print("\n[FAILED] Product Search Quality Gate: CI gate failed due to quality violations.")
+    try:
+        report = evaluate_cases(args.mode, args.ts_results, args.max_data_gap_groups)
+    except Exception as exc:
+        print(f"[FAILED] Product Search Quality Gate setup error: {exc}")
         sys.exit(1)
 
-    print("\n[PASS] Product Search Quality Gate passed successfully.")
+    counts = report["status_counts"]
+    print("=== Product Search Gate Results ===")
+    print(f"Mode: {report['mode']}")
+    print(f"Total Cases: {report['total_cases']}")
+    print(f"Route Accuracy: {report['route_accuracy']:.3f}")
+    print(
+        "Status Counts: "
+        f"strict={counts[STATUS_STRICT_PASS]}, "
+        f"data_gap={counts[STATUS_DATA_GAP]}, "
+        f"degraded={counts[STATUS_DEGRADED_PASS]}, "
+        f"fail={counts[STATUS_FAIL]}"
+    )
+    print(f"Data Gap Groups: {report['data_gap_count']}/{report['max_data_gap_groups']} {report['data_gap_groups']}")
+    print(f"Report saved to: {report['report_path']}")
+
+    if counts[STATUS_FAIL] > 0:
+        print("\nErrors Found:")
+        for detail in report["case_details"]:
+            if detail["status"] == STATUS_FAIL:
+                print(f" - {detail['query']}: {'; '.join(detail['blocking_failure_reasons'])}")
+
+    failed = (
+        counts[STATUS_FAIL] > 0
+        or report["route_accuracy"] < 1.0
+        or report["data_gap_count"] > report["max_data_gap_groups"]
+    )
+    if failed:
+        print("\n[FAILED] Product Search Quality Gate failed.")
+        sys.exit(1)
+
+    print("\n[PASS] Product Search Quality Gate passed.")
+
 
 if __name__ == "__main__":
-    evaluate_cases()
+    main()

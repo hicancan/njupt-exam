@@ -1,7 +1,10 @@
+import math
 import os
+import re
+from datetime import datetime, timezone
 from typing import Any, Dict, List
 
-from core.bm25_indexer import bm25_scores, tokenize_text
+from core.bm25_indexer import tokenize_text
 from core.query_expander import understand_query
 from core.hybrid_ranker import token_overlap
 from search.query_router import route_query, load_query_routes
@@ -35,163 +38,507 @@ def vertical_rank_documents(
     *,
     limit: int | None = None,
 ) -> List[Dict[str, Any]]:
+    return _rank_documents_frontend_compatible(query, documents, hybrid_index, query_aliases, limit=limit)
+
+
+def _rank_documents_frontend_compatible(
+    query: str,
+    documents: List[Dict[str, Any]],
+    hybrid_index: Dict[str, Any],
+    query_aliases: Dict[str, Any],
+    *,
+    limit: int | None = None,
+) -> List[Dict[str, Any]]:
     routes = get_routes()
     route = route_query(query, routes)
-    understood = understand_query(query, query_aliases)
-    
-    field_weights = (ranking_weights or {}).get("field_weights", {})
-    base_weights = {**DEFAULT_WEIGHTS, **((ranking_weights or {}).get("weights", ranking_weights or {}))}
-    
-    query_type = route.get("query_type", "general_search")
-    
-    if query_type == "class_exam_lookup":
-        base_weights["entity"] += 0.3
-        base_weights["field"] += 0.2
-    elif query_type == "exam_notice_search":
-        base_weights["entity"] += 0.2
-    elif query_type == "degree_defense_search":
-        base_weights["entity"] += 0.2
-    elif query_type == "resource_search":
-        base_weights["tag"] += 0.2
-        base_weights["semantic_expansion"] += 0.1
-    elif query_type == "innovation_project_search":
-        base_weights["entity"] += 0.15
-        
-    query_tokens = tokenize_text(" ".join([understood["normalized_query"], *understood.get("aliases", []), *understood.get("semantic_queries", [])]))
-    bm25 = bm25_scores(query_tokens, hybrid_index)
-    
-    doc_lookup = {str(document.get("id")): document for document in documents}
-    
-    scored_results = []
-
-    target_domains = set(route.get("target_domains", []))
-    preferred_sources = set(route.get("preferred_sources", []))
-    preferred_channels = set(route.get("preferred_channels", []))
-    blocked_domains = set(route.get("blocked_domains_for_top5", []))
-    blocked_sources = set(route.get("blocked_sources_for_top5", []))
-    allow_resource = route.get("allow_resource_top5", True)
-
-    bad_result_terms = route.get("bad_result_terms", [])
-    must_include_terms = route.get("must_include_terms_for_top_results", [])
-    top1_exact = route.get("top1_prefer_exact_title", False)
-
-    # 4-bucket approach for degraded fallback
-    strong: List[Dict[str, Any]] = []   # Tier A
-    weak: List[Dict[str, Any]] = []     # Tier B
-    fallback: List[Dict[str, Any]] = [] # Tier C
-    blocked_candidates: List[Dict[str, Any]] = []  # blocked but kept for backfill
-
-    for doc_id, document in doc_lookup.items():
-        index_payload = (hybrid_index.get("documents") or {}).get(doc_id, {})
-        components = score_components_vertical(document, index_payload, understood, route, bm25.get(doc_id, 0.0), field_weights)
-
-        total = (
-            base_weights["bm25"] * components["bm25"]
-            + base_weights["field"] * components["field"]
-            + base_weights["tag"] * components["tag"]
-            + base_weights["entity"] * components["entity"]
-            + base_weights["semantic_expansion"] * components["semantic_expansion"]
-            + base_weights["utility"] * components["utility"]
-            - base_weights["risk_penalty"] * components["risk_penalty"]
+    trimmed = str(query or "").strip()
+    if len(trimmed) < 2:
+        ranked = []
+        for document in documents:
+            score = (
+                float(document.get("importance_score", 0) or 0)
+                * intent_weight(str(document.get("intent", "")))
+                * lifecycle_weight(str(document.get("lifecycle", "")))
+                * source_type_weight(str(document.get("source_type", "")))
+                * deadline_urgency_weight(document.get("deadline"))
+            )
+            ranked.append({**document, "score": round(score, 4), "score_reason": build_score_reason_ts(document)})
+        ranked.sort(
+            key=lambda item: (
+                item["score"],
+                date_sort_value(item.get("published_at")),
+                float(item.get("importance_score", 0) or 0),
+            ),
+            reverse=True,
         )
+        return ranked[: limit or 30]
 
-        if total <= 0:
-            continue
+    target_domains = set(route.get("target_domains", []) or [])
+    target_intents = set(route.get("target_intents", []) or [])
+    blocked_domains = set(route.get("blocked_domains_for_top5", []) or [])
+    blocked_sources = set(route.get("blocked_sources_for_top5", []) or [])
+    preferred_sources = set(route.get("preferred_sources", []) or [])
+    allow_resource_top5 = route.get("allow_resource_top5", True)
 
-        doc_domain = str(document.get("domain", ""))
-        doc_source = str(document.get("source", ""))
-        doc_channel = str(document.get("channel", ""))
-        doc_title = str(document.get("title", ""))
-        doc_content = str(document.get("content", ""))
-        doc_text = (doc_title + " " + doc_content).lower()
+    bad_result_terms = route.get("bad_result_terms", []) or []
+    must_include_terms = route.get("must_include_terms_for_top_results", []) or []
+    top1_exact = bool(route.get("top1_prefer_exact_title", False))
+    hybrid_documents = (hybrid_index.get("documents") or {}) if hybrid_index else {}
+    expanded_terms = alias_terms_for_query(trimmed, query_aliases)
 
-        tier = "C"
-        is_exact_title = understood["normalized_query"].lower() in doc_title.lower()
+    candidates: List[Dict[str, Any]] = []
+    for document in documents:
+        doc_id = str(document.get("id", ""))
+        text_score = score_text_match(document, trimmed, expanded_terms)
+        hybrid_payload = hybrid_documents.get(doc_id, {})
+        query_with_aliases = " ".join([trimmed, *expanded_terms])
+        terms = hybrid_payload.get("terms") or {}
+        fields = hybrid_payload.get("fields") or {}
+        bm25_proxy = score_hybrid_terms(terms, query_with_aliases) if terms else text_score / 24
+        field_score = score_hybrid_fields(fields, query_with_aliases) if fields else min(1, text_score / 24)
+        tag_score = overlap_score(query_with_aliases, " ".join(str(item) for item in document.get("tags", []) or []))
+        task_text = " ".join(
+            f"{frame.get('what', '')} {((frame.get('action') or {}).get('summary') or '')} "
+            f"{' '.join(str(item.get('text', '')) for item in frame.get('evidence', []) or [])}"
+            for frame in document.get("task_frames", []) or []
+        )
+        task_frame_score = overlap_score(query_with_aliases, task_text) if task_text else 0
 
-        # class_exam_lookup: also match class_name field for "B250403 高数" style queries
+        domain = normalize(str(document.get("domain", "")))
+        intent = normalize(str(document.get("intent", "")))
+        source = normalize(str(document.get("source", "")))
+        source_id = normalize(str(document.get("source_id", "")))
+        title = normalize(str(document.get("title", "")))
+        content = normalize(str(document.get("content", "")))
+        full_text = f"{title} {content}"
+
+        is_exact_title = normalize(trimmed) in title
         if not is_exact_title and route.get("query_type") == "class_exam_lookup" and top1_exact:
-            doc_class = str(document.get("class_name", "")).lower()
+            doc_class = str(document.get("class_name", "") or "").lower()
             if doc_class:
-                for word in understood["normalized_query"].lower().split():
+                for word in trimmed.lower().split():
                     if len(word) >= 7 and word in doc_class:
                         is_exact_title = True
                         break
 
+        tier = "C"
         if top1_exact and is_exact_title:
             tier = "A"
-            total += 10.0
-            # class_exam_lookup: ensure exam_vertical docs rank top1
-            if route.get("query_type") == "class_exam_lookup" and document.get("source_id") == "exam_vertical":
-                total += 20.0
-        elif doc_domain in target_domains or doc_source in preferred_sources or doc_channel in preferred_channels or is_exact_title:
+        elif domain in target_domains and intent in target_intents:
             tier = "A"
-        elif understood["target_domains"] and doc_domain in understood["target_domains"]:
+        elif domain in target_domains or intent in target_intents or is_exact_title:
             tier = "B"
+        elif not target_domains and not target_intents:
+            tier = "A"
 
-        is_blocked_for_top5 = False
-        if doc_domain in blocked_domains and not is_exact_title:
-            is_blocked_for_top5 = True
-        if doc_source in preferred_sources or document.get("source_id") in preferred_sources:
-            components["source_boost"] = 1.25
-            total *= 1.25
-            if route.get("id") == "class_exam_lookup":
-                components["source_boost"] = 10.0
-                total *= 10.0
+        is_blocked = False
+        if (domain in blocked_domains or source in blocked_sources or source_id in blocked_sources) and not is_exact_title:
+            is_blocked = True
+        if not allow_resource_top5 and document.get("source_type") == "github_resource":
+            is_blocked = True
+        if any(normalize(str(term)) in full_text for term in bad_result_terms):
+            is_blocked = True
+        if must_include_terms and not any(normalize(str(term)) in full_text for term in must_include_terms):
+            is_blocked = True
+
+        if tier == "A":
+            tier_multiplier = 2.0
+        elif tier == "B":
+            tier_multiplier = 1.2
+        else:
+            tier_multiplier = 0.1
+
+        source_boost = 1.0
+        if source in preferred_sources or source_id in preferred_sources:
+            source_boost = 1.25
+            if route.get("query_type") == "class_exam_lookup":
+                source_boost = 10.0
+                tier_multiplier = 2.0
                 tier = "A"
-        if (doc_source in blocked_sources or document.get("source_id") in blocked_sources) and not is_exact_title:
-            is_blocked_for_top5 = True
-        if not allow_resource and document.get("source_type") == "github_resource":
-            is_blocked_for_top5 = True
 
-        if any(bt.lower() in doc_text for bt in bad_result_terms):
-            is_blocked_for_top5 = True
+        raw_match_score = (
+            0.3 * min(1, bm25_proxy)
+            + 0.25 * field_score
+            + 0.2 * tag_score
+            + 0.15 * max(task_frame_score, overlap_score(" ".join(expanded_terms), str(document.get("content", ""))))
+        )
+        has_match = text_score > 0 or raw_match_score > 0
 
-        if must_include_terms:
-            if not any(mt.lower() in doc_text for mt in must_include_terms):
-                is_blocked_for_top5 = True
+        utility_score = (
+            0.42 * float(document.get("student_score", 0) or 0)
+            + 0.3 * float(document.get("importance_score", 0) or 0)
+            + 0.2 * float(document.get("source_weight", 0.8) or 0.8)
+        )
+        risk_penalty = (
+            (0.5 if document.get("sensitive") else 0)
+            + (0.25 if document.get("review_required") else 0)
+            + (0.5 if document.get("status") == "restricted" else 0)
+        )
+        utility_score = max(0, utility_score - risk_penalty)
+        hybrid_score = raw_match_score + 0.2 * min(1, utility_score) - 0.05 * min(1, risk_penalty) if has_match else 0
+        weighted_score = (
+            (text_score + hybrid_score * 32)
+            * source_boost
+            * (0.55 + float(document.get("student_score", 0) or 0) * 0.45)
+            * (0.72 + float(document.get("freshness_score", 0) or 0) * 0.28)
+            * (0.7 + float(document.get("importance_score", 0) or 0) * 0.3)
+            * intent_weight(str(document.get("intent", "")))
+            * lifecycle_weight(str(document.get("lifecycle", "")))
+            * source_type_weight(str(document.get("source_type", "")))
+            * deadline_urgency_weight(document.get("deadline"))
+            * tier_multiplier
+            if has_match
+            else 0
+        )
 
-        if tier == "C":
-            total *= 0.5
+        if top1_exact and is_exact_title:
+            weighted_score += 10.0
+            if route.get("query_type") == "class_exam_lookup" and document.get("source_id") == "exam_vertical":
+                weighted_score += 20.0
 
+        if weighted_score <= 0:
+            continue
+
+        components = {
+            "bm25": min(1, bm25_proxy),
+            "field": field_score,
+            "tag": tag_score,
+            "task_frame": task_frame_score,
+            "utility": min(1, utility_score),
+            "risk_penalty": min(1, risk_penalty),
+            "tier": tier_multiplier,
+        }
         result_entry = {
             **document,
-            "score": round(total, 6),
-            "tier": tier,
-            "is_blocked_for_top5": is_blocked_for_top5,
-            "score_components": components,
-            "score_reason": build_chinese_reason(document, components, route, tier, is_blocked_for_top5),
+            "score": round(weighted_score, 4),
+            "score_reason": build_score_reason_ts(document, components) + f" [{tier}]",
+            "is_blocked_for_top5": is_blocked,
+            "tierCategory": tier,
+            "score_components": {key: round(value, 4) for key, value in components.items()},
             "degraded_fallback": False,
         }
+        candidates.append(result_entry)
 
-        if is_blocked_for_top5:
-            blocked_candidates.append(result_entry)
-        elif tier == "A":
-            strong.append(result_entry)
-        elif tier == "B":
-            weak.append(result_entry)
+    strong = []
+    weak = []
+    fallback = []
+    blocked = []
+    for doc in candidates:
+        if doc["is_blocked_for_top5"]:
+            blocked.append(doc)
+        elif doc["tierCategory"] == "A":
+            strong.append(doc)
+        elif doc["tierCategory"] == "B":
+            weak.append(doc)
         else:
-            fallback.append(result_entry)
+            fallback.append(doc)
 
-    # Sort each bucket by score descending
-    sort_key = lambda item: (item["score"], item.get("published_at") or "")
-    strong.sort(key=sort_key, reverse=True)
-    weak.sort(key=sort_key, reverse=True)
-    fallback.sort(key=sort_key, reverse=True)
-    blocked_candidates.sort(key=sort_key, reverse=True)
+    sort_fn = lambda item: (item["score"], date_sort_value(item.get("published_at")))
+    strong.sort(key=sort_fn, reverse=True)
+    weak.sort(key=sort_fn, reverse=True)
+    fallback.sort(key=sort_fn, reverse=True)
+    blocked.sort(key=sort_fn, reverse=True)
 
-    # Assemble: strong -> weak -> fallback -> blocked (backfill only when needed)
-    final_limit = limit if limit is not None else len(doc_lookup)
-
-    scored_results = _take(strong, final_limit)
-    if len(scored_results) < final_limit:
-        scored_results += _take(weak, final_limit - len(scored_results))
-    if len(scored_results) < final_limit:
-        scored_results += _take(fallback, final_limit - len(scored_results))
-    if len(scored_results) < final_limit:
-        for doc in _take(blocked_candidates, final_limit - len(scored_results)):
+    max_results = 30 if limit is None else limit
+    valid = [*strong, *weak, *fallback][:max_results]
+    if len(valid) < max_results:
+        for doc in blocked:
+            if len(valid) >= max_results:
+                break
             doc["degraded_fallback"] = True
             doc["score_reason"] += "，目标候选不足，作为降级补位"
-            scored_results.append(doc)
+            valid.append(doc)
+    return valid
+
+
+def normalize(value: str) -> str:
+    return re.sub(r"\s+", "", str(value or "").lower())
+
+
+def tokenize(query: str) -> List[str]:
+    normalized = str(query or "").strip()
+    if not normalized:
+        return []
+    parts = [part.strip() for part in re.split(r"[\s,，、/|]+", normalized) if part.strip()]
+    return parts if parts else [normalized]
+
+
+def overlap_score(query: str, text: str) -> float:
+    query_tokens = {normalize(token) for token in tokenize(query) if normalize(token)}
+    if not query_tokens:
+        return 0.0
+    candidate = normalize(text)
+    hits = sum(1 for token in query_tokens if token in candidate)
+    return hits / len(query_tokens)
+
+
+def score_hybrid_terms(terms: Dict[str, Any], query: str) -> float:
+    tokens = [normalize(token) for token in tokenize(query) if normalize(token)]
+    if not tokens:
+        return 0.0
+    score = sum(float(terms.get(token, 0) or 0) for token in tokens)
+    return min(1.0, score / max(12, len(tokens) * 3))
+
+
+def score_hybrid_fields(fields: Dict[str, Any], query: str) -> float:
+    weights = {
+        "title": 4,
+        "tags": 3,
+        "task.what": 3,
+        "task.action.summary": 2.8,
+        "evidence": 2.5,
+        "materials.name": 2,
+        "source": 1.5,
+        "content": 1,
+    }
+    score = 0.0
+    max_score = 0.0
+    for field, value in fields.items():
+        weight = float(weights.get(field, 1))
+        max_score += weight
+        score += weight * overlap_score(query, str(value))
+    return min(1.0, score / max_score) if max_score > 0 else 0.0
+
+
+DOMAIN_LABELS = {
+    "academic": "学业事务",
+    "exam": "考试",
+    "course": "课程选课",
+    "degree": "学位培养",
+    "scholarship": "资助评优",
+    "employment": "就业实习",
+    "competition": "竞赛活动",
+    "project": "项目机会",
+    "innovation_project": "大创项目",
+    "international": "国际交流",
+    "life": "校园生活",
+    "library": "图书馆",
+    "security": "安全保卫",
+    "logistics": "后勤服务",
+    "campus_network": "校园网络",
+    "subsidy": "资助补助",
+    "medical_insurance": "医保体检",
+    "archive": "档案服务",
+    "lecture": "讲座活动",
+    "research": "科研事务",
+    "resource": "学习资料",
+    "news": "校园新闻",
+    "policy": "政策制度",
+}
+
+INTENT_LABELS = {
+    "apply": "申请",
+    "register": "报名",
+    "submit": "提交",
+    "attend": "参加",
+    "check_result": "查结果",
+    "publicity": "公示",
+    "download": "下载",
+    "read": "阅读",
+    "schedule": "安排",
+    "alert": "提醒",
+    "pay": "缴费",
+    "contact": "联系",
+    "export": "导出",
+}
+
+SOURCE_TYPE_LABELS = {
+    "central_admin": "校级部门",
+    "central_notice": "校级通知",
+    "central_news": "校园新闻",
+    "college": "学院站",
+    "service_unit": "服务单位",
+    "job_platform": "就业平台",
+    "github_resource": "资料仓库",
+    "research_admin": "科研管理",
+    "policy": "信息公开",
+    "exam_vertical": "考试频道",
+}
+
+
+def score_text_match(document: Dict[str, Any], query: str, expanded_terms: List[str] | None = None) -> float:
+    tokens = tokenize(" ".join([query, *(expanded_terms or [])]))
+    if not tokens:
+        return 0.0
+
+    title = normalize(str(document.get("title", "")))
+    content = normalize(str(document.get("content", "")))
+    channel = normalize(str(document.get("channel", "")))
+    source = normalize(str(document.get("source", "")))
+    domain = normalize(DOMAIN_LABELS.get(str(document.get("domain", "")), str(document.get("domain", ""))))
+    intent = normalize(INTENT_LABELS.get(str(document.get("intent", "")), str(document.get("intent", ""))))
+    source_type = normalize(SOURCE_TYPE_LABELS.get(str(document.get("source_type", "")), str(document.get("source_type", ""))))
+    tags = normalize(" ".join(str(item) for item in document.get("tags", []) or []))
+    evidence = normalize(" ".join(str(item) for item in document.get("evidence", []) or []))
+    class_name = normalize(str(document.get("class_name", "") or ""))
+    task_text = normalize(
+        " ".join(
+            " ".join(
+                str(part)
+                for part in [
+                    frame.get("what", ""),
+                    (frame.get("action") or {}).get("summary", ""),
+                    (frame.get("action") or {}).get("verb", ""),
+                    (frame.get("time") or {}).get("deadline", ""),
+                    *[material.get("name", "") for material in frame.get("materials", []) or []],
+                    *[item.get("text", "") for item in frame.get("evidence", []) or []],
+                ]
+                if part
+            )
+            for frame in document.get("task_frames", []) or []
+        )
+    )
+
+    score = 0.0
+    normalized_query = normalize(query)
+    if title == normalized_query:
+        score += 18
+    if normalized_query and normalized_query in title:
+        score += 12
+    if class_name and class_name == normalized_query:
+        score += 16
+
+    for token in tokens:
+        normalized_token = normalize(token)
+        if not normalized_token:
+            continue
+        if normalized_token in title:
+            score += 8
+        if normalized_token in tags:
+            score += 4
+        if normalized_token in domain:
+            score += 4
+        if normalized_token in intent:
+            score += 3
+        if normalized_token in source_type:
+            score += 2
+        if normalized_token in channel:
+            score += 3
+        if normalized_token in source:
+            score += 3
+        if normalized_token in evidence:
+            score += 2
+        if normalized_token in task_text:
+            score += 5
+        if normalized_token in content:
+            score += 1.5
+        if normalized_token in class_name:
+            score += 8
+    return score
+
+
+def alias_terms_for_query(query: str, query_aliases: Dict[str, Any]) -> List[str]:
+    normalized_query = normalize(query)
+    terms: List[str] = []
+    for key, payload in (query_aliases or {}).items():
+        aliases = [str(item) for item in payload.get("aliases", [])] if isinstance(payload, dict) else []
+        candidates = [key, *aliases]
+        if any(normalize(candidate) and normalize(candidate) in normalized_query for candidate in candidates):
+            terms.extend(aliases)
+    return list(dict.fromkeys(term for term in terms if term))
+
+
+def intent_weight(intent: str) -> float:
+    return {
+        "apply": 1.14,
+        "register": 1.13,
+        "submit": 1.12,
+        "check_result": 1.08,
+        "publicity": 1.05,
+        "schedule": 1.06,
+        "alert": 1.08,
+        "attend": 1.04,
+        "download": 0.98,
+        "read": 0.9,
+        "pay": 1.05,
+        "contact": 0.96,
+        "export": 0.98,
+    }.get(intent, 1.0)
+
+
+def lifecycle_weight(lifecycle: str) -> float:
+    return {
+        "active": 1.08,
+        "upcoming": 1.04,
+        "evergreen": 0.98,
+        "unknown": 0.96,
+        "expired": 0.76,
+    }.get(lifecycle, 1.0)
+
+
+def source_type_weight(source_type: str) -> float:
+    return {
+        "central_admin": 1.08,
+        "central_notice": 1.04,
+        "job_platform": 1.05,
+        "college": 1.02,
+        "service_unit": 1.0,
+        "github_resource": 0.9,
+        "central_news": 0.86,
+        "research_admin": 0.88,
+        "policy": 0.84,
+        "exam_vertical": 1.12,
+    }.get(source_type, 1.0)
+
+
+def deadline_urgency_weight(deadline: Any) -> float:
+    if not deadline:
+        return 1.0
+    dt = parse_date(deadline)
+    if not dt:
+        return 1.0
+    days = (dt - datetime.now(timezone.utc)).total_seconds() / 86400
+    if days < 0:
+        return 0.82
+    if days <= 1:
+        return 1.18
+    if days <= 3:
+        return 1.14
+    if days <= 7:
+        return 1.08
+    return 1.02
+
+
+def parse_date(value: Any) -> datetime | None:
+    if not value:
+        return None
+    try:
+        text = str(value)
+        dt = datetime.fromisoformat(text.replace("Z", "+00:00"))
+        if dt.tzinfo is None:
+            dt = dt.replace(tzinfo=timezone.utc)
+        return dt.astimezone(timezone.utc)
+    except ValueError:
+        return None
+
+
+def date_sort_value(value: Any) -> float:
+    dt = parse_date(value)
+    return dt.timestamp() * 1000 if dt else 0.0
+
+
+def build_score_reason_ts(document: Dict[str, Any], components: Dict[str, float] | None = None) -> str:
+    parts = [
+        DOMAIN_LABELS.get(str(document.get("domain", "")), str(document.get("domain", ""))),
+        INTENT_LABELS.get(str(document.get("intent", "")), str(document.get("intent", ""))),
+        str(document.get("channel", "")),
+    ]
+    if document.get("attachments"):
+        parts.append(f"{len(document.get('attachments') or [])}附件")
+    lead = "·".join(parts)
+    if not components:
+        return lead
+    ranked = sorted(
+        ((name, value) for name, value in components.items() if value > 0.01),
+        key=lambda item: item[1],
+        reverse=True,
+    )[:3]
+    detail = " / ".join(f"{name}:{value:.2f}" for name, value in ranked)
+    return f"{lead} · {detail}" if detail else lead
+
+
+def _take(items: List[Dict[str, Any]], n: int) -> List[Dict[str, Any]]:
+    return items[:n]
 
     return scored_results
 

@@ -14,6 +14,6 @@ def test_search_router_fixtures():
         
     for case in cases:
         query = case["query"]
-        expected = case["expected_route"]
+        expected = case["expected_query_type"]
         route = route_query(query, routes)
         assert route["query_type"] == expected, f"Query '{query}': expected {expected}, got {route['query_type']}"

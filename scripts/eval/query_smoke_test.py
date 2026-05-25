@@ -10,6 +10,7 @@ if SCRIPTS_DIR not in sys.path:
 
 from core.hybrid_ranker import rank_documents
 from eval_search import build_exam_documents, read_json
+from eval_product_search import _coverage_gap_channels, _load_manifest_channels
 
 
 REQUIRED_QUERIES = {
@@ -49,6 +50,12 @@ def main() -> None:
     ranking_weights = read_json(os.path.join(BASE_DIR, "config", "ranking_weights.json"))
     queries = read_json(os.path.join(BASE_DIR, "eval", "queries.json"))
     query_texts = [str(item.get("query") or "") for item in queries]
+    search_cases = {
+        str(item.get("query")): item
+        for item in read_json(os.path.join(BASE_DIR, "eval", "search_cases.json"))
+    }
+    notice_documents = read_json(os.path.join(BASE_DIR, "public", "index", "documents.json"))
+    manifest_channels = _load_manifest_channels()
 
     missing = sorted(REQUIRED_QUERIES.difference(query_texts))
     failures: list[dict[str, Any]] = []
@@ -57,11 +64,27 @@ def main() -> None:
         failures.append({"type": "missing_query", "queries": missing})
 
     for query in query_texts:
+        case = search_cases.get(query, {})
+        data_gap_channels = _coverage_gap_channels(case, notice_documents, manifest_channels) if case.get("data_gap_allowed") else []
+        is_data_gap = bool(case.get("data_gap_allowed")) and bool(case.get("coverage_channels")) and set(data_gap_channels) == set(str(item) for item in case.get("coverage_channels", []))
         ranked = rank_documents(query, documents, hybrid_index, query_aliases, ranking_weights, limit=5)
         top = ranked[:5]
         if not top:
-            failures.append({"type": "empty_top5", "query": query})
-            rows.append({"query": query, "top_ids": [], "status": "fail"})
+            if is_data_gap:
+                rows.append({"query": query, "top_ids": [], "status": "data_gap", "data_gap_channels": data_gap_channels})
+            else:
+                failures.append({"type": "empty_top5", "query": query})
+                rows.append({"query": query, "top_ids": [], "status": "fail"})
+            continue
+
+        if is_data_gap:
+            rows.append({
+                "query": query,
+                "top_ids": [item.get("id") for item in top],
+                "top_sources": [item.get("source_id") for item in top],
+                "status": "data_gap",
+                "data_gap_channels": data_gap_channels,
+            })
             continue
 
         if any(not item.get("score_reason") for item in top):

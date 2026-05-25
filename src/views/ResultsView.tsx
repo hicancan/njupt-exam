@@ -33,6 +33,32 @@ const getRouteName = (route: string) => {
     return names[route] || '综合查询';
 };
 
+const getNoResultsCopy = (route: string, query: string) => {
+    const fallback = {
+        title: '没有找到匹配结果。',
+        detail: '可以尝试“考试安排”“奖学金 公示”“停水 停电”“B250403”这类更具体的关键词。'
+    };
+
+    if (query.length < 2) return fallback;
+
+    const routeCopies: Record<string, { title: string; detail: string }> = {
+        degree_defense_search: {
+            title: `我们理解你在查“${query}”。`,
+            detail: '但当前索引中“研究生院-学位与答辩 / 毕业与论文”栏目暂无可用公开文档。'
+        },
+        cet_notice_search: {
+            title: `我们理解你在查“${query}”。`,
+            detail: '但当前教务处考试栏目没有可用于检索的 CET / 四六级专项公开通知。'
+        },
+        competition_search: {
+            title: `我们理解你在查“${query}”。`,
+            detail: '但当前创新创业学院竞赛栏目没有该赛事的可用公开文档。'
+        }
+    };
+
+    return routeCopies[route] || fallback;
+};
+
 interface SearchResultCardProps {
     document: RankedSearchDocument | SearchDocument;
     onOpenClass: (className: string) => void;
@@ -181,7 +207,9 @@ function SearchResultCard({ document, onOpenClass }: SearchResultCardProps) {
                 {document.summary || document.content}
             </div>
             {scoreReason || document.semantic_mode ? (
-                <div className="mt-1 text-[12px] text-[#70757a] dark:text-[#9aa0a6] flex flex-wrap gap-x-3 gap-y-1">
+                <details className="mt-1 text-[12px] text-[#70757a] dark:text-[#9aa0a6]">
+                    <summary className="cursor-pointer select-none inline-flex hover:text-[#202124] dark:hover:text-[#e8eaed]">调试信息</summary>
+                    <div className="mt-1 flex flex-wrap gap-x-3 gap-y-1">
                     {scoreReason && <span>排序依据：{scoreReason}</span>}
                     {document.semantic_mode && (
                         <span>
@@ -195,7 +223,8 @@ function SearchResultCard({ document, onOpenClass }: SearchResultCardProps) {
                             </span>
                         </span>
                     )}
-                </div>
+                    </div>
+                </details>
             ) : null}
         </Wrapper>
     );
@@ -273,6 +302,9 @@ export function ResultsView({
     }, [query, activeTab, domainFilter, intentFilter]);
 
     const visibleResults = filteredResults.slice(0, visibleCount);
+    const hasClassDetail = classMode.mode === 'DETAIL' && classMode.exams.length > 0;
+    const showSearchResultsSection = !(hasClassDetail && filteredResults.length === 0);
+    const noResultsCopy = getNoResultsCopy(routeInfo.query_type, trimmedQuery);
 
     return (
         <main className="max-w-6xl w-full mx-auto px-4 py-6">
@@ -332,18 +364,18 @@ export function ResultsView({
                             </p>
                         </div>
                     </section>
-                ) : (
+                ) : showSearchResultsSection ? (
                     <section className="mt-8">
                         <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-2 mb-4">
                             <div>
                                 <h2 className="text-xl font-semibold text-[#202124] dark:text-[#e8eaed]">搜索结果</h2>
-                                <div className="flex space-x-4 mt-2 mb-1 border-b border-[#dadce0] dark:border-[#3c4043]">
-                                    <button onClick={() => setActiveTab('all')} className={`pb-2 text-sm font-medium ${activeTab === 'all' ? 'text-[#1a73e8] border-b-2 border-[#1a73e8]' : 'text-[#5f6368] hover:text-[#202124] dark:text-[#9aa0a6] dark:hover:text-[#e8eaed]'}`}>全部</button>
-                                    <button onClick={() => setActiveTab('official_notice')} className={`pb-2 text-sm font-medium ${activeTab === 'official_notice' ? 'text-[#1a73e8] border-b-2 border-[#1a73e8]' : 'text-[#5f6368] hover:text-[#202124] dark:text-[#9aa0a6] dark:hover:text-[#e8eaed]'}`}>官方通知</button>
-                                    <button onClick={() => setActiveTab('task_deadline')} className={`pb-2 text-sm font-medium ${activeTab === 'task_deadline' ? 'text-[#1a73e8] border-b-2 border-[#1a73e8]' : 'text-[#5f6368] hover:text-[#202124] dark:text-[#9aa0a6] dark:hover:text-[#e8eaed]'}`}>任务/截止</button>
-                                    <button onClick={() => setActiveTab('exam')} className={`pb-2 text-sm font-medium ${activeTab === 'exam' ? 'text-[#1a73e8] border-b-2 border-[#1a73e8]' : 'text-[#5f6368] hover:text-[#202124] dark:text-[#9aa0a6] dark:hover:text-[#e8eaed]'}`}>考试</button>
-                                    <button onClick={() => setActiveTab('resource')} className={`pb-2 text-sm font-medium ${activeTab === 'resource' ? 'text-[#1a73e8] border-b-2 border-[#1a73e8]' : 'text-[#5f6368] hover:text-[#202124] dark:text-[#9aa0a6] dark:hover:text-[#e8eaed]'}`}>资料</button>
-                                    <button onClick={() => setActiveTab('service')} className={`pb-2 text-sm font-medium ${activeTab === 'service' ? 'text-[#1a73e8] border-b-2 border-[#1a73e8]' : 'text-[#5f6368] hover:text-[#202124] dark:text-[#9aa0a6] dark:hover:text-[#e8eaed]'}`}>服务</button>
+                                <div className="flex gap-4 mt-2 mb-1 border-b border-[#dadce0] dark:border-[#3c4043] overflow-x-auto whitespace-nowrap">
+                                    <button onClick={() => setActiveTab('all')} className={`shrink-0 pb-2 text-sm font-medium ${activeTab === 'all' ? 'text-[#1a73e8] border-b-2 border-[#1a73e8]' : 'text-[#5f6368] hover:text-[#202124] dark:text-[#9aa0a6] dark:hover:text-[#e8eaed]'}`}>全部</button>
+                                    <button onClick={() => setActiveTab('official_notice')} className={`shrink-0 pb-2 text-sm font-medium ${activeTab === 'official_notice' ? 'text-[#1a73e8] border-b-2 border-[#1a73e8]' : 'text-[#5f6368] hover:text-[#202124] dark:text-[#9aa0a6] dark:hover:text-[#e8eaed]'}`}>官方通知</button>
+                                    <button onClick={() => setActiveTab('task_deadline')} className={`shrink-0 pb-2 text-sm font-medium ${activeTab === 'task_deadline' ? 'text-[#1a73e8] border-b-2 border-[#1a73e8]' : 'text-[#5f6368] hover:text-[#202124] dark:text-[#9aa0a6] dark:hover:text-[#e8eaed]'}`}>任务/截止</button>
+                                    <button onClick={() => setActiveTab('exam')} className={`shrink-0 pb-2 text-sm font-medium ${activeTab === 'exam' ? 'text-[#1a73e8] border-b-2 border-[#1a73e8]' : 'text-[#5f6368] hover:text-[#202124] dark:text-[#9aa0a6] dark:hover:text-[#e8eaed]'}`}>考试</button>
+                                    <button onClick={() => setActiveTab('resource')} className={`shrink-0 pb-2 text-sm font-medium ${activeTab === 'resource' ? 'text-[#1a73e8] border-b-2 border-[#1a73e8]' : 'text-[#5f6368] hover:text-[#202124] dark:text-[#9aa0a6] dark:hover:text-[#e8eaed]'}`}>资料</button>
+                                    <button onClick={() => setActiveTab('service')} className={`shrink-0 pb-2 text-sm font-medium ${activeTab === 'service' ? 'text-[#1a73e8] border-b-2 border-[#1a73e8]' : 'text-[#5f6368] hover:text-[#202124] dark:text-[#9aa0a6] dark:hover:text-[#e8eaed]'}`}>服务</button>
                                 </div>
                                 <p className="mt-1 text-sm text-[#70757a] dark:text-[#9aa0a6]">
                                     {trimmedQuery.length >= 2
@@ -352,7 +384,7 @@ export function ResultsView({
                                 </p>
                                 {filteredResults.some(r => (r as { degraded_fallback?: boolean }).degraded_fallback) && (
                                     <p className="mt-1 text-xs text-[#e37400] dark:text-[#fdd663] bg-[#fef7e0] dark:bg-[#3d2e00] p-2 rounded">
-                                        部分结果来自降级匹配，可能不完全匹配您的查询意图。当前索引中缺少直接相关的内容。
+                                        以下结果为降级补位：当前没有找到完全匹配的官方通知。
                                     </p>
                                 )}
                             </div>
@@ -400,12 +432,12 @@ export function ResultsView({
                             </div>
                         ) : (
                             <div className="border border-[#dadce0] dark:border-[#3c4043] rounded-md bg-white dark:bg-[#202124] p-6 text-[#4d5156] dark:text-[#bdc1c6] max-w-[692px]">
-                                <p>没有找到匹配结果。</p>
-                                <p className="mt-2 text-sm">可以尝试“考试安排”“奖学金 公示”“停水 停电”“B250403”这类更具体的关键词。</p>
+                                <p>{noResultsCopy.title}</p>
+                                <p className="mt-2 text-sm">{noResultsCopy.detail}</p>
                             </div>
                         )}
                     </section>
-                )}
+                ) : null}
             </div>
             )}
         </main>

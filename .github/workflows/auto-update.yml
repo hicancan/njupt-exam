@@ -58,10 +58,17 @@ jobs:
         with:
           python-version: '3.10'
           cache: 'pip'
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
           
       - name: Install dependencies
         run: |
           pip install -r requirements.txt
+          npm ci
           
       - name: Run Exam Crawler
         run: |
@@ -129,6 +136,7 @@ jobs:
             scripts/utils/validate_query_routes.py
           python scripts/test_llm_batching.py
           python -m unittest discover -s tests
+          python -m pytest
 
       - name: Validate Query Routes
         run: |
@@ -141,13 +149,17 @@ jobs:
           python scripts/eval/query_smoke_test.py
           python scripts/eval/eval_llm_quality.py
 
+      - name: Frontend Search Evaluation
+        run: |
+          npx tsx --tsconfig tsconfig.app.json scripts/eval/eval_frontend_search.ts --out eval/reports/ts_search_results.json
+
       - name: Product Search Gate
         run: |
-          python scripts/eval/eval_product_search.py
+          python scripts/eval/eval_product_search.py --mode both --ts-results eval/reports/ts_search_results.json
 
       - name: Search Parity Check
         run: |
-          python scripts/eval/eval_search_parity.py
+          python scripts/eval/eval_search_parity.py --ts-results eval/reports/ts_search_results.json
           
       - name: Check for changes
         id: git-check
@@ -157,6 +169,15 @@ jobs:
           git add public/data/ public/index/ config/github_search_sources.json
           if [ -f eval/reports/latest.json ]; then
             git add eval/reports/latest.json
+          fi
+          if [ -f eval/reports/ts_search_results.json ]; then
+            git add eval/reports/ts_search_results.json
+          fi
+          if [ -f eval/reports/product_search_latest.json ]; then
+            git add eval/reports/product_search_latest.json
+          fi
+          if [ -f eval/reports/search_parity_latest.json ]; then
+            git add eval/reports/search_parity_latest.json
           fi
           if [ -f cache/search_llm_cache.json ]; then
             git add cache/search_llm_cache.json

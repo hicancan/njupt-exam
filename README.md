@@ -78,7 +78,7 @@ public/data/data_summary.json
 - Query Intent Router: 识别查询模式并将其路由到特定垂类意图（如考试查询、资源搜索、事务通知等）。
 - Candidate Gating & Vertical Ranking: 依据路由意图，进行目标域候选文档评级（Tier A/B/C）与特化权重评分。
 - Hybrid Retrieval：组合 BM25、字段、标签、实体、语义扩展、学生效用和风险惩罚。
-- Self Evaluation：`scripts/eval/eval_search.py`，`scripts/eval/eval_product_search.py` 与 `scripts/eval/query_smoke_test.py` 做自动质量与产品烟测。
+- Self Evaluation：`scripts/eval/eval_frontend_search.ts` 先生成浏览器真实 TypeScript top-5，`scripts/eval/eval_product_search.py --mode both` 以 frontend 结果作为产品真相，同时报告 Python 结果；`scripts/eval/eval_search_parity.py --ts-results ...` 量化 Python/TS drift。
 
 ## 安全边界
 
@@ -142,7 +142,12 @@ uv run python scripts\update_search_index.py --no-github
 uv run python scripts\utils\validate_search_index.py
 uv run python scripts\eval\eval_search.py --write-report
 uv run python scripts\eval\query_smoke_test.py
+& .\node_modules\.bin\tsx.ps1 --tsconfig tsconfig.app.json scripts\eval\eval_frontend_search.ts --out eval\reports\ts_search_results.json
+uv run python scripts\eval\eval_product_search.py --mode both --ts-results eval\reports\ts_search_results.json
+uv run python scripts\eval\eval_search_parity.py --ts-results eval\reports\ts_search_results.json
 ```
+
+Search Quality v1.3 使用 `strict_pass / data_gap / degraded_pass / fail` 四类状态。`data_gap` 只表示 Source-Channel 覆盖证明当前索引不能回答该 query，不计入 strict pass。
 
 ## 自动更新
 

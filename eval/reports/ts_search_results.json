@@ -15,6 +15,14 @@
       "github:Wonz5130/NJUPT-Yellow-Page",
       "github:ZsgsDesign/NOJ"
     ],
+    "top5_domains": [
+      "resource",
+      "resource"
+    ],
+    "top5_channel_ids": [
+      "github:Wonz5130/NJUPT-Yellow-Page:resource",
+      "github:ZsgsDesign/NOJ:resource"
+    ],
     "expected_route": "cet_notice_search",
     "route_match": true
   },
@@ -31,6 +39,12 @@
     "top5_sources": [
       "github:ZsgsDesign/NOJ"
     ],
+    "top5_domains": [
+      "resource"
+    ],
+    "top5_channel_ids": [
+      "github:ZsgsDesign/NOJ:resource"
+    ],
     "expected_route": "cet_notice_search",
     "route_match": true
   },
@@ -41,6 +55,8 @@
     "top5_ids": [],
     "top5_titles": [],
     "top5_sources": [],
+    "top5_domains": [],
+    "top5_channel_ids": [],
     "expected_route": "cet_notice_search",
     "route_match": true
   },
@@ -57,6 +73,12 @@
     "top5_sources": [
       "github:Wonz5130/NJUPT-Yellow-Page"
     ],
+    "top5_domains": [
+      "resource"
+    ],
+    "top5_channel_ids": [
+      "github:Wonz5130/NJUPT-Yellow-Page:resource"
+    ],
     "expected_route": "cet_notice_search",
     "route_match": true
   },
@@ -67,6 +89,8 @@
     "top5_ids": [],
     "top5_titles": [],
     "top5_sources": [],
+    "top5_domains": [],
+    "top5_channel_ids": [],
     "expected_route": "degree_defense_search",
     "route_match": true
   },
@@ -77,6 +101,8 @@
     "top5_ids": [],
     "top5_titles": [],
     "top5_sources": [],
+    "top5_domains": [],
+    "top5_channel_ids": [],
     "expected_route": "degree_defense_search",
     "route_match": true
   },
@@ -105,6 +131,20 @@
       "cxcy",
       "cxcy"
     ],
+    "top5_domains": [
+      "project",
+      "project",
+      "project",
+      "project",
+      "project"
+    ],
+    "top5_channel_ids": [
+      "cxcy_project",
+      "cxcy_project",
+      "cxcy_project",
+      "cxcy_project",
+      "cxcy_project"
+    ],
     "expected_route": "innovation_project_search",
     "route_match": true
   },
@@ -127,6 +167,16 @@
       "xsc",
       "ygb"
     ],
+    "top5_domains": [
+      "medical_insurance",
+      "employment",
+      "subsidy"
+    ],
+    "top5_channel_ids": [
+      "hqc_logistics",
+      "xsc_dormitory",
+      "ygb_scholarship"
+    ],
     "expected_route": "service_search",
     "route_match": true
   },
@@ -142,6 +192,12 @@
     ],
     "top5_sources": [
       "hqc"
+    ],
+    "top5_domains": [
+      "medical_insurance"
+    ],
+    "top5_channel_ids": [
+      "hqc_logistics"
     ],
     "expected_route": "service_search",
     "route_match": true
@@ -162,6 +218,14 @@
       "hqc",
       "cwc"
     ],
+    "top5_domains": [
+      "medical_insurance",
+      "logistics"
+    ],
+    "top5_channel_ids": [
+      "hqc_logistics",
+      "cwc_notice"
+    ],
     "expected_route": "service_search",
     "route_match": true
   },
@@ -177,6 +241,12 @@
     ],
     "top5_sources": [
       "jwc"
+    ],
+    "top5_domains": [
+      "course"
+    ],
+    "top5_channel_ids": [
+      "jwc_course"
     ],
     "expected_route": "official_notice_search",
     "route_match": true
@@ -206,6 +276,20 @@
       "exam_vertical",
       "exam_vertical"
     ],
+    "top5_domains": [
+      "exam",
+      "exam",
+      "exam",
+      "exam",
+      "exam"
+    ],
+    "top5_channel_ids": [
+      "exam_schedule",
+      "exam_schedule",
+      "exam_schedule",
+      "exam_schedule",
+      "exam_schedule"
+    ],
     "expected_route": "class_exam_lookup",
     "route_match": true
   },
@@ -233,6 +317,20 @@
       "exam_vertical",
       "exam_vertical",
       "exam_vertical"
+    ],
+    "top5_domains": [
+      "exam",
+      "exam",
+      "exam",
+      "exam",
+      "exam"
+    ],
+    "top5_channel_ids": [
+      "exam_schedule",
+      "exam_schedule",
+      "exam_schedule",
+      "exam_schedule",
+      "exam_schedule"
     ],
     "expected_route": "class_exam_lookup",
     "route_match": true
@@ -262,6 +360,20 @@
       "exam_vertical",
       "exam_vertical"
     ],
+    "top5_domains": [
+      "resource",
+      "exam",
+      "exam",
+      "exam",
+      "exam"
+    ],
+    "top5_channel_ids": [
+      "github:NJUPTFreeExams/NJUPT-CST-Free-Exams:resource",
+      "exam_schedule",
+      "exam_schedule",
+      "exam_schedule",
+      "exam_schedule"
+    ],
     "expected_route": "resource_search",
     "route_match": true
   },
@@ -289,6 +401,20 @@
       "exam_vertical",
       "exam_vertical",
       "exam_vertical"
+    ],
+    "top5_domains": [
+      "exam",
+      "exam",
+      "exam",
+      "exam",
+      "exam"
+    ],
+    "top5_channel_ids": [
+      "exam_schedule",
+      "exam_schedule",
+      "exam_schedule",
+      "exam_schedule",
+      "exam_schedule"
     ],
     "expected_route": "exam_notice_search",
     "route_match": true
@@ -318,6 +444,20 @@
       "exam_vertical",
       "exam_vertical"
     ],
+    "top5_domains": [
+      "exam",
+      "exam",
+      "exam",
+      "exam",
+      "exam"
+    ],
+    "top5_channel_ids": [
+      "exam_schedule",
+      "exam_schedule",
+      "exam_schedule",
+      "exam_schedule",
+      "exam_schedule"
+    ],
     "expected_route": "resource_search",
     "route_match": true
   },
@@ -345,6 +485,20 @@
       "cxcy",
       "cxcy",
       "cxcy"
+    ],
+    "top5_domains": [
+      "project",
+      "project",
+      "project",
+      "project",
+      "project"
+    ],
+    "top5_channel_ids": [
+      "cxcy_project",
+      "cxcy_project",
+      "cxcy_project",
+      "cxcy_project",
+      "cxcy_project"
     ],
     "expected_route": "innovation_project_search",
     "route_match": true
@@ -374,6 +528,20 @@
       "ygb",
       "bc"
     ],
+    "top5_domains": [
+      "scholarship",
+      "scholarship",
+      "scholarship",
+      "scholarship",
+      "scholarship"
+    ],
+    "top5_channel_ids": [
+      "xsc_dormitory",
+      "ygb_scholarship",
+      "xsc_dormitory",
+      "ygb_scholarship",
+      "bc_academic"
+    ],
     "expected_route": "scholarship_search",
     "route_match": true
   },
@@ -401,6 +569,20 @@
       "xsc",
       "bc",
       "bc"
+    ],
+    "top5_domains": [
+      "subsidy",
+      "project",
+      "scholarship",
+      "scholarship",
+      "scholarship"
+    ],
+    "top5_channel_ids": [
+      "ygb_scholarship",
+      "njupt_notice_main",
+      "xsc_dormitory",
+      "bc_academic",
+      "bc_academic"
     ],
     "expected_route": "subsidy_search",
     "route_match": true
@@ -430,6 +612,20 @@
       "bc",
       "xsc"
     ],
+    "top5_domains": [
+      "subsidy",
+      "project",
+      "scholarship",
+      "scholarship",
+      "scholarship"
+    ],
+    "top5_channel_ids": [
+      "ygb_scholarship",
+      "njupt_notice_main",
+      "bc_academic",
+      "bc_academic",
+      "xsc_dormitory"
+    ],
     "expected_route": "subsidy_search",
     "route_match": true
   },
@@ -457,6 +653,20 @@
       "job",
       "job",
       "job"
+    ],
+    "top5_domains": [
+      "employment",
+      "employment",
+      "employment",
+      "employment",
+      "employment"
+    ],
+    "top5_channel_ids": [
+      "job_talk",
+      "job_talk",
+      "job_talk",
+      "job_talk",
+      "job_talk"
     ],
     "expected_route": "job_search",
     "route_match": true
@@ -486,6 +696,20 @@
       "job",
       "job"
     ],
+    "top5_domains": [
+      "employment",
+      "employment",
+      "employment",
+      "employment",
+      "employment"
+    ],
+    "top5_channel_ids": [
+      "job_talk",
+      "job_talk",
+      "job_talk",
+      "job_talk",
+      "job_talk"
+    ],
     "expected_route": "job_search",
     "route_match": true
   },
@@ -513,6 +737,20 @@
       "job",
       "job",
       "job"
+    ],
+    "top5_domains": [
+      "employment",
+      "employment",
+      "employment",
+      "employment",
+      "employment"
+    ],
+    "top5_channel_ids": [
+      "job_talk",
+      "job_talk",
+      "job_talk",
+      "job_talk",
+      "job_talk"
     ],
     "expected_route": "job_search",
     "route_match": true
@@ -542,6 +780,20 @@
       "hqc",
       "hqc"
     ],
+    "top5_domains": [
+      "logistics",
+      "logistics",
+      "logistics",
+      "life",
+      "logistics"
+    ],
+    "top5_channel_ids": [
+      "hqc_logistics",
+      "hqc_logistics",
+      "hqc_logistics",
+      "hqc_logistics",
+      "hqc_logistics"
+    ],
     "expected_route": "campus_alert_search",
     "route_match": true
   },
@@ -569,6 +821,20 @@
       "github:hicancan/njupt-net",
       "github:s235784/NJUPT_AutoLogin",
       "github:Freedomisgood/NjuptCmcc"
+    ],
+    "top5_domains": [
+      "campus_network",
+      "campus_network",
+      "campus_network",
+      "campus_network",
+      "campus_network"
+    ],
+    "top5_channel_ids": [
+      "xxb_download",
+      "xxb_network",
+      "github:hicancan/njupt-net:resource",
+      "github:s235784/NJUPT_AutoLogin:resource",
+      "github:Freedomisgood/NjuptCmcc:resource"
     ],
     "expected_route": "service_search",
     "route_match": true
@@ -598,6 +864,20 @@
       "lib",
       "lib"
     ],
+    "top5_domains": [
+      "library",
+      "library",
+      "library",
+      "library",
+      "library"
+    ],
+    "top5_channel_ids": [
+      "lib_opening",
+      "lib_opening",
+      "lib_opening",
+      "lib_opening",
+      "lib_opening"
+    ],
     "expected_route": "library_search",
     "route_match": true
   },
@@ -622,6 +902,18 @@
       "lib",
       "ygb",
       "lib"
+    ],
+    "top5_domains": [
+      "archive",
+      "lecture",
+      "subsidy",
+      "lecture"
+    ],
+    "top5_channel_ids": [
+      "archives_notice",
+      "lib_opening",
+      "ygb_scholarship",
+      "lib_opening"
     ],
     "expected_route": "graduation_search",
     "route_match": true
@@ -651,6 +943,20 @@
       "cxcy",
       "cxcy"
     ],
+    "top5_domains": [
+      "resource",
+      "resource",
+      "resource",
+      "project",
+      "project"
+    ],
+    "top5_channel_ids": [
+      "github:dhiyu/NJUPT-Bachelor:resource",
+      "github:ace-trump-tech/NJUPT-Graduation-thesis:resource",
+      "github:gzr-lgtm/NJUPThesis-Bachelor:resource",
+      "cxcy_project",
+      "cxcy_project"
+    ],
     "expected_route": "graduation_search",
     "route_match": true
   },
@@ -661,6 +967,8 @@
     "top5_ids": [],
     "top5_titles": [],
     "top5_sources": [],
+    "top5_domains": [],
+    "top5_channel_ids": [],
     "expected_route": "competition_search",
     "route_match": true
   },
@@ -671,6 +979,8 @@
     "top5_ids": [],
     "top5_titles": [],
     "top5_sources": [],
+    "top5_domains": [],
+    "top5_channel_ids": [],
     "expected_route": "competition_search",
     "route_match": true
   }

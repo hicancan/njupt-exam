@@ -72,6 +72,8 @@ async function main() {
         top5_ids: string[];
         top5_titles: string[];
         top5_sources: string[];
+        top5_domains: string[];
+        top5_channel_ids: string[];
         expected_route: string;
         route_match: boolean;
     }> = [];
@@ -95,6 +97,8 @@ async function main() {
             top5_ids: top5.map(d => d.id),
             top5_titles: top5.map(d => d.title),
             top5_sources: top5.map(d => d.source_id || d.source),
+            top5_domains: top5.map(d => d.domain),
+            top5_channel_ids: top5.map(d => d.channel_id),
             expected_route: expectedRoute,
             route_match: routeMatch,
         });
