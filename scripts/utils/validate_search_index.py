@@ -275,12 +275,12 @@ def validate_manifest() -> None:
         cands = int(ch.get("candidates", 0) or 0)
         
         if cands > 0 and docs == 0:
-            if status not in ("ok_no_recent_docs", "warning", "error", "ok_no_relevant_docs", "ok_filtered", "warning_filtered_all", "ok_with_docs"):
+            if status not in ("ok_no_recent_docs", "warning", "error", "ok_no_relevant_docs", "warning_filtered_all", "warning_selector_issue", "error_fetch_failed"):
                 fail(f"Channel {ch_id} has {cands} candidates but 0 documents, missing valid reason. Status: {status}")
                 
         if ch_id in channel_docs:
             channel_docs[ch_id] += docs
-            if docs == 0 and status not in ("ok_no_recent_docs", "warning", "error", "ok_no_relevant_docs", "warning_filtered_all"):
+            if docs == 0 and status not in ("ok_no_recent_docs", "warning", "error", "ok_no_relevant_docs", "warning_filtered_all", "warning_selector_issue", "error_fetch_failed"):
                 fail(f"Critical channel {ch_id} has 0 documents and no valid fallback status. Current status: {status}")
                 
         if src_id in source_docs:

@@ -25,6 +25,7 @@ def get_routes():
         _cached_routes = load_query_routes(ROUTES_PATH)
     return _cached_routes
 
+
 def vertical_rank_documents(
     query: str,
     documents: List[Dict[str, Any]],
@@ -43,7 +44,6 @@ def vertical_rank_documents(
     
     query_type = route.get("query_type", "general_search")
     
-    # Adjust weights based on vertical
     if query_type == "class_exam_lookup":
         base_weights["entity"] += 0.3
         base_weights["field"] += 0.2
@@ -71,6 +71,10 @@ def vertical_rank_documents(
     blocked_sources = set(route.get("blocked_sources_for_top5", []))
     allow_resource = route.get("allow_resource_top5", True)
     
+    bad_result_terms = route.get("bad_result_terms", [])
+    must_include_terms = route.get("must_include_terms_for_top_results", [])
+    top1_exact = route.get("top1_prefer_exact_title", False)
+    
     for doc_id, document in doc_lookup.items():
         index_payload = (hybrid_index.get("documents") or {}).get(doc_id, {})
         components = score_components_vertical(document, index_payload, understood, route, bm25.get(doc_id, 0.0), field_weights)
@@ -92,40 +96,56 @@ def vertical_rank_documents(
         doc_source = str(document.get("source", ""))
         doc_channel = str(document.get("channel", ""))
         doc_title = str(document.get("title", ""))
+        doc_content = str(document.get("content", ""))
+        doc_text = (doc_title + " " + doc_content).lower()
         
-        # Candidate Gating Tier
         tier = "C"
         is_exact_title = understood["normalized_query"].lower() in doc_title.lower()
         
-        if doc_domain in target_domains or doc_source in preferred_sources or doc_channel in preferred_channels or is_exact_title:
+        if top1_exact and is_exact_title:
+            tier = "A"
+            total += 10.0
+        elif doc_domain in target_domains or doc_source in preferred_sources or doc_channel in preferred_channels or is_exact_title:
             tier = "A"
         elif understood["target_domains"] and doc_domain in understood["target_domains"]:
             tier = "B"
             
-        # Hard blocks for top 5 (simulated by massive penalty if tier is C or blocked)
         is_blocked_for_top5 = False
         if doc_domain in blocked_domains and not is_exact_title:
             is_blocked_for_top5 = True
-        if doc_source in blocked_sources and not is_exact_title:
+        if doc_source in preferred_sources or document.get("source_id") in preferred_sources:
+            components["source_boost"] = 1.25
+            total *= 1.25
+            if route.get("id") == "class_exam_lookup":
+                components["source_boost"] = 10.0
+                total *= 10.0
+                tier = "A"
+        if (doc_source in blocked_sources or document.get("source_id") in blocked_sources) and not is_exact_title:
             is_blocked_for_top5 = True
         if not allow_resource and document.get("source_type") == "github_resource":
             is_blocked_for_top5 = True
             
-        # Apply tier and block penalties
+        if any(bt.lower() in doc_text for bt in bad_result_terms):
+            is_blocked_for_top5 = True
+            
+        if must_include_terms:
+            if not any(mt.lower() in doc_text for mt in must_include_terms):
+                is_blocked_for_top5 = True
+            
         if is_blocked_for_top5:
-            total *= 0.1 # Heavily penalize, effectively pushing it out of top 5 unless nothing else matches
-            components["block_penalty"] = 0.9
+            continue
             
         if tier == "C":
-            total *= 0.5 # Tier C is fallback
+            total *= 0.5 
             
         scored_results.append({
             **document,
             "score": round(total, 6),
             "tier": tier,
-            "is_blocked_for_top5": is_blocked_for_top5,
+            "is_blocked_for_top5": False,
             "score_components": components,
-            "score_reason": build_chinese_reason(document, components, route, tier, is_blocked_for_top5),
+            "score_reason": build_chinese_reason(document, components, route, tier, False),
+            "degraded_fallback": False
         })
         
     scored_results.sort(key=lambda item: (
@@ -135,7 +155,15 @@ def vertical_rank_documents(
         item.get("published_at") or ""
     ), reverse=True)
     
-    return scored_results[:limit] if limit else scored_results
+    if limit:
+        scored_results = scored_results[:limit]
+        
+    for i, doc in enumerate(scored_results):
+        if doc["is_blocked_for_top5"]:
+            doc["degraded_fallback"] = True
+            doc["score_reason"] += "，目标候选不足，作为降级补位"
+            
+    return scored_results
 
 def score_components_vertical(
     document: Dict[str, Any],

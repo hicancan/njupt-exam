@@ -16,34 +16,36 @@ def route_query(raw_query: str, routes: List[Dict[str, Any]]) -> Dict[str, Any]:
     scored_routes = []
     
     for route in routes:
-        score = route.get("priority", 50) / 100.0  # Priority breaks ties
+        evidence_score = 0
         must_have = route.get("must_have_any", [])
         if must_have:
             if not any(term.lower() in query_lower for term in must_have):
                 if route.get("id") == "class_exam_lookup" and re.search(r"^[a-z]\d{6,8}", query_lower):
                     pass
                 else:
-                    score -= 1000
+                    evidence_score -= 1000
 
         if route.get("id") == "class_exam_lookup" and re.search(r"^[a-z]\d{6,8}", query_lower):
-            score += 100
+            evidence_score += 100
             
         triggers = route.get("triggers", [])
         for trigger in triggers:
             if trigger.lower() in query_lower:
-                score += 50
+                evidence_score += 50
 
         soft_terms = route.get("soft_terms", [])
         for term in soft_terms:
             if term.lower() in query_lower:
-                score += 15
+                evidence_score += 15
 
         negative_terms = route.get("negative_terms", [])
         for term in negative_terms:
             if term.lower() in query_lower:
-                score -= 50
+                evidence_score -= 50
                 
-        scored_routes.append({"route": route, "score": score})
+        if evidence_score > 0:
+            score = evidence_score + (route.get("priority", 50) / 100.0)
+            scored_routes.append({"route": route, "score": score})
 
     scored_routes.sort(key=lambda x: x["score"], reverse=True)
     if scored_routes:
@@ -78,6 +80,8 @@ def route_query(raw_query: str, routes: List[Dict[str, Any]]) -> Dict[str, Any]:
         "preferred_channels": best_route.get("preferred_channels", []),
         "blocked_domains_for_top5": best_route.get("blocked_domains_for_top5", []),
         "blocked_sources_for_top5": best_route.get("blocked_sources_for_top5", []),
+        "bad_result_terms": best_route.get("bad_result_terms", []),
+        "must_include_terms_for_top_results": best_route.get("must_include_terms_for_top_results", []),
         "allow_resource_top5": best_route.get("allow_resource_top5", True),
         "freshness_preference": best_route.get("freshness_preference", "none"),
         "alternative_routes": alt_routes,

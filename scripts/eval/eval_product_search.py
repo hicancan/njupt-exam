@@ -24,9 +24,10 @@ def evaluate_cases():
     
     total = len(cases)
     route_correct = 0
-    bad_top5_rate = 0
+    bad_top5_count = 0
     blocked_source_violations = 0
     blocked_domain_violations = 0
+    degraded_fallback_count = 0
     
     errors = []
     
@@ -39,6 +40,7 @@ def evaluate_cases():
         "bad_top5_rate": 0,
         "blocked_source_violations": 0,
         "blocked_domain_violations": 0,
+        "degraded_fallback_count": 0,
         "errors": [],
         "case_details": []
     }
@@ -60,10 +62,17 @@ def evaluate_cases():
         
         top1_must_domain = set(case.get("top1_must_domain_any", []))
         top1_must_source = case.get("top1_must_source")
+        top1_should_include_any_terms = case.get("top1_should_include_any_terms", [])
+        
         top5_must_include_source = set(case.get("top5_must_include_source_any", []))
         top5_must_include_domain = set(case.get("top5_must_include_domain_any", []))
         top5_must_not_source = set(case.get("top5_must_not_source_any", []))
         top5_must_not_domain = set(case.get("top5_must_not_domain_any", []))
+        
+        top5_must_include_any_terms = case.get("top5_must_include_any_terms", [])
+        top5_must_not_include_any_terms = case.get("top5_must_not_include_any_terms", [])
+        
+        allow_degraded_fallback = case.get("allow_degraded_fallback", True)
         
         case_failed = False
         
@@ -75,6 +84,12 @@ def evaluate_cases():
         if top1_must_source and top1:
             if top1.get("source") != top1_must_source and top1.get("source_id") != top1_must_source:
                 errors.append(f"Query '{query}': top1 source {top1.get('source')} != {top1_must_source}")
+                case_failed = True
+                
+        if top1_should_include_any_terms and top1:
+            text = (str(top1.get("title", "")) + " " + str(top1.get("content", ""))).lower()
+            if not any(term.lower() in text for term in top1_should_include_any_terms):
+                errors.append(f"Query '{query}': top1 text does not contain any of {top1_should_include_any_terms}")
                 case_failed = True
                 
         if top5_must_include_source:
@@ -89,19 +104,38 @@ def evaluate_cases():
                 errors.append(f"Query '{query}': top5 missing required domains {top5_must_include_domain}")
                 case_failed = True
                 
-        # Hard blocks
         for doc in top5:
+            text = (str(doc.get("title", "")) + " " + str(doc.get("content", ""))).lower()
+            
+            if top5_must_include_any_terms:
+                if not any(term.lower() in text for term in top5_must_include_any_terms):
+                    errors.append(f"Query '{query}': doc '{doc.get('title')}' missing terms {top5_must_include_any_terms}")
+                    case_failed = True
+                    
+            if top5_must_not_include_any_terms:
+                for term in top5_must_not_include_any_terms:
+                    if term.lower() in text:
+                        errors.append(f"Query '{query}': doc '{doc.get('title')}' contains forbidden term '{term}'")
+                        case_failed = True
+            
             if top5_must_not_source and (doc.get("source") in top5_must_not_source or doc.get("source_id") in top5_must_not_source):
                 blocked_source_violations += 1
                 errors.append(f"Query '{query}': top5 contains blocked source '{doc.get('source')}' - {doc.get('title')}")
                 case_failed = True
+                
             if top5_must_not_domain and doc.get("domain") in top5_must_not_domain:
                 blocked_domain_violations += 1
                 errors.append(f"Query '{query}': top5 contains blocked domain '{doc.get('domain')}' - {doc.get('title')}")
                 case_failed = True
                 
+            if doc.get("degraded_fallback"):
+                degraded_fallback_count += 1
+                if not allow_degraded_fallback:
+                    errors.append(f"Query '{query}': degraded fallback not allowed, but doc '{doc.get('title')}' is fallback.")
+                    case_failed = True
+                
         if case_failed:
-            bad_top5_rate += 1
+            bad_top5_count += 1
             
         report["case_details"].append({
             "query": query,
@@ -114,9 +148,10 @@ def evaluate_cases():
         })
 
     report["route_accuracy"] = route_correct / total if total else 0
-    report["bad_top5_rate"] = bad_top5_rate / total if total else 0
+    report["bad_top5_rate"] = bad_top5_count / total if total else 0
     report["blocked_source_violations"] = blocked_source_violations
     report["blocked_domain_violations"] = blocked_domain_violations
+    report["degraded_fallback_count"] = degraded_fallback_count
     report["errors"] = errors
     
     reports_dir = os.path.join(BASE_DIR, "eval", "reports")
@@ -128,9 +163,10 @@ def evaluate_cases():
     print("=== Product Search Gate Results ===")
     print(f"Total Cases: {total}")
     print(f"Route Accuracy: {route_correct}/{total} ({(report['route_accuracy'])*100:.1f}%)")
-    print(f"Bad Top5 Count: {bad_top5_rate}")
+    print(f"Bad Top5 Count: {bad_top5_count}")
     print(f"Blocked Source Violations: {blocked_source_violations}")
     print(f"Blocked Domain Violations: {blocked_domain_violations}")
+    print(f"Degraded Fallbacks: {degraded_fallback_count}")
     print(f"Report saved to: {report_path}")
     
     if errors:
@@ -138,7 +174,7 @@ def evaluate_cases():
         for err in errors:
             print(f" - {err}")
             
-    if bad_top5_rate > 0 or blocked_source_violations > 0 or blocked_domain_violations > 0 or route_correct < total:
+    if bad_top5_count > 0 or blocked_source_violations > 0 or blocked_domain_violations > 0 or route_correct < total:
         print("\n[FAILED] CI Gate failed due to quality violations or route mismatches.")
         sys.exit(1)
     

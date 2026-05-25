@@ -115,6 +115,7 @@ jobs:
           python scripts/eval/eval_search.py --write-report
           python scripts/eval/query_smoke_test.py
           python scripts/eval/eval_llm_quality.py
+          python scripts/eval/eval_product_search.py
           
       - name: Check for changes
         id: git-check

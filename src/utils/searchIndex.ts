@@ -507,13 +507,17 @@ export const rankSearchDocuments = (
     const blockedDomains = new Set(routeObj.blocked_domains_for_top5);
     const blockedSources = new Set(routeObj.blocked_sources_for_top5);
     const allowResourceTop5 = routeObj.allow_resource_top5;
+    
+    const badResultTerms = (routeObj as any).bad_result_terms || [];
+    const mustIncludeTerms = (routeObj as any).must_include_terms_for_top_results || [];
+    const top1Exact = (routeObj as any).top1_prefer_exact_title || false;
 
     const hybridDocuments = (hybridIndex?.documents || {}) as Record<string, { terms?: Record<string, number>, fields?: Record<string, string> }>;
 
     const aliasPayloads = aliasPayloadsForQuery(trimmed, queryAliases);
     const expandedTerms = aliasTermsFromPayloads(aliasPayloads);
 
-    const candidates = documents.map(document => {
+    let candidates = documents.map(document => {
         const textScore = scoreTextMatch(document, trimmed, expandedTerms);
         const hybridPayload = hybridDocuments[document.id];
         const bm25Proxy = hybridPayload?.terms ? scoreHybridTerms(hybridPayload.terms, [trimmed, ...expandedTerms].join(' ')) : textScore / 24;
@@ -528,25 +532,54 @@ export const rankSearchDocuments = (
         const intent = normalize(document.intent);
         const source = normalize(document.source);
         const sourceId = normalize(document.source_id);
+        const title = normalize(document.title);
+        const content = normalize(document.content);
+        const fullText = title + ' ' + content;
+        
+        const isExactTitle = title.includes(normalize(trimmed));
 
         let tier = 'C';
-        if (targetDomains.has(domain) && targetIntents.has(intent)) {
+        if (top1Exact && isExactTitle) {
             tier = 'A';
-        } else if (targetDomains.has(domain) || targetIntents.has(intent)) {
+        } else if (targetDomains.has(domain) && targetIntents.has(intent)) {
+            tier = 'A';
+        } else if (targetDomains.has(domain) || targetIntents.has(intent) || isExactTitle) {
             tier = 'B';
         } else if (targetDomains.size === 0 && targetIntents.size === 0) {
-            tier = 'A'; // fallback to general search
+            tier = 'A'; 
         }
 
-        const isBlocked = blockedDomains.has(domain) || blockedSources.has(source) || blockedSources.has(sourceId);
-        if (isBlocked) tier = 'C';
-        if (!allowResourceTop5 && document.source_type === 'github_resource') tier = 'C';
+        let isBlocked = false;
+        if ((blockedDomains.has(domain) || blockedSources.has(source) || blockedSources.has(sourceId)) && !isExactTitle) {
+            isBlocked = true;
+        }
+        if (!allowResourceTop5 && document.source_type === 'github_resource') isBlocked = true;
+
+        for (const term of badResultTerms) {
+            if (fullText.includes(normalize(term))) {
+                isBlocked = true;
+                break;
+            }
+        }
+        
+        if (mustIncludeTerms.length > 0) {
+            let hasAny = false;
+            for (const term of mustIncludeTerms) {
+                if (fullText.includes(normalize(term))) {
+                    hasAny = true;
+                    break;
+                }
+            }
+            if (!hasAny) isBlocked = true;
+        }
+
+        if (isBlocked) return null;
 
         let tierMultiplier = 1.0;
         if (tier === 'A') tierMultiplier = 2.0;
         else if (tier === 'B') tierMultiplier = 1.2;
         else if (tier === 'C') tierMultiplier = 0.1;
-
+        
         const rawMatchScore =
             0.3 * Math.min(1, bm25Proxy) +
             0.25 * fieldScore +
@@ -555,18 +588,19 @@ export const rankSearchDocuments = (
 
         const hasMatch = textScore > 0 || rawMatchScore > 0;
         
-        const utilityScore =
+        let utilityScore =
             (0.42 * document.student_score) +
             (0.3 * document.importance_score) +
             (0.2 * (document.source_weight ?? 0.8));
 
         const riskPenalty = (document.sensitive ? 0.5 : 0) + (document.review_required ? 0.25 : 0) + (document.status === 'restricted' ? 0.5 : 0);
+        utilityScore = Math.max(0, utilityScore - riskPenalty);
 
         const hybridScore = hasMatch 
             ? rawMatchScore + 0.2 * Math.min(1, utilityScore) - 0.05 * Math.min(1, riskPenalty)
             : 0;
 
-        const weightedScore = hasMatch ? (textScore + hybridScore * 32) *
+        let weightedScore = hasMatch ? (textScore + hybridScore * 32) *
             (0.55 + document.student_score * 0.45) *
             (0.72 + document.freshness_score * 0.28) *
             (0.7 + document.importance_score * 0.3) *
@@ -575,6 +609,10 @@ export const rankSearchDocuments = (
             sourceTypeWeight(document.source_type) *
             deadlineUrgencyWeight(document.deadline) *
             tierMultiplier : 0;
+            
+        if (top1Exact && isExactTitle) {
+            weightedScore += 10.0;
+        }
 
         const components = {
             bm25: Math.min(1, bm25Proxy),
@@ -590,6 +628,8 @@ export const rankSearchDocuments = (
             ...document,
             score: Number(weightedScore.toFixed(4)),
             score_reason: buildScoreReason(document, components) + ` [${tier}]`,
+            isBlocked,
+            tierCategory: tier,
             score_components: {
                 ...components,
                 bm25: Number(components.bm25.toFixed(4)),
@@ -600,15 +640,32 @@ export const rankSearchDocuments = (
                 risk_penalty: Number(components.risk_penalty.toFixed(4)),
                 tier: Number(tierMultiplier.toFixed(2))
             }
-        } as RankedSearchDocument;
+        } as RankedSearchDocument & { isBlocked: boolean, tierCategory: string };
     });
 
-    return candidates
+    candidates = candidates
         .filter(document => document.score > 0)
         .sort((a, b) => {
+            const aBlocked = a.isBlocked ? 1 : 0;
+            const bBlocked = b.isBlocked ? 1 : 0;
+            if (aBlocked !== bBlocked) return aBlocked - bBlocked;
+            
+            const aTierVal = a.tierCategory === 'A' ? 2 : (a.tierCategory === 'B' ? 1 : 0);
+            const bTierVal = b.tierCategory === 'A' ? 2 : (b.tierCategory === 'B' ? 1 : 0);
+            if (aTierVal !== bTierVal) return bTierVal - aTierVal;
+            
             if (b.score !== a.score) return b.score - a.score;
             return dateSortValue(b.published_at) - dateSortValue(a.published_at);
         });
+        
+    candidates.forEach(doc => {
+        if (doc.isBlocked) {
+            (doc as any).degraded_fallback = true;
+            doc.score_reason += "，目标候选不足，作为降级补位";
+        }
+    });
+
+    return candidates;
 };
 
 export const getDomainLabel = (domain: SearchDomain): string => DOMAIN_LABELS[domain] || domain;
