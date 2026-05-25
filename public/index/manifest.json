@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-05-25T21:22:14.630132+08:00",
-  "total_documents": 153,
+  "generated_at": "2026-05-25T23:14:51.685780+08:00",
+  "total_documents": 297,
   "strategy": "source-fidelity-offline-llm-card-recall-chronological-v1",
   "semantic_pipeline_version": "semantic-router-v2",
   "llm_schema_version": "hytask-taskframe-v2.2",
@@ -12,91 +12,91 @@
   "llm_batch_max_output_tokens": 60000,
   "llm_stats": {
     "cache_reused": 0,
-    "llm_reused": 248,
-    "llm_attempted": 4,
-    "llm_reprocessed": 3,
+    "llm_reused": 0,
+    "llm_attempted": 252,
+    "llm_reprocessed": 243,
     "llm_failed": 1,
     "llm_fallback": 48,
     "llm_skipped_by_limit": 0,
-    "llm_batches_attempted": 5,
-    "llm_batch_docs_attempted": 4,
-    "candidate_llm_cache_reused": 248,
+    "llm_batches_attempted": 55,
+    "llm_batch_docs_attempted": 252,
+    "candidate_llm_cache_reused": 0,
     "restricted": 12
   },
   "semantic_mode_counts": {
-    "llm": 148,
-    "heuristic": 3,
-    "guarded_metadata": 2,
+    "llm": 240,
+    "guarded_metadata": 45,
+    "heuristic": 12,
     "heuristic_degraded": 0,
     "unprocessed": 0
   },
   "field_source_counts": {
     "category": {
-      "llm": 103,
-      "display_mapping": 45,
-      "heuristic": 3,
-      "rule_guard": 2
+      "llm": 186,
+      "display_mapping": 93,
+      "heuristic": 12,
+      "rule_guard": 6
     },
     "domain": {
-      "llm": 148,
-      "heuristic": 3,
-      "rule_guard": 2
+      "llm": 240,
+      "rule_guard": 45,
+      "heuristic": 12
     },
     "intent": {
-      "llm": 148,
-      "heuristic": 3,
-      "rule_guard": 2
+      "llm": 240,
+      "rule_guard": 45,
+      "heuristic": 12
     },
     "deadline": {
-      "llm": 148,
-      "heuristic": 3,
-      "rule_guard": 2
+      "llm": 240,
+      "rule_guard": 45,
+      "heuristic": 12
     },
     "action_required": {
-      "llm": 148,
-      "heuristic": 3,
-      "rule_guard": 2
+      "llm": 240,
+      "rule_guard": 45,
+      "heuristic": 12
     },
     "action_summary": {
-      "llm": 148,
-      "heuristic": 3,
-      "rule_guard": 2
+      "llm": 240,
+      "rule_guard": 45,
+      "heuristic": 12
     },
     "required_materials": {
-      "llm": 148,
-      "heuristic": 3,
-      "rule_guard": 2
+      "llm": 221,
+      "verifier_removed": 19,
+      "rule_guard": 45,
+      "heuristic": 12
     },
     "summary": {
-      "llm": 148,
-      "heuristic": 3,
-      "rule_guard": 2
+      "llm": 240,
+      "rule_guard": 45,
+      "heuristic": 12
     },
     "evidence": {
-      "llm": 148,
-      "heuristic": 3,
-      "rule_guard": 2
+      "llm": 240,
+      "rule_guard": 45,
+      "heuristic": 12
     },
     "sensitive": {
-      "llm": 148,
-      "heuristic": 3,
-      "rule_guard": 2
+      "llm": 240,
+      "rule_guard": 45,
+      "heuristic": 12
     },
     "review_required": {
-      "llm": 148,
-      "heuristic": 3,
-      "rule_guard": 2
+      "llm": 240,
+      "rule_guard": 45,
+      "heuristic": 12
     },
     "task_frames": {
-      "llm_raw_task_frame": 23,
-      "empty_not_applicable": 125,
-      "heuristic_rule_frame": 3,
-      "guarded_metadata_empty": 2
+      "empty_not_applicable": 211,
+      "llm_raw_task_frame": 29,
+      "guarded_metadata_empty": 45,
+      "heuristic_rule_frame": 12
     }
   },
   "task_frame_source_mode_counts": {
-    "generated_from_llm_fields": 48,
-    "heuristic_rule_frame": 1
+    "generated_from_llm_fields": 61
   },
   "llm_missing_field_counts": {
     "category": 0,
@@ -112,7 +112,7 @@
     "review_required": 0,
     "task_frames": 0
   },
-  "training_eligible_count": 135,
+  "training_eligible_count": 212,
   "heuristic_degraded_count": 0,
   "llm_purity_rate": 1.0,
   "source_count": 30,
@@ -120,21 +120,35 @@
   "audited_channel_count": 99,
   "production_channel_count": 99,
   "failed_channel_count": 0,
-  "task_frame_count": 49,
-  "documents_with_task_frame": 49,
+  "task_frame_count": 61,
+  "documents_with_task_frame": 61,
   "evidence_coverage": {
     "audience": 1.0,
     "action": 1.0,
     "deadline": 1.0,
-    "materials": 1.0,
+    "materials": 0.0,
     "location": 0.0,
     "sensitive": 0.0,
     "overall": 1.0
   },
-  "review_required_count": 9,
-  "low_evidence_count": 0,
-  "restricted_count": 2,
-  "sensitive_count": 5,
+  "non_null_field_rates": {
+    "deadline": 0.0303,
+    "action_required": 0.0976,
+    "required_materials": 0.0,
+    "task_frames": 0.2054
+  },
+  "grounded_field_rates": {
+    "deadline": 1.0,
+    "action_required": 1.0,
+    "required_materials": 0.0,
+    "task_frames": 1.0
+  },
+  "verifier_removal_counts": {},
+  "task_frame_grounded_rate": 1.0,
+  "review_required_count": 85,
+  "low_evidence_count": 28,
+  "restricted_count": 12,
+  "sensitive_count": 19,
   "sources": [
     {
       "id": "jwc",
@@ -142,6 +156,7 @@
       "domain": "jwc.njupt.edu.cn",
       "source_type": "central_admin",
       "adapter_kind": "njupt_wp",
+      "allow_insecure_tls": false,
       "priority": 1.0,
       "requires_devtools_audit": false,
       "channel_count": 7,
@@ -152,10 +167,22 @@
           "priority": 1.0,
           "student_value": 1.0,
           "audit_status": "chrome_audited",
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
           "status": "ok_with_docs",
           "documents": 1,
           "candidates": 1,
-          "list_errors": []
+          "list_errors": [],
+          "selector_strategies": {
+            "global_anchor_fallback": 1
+          },
+          "selector_warnings": []
         },
         {
           "id": "jwc_course",
@@ -163,10 +190,22 @@
           "priority": 0.98,
           "student_value": 0.98,
           "audit_status": "chrome_audited",
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
           "status": "ok_with_docs",
           "documents": 2,
           "candidates": 2,
-          "list_errors": []
+          "list_errors": [],
+          "selector_strategies": {
+            "global_anchor_fallback": 2
+          },
+          "selector_warnings": []
         },
         {
           "id": "jwc_degree",
@@ -174,10 +213,22 @@
           "priority": 0.96,
           "student_value": 0.96,
           "audit_status": "chrome_audited",
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
           "status": "ok_with_docs",
           "documents": 1,
           "candidates": 1,
-          "list_errors": []
+          "list_errors": [],
+          "selector_strategies": {
+            "global_anchor_fallback": 1
+          },
+          "selector_warnings": []
         },
         {
           "id": "jwc_transfer",
@@ -185,10 +236,22 @@
           "priority": 0.96,
           "student_value": 0.96,
           "audit_status": "chrome_audited",
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
           "status": "ok_with_docs",
           "documents": 1,
           "candidates": 1,
-          "list_errors": []
+          "list_errors": [],
+          "selector_strategies": {
+            "global_anchor_fallback": 1
+          },
+          "selector_warnings": []
         },
         {
           "id": "jwc_recommendation",
@@ -196,10 +259,22 @@
           "priority": 0.98,
           "student_value": 0.98,
           "audit_status": "chrome_audited",
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
           "status": "ok_with_docs",
           "documents": 9,
           "candidates": 36,
-          "list_errors": []
+          "list_errors": [],
+          "selector_strategies": {
+            "global_anchor_fallback": 36
+          },
+          "selector_warnings": []
         },
         {
           "id": "jwc_download",
@@ -207,10 +282,22 @@
           "priority": 0.9,
           "student_value": 0.9,
           "audit_status": "chrome_audited",
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
           "status": "warning_filtered_all",
           "documents": 0,
           "candidates": 1,
-          "list_errors": []
+          "list_errors": [],
+          "selector_strategies": {
+            "global_anchor_fallback": 1
+          },
+          "selector_warnings": []
         },
         {
           "id": "jwc_calendar",
@@ -218,22 +305,35 @@
           "priority": 0.88,
           "student_value": 0.88,
           "audit_status": "chrome_audited",
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
           "status": "error_fetch_failed",
           "documents": 0,
           "candidates": 1,
           "list_errors": [
             "http://jwc.njupt.edu.cn/2025/0904/c1528a288083/page.htm: 412 Client Error: Precondition Failed for url: http://jwc.njupt.edu.cn/2025/0904/c1528a288083/page.htm"
-          ]
+          ],
+          "selector_strategies": {
+            "global_anchor_fallback": 1
+          },
+          "selector_warnings": []
         }
       ],
       "status": "ok",
-      "documents": 12,
-      "last_fetch_at": "2026-05-25T17:52:59.328814+08:00",
+      "documents": 14,
+      "last_fetch_at": "2026-05-25T23:14:51.685780+08:00",
       "list_errors": [
         "http://jwc.njupt.edu.cn/2025/0904/c1528a288083/page.htm: 412 Client Error: Precondition Failed for url: http://jwc.njupt.edu.cn/2025/0904/c1528a288083/page.htm"
       ],
       "candidates": 14,
-      "filtered_out": 2
+      "filtered_out": 0,
+      "capped_out": 0
     },
     {
       "id": "xsc",
@@ -241,6 +341,7 @@
       "domain": "xsc.njupt.edu.cn",
       "source_type": "central_admin",
       "adapter_kind": "njupt_wp",
+      "allow_insecure_tls": false,
       "priority": 0.96,
       "requires_devtools_audit": false,
       "channel_count": 6,
@@ -251,10 +352,20 @@
           "priority": 0.96,
           "student_value": 0.98,
           "audit_status": "chrome_audited",
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
           "status": "ok_no_recent_docs",
           "documents": 0,
           "candidates": 0,
-          "list_errors": []
+          "list_errors": [],
+          "selector_strategies": {},
+          "selector_warnings": []
         },
         {
           "id": "xsc_subsidy",
@@ -262,10 +373,20 @@
           "priority": 0.96,
           "student_value": 0.98,
           "audit_status": "chrome_audited",
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
           "status": "ok_no_recent_docs",
           "documents": 0,
           "candidates": 0,
-          "list_errors": []
+          "list_errors": [],
+          "selector_strategies": {},
+          "selector_warnings": []
         },
         {
           "id": "xsc_dormitory",
@@ -273,10 +394,22 @@
           "priority": 0.88,
           "student_value": 0.9,
           "audit_status": "chrome_audited",
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
           "status": "ok_with_docs",
           "documents": 14,
           "candidates": 26,
-          "list_errors": []
+          "list_errors": [],
+          "selector_strategies": {
+            "global_anchor_fallback": 26
+          },
+          "selector_warnings": []
         },
         {
           "id": "xsc_psychology",
@@ -284,10 +417,22 @@
           "priority": 0.84,
           "student_value": 0.86,
           "audit_status": "chrome_audited",
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
           "status": "warning_filtered_all",
           "documents": 0,
           "candidates": 25,
-          "list_errors": []
+          "list_errors": [],
+          "selector_strategies": {
+            "global_anchor_fallback": 25
+          },
+          "selector_warnings": []
         },
         {
           "id": "xsc_service",
@@ -295,10 +440,20 @@
           "priority": 0.88,
           "student_value": 0.9,
           "audit_status": "chrome_audited",
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
           "status": "ok_no_recent_docs",
           "documents": 0,
           "candidates": 0,
-          "list_errors": []
+          "list_errors": [],
+          "selector_strategies": {},
+          "selector_warnings": []
         },
         {
           "id": "xsc_download",
@@ -306,17 +461,28 @@
           "priority": 0.84,
           "student_value": 0.86,
           "audit_status": "chrome_audited",
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
           "status": "ok_no_recent_docs",
           "documents": 0,
           "candidates": 0,
-          "list_errors": []
+          "list_errors": [],
+          "selector_strategies": {},
+          "selector_warnings": []
         }
       ],
       "status": "ok",
-      "documents": 6,
-      "last_fetch_at": "2026-05-25T17:52:59.328814+08:00",
+      "documents": 14,
+      "last_fetch_at": "2026-05-25T23:14:51.685780+08:00",
       "candidates": 14,
-      "filtered_out": 8
+      "filtered_out": 0,
+      "capped_out": 0
     },
     {
       "id": "pg",
@@ -324,6 +490,7 @@
       "domain": "pg.njupt.edu.cn",
       "source_type": "central_admin",
       "adapter_kind": "njupt_wp",
+      "allow_insecure_tls": false,
       "priority": 0.96,
       "requires_devtools_audit": false,
       "channel_count": 5,
@@ -334,10 +501,22 @@
           "priority": 0.96,
           "student_value": 0.96,
           "audit_status": "chrome_audited",
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
           "status": "ok_with_docs",
           "documents": 13,
           "candidates": 36,
-          "list_errors": []
+          "list_errors": [],
+          "selector_strategies": {
+            "global_anchor_fallback": 36
+          },
+          "selector_warnings": []
         },
         {
           "id": "pg_degree",
@@ -345,10 +524,22 @@
           "priority": 0.96,
           "student_value": 0.96,
           "audit_status": "chrome_audited",
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
           "status": "warning_filtered_all",
           "documents": 0,
           "candidates": 29,
-          "list_errors": []
+          "list_errors": [],
+          "selector_strategies": {
+            "global_anchor_fallback": 29
+          },
+          "selector_warnings": []
         },
         {
           "id": "pg_download",
@@ -356,10 +547,22 @@
           "priority": 0.88,
           "student_value": 0.88,
           "audit_status": "chrome_audited",
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
           "status": "warning_filtered_all",
           "documents": 0,
           "candidates": 12,
-          "list_errors": []
+          "list_errors": [],
+          "selector_strategies": {
+            "global_anchor_fallback": 12
+          },
+          "selector_warnings": []
         },
         {
           "id": "pg_policy",
@@ -367,10 +570,22 @@
           "priority": 0.8,
           "student_value": 0.8,
           "audit_status": "chrome_audited",
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
           "status": "warning_filtered_all",
           "documents": 0,
           "candidates": 18,
-          "list_errors": []
+          "list_errors": [],
+          "selector_strategies": {
+            "global_anchor_fallback": 18
+          },
+          "selector_warnings": []
         },
         {
           "id": "pg_graduation",
@@ -378,17 +593,30 @@
           "priority": 0.94,
           "student_value": 0.94,
           "audit_status": "chrome_audited",
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
           "status": "warning_filtered_all",
           "documents": 0,
           "candidates": 36,
-          "list_errors": []
+          "list_errors": [],
+          "selector_strategies": {
+            "global_anchor_fallback": 36
+          },
+          "selector_warnings": []
         }
       ],
       "status": "ok",
-      "documents": 7,
-      "last_fetch_at": "2026-05-25T17:52:59.328814+08:00",
+      "documents": 13,
+      "last_fetch_at": "2026-05-25T23:14:51.685780+08:00",
       "candidates": 13,
-      "filtered_out": 6
+      "filtered_out": 0,
+      "capped_out": 0
     },
     {
       "id": "ygb",
@@ -396,6 +624,7 @@
       "domain": "ygb.njupt.edu.cn",
       "source_type": "central_admin",
       "adapter_kind": "njupt_wp",
+      "allow_insecure_tls": false,
       "priority": 0.92,
       "requires_devtools_audit": false,
       "channel_count": 4,
@@ -406,10 +635,22 @@
           "priority": 0.92,
           "student_value": 0.94,
           "audit_status": "chrome_audited",
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
           "status": "ok_with_docs",
           "documents": 14,
           "candidates": 25,
-          "list_errors": []
+          "list_errors": [],
+          "selector_strategies": {
+            "global_anchor_fallback": 25
+          },
+          "selector_warnings": []
         },
         {
           "id": "ygb_subsidy",
@@ -417,10 +658,22 @@
           "priority": 0.88,
           "student_value": 0.9,
           "audit_status": "chrome_audited",
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
           "status": "warning_filtered_all",
           "documents": 0,
           "candidates": 7,
-          "list_errors": []
+          "list_errors": [],
+          "selector_strategies": {
+            "global_anchor_fallback": 7
+          },
+          "selector_warnings": []
         },
         {
           "id": "ygb_practice",
@@ -428,10 +681,22 @@
           "priority": 0.86,
           "student_value": 0.88,
           "audit_status": "chrome_audited",
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
           "status": "warning_filtered_all",
           "documents": 0,
           "candidates": 12,
-          "list_errors": []
+          "list_errors": [],
+          "selector_strategies": {
+            "global_anchor_fallback": 12
+          },
+          "selector_warnings": []
         },
         {
           "id": "ygb_service",
@@ -439,17 +704,30 @@
           "priority": 0.82,
           "student_value": 0.84,
           "audit_status": "chrome_audited",
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
           "status": "warning_filtered_all",
           "documents": 0,
           "candidates": 18,
-          "list_errors": []
+          "list_errors": [],
+          "selector_strategies": {
+            "global_anchor_fallback": 18
+          },
+          "selector_warnings": []
         }
       ],
       "status": "ok",
-      "documents": 5,
-      "last_fetch_at": "2026-05-25T17:52:59.328814+08:00",
+      "documents": 14,
+      "last_fetch_at": "2026-05-25T23:14:51.685780+08:00",
       "candidates": 14,
-      "filtered_out": 9
+      "filtered_out": 0,
+      "capped_out": 0
     },
     {
       "id": "youth",
@@ -457,6 +735,7 @@
       "domain": "youth.njupt.edu.cn",
       "source_type": "central_admin",
       "adapter_kind": "njupt_wp",
+      "allow_insecure_tls": false,
       "priority": 0.9,
       "requires_devtools_audit": false,
       "channel_count": 4,
@@ -467,10 +746,22 @@
           "priority": 0.9,
           "student_value": 0.92,
           "audit_status": "chrome_audited",
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
           "status": "ok_with_docs",
           "documents": 13,
           "candidates": 36,
-          "list_errors": []
+          "list_errors": [],
+          "selector_strategies": {
+            "global_anchor_fallback": 36
+          },
+          "selector_warnings": []
         },
         {
           "id": "youth_volunteer",
@@ -478,10 +769,22 @@
           "priority": 0.84,
           "student_value": 0.86,
           "audit_status": "chrome_audited",
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
           "status": "warning_filtered_all",
           "documents": 0,
           "candidates": 36,
-          "list_errors": []
+          "list_errors": [],
+          "selector_strategies": {
+            "global_anchor_fallback": 36
+          },
+          "selector_warnings": []
         },
         {
           "id": "youth_organization",
@@ -489,10 +792,22 @@
           "priority": 0.82,
           "student_value": 0.84,
           "audit_status": "chrome_audited",
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
           "status": "warning_filtered_all",
           "documents": 0,
           "candidates": 36,
-          "list_errors": []
+          "list_errors": [],
+          "selector_strategies": {
+            "global_anchor_fallback": 36
+          },
+          "selector_warnings": []
         },
         {
           "id": "youth_download",
@@ -500,17 +815,30 @@
           "priority": 0.76,
           "student_value": 0.78,
           "audit_status": "chrome_audited",
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
           "status": "warning_filtered_all",
           "documents": 0,
           "candidates": 29,
-          "list_errors": []
+          "list_errors": [],
+          "selector_strategies": {
+            "global_anchor_fallback": 29
+          },
+          "selector_warnings": []
         }
       ],
       "status": "ok",
-      "documents": 0,
-      "last_fetch_at": "2026-05-25T17:52:59.328814+08:00",
+      "documents": 13,
+      "last_fetch_at": "2026-05-25T23:14:51.685780+08:00",
       "candidates": 13,
-      "filtered_out": 13
+      "filtered_out": 0,
+      "capped_out": 0
     },
     {
       "id": "cxcy",
@@ -518,6 +846,7 @@
       "domain": "cxcy.njupt.edu.cn",
       "source_type": "central_admin",
       "adapter_kind": "njupt_wp",
+      "allow_insecure_tls": false,
       "priority": 0.9,
       "requires_devtools_audit": false,
       "channel_count": 5,
@@ -528,10 +857,22 @@
           "priority": 0.94,
           "student_value": 0.98,
           "audit_status": "chrome_audited",
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
           "status": "ok_with_docs",
           "documents": 14,
           "candidates": 22,
-          "list_errors": []
+          "list_errors": [],
+          "selector_strategies": {
+            "global_anchor_fallback": 22
+          },
+          "selector_warnings": []
         },
         {
           "id": "cxcy_competition",
@@ -539,10 +880,22 @@
           "priority": 0.9,
           "student_value": 0.94,
           "audit_status": "chrome_audited",
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
           "status": "warning_filtered_all",
           "documents": 0,
           "candidates": 36,
-          "list_errors": []
+          "list_errors": [],
+          "selector_strategies": {
+            "global_anchor_fallback": 36
+          },
+          "selector_warnings": []
         },
         {
           "id": "cxcy_fund",
@@ -550,10 +903,22 @@
           "priority": 0.84,
           "student_value": 0.86,
           "audit_status": "chrome_audited",
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
           "status": "warning_filtered_all",
           "documents": 0,
           "candidates": 20,
-          "list_errors": []
+          "list_errors": [],
+          "selector_strategies": {
+            "global_anchor_fallback": 20
+          },
+          "selector_warnings": []
         },
         {
           "id": "cxcy_publicity",
@@ -561,10 +926,20 @@
           "priority": 0.86,
           "student_value": 0.88,
           "audit_status": "chrome_audited",
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
           "status": "ok_no_recent_docs",
           "documents": 0,
           "candidates": 0,
-          "list_errors": []
+          "list_errors": [],
+          "selector_strategies": {},
+          "selector_warnings": []
         },
         {
           "id": "cxcy_download",
@@ -572,17 +947,28 @@
           "priority": 0.8,
           "student_value": 0.82,
           "audit_status": "chrome_audited",
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
           "status": "ok_no_recent_docs",
           "documents": 0,
           "candidates": 0,
-          "list_errors": []
+          "list_errors": [],
+          "selector_strategies": {},
+          "selector_warnings": []
         }
       ],
       "status": "ok",
-      "documents": 11,
-      "last_fetch_at": "2026-05-25T17:52:59.328814+08:00",
+      "documents": 14,
+      "last_fetch_at": "2026-05-25T23:14:51.685780+08:00",
       "candidates": 14,
-      "filtered_out": 3
+      "filtered_out": 0,
+      "capped_out": 0
     },
     {
       "id": "job",
@@ -590,6 +976,7 @@
       "domain": "njupt.91job.org.cn",
       "source_type": "job_platform",
       "adapter_kind": "job_api",
+      "allow_insecure_tls": false,
       "priority": 0.88,
       "requires_devtools_audit": false,
       "channel_count": 3,
@@ -600,6 +987,14 @@
           "priority": 0.9,
           "student_value": 0.92,
           "audit_status": "chrome_audited",
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
           "status": "ok",
           "documents": 0
         },
@@ -609,6 +1004,14 @@
           "priority": 0.88,
           "student_value": 0.9,
           "audit_status": "chrome_audited",
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
           "status": "ok",
           "documents": 0
         },
@@ -618,13 +1021,21 @@
           "priority": 0.84,
           "student_value": 0.86,
           "audit_status": "chrome_audited",
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
           "status": "ok",
           "documents": 0
         }
       ],
       "status": "ok",
       "documents": 18,
-      "last_fetch_at": "2026-05-25T17:52:59.328814+08:00"
+      "last_fetch_at": "2026-05-25T23:14:51.685780+08:00"
     },
     {
       "id": "lib",
@@ -632,6 +1043,7 @@
       "domain": "lib.njupt.edu.cn",
       "source_type": "service_unit",
       "adapter_kind": "njupt_wp",
+      "allow_insecure_tls": false,
       "priority": 0.82,
       "requires_devtools_audit": false,
       "channel_count": 4,
@@ -642,10 +1054,22 @@
           "priority": 0.84,
           "student_value": 0.86,
           "audit_status": "chrome_audited",
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
           "status": "ok_with_docs",
           "documents": 14,
           "candidates": 14,
-          "list_errors": []
+          "list_errors": [],
+          "selector_strategies": {
+            "global_anchor_fallback": 14
+          },
+          "selector_warnings": []
         },
         {
           "id": "lib_resource",
@@ -653,10 +1077,20 @@
           "priority": 0.82,
           "student_value": 0.84,
           "audit_status": "chrome_audited",
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
           "status": "ok_no_recent_docs",
           "documents": 0,
           "candidates": 0,
-          "list_errors": []
+          "list_errors": [],
+          "selector_strategies": {},
+          "selector_warnings": []
         },
         {
           "id": "lib_study_space",
@@ -664,10 +1098,20 @@
           "priority": 0.78,
           "student_value": 0.8,
           "audit_status": "chrome_audited",
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
           "status": "ok_no_recent_docs",
           "documents": 0,
           "candidates": 0,
-          "list_errors": []
+          "list_errors": [],
+          "selector_strategies": {},
+          "selector_warnings": []
         },
         {
           "id": "lib_activity",
@@ -675,17 +1119,30 @@
           "priority": 0.74,
           "student_value": 0.76,
           "audit_status": "chrome_audited",
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
           "status": "warning_filtered_all",
           "documents": 0,
           "candidates": 14,
-          "list_errors": []
+          "list_errors": [],
+          "selector_strategies": {
+            "global_anchor_fallback": 14
+          },
+          "selector_warnings": []
         }
       ],
       "status": "ok",
-      "documents": 12,
-      "last_fetch_at": "2026-05-25T17:52:59.328814+08:00",
+      "documents": 14,
+      "last_fetch_at": "2026-05-25T23:14:51.685780+08:00",
       "candidates": 14,
-      "filtered_out": 2
+      "filtered_out": 0,
+      "capped_out": 0
     },
     {
       "id": "bwc",
@@ -693,6 +1150,7 @@
       "domain": "bwc.njupt.edu.cn",
       "source_type": "service_unit",
       "adapter_kind": "njupt_wp",
+      "allow_insecure_tls": false,
       "priority": 0.8,
       "requires_devtools_audit": false,
       "channel_count": 4,
@@ -703,10 +1161,22 @@
           "priority": 0.82,
           "student_value": 0.84,
           "audit_status": "chrome_audited",
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
           "status": "ok_with_docs",
           "documents": 11,
           "candidates": 11,
-          "list_errors": []
+          "list_errors": [],
+          "selector_strategies": {
+            "global_anchor_fallback": 11
+          },
+          "selector_warnings": []
         },
         {
           "id": "bwc_household",
@@ -714,10 +1184,22 @@
           "priority": 0.78,
           "student_value": 0.8,
           "audit_status": "chrome_audited",
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
           "status": "ok_with_docs",
           "documents": 1,
           "candidates": 5,
-          "list_errors": []
+          "list_errors": [],
+          "selector_strategies": {
+            "global_anchor_fallback": 5
+          },
+          "selector_warnings": []
         },
         {
           "id": "bwc_traffic",
@@ -725,10 +1207,20 @@
           "priority": 0.8,
           "student_value": 0.82,
           "audit_status": "chrome_audited",
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
           "status": "ok_no_recent_docs",
           "documents": 0,
           "candidates": 0,
-          "list_errors": []
+          "list_errors": [],
+          "selector_strategies": {},
+          "selector_warnings": []
         },
         {
           "id": "bwc_fire",
@@ -736,17 +1228,28 @@
           "priority": 0.76,
           "student_value": 0.78,
           "audit_status": "chrome_audited",
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
           "status": "ok_no_recent_docs",
           "documents": 0,
           "candidates": 0,
-          "list_errors": []
+          "list_errors": [],
+          "selector_strategies": {},
+          "selector_warnings": []
         }
       ],
       "status": "ok",
-      "documents": 1,
-      "last_fetch_at": "2026-05-25T17:52:59.328814+08:00",
+      "documents": 12,
+      "last_fetch_at": "2026-05-25T23:14:51.685780+08:00",
       "candidates": 12,
-      "filtered_out": 11
+      "filtered_out": 0,
+      "capped_out": 0
     },
     {
       "id": "hqc",
@@ -754,6 +1257,7 @@
       "domain": "hqc.njupt.edu.cn",
       "source_type": "service_unit",
       "adapter_kind": "njupt_wp",
+      "allow_insecure_tls": false,
       "priority": 0.8,
       "requires_devtools_audit": false,
       "channel_count": 5,
@@ -764,10 +1268,22 @@
           "priority": 0.84,
           "student_value": 0.88,
           "audit_status": "chrome_audited",
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
           "status": "ok_with_docs",
           "documents": 14,
           "candidates": 36,
-          "list_errors": []
+          "list_errors": [],
+          "selector_strategies": {
+            "global_anchor_fallback": 36
+          },
+          "selector_warnings": []
         },
         {
           "id": "hqc_repair",
@@ -775,10 +1291,22 @@
           "priority": 0.8,
           "student_value": 0.82,
           "audit_status": "chrome_audited",
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
           "status": "warning_filtered_all",
           "documents": 0,
           "candidates": 12,
-          "list_errors": []
+          "list_errors": [],
+          "selector_strategies": {
+            "global_anchor_fallback": 12
+          },
+          "selector_warnings": []
         },
         {
           "id": "hqc_shuttle",
@@ -786,10 +1314,20 @@
           "priority": 0.8,
           "student_value": 0.82,
           "audit_status": "chrome_audited",
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
           "status": "ok_no_recent_docs",
           "documents": 0,
           "candidates": 0,
-          "list_errors": []
+          "list_errors": [],
+          "selector_strategies": {},
+          "selector_warnings": []
         },
         {
           "id": "hqc_medical",
@@ -797,10 +1335,22 @@
           "priority": 0.82,
           "student_value": 0.84,
           "audit_status": "chrome_audited",
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
           "status": "warning_filtered_all",
           "documents": 0,
           "candidates": 35,
-          "list_errors": []
+          "list_errors": [],
+          "selector_strategies": {
+            "global_anchor_fallback": 35
+          },
+          "selector_warnings": []
         },
         {
           "id": "hqc_download",
@@ -808,17 +1358,30 @@
           "priority": 0.7,
           "student_value": 0.72,
           "audit_status": "chrome_audited",
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
           "status": "warning_filtered_all",
           "documents": 0,
           "candidates": 12,
-          "list_errors": []
+          "list_errors": [],
+          "selector_strategies": {
+            "global_anchor_fallback": 12
+          },
+          "selector_warnings": []
         }
       ],
       "status": "ok",
-      "documents": 8,
-      "last_fetch_at": "2026-05-25T17:52:59.328814+08:00",
+      "documents": 14,
+      "last_fetch_at": "2026-05-25T23:14:51.685780+08:00",
       "candidates": 14,
-      "filtered_out": 6
+      "filtered_out": 0,
+      "capped_out": 0
     },
     {
       "id": "njupt_notice",
@@ -826,6 +1389,7 @@
       "domain": "www.njupt.edu.cn",
       "source_type": "central_notice",
       "adapter_kind": "njupt_wp",
+      "allow_insecure_tls": false,
       "priority": 0.86,
       "requires_devtools_audit": false,
       "channel_count": 3,
@@ -836,10 +1400,22 @@
           "priority": 0.86,
           "student_value": 0.86,
           "audit_status": "chrome_audited",
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
           "status": "ok_with_docs",
           "documents": 14,
           "candidates": 36,
-          "list_errors": []
+          "list_errors": [],
+          "selector_strategies": {
+            "global_anchor_fallback": 36
+          },
+          "selector_warnings": []
         },
         {
           "id": "njupt_admission_employment",
@@ -847,10 +1423,22 @@
           "priority": 0.7,
           "student_value": 0.72,
           "audit_status": "chrome_audited",
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
           "status": "warning_filtered_all",
           "documents": 0,
           "candidates": 36,
-          "list_errors": []
+          "list_errors": [],
+          "selector_strategies": {
+            "global_anchor_fallback": 36
+          },
+          "selector_warnings": []
         },
         {
           "id": "njupt_smart_campus",
@@ -858,17 +1446,30 @@
           "priority": 0.66,
           "student_value": 0.68,
           "audit_status": "chrome_audited",
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
           "status": "warning_filtered_all",
           "documents": 0,
           "candidates": 36,
-          "list_errors": []
+          "list_errors": [],
+          "selector_strategies": {
+            "global_anchor_fallback": 36
+          },
+          "selector_warnings": []
         }
       ],
       "status": "ok",
-      "documents": 3,
-      "last_fetch_at": "2026-05-25T17:52:59.328814+08:00",
+      "documents": 14,
+      "last_fetch_at": "2026-05-25T23:14:51.685780+08:00",
       "candidates": 14,
-      "filtered_out": 11
+      "filtered_out": 0,
+      "capped_out": 0
     },
     {
       "id": "news",
@@ -876,6 +1477,7 @@
       "domain": "news.njupt.edu.cn",
       "source_type": "central_news",
       "adapter_kind": "njupt_wp",
+      "allow_insecure_tls": false,
       "priority": 0.62,
       "requires_devtools_audit": false,
       "channel_count": 2,
@@ -886,10 +1488,22 @@
           "priority": 0.62,
           "student_value": 0.55,
           "audit_status": "manual_seeded",
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
           "status": "ok_with_docs",
           "documents": 14,
           "candidates": 36,
-          "list_errors": []
+          "list_errors": [],
+          "selector_strategies": {
+            "global_anchor_fallback": 36
+          },
+          "selector_warnings": []
         },
         {
           "id": "news_activity",
@@ -897,17 +1511,30 @@
           "priority": 0.56,
           "student_value": 0.5,
           "audit_status": "manual_seeded",
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
           "status": "warning_filtered_all",
           "documents": 0,
           "candidates": 36,
-          "list_errors": []
+          "list_errors": [],
+          "selector_strategies": {
+            "global_anchor_fallback": 36
+          },
+          "selector_warnings": []
         }
       ],
       "status": "ok",
-      "documents": 6,
-      "last_fetch_at": "2026-05-25T17:52:59.328814+08:00",
+      "documents": 14,
+      "last_fetch_at": "2026-05-25T23:14:51.685780+08:00",
       "candidates": 14,
-      "filtered_out": 8
+      "filtered_out": 0,
+      "capped_out": 0
     },
     {
       "id": "xxgk",
@@ -915,6 +1542,7 @@
       "domain": "xxgk.njupt.edu.cn",
       "source_type": "policy",
       "adapter_kind": "njupt_wp",
+      "allow_insecure_tls": false,
       "priority": 0.58,
       "requires_devtools_audit": false,
       "channel_count": 3,
@@ -925,10 +1553,20 @@
           "priority": 0.62,
           "student_value": 0.62,
           "audit_status": "chrome_audited",
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
           "status": "ok_no_recent_docs",
           "documents": 0,
           "candidates": 0,
-          "list_errors": []
+          "list_errors": [],
+          "selector_strategies": {},
+          "selector_warnings": []
         },
         {
           "id": "xxgk_student_service",
@@ -936,10 +1574,20 @@
           "priority": 0.62,
           "student_value": 0.64,
           "audit_status": "chrome_audited",
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
           "status": "ok_no_recent_docs",
           "documents": 0,
           "candidates": 0,
-          "list_errors": []
+          "list_errors": [],
+          "selector_strategies": {},
+          "selector_warnings": []
         },
         {
           "id": "xxgk_fee_degree",
@@ -947,17 +1595,28 @@
           "priority": 0.58,
           "student_value": 0.6,
           "audit_status": "chrome_audited",
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
           "status": "ok_no_recent_docs",
           "documents": 0,
           "candidates": 0,
-          "list_errors": []
+          "list_errors": [],
+          "selector_strategies": {},
+          "selector_warnings": []
         }
       ],
       "status": "ok",
       "documents": 0,
-      "last_fetch_at": "2026-05-25T17:52:59.328814+08:00",
+      "last_fetch_at": "2026-05-25T23:14:51.685780+08:00",
       "candidates": 0,
-      "filtered_out": 0
+      "filtered_out": 0,
+      "capped_out": 0
     },
     {
       "id": "exchange",
@@ -965,6 +1624,7 @@
       "domain": "exchange.njupt.edu.cn",
       "source_type": "central_admin",
       "adapter_kind": "njupt_wp",
+      "allow_insecure_tls": false,
       "priority": 0.78,
       "requires_devtools_audit": false,
       "channel_count": 4,
@@ -975,10 +1635,22 @@
           "priority": 0.72,
           "student_value": 0.74,
           "audit_status": "chrome_audited",
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
           "status": "ok_with_docs",
           "documents": 14,
           "candidates": 36,
-          "list_errors": []
+          "list_errors": [],
+          "selector_strategies": {
+            "global_anchor_fallback": 36
+          },
+          "selector_warnings": []
         },
         {
           "id": "exchange_project",
@@ -986,10 +1658,22 @@
           "priority": 0.76,
           "student_value": 0.78,
           "audit_status": "chrome_audited",
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
           "status": "warning_filtered_all",
           "documents": 0,
           "candidates": 25,
-          "list_errors": []
+          "list_errors": [],
+          "selector_strategies": {
+            "global_anchor_fallback": 25
+          },
+          "selector_warnings": []
         },
         {
           "id": "exchange_download",
@@ -997,10 +1681,22 @@
           "priority": 0.68,
           "student_value": 0.7,
           "audit_status": "chrome_audited",
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
           "status": "warning_filtered_all",
           "documents": 0,
           "candidates": 2,
-          "list_errors": []
+          "list_errors": [],
+          "selector_strategies": {
+            "global_anchor_fallback": 2
+          },
+          "selector_warnings": []
         },
         {
           "id": "exchange_admission",
@@ -1008,17 +1704,30 @@
           "priority": 0.6,
           "student_value": 0.62,
           "audit_status": "chrome_audited",
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
           "status": "warning_filtered_all",
           "documents": 0,
           "candidates": 10,
-          "list_errors": []
+          "list_errors": [],
+          "selector_strategies": {
+            "global_anchor_fallback": 10
+          },
+          "selector_warnings": []
         }
       ],
       "status": "ok",
-      "documents": 4,
-      "last_fetch_at": "2026-05-25T17:52:59.328814+08:00",
+      "documents": 14,
+      "last_fetch_at": "2026-05-25T23:14:51.685780+08:00",
       "candidates": 14,
-      "filtered_out": 10
+      "filtered_out": 0,
+      "capped_out": 0
     },
     {
       "id": "yzb",
@@ -1026,6 +1735,7 @@
       "domain": "yzb.njupt.edu.cn",
       "source_type": "central_admin",
       "adapter_kind": "njupt_wp",
+      "allow_insecure_tls": false,
       "priority": 0.74,
       "requires_devtools_audit": false,
       "channel_count": 5,
@@ -1036,10 +1746,22 @@
           "priority": 0.74,
           "student_value": 0.76,
           "audit_status": "chrome_audited",
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
           "status": "ok_with_docs",
           "documents": 8,
           "candidates": 28,
-          "list_errors": []
+          "list_errors": [],
+          "selector_strategies": {
+            "global_anchor_fallback": 28
+          },
+          "selector_warnings": []
         },
         {
           "id": "yzb_recommendation",
@@ -1047,10 +1769,22 @@
           "priority": 0.8,
           "student_value": 0.82,
           "audit_status": "chrome_audited",
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
           "status": "warning_filtered_all",
           "documents": 0,
           "candidates": 28,
-          "list_errors": []
+          "list_errors": [],
+          "selector_strategies": {
+            "global_anchor_fallback": 28
+          },
+          "selector_warnings": []
         },
         {
           "id": "yzb_doctor",
@@ -1058,10 +1792,22 @@
           "priority": 0.66,
           "student_value": 0.68,
           "audit_status": "chrome_audited",
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
           "status": "warning_filtered_all",
           "documents": 0,
           "candidates": 36,
-          "list_errors": []
+          "list_errors": [],
+          "selector_strategies": {
+            "global_anchor_fallback": 36
+          },
+          "selector_warnings": []
         },
         {
           "id": "yzb_data",
@@ -1069,10 +1815,22 @@
           "priority": 0.62,
           "student_value": 0.64,
           "audit_status": "chrome_audited",
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
           "status": "warning_filtered_all",
           "documents": 0,
           "candidates": 25,
-          "list_errors": []
+          "list_errors": [],
+          "selector_strategies": {
+            "global_anchor_fallback": 25
+          },
+          "selector_warnings": []
         },
         {
           "id": "yzb_download",
@@ -1080,17 +1838,30 @@
           "priority": 0.62,
           "student_value": 0.64,
           "audit_status": "chrome_audited",
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
           "status": "warning_filtered_all",
           "documents": 0,
           "candidates": 5,
-          "list_errors": []
+          "list_errors": [],
+          "selector_strategies": {
+            "global_anchor_fallback": 5
+          },
+          "selector_warnings": []
         }
       ],
       "status": "ok",
-      "documents": 6,
-      "last_fetch_at": "2026-05-25T17:52:59.328814+08:00",
+      "documents": 8,
+      "last_fetch_at": "2026-05-25T23:14:51.685780+08:00",
       "candidates": 8,
-      "filtered_out": 2
+      "filtered_out": 0,
+      "capped_out": 0
     },
     {
       "id": "xxb",
@@ -1098,6 +1869,7 @@
       "domain": "xxb.njupt.edu.cn",
       "source_type": "service_unit",
       "adapter_kind": "njupt_wp",
+      "allow_insecure_tls": false,
       "priority": 0.72,
       "requires_devtools_audit": false,
       "channel_count": 4,
@@ -1108,10 +1880,22 @@
           "priority": 0.78,
           "student_value": 0.82,
           "audit_status": "chrome_audited",
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
           "status": "ok_with_docs",
           "documents": 2,
           "candidates": 5,
-          "list_errors": []
+          "list_errors": [],
+          "selector_strategies": {
+            "global_anchor_fallback": 5
+          },
+          "selector_warnings": []
         },
         {
           "id": "xxb_identity",
@@ -1119,10 +1903,20 @@
           "priority": 0.74,
           "student_value": 0.78,
           "audit_status": "chrome_audited",
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
           "status": "ok_no_recent_docs",
           "documents": 0,
           "candidates": 0,
-          "list_errors": []
+          "list_errors": [],
+          "selector_strategies": {},
+          "selector_warnings": []
         },
         {
           "id": "xxb_platform",
@@ -1130,10 +1924,22 @@
           "priority": 0.7,
           "student_value": 0.72,
           "audit_status": "chrome_audited",
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
           "status": "ok_with_docs",
           "documents": 2,
           "candidates": 4,
-          "list_errors": []
+          "list_errors": [],
+          "selector_strategies": {
+            "global_anchor_fallback": 4
+          },
+          "selector_warnings": []
         },
         {
           "id": "xxb_download",
@@ -1141,17 +1947,30 @@
           "priority": 0.66,
           "student_value": 0.68,
           "audit_status": "chrome_audited",
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
           "status": "ok_with_docs",
           "documents": 2,
           "candidates": 12,
-          "list_errors": []
+          "list_errors": [],
+          "selector_strategies": {
+            "global_anchor_fallback": 12
+          },
+          "selector_warnings": []
         }
       ],
       "status": "ok",
-      "documents": 2,
-      "last_fetch_at": "2026-05-25T17:52:59.328814+08:00",
+      "documents": 6,
+      "last_fetch_at": "2026-05-25T23:14:51.685780+08:00",
       "candidates": 6,
-      "filtered_out": 4
+      "filtered_out": 0,
+      "capped_out": 0
     },
     {
       "id": "cwc",
@@ -1159,6 +1978,7 @@
       "domain": "cwc.njupt.edu.cn",
       "source_type": "service_unit",
       "adapter_kind": "njupt_wp",
+      "allow_insecure_tls": false,
       "priority": 0.62,
       "requires_devtools_audit": false,
       "channel_count": 2,
@@ -1169,10 +1989,22 @@
           "priority": 0.56,
           "student_value": 0.58,
           "audit_status": "manual_seeded",
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
           "status": "ok_with_docs",
           "documents": 13,
           "candidates": 22,
-          "list_errors": []
+          "list_errors": [],
+          "selector_strategies": {
+            "global_anchor_fallback": 22
+          },
+          "selector_warnings": []
         },
         {
           "id": "cwc_download",
@@ -1180,17 +2012,30 @@
           "priority": 0.52,
           "student_value": 0.54,
           "audit_status": "manual_seeded",
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
           "status": "warning_filtered_all",
           "documents": 0,
           "candidates": 22,
-          "list_errors": []
+          "list_errors": [],
+          "selector_strategies": {
+            "global_anchor_fallback": 22
+          },
+          "selector_warnings": []
         }
       ],
       "status": "ok",
-      "documents": 3,
-      "last_fetch_at": "2026-05-25T17:52:59.328814+08:00",
+      "documents": 13,
+      "last_fetch_at": "2026-05-25T23:14:51.685780+08:00",
       "candidates": 13,
-      "filtered_out": 10
+      "filtered_out": 0,
+      "capped_out": 0
     },
     {
       "id": "archives",
@@ -1198,6 +2043,7 @@
       "domain": "dag.njupt.edu.cn",
       "source_type": "service_unit",
       "adapter_kind": "njupt_wp",
+      "allow_insecure_tls": false,
       "priority": 0.62,
       "requires_devtools_audit": false,
       "channel_count": 3,
@@ -1208,10 +2054,20 @@
           "priority": 0.64,
           "student_value": 0.66,
           "audit_status": "chrome_audited",
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
           "status": "ok_no_recent_docs",
           "documents": 0,
           "candidates": 0,
-          "list_errors": []
+          "list_errors": [],
+          "selector_strategies": {},
+          "selector_warnings": []
         },
         {
           "id": "archives_notice",
@@ -1219,10 +2075,22 @@
           "priority": 0.6,
           "student_value": 0.62,
           "audit_status": "chrome_audited",
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
           "status": "ok_with_docs",
           "documents": 14,
           "candidates": 36,
-          "list_errors": []
+          "list_errors": [],
+          "selector_strategies": {
+            "global_anchor_fallback": 36
+          },
+          "selector_warnings": []
         },
         {
           "id": "archives_download",
@@ -1230,17 +2098,28 @@
           "priority": 0.56,
           "student_value": 0.58,
           "audit_status": "chrome_audited",
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
           "status": "ok_no_recent_docs",
           "documents": 0,
           "candidates": 0,
-          "list_errors": []
+          "list_errors": [],
+          "selector_strategies": {},
+          "selector_warnings": []
         }
       ],
       "status": "ok",
-      "documents": 1,
-      "last_fetch_at": "2026-05-25T17:52:59.328814+08:00",
+      "documents": 14,
+      "last_fetch_at": "2026-05-25T23:14:51.685780+08:00",
       "candidates": 14,
-      "filtered_out": 13
+      "filtered_out": 0,
+      "capped_out": 0
     },
     {
       "id": "pe",
@@ -1248,6 +2127,7 @@
       "domain": "tyb.njupt.edu.cn",
       "source_type": "service_unit",
       "adapter_kind": "njupt_wp",
+      "allow_insecure_tls": false,
       "priority": 0.58,
       "requires_devtools_audit": false,
       "channel_count": 4,
@@ -1258,10 +2138,22 @@
           "priority": 0.62,
           "student_value": 0.64,
           "audit_status": "chrome_audited",
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
           "status": "ok_with_docs",
           "documents": 12,
           "candidates": 24,
-          "list_errors": []
+          "list_errors": [],
+          "selector_strategies": {
+            "global_anchor_fallback": 24
+          },
+          "selector_warnings": []
         },
         {
           "id": "pe_running",
@@ -1269,10 +2161,22 @@
           "priority": 0.64,
           "student_value": 0.66,
           "audit_status": "chrome_audited",
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
           "status": "warning_filtered_all",
           "documents": 0,
           "candidates": 36,
-          "list_errors": []
+          "list_errors": [],
+          "selector_strategies": {
+            "global_anchor_fallback": 36
+          },
+          "selector_warnings": []
         },
         {
           "id": "pe_competition",
@@ -1280,10 +2184,22 @@
           "priority": 0.6,
           "student_value": 0.62,
           "audit_status": "chrome_audited",
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
           "status": "warning_filtered_all",
           "documents": 0,
           "candidates": 28,
-          "list_errors": []
+          "list_errors": [],
+          "selector_strategies": {
+            "global_anchor_fallback": 28
+          },
+          "selector_warnings": []
         },
         {
           "id": "pe_download",
@@ -1291,17 +2207,30 @@
           "priority": 0.52,
           "student_value": 0.54,
           "audit_status": "chrome_audited",
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
           "status": "warning_filtered_all",
           "documents": 0,
           "candidates": 9,
-          "list_errors": []
+          "list_errors": [],
+          "selector_strategies": {
+            "global_anchor_fallback": 9
+          },
+          "selector_warnings": []
         }
       ],
       "status": "ok",
-      "documents": 3,
-      "last_fetch_at": "2026-05-25T17:52:59.328814+08:00",
+      "documents": 12,
+      "last_fetch_at": "2026-05-25T23:14:51.685780+08:00",
       "candidates": 12,
-      "filtered_out": 9
+      "filtered_out": 0,
+      "capped_out": 0
     },
     {
       "id": "cs",
@@ -1309,6 +2238,7 @@
       "domain": "cs.njupt.edu.cn",
       "source_type": "college",
       "adapter_kind": "njupt_wp",
+      "allow_insecure_tls": false,
       "priority": 0.78,
       "requires_devtools_audit": false,
       "channel_count": 2,
@@ -1319,10 +2249,22 @@
           "priority": 0.78,
           "student_value": 0.78,
           "audit_status": "manual_seeded",
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
           "status": "ok_with_docs",
           "documents": 4,
           "candidates": 4,
-          "list_errors": []
+          "list_errors": [],
+          "selector_strategies": {
+            "global_anchor_fallback": 4
+          },
+          "selector_warnings": []
         },
         {
           "id": "cs_competition",
@@ -1330,17 +2272,30 @@
           "priority": 0.74,
           "student_value": 0.74,
           "audit_status": "manual_seeded",
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
           "status": "ok_with_docs",
           "documents": 4,
           "candidates": 4,
-          "list_errors": []
+          "list_errors": [],
+          "selector_strategies": {
+            "global_anchor_fallback": 4
+          },
+          "selector_warnings": []
         }
       ],
       "status": "ok",
-      "documents": 6,
-      "last_fetch_at": "2026-05-25T17:52:59.328814+08:00",
+      "documents": 8,
+      "last_fetch_at": "2026-05-25T23:14:51.685780+08:00",
       "candidates": 8,
-      "filtered_out": 2
+      "filtered_out": 0,
+      "capped_out": 0
     },
     {
       "id": "scie",
@@ -1348,6 +2303,7 @@
       "domain": "scie.njupt.edu.cn",
       "source_type": "college",
       "adapter_kind": "njupt_wp",
+      "allow_insecure_tls": false,
       "priority": 0.76,
       "requires_devtools_audit": false,
       "channel_count": 2,
@@ -1358,10 +2314,20 @@
           "priority": 0.76,
           "student_value": 0.76,
           "audit_status": "manual_seeded",
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
           "status": "ok_no_recent_docs",
           "documents": 0,
           "candidates": 0,
-          "list_errors": []
+          "list_errors": [],
+          "selector_strategies": {},
+          "selector_warnings": []
         },
         {
           "id": "scie_competition",
@@ -1369,17 +2335,28 @@
           "priority": 0.72,
           "student_value": 0.72,
           "audit_status": "manual_seeded",
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
           "status": "ok_no_recent_docs",
           "documents": 0,
           "candidates": 0,
-          "list_errors": []
+          "list_errors": [],
+          "selector_strategies": {},
+          "selector_warnings": []
         }
       ],
       "status": "ok",
       "documents": 0,
-      "last_fetch_at": "2026-05-25T17:52:59.328814+08:00",
+      "last_fetch_at": "2026-05-25T23:14:51.685780+08:00",
       "candidates": 0,
-      "filtered_out": 0
+      "filtered_out": 0,
+      "capped_out": 0
     },
     {
       "id": "eoe",
@@ -1387,6 +2364,7 @@
       "domain": "eoe.njupt.edu.cn",
       "source_type": "college",
       "adapter_kind": "njupt_wp",
+      "allow_insecure_tls": false,
       "priority": 0.74,
       "requires_devtools_audit": false,
       "channel_count": 2,
@@ -1397,10 +2375,20 @@
           "priority": 0.74,
           "student_value": 0.74,
           "audit_status": "manual_seeded",
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
           "status": "ok_no_recent_docs",
           "documents": 0,
           "candidates": 0,
-          "list_errors": []
+          "list_errors": [],
+          "selector_strategies": {},
+          "selector_warnings": []
         },
         {
           "id": "eoe_competition",
@@ -1408,17 +2396,28 @@
           "priority": 0.7,
           "student_value": 0.7,
           "audit_status": "manual_seeded",
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
           "status": "ok_no_recent_docs",
           "documents": 0,
           "candidates": 0,
-          "list_errors": []
+          "list_errors": [],
+          "selector_strategies": {},
+          "selector_warnings": []
         }
       ],
       "status": "ok",
       "documents": 0,
-      "last_fetch_at": "2026-05-25T17:52:59.328814+08:00",
+      "last_fetch_at": "2026-05-25T23:14:51.685780+08:00",
       "candidates": 0,
-      "filtered_out": 0
+      "filtered_out": 0,
+      "capped_out": 0
     },
     {
       "id": "ic",
@@ -1426,6 +2425,7 @@
       "domain": "ic.njupt.edu.cn",
       "source_type": "college",
       "adapter_kind": "njupt_wp",
+      "allow_insecure_tls": false,
       "priority": 0.74,
       "requires_devtools_audit": false,
       "channel_count": 2,
@@ -1436,10 +2436,20 @@
           "priority": 0.74,
           "student_value": 0.74,
           "audit_status": "manual_seeded",
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
           "status": "ok_no_recent_docs",
           "documents": 0,
           "candidates": 0,
-          "list_errors": []
+          "list_errors": [],
+          "selector_strategies": {},
+          "selector_warnings": []
         },
         {
           "id": "ic_competition",
@@ -1447,17 +2457,28 @@
           "priority": 0.7,
           "student_value": 0.7,
           "audit_status": "manual_seeded",
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
           "status": "ok_no_recent_docs",
           "documents": 0,
           "candidates": 0,
-          "list_errors": []
+          "list_errors": [],
+          "selector_strategies": {},
+          "selector_warnings": []
         }
       ],
       "status": "ok",
       "documents": 0,
-      "last_fetch_at": "2026-05-25T17:52:59.328814+08:00",
+      "last_fetch_at": "2026-05-25T23:14:51.685780+08:00",
       "candidates": 0,
-      "filtered_out": 0
+      "filtered_out": 0,
+      "capped_out": 0
     },
     {
       "id": "coa",
@@ -1465,6 +2486,7 @@
       "domain": "coa.njupt.edu.cn",
       "source_type": "college",
       "adapter_kind": "njupt_wp",
+      "allow_insecure_tls": false,
       "priority": 0.72,
       "requires_devtools_audit": false,
       "channel_count": 2,
@@ -1475,10 +2497,20 @@
           "priority": 0.72,
           "student_value": 0.72,
           "audit_status": "manual_seeded",
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
           "status": "ok_no_recent_docs",
           "documents": 0,
           "candidates": 0,
-          "list_errors": []
+          "list_errors": [],
+          "selector_strategies": {},
+          "selector_warnings": []
         },
         {
           "id": "coa_competition",
@@ -1486,17 +2518,28 @@
           "priority": 0.6799999999999999,
           "student_value": 0.6799999999999999,
           "audit_status": "manual_seeded",
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
           "status": "ok_no_recent_docs",
           "documents": 0,
           "candidates": 0,
-          "list_errors": []
+          "list_errors": [],
+          "selector_strategies": {},
+          "selector_warnings": []
         }
       ],
       "status": "ok",
       "documents": 0,
-      "last_fetch_at": "2026-05-25T17:52:59.328814+08:00",
+      "last_fetch_at": "2026-05-25T23:14:51.685780+08:00",
       "candidates": 0,
-      "filtered_out": 0
+      "filtered_out": 0,
+      "capped_out": 0
     },
     {
       "id": "ai",
@@ -1504,6 +2547,7 @@
       "domain": "ai.njupt.edu.cn",
       "source_type": "college",
       "adapter_kind": "njupt_wp",
+      "allow_insecure_tls": false,
       "priority": 0.72,
       "requires_devtools_audit": false,
       "channel_count": 2,
@@ -1514,10 +2558,20 @@
           "priority": 0.72,
           "student_value": 0.72,
           "audit_status": "manual_seeded",
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
           "status": "ok_no_recent_docs",
           "documents": 0,
           "candidates": 0,
-          "list_errors": []
+          "list_errors": [],
+          "selector_strategies": {},
+          "selector_warnings": []
         },
         {
           "id": "ai_competition",
@@ -1525,17 +2579,28 @@
           "priority": 0.6799999999999999,
           "student_value": 0.6799999999999999,
           "audit_status": "manual_seeded",
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
           "status": "ok_no_recent_docs",
           "documents": 0,
           "candidates": 0,
-          "list_errors": []
+          "list_errors": [],
+          "selector_strategies": {},
+          "selector_warnings": []
         }
       ],
       "status": "ok",
       "documents": 0,
-      "last_fetch_at": "2026-05-25T17:52:59.328814+08:00",
+      "last_fetch_at": "2026-05-25T23:14:51.685780+08:00",
       "candidates": 0,
-      "filtered_out": 0
+      "filtered_out": 0,
+      "capped_out": 0
     },
     {
       "id": "ciot",
@@ -1543,6 +2608,7 @@
       "domain": "ciot.njupt.edu.cn",
       "source_type": "college",
       "adapter_kind": "njupt_wp",
+      "allow_insecure_tls": false,
       "priority": 0.72,
       "requires_devtools_audit": false,
       "channel_count": 2,
@@ -1553,10 +2619,20 @@
           "priority": 0.72,
           "student_value": 0.72,
           "audit_status": "manual_seeded",
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
           "status": "ok_no_recent_docs",
           "documents": 0,
           "candidates": 0,
-          "list_errors": []
+          "list_errors": [],
+          "selector_strategies": {},
+          "selector_warnings": []
         },
         {
           "id": "ciot_competition",
@@ -1564,17 +2640,28 @@
           "priority": 0.6799999999999999,
           "student_value": 0.6799999999999999,
           "audit_status": "manual_seeded",
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
           "status": "ok_no_recent_docs",
           "documents": 0,
           "candidates": 0,
-          "list_errors": []
+          "list_errors": [],
+          "selector_strategies": {},
+          "selector_warnings": []
         }
       ],
       "status": "ok",
       "documents": 0,
-      "last_fetch_at": "2026-05-25T17:52:59.328814+08:00",
+      "last_fetch_at": "2026-05-25T23:14:51.685780+08:00",
       "candidates": 0,
-      "filtered_out": 0
+      "filtered_out": 0,
+      "capped_out": 0
     },
     {
       "id": "lxy",
@@ -1582,6 +2669,7 @@
       "domain": "lxy.njupt.edu.cn",
       "source_type": "college",
       "adapter_kind": "njupt_wp",
+      "allow_insecure_tls": false,
       "priority": 0.68,
       "requires_devtools_audit": false,
       "channel_count": 2,
@@ -1592,10 +2680,20 @@
           "priority": 0.68,
           "student_value": 0.68,
           "audit_status": "manual_seeded",
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
           "status": "ok_no_recent_docs",
           "documents": 0,
           "candidates": 0,
-          "list_errors": []
+          "list_errors": [],
+          "selector_strategies": {},
+          "selector_warnings": []
         },
         {
           "id": "lxy_competition",
@@ -1603,17 +2701,28 @@
           "priority": 0.64,
           "student_value": 0.64,
           "audit_status": "manual_seeded",
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
           "status": "ok_no_recent_docs",
           "documents": 0,
           "candidates": 0,
-          "list_errors": []
+          "list_errors": [],
+          "selector_strategies": {},
+          "selector_warnings": []
         }
       ],
       "status": "ok",
       "documents": 0,
-      "last_fetch_at": "2026-05-25T17:52:59.328814+08:00",
+      "last_fetch_at": "2026-05-25T23:14:51.685780+08:00",
       "candidates": 0,
-      "filtered_out": 0
+      "filtered_out": 0,
+      "capped_out": 0
     },
     {
       "id": "simp",
@@ -1621,6 +2730,7 @@
       "domain": "simp.njupt.edu.cn",
       "source_type": "college",
       "adapter_kind": "njupt_wp",
+      "allow_insecure_tls": false,
       "priority": 0.68,
       "requires_devtools_audit": false,
       "channel_count": 2,
@@ -1631,10 +2741,22 @@
           "priority": 0.68,
           "student_value": 0.68,
           "audit_status": "manual_seeded",
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
           "status": "ok_with_docs",
           "documents": 13,
           "candidates": 36,
-          "list_errors": []
+          "list_errors": [],
+          "selector_strategies": {
+            "global_anchor_fallback": 36
+          },
+          "selector_warnings": []
         },
         {
           "id": "simp_competition",
@@ -1642,17 +2764,30 @@
           "priority": 0.64,
           "student_value": 0.64,
           "audit_status": "manual_seeded",
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
           "status": "warning_filtered_all",
           "documents": 0,
           "candidates": 36,
-          "list_errors": []
+          "list_errors": [],
+          "selector_strategies": {
+            "global_anchor_fallback": 36
+          },
+          "selector_warnings": []
         }
       ],
       "status": "ok",
-      "documents": 3,
-      "last_fetch_at": "2026-05-25T17:52:59.328814+08:00",
+      "documents": 13,
+      "last_fetch_at": "2026-05-25T23:14:51.685780+08:00",
       "candidates": 13,
-      "filtered_out": 10
+      "filtered_out": 0,
+      "capped_out": 0
     },
     {
       "id": "bc",
@@ -1660,6 +2795,7 @@
       "domain": "bc.njupt.edu.cn",
       "source_type": "college",
       "adapter_kind": "njupt_wp",
+      "allow_insecure_tls": false,
       "priority": 0.66,
       "requires_devtools_audit": false,
       "channel_count": 2,
@@ -1670,10 +2806,22 @@
           "priority": 0.66,
           "student_value": 0.66,
           "audit_status": "manual_seeded",
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
           "status": "ok_with_docs",
           "documents": 14,
           "candidates": 26,
-          "list_errors": []
+          "list_errors": [],
+          "selector_strategies": {
+            "global_anchor_fallback": 26
+          },
+          "selector_warnings": []
         },
         {
           "id": "bc_competition",
@@ -1681,17 +2829,30 @@
           "priority": 0.62,
           "student_value": 0.62,
           "audit_status": "manual_seeded",
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
           "status": "warning_filtered_all",
           "documents": 0,
           "candidates": 26,
-          "list_errors": []
+          "list_errors": [],
+          "selector_strategies": {
+            "global_anchor_fallback": 26
+          },
+          "selector_warnings": []
         }
       ],
       "status": "ok",
-      "documents": 5,
-      "last_fetch_at": "2026-05-25T17:52:59.328814+08:00",
+      "documents": 14,
+      "last_fetch_at": "2026-05-25T23:14:51.685780+08:00",
       "candidates": 14,
-      "filtered_out": 9
+      "filtered_out": 0,
+      "capped_out": 0
     },
     {
       "id": "jjxy",
@@ -1699,6 +2860,7 @@
       "domain": "jjxy.njupt.edu.cn",
       "source_type": "college",
       "adapter_kind": "njupt_wp",
+      "allow_insecure_tls": false,
       "priority": 0.66,
       "requires_devtools_audit": false,
       "channel_count": 2,
@@ -1709,10 +2871,20 @@
           "priority": 0.66,
           "student_value": 0.66,
           "audit_status": "manual_seeded",
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
           "status": "ok_no_recent_docs",
           "documents": 0,
           "candidates": 0,
-          "list_errors": []
+          "list_errors": [],
+          "selector_strategies": {},
+          "selector_warnings": []
         },
         {
           "id": "jjxy_competition",
@@ -1720,17 +2892,28 @@
           "priority": 0.62,
           "student_value": 0.62,
           "audit_status": "manual_seeded",
+          "selectors": {
+            "list_item": null,
+            "title": null,
+            "date": null,
+            "link": null,
+            "content": ".wp_articlecontent",
+            "attachments": "a[href]"
+          },
           "status": "ok_no_recent_docs",
           "documents": 0,
           "candidates": 0,
-          "list_errors": []
+          "list_errors": [],
+          "selector_strategies": {},
+          "selector_warnings": []
         }
       ],
       "status": "ok",
       "documents": 0,
-      "last_fetch_at": "2026-05-25T17:52:59.328814+08:00",
+      "last_fetch_at": "2026-05-25T23:14:51.685780+08:00",
       "candidates": 0,
-      "filtered_out": 0
+      "filtered_out": 0,
+      "capped_out": 0
     },
     {
       "id": "github:hicancan/njupt-net",
@@ -1739,7 +2922,7 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 2,
-      "last_fetch_at": "2026-05-25T17:52:59.328814+08:00",
+      "last_fetch_at": "2026-05-25T23:14:51.685780+08:00",
       "candidates": 2
     },
     {
@@ -1749,7 +2932,7 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-25T17:52:59.328814+08:00",
+      "last_fetch_at": "2026-05-25T23:14:51.685780+08:00",
       "candidates": 1
     },
     {
@@ -1759,7 +2942,7 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 5,
-      "last_fetch_at": "2026-05-25T17:52:59.328814+08:00",
+      "last_fetch_at": "2026-05-25T23:14:51.685780+08:00",
       "candidates": 5
     },
     {
@@ -1769,7 +2952,7 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-25T17:52:59.328814+08:00",
+      "last_fetch_at": "2026-05-25T23:14:51.685780+08:00",
       "candidates": 1
     },
     {
@@ -1779,7 +2962,7 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-25T17:52:59.328814+08:00",
+      "last_fetch_at": "2026-05-25T23:14:51.685780+08:00",
       "candidates": 1
     },
     {
@@ -1789,7 +2972,7 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-25T17:52:59.328814+08:00",
+      "last_fetch_at": "2026-05-25T23:14:51.685780+08:00",
       "candidates": 1
     },
     {
@@ -1799,7 +2982,7 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-25T17:52:59.328814+08:00",
+      "last_fetch_at": "2026-05-25T23:14:51.685780+08:00",
       "candidates": 1
     },
     {
@@ -1809,7 +2992,7 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-25T17:52:59.328814+08:00",
+      "last_fetch_at": "2026-05-25T23:14:51.685780+08:00",
       "candidates": 1
     },
     {
@@ -1819,7 +3002,7 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-25T17:52:59.328814+08:00",
+      "last_fetch_at": "2026-05-25T23:14:51.685780+08:00",
       "candidates": 1
     },
     {
@@ -1829,7 +3012,7 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-25T17:52:59.328814+08:00",
+      "last_fetch_at": "2026-05-25T23:14:51.685780+08:00",
       "candidates": 1
     },
     {
@@ -1839,7 +3022,7 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 3,
-      "last_fetch_at": "2026-05-25T17:52:59.328814+08:00",
+      "last_fetch_at": "2026-05-25T23:14:51.685780+08:00",
       "candidates": 3
     },
     {
@@ -1849,7 +3032,7 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-25T17:52:59.328814+08:00",
+      "last_fetch_at": "2026-05-25T23:14:51.685780+08:00",
       "candidates": 1
     },
     {
@@ -1859,7 +3042,7 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-25T17:52:59.328814+08:00",
+      "last_fetch_at": "2026-05-25T23:14:51.685780+08:00",
       "candidates": 1
     },
     {
@@ -1869,7 +3052,7 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-25T17:52:59.328814+08:00",
+      "last_fetch_at": "2026-05-25T23:14:51.685780+08:00",
       "candidates": 1
     },
     {
@@ -1879,7 +3062,7 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-25T17:52:59.328814+08:00",
+      "last_fetch_at": "2026-05-25T23:14:51.685780+08:00",
       "candidates": 1
     },
     {
@@ -1889,7 +3072,7 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-25T17:52:59.328814+08:00",
+      "last_fetch_at": "2026-05-25T23:14:51.685780+08:00",
       "candidates": 1
     },
     {
@@ -1899,7 +3082,7 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-25T17:52:59.328814+08:00",
+      "last_fetch_at": "2026-05-25T23:14:51.685780+08:00",
       "candidates": 1
     },
     {
@@ -1909,7 +3092,7 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-25T17:52:59.328814+08:00",
+      "last_fetch_at": "2026-05-25T23:14:51.685780+08:00",
       "candidates": 1
     },
     {
@@ -1919,7 +3102,7 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 2,
-      "last_fetch_at": "2026-05-25T17:52:59.328814+08:00",
+      "last_fetch_at": "2026-05-25T23:14:51.685780+08:00",
       "candidates": 2
     },
     {
@@ -1929,7 +3112,7 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-25T17:52:59.328814+08:00",
+      "last_fetch_at": "2026-05-25T23:14:51.685780+08:00",
       "candidates": 1
     },
     {
@@ -1939,7 +3122,7 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-25T17:52:59.328814+08:00",
+      "last_fetch_at": "2026-05-25T23:14:51.685780+08:00",
       "candidates": 1
     },
     {
@@ -1949,8 +3132,8 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 2,
-      "last_fetch_at": "2026-05-25T17:52:59.328814+08:00",
-      "candidates": 2
+      "last_fetch_at": "2026-05-25T23:14:51.685780+08:00",
+      "warning": "GitHub fetch failed; reused stale cached documents: name 'provider_chain' is not defined"
     },
     {
       "id": "github:bmxbmx3/finger_vein_recognition",
@@ -1959,7 +3142,7 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-25T17:52:59.328814+08:00",
+      "last_fetch_at": "2026-05-25T23:14:51.685780+08:00",
       "candidates": 1
     },
     {
@@ -1969,7 +3152,7 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-25T17:52:59.328814+08:00",
+      "last_fetch_at": "2026-05-25T23:14:51.685780+08:00",
       "candidates": 1
     },
     {
@@ -1979,7 +3162,7 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-25T17:52:59.328814+08:00",
+      "last_fetch_at": "2026-05-25T23:14:51.685780+08:00",
       "candidates": 1
     },
     {
@@ -1989,7 +3172,7 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-25T17:52:59.328814+08:00",
+      "last_fetch_at": "2026-05-25T23:14:51.685780+08:00",
       "candidates": 1
     },
     {
@@ -1999,7 +3182,7 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-25T17:52:59.328814+08:00",
+      "last_fetch_at": "2026-05-25T23:14:51.685780+08:00",
       "candidates": 1
     },
     {
@@ -2009,7 +3192,7 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-25T17:52:59.328814+08:00",
+      "last_fetch_at": "2026-05-25T23:14:51.685780+08:00",
       "candidates": 1
     },
     {
@@ -2019,7 +3202,7 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-25T17:52:59.328814+08:00",
+      "last_fetch_at": "2026-05-25T23:14:51.685780+08:00",
       "candidates": 1
     },
     {
@@ -2029,8 +3212,8 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-25T17:52:59.328814+08:00",
-      "warning": "GitHub fetch failed; reused stale cached documents: name 'provider_chain' is not defined"
+      "last_fetch_at": "2026-05-25T23:14:51.685780+08:00",
+      "candidates": 1
     },
     {
       "id": "github:Moonike1217/NJUPTExamICSBuilder",
@@ -2039,7 +3222,7 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-25T17:52:59.328814+08:00",
+      "last_fetch_at": "2026-05-25T23:14:51.685780+08:00",
       "candidates": 1
     },
     {
@@ -2049,11 +3232,8 @@
       "source_type": "github_resource",
       "status": "ok",
       "documents": 1,
-      "last_fetch_at": "2026-05-25T17:52:59.328814+08:00",
+      "last_fetch_at": "2026-05-25T23:14:51.685780+08:00",
       "candidates": 1
     }
-  ],
-  "notice_card_count": 153,
-  "typed_search_terms_count": 3117,
-  "documents_with_synonyms": 71
+  ]
 }
