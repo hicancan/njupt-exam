@@ -704,6 +704,28 @@
       "max_files": 5,
       "source_weight": 0.5,
       "enabled": true
+    },
+    {
+      "repo": "ArcticLampyrid/njupt_wifi_login",
+      "label": "A tool to help NJUPTer to conn...",
+      "category": "公告",
+      "audience": [
+        "本科生",
+        "研究生"
+      ],
+      "include": [
+        "README.md",
+        "*.md"
+      ],
+      "exclude": [
+        "**/node_modules/**",
+        "**/dist/**",
+        "**/build/**",
+        "**/.git/**"
+      ],
+      "max_files": 5,
+      "source_weight": 0.5,
+      "enabled": true
     }
   ]
 }

@@ -55,15 +55,11 @@
     "evidence": [
       {
         "field": "general",
-        "text": "现公布2025-2026学年第二学期考试安排表"
-      },
-      {
-        "field": "general",
-        "text": "请及时通知相关学生参加考试"
+        "text": "现 公布2025-2026学年第二学期考试安排表，考试分为学校组织和学院组织，请及时通知相关学生参加考试。"
       },
       {
         "field": "audience",
-        "text": "现公布2025-2026学年第二学期考试安排表"
+        "text": "现 公布2025-2026学年第二学期考试安排表，考试分为学校组织和学院组织，请及时通知相关学生参加考试。"
       }
     ],
     "risk": {
@@ -736,7 +732,7 @@
       "published_at": "2026-03-27",
       "deadline": "2026-04-03T16:00:00+08:00",
       "lifecycle": "expired",
-      "urgency_days": -53
+      "urgency_days": -54
     },
     "materials": [],
     "location": {
@@ -817,7 +813,7 @@
       "published_at": "2026-03-26",
       "deadline": "2026-04-03T17:00:00+08:00",
       "lifecycle": "expired",
-      "urgency_days": -53
+      "urgency_days": -54
     },
     "materials": [],
     "location": {
@@ -1478,6 +1474,82 @@
       "review_required": true
     },
     "confidence": 0.85
+  },
+  {
+    "task_id": "task_227b6d3e1e5e6bb6",
+    "doc_id": "github-ArcticLampyrid-njupt_wifi_login-46cbdd6ee72c5b3f9903",
+    "source_mode": "generated_from_llm_fields",
+    "field_sources": {
+      "category": "display_mapping",
+      "domain": "llm",
+      "intent": "llm",
+      "deadline": "llm",
+      "action_required": "llm",
+      "action_summary": "llm",
+      "required_materials": "llm",
+      "summary": "llm",
+      "evidence": "llm",
+      "sensitive": "llm",
+      "review_required": "llm",
+      "task_frames": "empty_not_applicable"
+    },
+    "task_type": "download",
+    "who": {
+      "audience": [
+        "本科生",
+        "研究生"
+      ],
+      "college": [],
+      "grade": [],
+      "major": [],
+      "class_name": []
+    },
+    "what": "A tool to help NJUPTer to conn... · NJUPT WiFi Login",
+    "action": {
+      "required": false,
+      "verb": null,
+      "object": null,
+      "summary": null
+    },
+    "time": {
+      "published_at": "2025-09-30",
+      "deadline": null,
+      "lifecycle": "evergreen",
+      "urgency_days": null
+    },
+    "materials": [],
+    "location": {
+      "place": null,
+      "online": null,
+      "contact": null
+    },
+    "source": {
+      "source_id": "github:ArcticLampyrid/njupt_wifi_login",
+      "channel_id": "github:ArcticLampyrid/njupt_wifi_login:resource",
+      "authority": 0.7,
+      "official": true
+    },
+    "evidence": [
+      {
+        "field": "general",
+        "text": "A tool to help NJUPTer to connect the campus network conveniently."
+      },
+      {
+        "field": "general",
+        "text": "Download the binaries or build from the source on your own."
+      },
+      {
+        "field": "audience",
+        "text": "A tool to help NJUPTer to connect the campus network conveniently."
+      }
+    ],
+    "risk": {
+      "sensitive": false,
+      "restricted": false,
+      "low_evidence": false,
+      "review_required": false
+    },
+    "confidence": 0.86
   },
   {
     "task_id": "task_5a23a9679b45e700",
