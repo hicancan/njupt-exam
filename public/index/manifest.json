@@ -1,8 +1,8 @@
 {
-  "generated_at": "2026-05-26T16:39:58.513428+00:00",
+  "generated_at": "2026-05-26T23:17:01.908284+00:00",
   "strategy": "pure-sitegraph-code-search-v1",
   "site_id": "jwc",
-  "source": "D:\\code\\github\\hicancan\\njupt-site-graph\\data\\sites\\jwc\\index",
+  "source": "/home/runner/work/njupt-search/njupt-search/_sitegraph/njupt-site-graph/data/sites/jwc/index",
   "total_documents": 7534,
   "record_counts": {
     "detail": 6884,
