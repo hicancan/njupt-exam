@@ -85,7 +85,7 @@ jobs:
             scripts/eval/sitegraph_query_smoke_test.py \
             scripts/utils/validate_search_index.py
           python -m unittest discover -s tests
-          python -m pytest
+          python -m pytest tests
 
       - name: Frontend checks
         run: |
