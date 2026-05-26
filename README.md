@@ -12,35 +12,29 @@
 
 ## 项目定位
 
-`njupt-search` 不是普通公告聚合站，也不是单纯考试查询工具。当前主架构是 HyTask-RAG：Hybrid Student Task Retrieval-Augmented Graph。
+`njupt-search` 不是普通公告聚合站，也不是单纯考试查询工具。当前生产公开搜索主架构是 JWC sitegraph-backed index：除考试垂直频道外，公开搜索数据只消费 `njupt-site-graph` 已审计的 JWC 结构化包，不再运行旧 Source-Channel 非考试爬虫、GitHub 资料源或 LLM 补全链路。
 
 ```text
-Source-Channel Graph
--> Canonical Document
--> Rule Guard
--> LLM/Heuristic Semantic Result
--> Semantic Verifier
--> TaskFrame
--> Hybrid Index
+JWC Sitegraph Package
+-> Sitegraph Ingest
+-> SearchDocument + provenance
+-> Slim default index + full JWC shards
 -> Query Understanding
--> Hybrid Retrieval
--> Student Utility Ranking
 -> Product UI
--> Self Evaluation
 -> Static Deploy
 ```
 
-考试查询保留为 `exam_vertical` 垂直频道：输入班级号可查看期末考试安排、勾选课程并导出 `.ics` 日历。公告、通知、就业、图书馆、后勤、保卫、档案、体育、国际交流、学院通知和 GitHub 学习资料进入统一搜索。
+考试查询保留为 `exam_vertical` 垂直频道：输入班级号可查看期末考试安排、勾选课程并导出 `.ics` 日历。非考试公开搜索只使用 JWC 官方 sitegraph；旧就业、图书馆、后勤、保卫、档案、体育、学院通知和 GitHub 学习资料不再属于生产公开搜索索引。
 
 ## 主配置
 
-生产主链路只使用 Source-Channel Graph：
+生产公开搜索主链路只使用 JWC sitegraph 包：
 
 ```text
-config/source_channels.json
+D:\code\github\hicancan\njupt-site-graph\data\sites\jwc\index
 ```
 
-每个 source 可以包含多个 channel。channel 是抓取、审计、过滤和排序的基本单位。`campus_sources.json` 不再作为运行主链路。
+本地默认按兄弟仓库路径读取；CI 通过 checkout `hicancan/njupt-site-graph` 后读取 `_sitegraph/njupt-site-graph/data/sites/jwc/index`。如果私有仓库 checkout 权限不足，需要配置 `NJUPT_SITEGRAPH_TOKEN`。TODO：后续可改为下载 njupt-site-graph 发布的 JWC package artifact，避免 CI 直接 checkout 兄弟仓库。
 
 辅助配置：
 
@@ -48,7 +42,6 @@ config/source_channels.json
 config/query_aliases.json
 config/ontology.json
 config/search_contract.json
-config/github_search_sources.json
 ```
 
 生成索引：
@@ -59,6 +52,8 @@ public/index/task_frames.json
 public/index/query_aliases.json
 public/index/ontology.json
 public/index/manifest.json
+public/index/sitegraph/jwc/documents.000.json
+public/index/sitegraph/jwc/outcomes.json
 ```
 
 考试数据：
@@ -70,12 +65,12 @@ public/data/data_summary.json
 
 ## HyTask-RAG 组件
 
-- Source-Channel Graph：记录公开源站、栏目、学生价值、预期领域/意图、选择器、分页、风险和关键词。
-- Canonical Document：统一 URL、正文、附件、发布时间、hash、dedupe key、source_id 和 channel_id。
-- Rule Guard：在 LLM 前检测 restricted、sensitive、low_evidence、duplicate、expired、evergreen、附件风险和行政噪声。
-- Semantic Verifier：在写入 SearchDocument 前移除未由原文或附件元数据支撑的 deadline、action、materials、location/contact 和 TaskFrame 字段。
-- TaskFrame：把通知建模为学生任务，包含对象、任务、动作、截止、材料、地点、证据、风险和置信度。
-- Notice Card / Typed Terms：离线把公开原文和证据抽取为通知卡片、typed_search_terms、synonyms、objects、actions、deadlines、materials、locations、attachments 和 risk。
+- Sitegraph Package：由 `njupt-site-graph` 生成并审计 JWC homepage、nav tree、list/detail、附件、外链、边和 URL outcome。
+- Sitegraph Ingest：读取 JWC 包，把 6884 个 detail pages 转成 SearchDocument，并为 direct attachment、外部系统和必要首页入口生成 record/search record。
+- Provenance：每条记录保留 `sitegraph_provenance`，包含 section_id、nav_path、content_status、url_outcome 和 source files。
+- Attachment Metadata：只保存附件元数据，不下载二进制；附件名、扩展名、父页面、栏目路径都进入可搜索字段。
+- TaskFrame：仅用安全规则生成，不调用 LLM。
+- Slim + Shards：`public/index/documents.json` 是轻量默认索引，`public/index/sitegraph/jwc/documents.*.json` 是后台加载的全文 shards。
 - Search Contract：`config/search_contract.json` 约束 kind、category、domain、intent、source_type、lifecycle、semantic_mode 和 TaskFrame 枚举，生产验证严格失败。
 - Query Aliases：把“保研/推免”“大创”“校园网”等学生自然语言映射到领域、意图和语义扩展。
 - Query Intent Router: 识别查询模式并将其路由到特定垂类意图（如考试查询、资源搜索、事务通知等）。
@@ -89,7 +84,7 @@ public/data/data_summary.json
 - 不绕过校园网或统一身份认证限制。
 - restricted 页面不生成具体任务。
 - sensitive 页面不向 LLM 发送敏感正文，不展示敏感正文片段。
-- LLM/规则输出不是事实源；deadline、action、materials 和 TaskFrame 必须经过 deterministic verifier。
+- JWC sitegraph 是非考试公开搜索唯一事实源；ingest 不调用 LLM。
 - API key 只来自环境变量或 GitHub Actions secrets，不写入仓库。
 - 本项目为非官方工具，请以官网原文为准。
 
@@ -124,19 +119,12 @@ uv run python scripts\auto_update_exam_data.py
 uv run python scripts\analyze_and_update.py
 ```
 
-更新 HyTask-RAG 搜索索引：
+更新 JWC sitegraph-backed 搜索索引：
 
 ```powershell
-uv run python scripts\update_search_index.py
-```
-
-常用参数：
-
-```powershell
-uv run python scripts\update_search_index.py --dry-run --no-llm
-uv run python scripts\update_search_index.py --source jwc --force-llm --limit 20
-uv run python scripts\update_search_index.py --llm-provider deepseek --llm-batch-size 32
-uv run python scripts\update_search_index.py --no-github
+uv run python scripts\validate_sitegraph_ingest.py --sitegraph-index D:\code\github\hicancan\njupt-site-graph\data\sites\jwc\index --skip-output
+uv run python scripts\ingest_sitegraph.py --sitegraph-index D:\code\github\hicancan\njupt-site-graph\data\sites\jwc\index
+uv run python scripts\validate_sitegraph_ingest.py --sitegraph-index D:\code\github\hicancan\njupt-site-graph\data\sites\jwc\index
 ```
 
 校验与自评：
@@ -144,41 +132,26 @@ uv run python scripts\update_search_index.py --no-github
 ```powershell
 uv run python scripts\utils\validate_search_index.py
 uv run python scripts\utils\validate_query_routes.py
-uv run python scripts\eval\eval_search.py --write-report
-uv run python scripts\eval\query_smoke_test.py
-& .\node_modules\.bin\tsx.ps1 --tsconfig tsconfig.app.json scripts\eval\eval_frontend_search.ts --out eval\reports\ts_search_results.json
-uv run python scripts\eval\eval_product_search.py --mode both --ts-results eval\reports\ts_search_results.json
-uv run python scripts\eval\eval_search_parity.py --ts-results eval\reports\ts_search_results.json
+uv run python scripts\eval\sitegraph_query_smoke_test.py
 ```
 
-Search Quality v1.3 使用 `strict_pass / data_gap / fail` 三类状态。`data_gap` 只表示 Source-Channel 覆盖证明当前索引不能回答该 query，不计入 strict pass。当前 durable gold map 在 `eval/queries/search_gold.json`，可执行 gate 在 `eval/search_cases.json`。
+代表查询覆盖：校历、慕课考试、期末考试、转专业、规章制度、办事流程、学生相关文件及表格、教务管理系统、大创、推免、成绩、附件1、xlsx。
 
 ## 自动更新
 
-`.github/workflows/auto-update.yml` 每 6 小时更新考试数据、公开校园索引和 GitHub 资料源，并运行索引契约、产品搜索和 Python/TypeScript parity 校验。workflow inputs 以 shell array 传递；LLM cache 只有在 `commit_llm_cache=true` 时才提交。`.github/workflows/deploy.yml` 负责 lint、test、build 与 GitHub Pages 部署。
-
-LLM 增强只在离线索引构建阶段运行。未配置 Key 时使用规则抽取，不影响静态搜索可用性。
-
-可选环境变量：
-
-```powershell
-$env:DEEPSEEK_API_KEY="..."
-$env:DEEPSEEK_MODEL="deepseek-v4-flash"
-$env:GEMINI_API_KEYS="key1,key2,key3"
-$env:NJUPT_SEARCH_GITHUB_TOKEN="..."
-```
+`.github/workflows/auto-update.yml` 每 6 小时先更新考试数据，再 checkout/消费 JWC sitegraph 包并生成 `public/index`。该 workflow 不再运行 Fetch High Star GitHub Repos，也不再运行旧 `scripts/update_search_index.py` 非考试构建。`.github/workflows/deploy.yml` 负责 lint、test、build 与 GitHub Pages 部署。
 
 ## 项目结构
 
 ```text
-config/                 # source-channel graph, ontology, aliases, contract
+config/                 # ontology, aliases, contract; old source-channel config is not production
 docs/architecture/      # HyTask-RAG, contract, recall, eval, source adapters
 docs/operations/        # update/deploy runbook
 docs/source-audit/      # Chrome DevTools MCP 公开源审计
 docs/product/           # 产品冻结报告
 eval/                   # 自动 query 集与报告
 public/data/            # 考试垂直频道数据
-public/index/           # 静态 HyTask-RAG 索引
+public/index/           # sitegraph-backed 静态搜索索引
 scripts/core/           # Rule Guard, tokenizer, query expansion, task extraction
 scripts/models/         # CanonicalDocument, SourceGraph, TaskFrame, search contract
 scripts/eval/           # eval_search and query smoke tests

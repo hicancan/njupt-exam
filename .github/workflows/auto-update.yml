@@ -2,44 +2,14 @@ name: Auto Update Search Data
 
 on:
   schedule:
-    # Run every 6 hours
     - cron: '0 */6 * * *'
   workflow_dispatch:
     inputs:
-      force_llm:
-        description: 'Force re-run LLM enrichment cache'
-        required: false
-        type: boolean
-        default: true
-      source_id:
-        description: 'Optional single source id, for example jwc or github:owner/repo'
+      sitegraph_ref:
+        description: 'njupt-site-graph ref to consume'
         required: false
         type: string
-        default: ''
-      limit:
-        description: 'Optional maximum number of documents to send to LLM'
-        required: false
-        type: string
-        default: ''
-      llm_provider:
-        description: 'LLM provider: auto, deepseek, or gemini'
-        required: false
-        type: choice
-        options:
-          - auto
-          - deepseek
-          - gemini
-        default: auto
-      llm_batch_size:
-        description: 'Maximum documents per LLM batch'
-        required: false
-        type: string
-        default: '32'
-      commit_llm_cache:
-        description: 'Commit updated LLM cache to main'
-        required: false
-        type: boolean
-        default: false
+        default: 'main'
 
 permissions:
   contents: write
@@ -53,11 +23,20 @@ jobs:
     runs-on: ubuntu-latest
     env:
       PYTHONPATH: ${{ github.workspace }}/scripts
-    
+      SITEGRAPH_INDEX: _sitegraph/njupt-site-graph/data/sites/jwc/index
+
     steps:
-      - name: Checkout code
+      - name: Checkout njupt-search
         uses: actions/checkout@v4
-        
+
+      - name: Checkout JWC sitegraph package
+        uses: actions/checkout@v4
+        with:
+          repository: hicancan/njupt-site-graph
+          ref: ${{ github.event.inputs.sitegraph_ref || 'main' }}
+          path: _sitegraph/njupt-site-graph
+          token: ${{ secrets.NJUPT_SITEGRAPH_TOKEN || github.token }}
+
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
@@ -69,140 +48,70 @@ jobs:
         with:
           node-version: '20'
           cache: 'npm'
-          
+
       - name: Install dependencies
         run: |
           pip install -r requirements.txt
           npm ci
-          
-      - name: Run Exam Crawler
-        run: |
-          python scripts/auto_update_exam_data.py
-          
-      - name: Process Excel Files
-        run: |
-          python scripts/analyze_and_update.py
 
-      - name: Fetch High Star GitHub Repos
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NJUPT_SEARCH_GITHUB_TOKEN: ${{ secrets.NJUPT_SEARCH_GITHUB_TOKEN }}
-        run: |
-          python scripts/crawlers/fetch_github_repos.py
+      - name: Run exam crawler
+        run: python scripts/auto_update_exam_data.py
 
-      - name: Build Campus Search Index
-        env:
-          NJUPT_SEARCH_GITHUB_TOKEN: ${{ secrets.NJUPT_SEARCH_GITHUB_TOKEN }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
-          GEMINI_API_KEYS: ${{ secrets.GEMINI_API_KEYS }}
-          INPUT_FORCE_LLM: ${{ github.event.inputs.force_llm }}
-          INPUT_SOURCE_ID: ${{ github.event.inputs.source_id }}
-          INPUT_LIMIT: ${{ github.event.inputs.limit }}
-          INPUT_LLM_PROVIDER: ${{ github.event.inputs.llm_provider }}
-          INPUT_LLM_BATCH_SIZE: ${{ github.event.inputs.llm_batch_size }}
+      - name: Process exam Excel files
+        run: python scripts/analyze_and_update.py
+
+      - name: Validate upstream JWC sitegraph package
+        run: python scripts/validate_sitegraph_ingest.py --sitegraph-index "$SITEGRAPH_INDEX" --skip-output
+
+      - name: Build sitegraph-backed public index
+        run: python scripts/ingest_sitegraph.py --sitegraph-index "$SITEGRAPH_INDEX"
+
+      - name: Validate sitegraph-backed public index
         run: |
-          ARGS=()
-          if [ "$INPUT_FORCE_LLM" = "true" ]; then
-            ARGS+=(--force-llm)
-          fi
-          if [ -n "$INPUT_SOURCE_ID" ]; then
-            ARGS+=(--source "$INPUT_SOURCE_ID")
-          fi
-          if [ -n "$INPUT_LIMIT" ]; then
-            ARGS+=(--limit "$INPUT_LIMIT")
-          fi
-          if [ -n "$INPUT_LLM_PROVIDER" ]; then
-            ARGS+=(--llm-provider "$INPUT_LLM_PROVIDER")
-          fi
-          if [ -n "$INPUT_LLM_BATCH_SIZE" ]; then
-            ARGS+=(--llm-batch-size "$INPUT_LLM_BATCH_SIZE")
-          fi
-          python scripts/update_search_index.py "${ARGS[@]}"
+          python scripts/validate_sitegraph_ingest.py --sitegraph-index "$SITEGRAPH_INDEX"
+          python scripts/utils/validate_search_index.py
+
+      - name: Representative sitegraph search smoke test
+        run: python scripts/eval/sitegraph_query_smoke_test.py
 
       - name: Python integrity checks
         run: |
           python -m py_compile \
-            scripts/update_search_index.py \
-            scripts/core/llm_scorer.py \
-            scripts/core/semantic_pipeline.py \
-            scripts/core/semantic_verifier.py \
-            scripts/core/evidence_pack.py \
-            scripts/core/rule_guard.py \
-            scripts/core/tokenizer.py \
-            scripts/core/query_expander.py \
-            scripts/core/task_extractor.py \
-            scripts/models/canonical_document.py \
-            scripts/models/search_contract.py \
-            scripts/models/source_graph.py \
-            scripts/models/task_frame.py \
+            scripts/ingest_sitegraph.py \
+            scripts/validate_sitegraph_ingest.py \
+            scripts/auto_update_exam_data.py \
+            scripts/analyze_and_update.py \
             scripts/search/query_router.py \
             scripts/search/vertical_ranker.py \
-            scripts/eval/eval_product_search.py \
-            scripts/eval/eval_search_parity.py \
-            scripts/eval/eval_search.py \
-            scripts/eval/query_smoke_test.py \
-            scripts/eval/eval_llm_quality.py \
+            scripts/eval/sitegraph_query_smoke_test.py \
             scripts/utils/validate_search_index.py \
             scripts/utils/validate_query_routes.py
-          python scripts/test_llm_batching.py
           python -m unittest discover -s tests
           python -m pytest
 
-      - name: Validate Query Routes
-        run: |
-          python scripts/utils/validate_query_routes.py
+      - name: Validate query routes
+        run: python scripts/utils/validate_query_routes.py
 
-      - name: Validate Campus Search Index
+      - name: Frontend checks
         run: |
-          python scripts/utils/validate_search_index.py
-          python scripts/eval/eval_search.py --write-report
-          python scripts/eval/query_smoke_test.py
-          python scripts/eval/eval_llm_quality.py
+          npm test
+          npm run typecheck
+          npm run build
 
-      - name: Frontend Search Evaluation
-        run: |
-          npx tsx --tsconfig tsconfig.app.json scripts/eval/eval_frontend_search.ts --out eval/reports/ts_search_results.json
-
-      - name: Product Search Gate
-        run: |
-          python scripts/eval/eval_product_search.py --mode both --ts-results eval/reports/ts_search_results.json
-
-      - name: Search Parity Check
-        run: |
-          python scripts/eval/eval_search_parity.py --ts-results eval/reports/ts_search_results.json
-          
       - name: Check for changes
         id: git-check
-        env:
-          INPUT_COMMIT_LLM_CACHE: ${{ github.event.inputs.commit_llm_cache }}
         run: |
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-          git add public/data/ public/index/ config/github_search_sources.json
-          if [ -f eval/reports/latest.json ]; then
-            git add eval/reports/latest.json
-          fi
-          if [ -f eval/reports/ts_search_results.json ]; then
-            git add eval/reports/ts_search_results.json
-          fi
-          if [ -f eval/reports/product_search_latest.json ]; then
-            git add eval/reports/product_search_latest.json
-          fi
-          if [ -f eval/reports/search_parity_latest.json ]; then
-            git add eval/reports/search_parity_latest.json
-          fi
-          if [ "$INPUT_COMMIT_LLM_CACHE" = "true" ] && [ -f cache/search_llm_cache.json ]; then
-            git add cache/search_llm_cache.json
-          fi
+          git add public/data/ public/index/
           if git diff --staged --quiet; then
             echo "changes=false" >> $GITHUB_OUTPUT
           else
             echo "changes=true" >> $GITHUB_OUTPUT
           fi
-          
+
       - name: Commit and Push
         if: steps.git-check.outputs.changes == 'true'
         run: |
-          git commit -m "🤖 Auto-update njupt-search data"
+          git commit -m "Auto-update exam data and JWC sitegraph index"
           git push

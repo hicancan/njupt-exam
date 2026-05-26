@@ -1,16 +1,13 @@
-# HyTask-RAG Architecture
+# Sitegraph-Backed Search Architecture
 
-HyTask-RAG is the njupt-search v1 architecture before small-model training:
+Current production search is sitegraph-backed. HyTask-RAG / Source-Channel crawler notes below are historical context for the old non-exam path; they are not the production public search builder.
 
 ```text
-公开网站集合
--> Source-Channel Graph
--> CanonicalDocument
--> RuleGuard
--> LLM/Rule SemanticResult
--> Semantic Verifier
--> TaskFrame
--> NoticeCard / TypedSearchTerms
+JWC Sitegraph Package
+-> scripts/ingest_sitegraph.py
+-> SearchDocument + sitegraph_provenance
+-> public/index/documents.json
+-> public/index/sitegraph/jwc/documents.*.json
 -> Query Understanding
 -> Candidate Recall
 -> Chronological Display
@@ -19,9 +16,17 @@ HyTask-RAG is the njupt-search v1 architecture before small-model training:
 -> Static Deploy
 ```
 
-## Source-Channel Graph
+## Production Source
 
-`config/source_channels.json` is the production graph. A source is an authority origin; a channel is the audited crawl and coverage unit. Runtime code does not use `campus_sources.json` as a main path.
+The only non-exam public search source is the JWC sitegraph package from:
+
+```text
+D:\code\github\hicancan\njupt-site-graph\data\sites\jwc\index
+```
+
+`config/source_channels.json`, GitHub resource config, and `scripts/update_search_index.py` are legacy crawler artifacts and are not called by `.github/workflows/auto-update.yml` for production non-exam search.
+
+## Legacy Source-Channel Graph
 
 Channel fields include:
 

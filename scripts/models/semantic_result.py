@@ -6,6 +6,8 @@ SemanticMode = Literal[
     "heuristic",
     "heuristic_degraded",
     "guarded_metadata",
+    "structured_exam",
+    "sitegraph_rule",
     "unprocessed",
 ]
 

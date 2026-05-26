@@ -18,6 +18,17 @@ type IntentFilter = SearchIntent | '全部';
 
 const isExternalUrl = (url: string): boolean => /^https?:\/\//.test(url);
 
+const getSitegraphProvenanceLabel = (document: SearchDocument): string | null => {
+    const provenance = (document as SearchDocument & { sitegraph_provenance?: Record<string, unknown> }).sitegraph_provenance;
+    if (!provenance) return null;
+    const navPath = Array.isArray(provenance.nav_path)
+        ? provenance.nav_path.map(String).filter(Boolean).join(' / ')
+        : '';
+    const sectionId = String(provenance.section_id || '').trim();
+    const outcome = String(provenance.url_outcome || '').trim();
+    return [navPath, sectionId, outcome].filter(Boolean).join(' · ');
+};
+
 const getRouteName = (route: string) => {
     const names: Record<string, string> = {
         exam_notice_search: '考试相关',
@@ -44,15 +55,15 @@ const getNoResultsCopy = (route: string, query: string) => {
     const routeCopies: Record<string, { title: string; detail: string }> = {
         degree_defense_search: {
             title: `我们理解你在查“${query}”。`,
-            detail: '但当前索引中“研究生院-学位与答辩 / 毕业与论文”栏目暂无可用公开文档。'
+            detail: '但当前 JWC sitegraph 索引中暂无匹配的学位/答辩公开记录。'
         },
         cet_notice_search: {
             title: `我们理解你在查“${query}”。`,
-            detail: '但当前教务处考试栏目没有可用于检索的 CET / 四六级专项公开通知。'
+            detail: '但当前 JWC sitegraph 索引中没有匹配的 CET / 四六级专项公开记录。'
         },
         competition_search: {
             title: `我们理解你在查“${query}”。`,
-            detail: '但当前创新创业学院竞赛栏目没有该赛事的可用公开文档。'
+            detail: '但当前 JWC sitegraph 索引中没有该赛事的可用公开记录。'
         }
     };
 
@@ -69,6 +80,7 @@ function SearchResultCard({ document, onOpenClass }: SearchResultCardProps) {
     const isRestricted = document.status === 'restricted';
     const primaryTask = document.task_frames[0];
     const recallReason = (document as Partial<RankedSearchDocument>).score_reason || '';
+    const provenanceLabel = getSitegraphProvenanceLabel(document);
     const attachmentChips = document.attachments
         .filter(attachment => attachment.role || attachment.sensitive)
         .slice(0, 3);
@@ -206,6 +218,11 @@ function SearchResultCard({ document, onOpenClass }: SearchResultCardProps) {
                 <span className="text-[#70757a] dark:text-[#9aa0a6] font-medium mr-2">{formatSearchDate(document.published_at)}</span>
                 {document.summary || document.content}
             </div>
+            {provenanceLabel ? (
+                <div className="mt-1 text-[12px] text-[#70757a] dark:text-[#9aa0a6] truncate">
+                    官方来源：{provenanceLabel}
+                </div>
+            ) : null}
             {recallReason || document.semantic_mode ? (
                 <details className="mt-1 text-[12px] text-[#70757a] dark:text-[#9aa0a6]">
                     <summary className="cursor-pointer select-none inline-flex hover:text-[#202124] dark:hover:text-[#e8eaed]">调试信息</summary>

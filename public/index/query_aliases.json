@@ -345,5 +345,146 @@
       "read",
       "download"
     ]
+  },
+  "校历": {
+    "aliases": [
+      "校历查询",
+      "教学日历",
+      "教学周历"
+    ],
+    "domains": [
+      "academic",
+      "exam"
+    ],
+    "intents": [
+      "schedule",
+      "read"
+    ]
+  },
+  "慕课考试": {
+    "aliases": [
+      "慕课",
+      "MOOC",
+      "SPOC",
+      "在线开放课程",
+      "考试"
+    ],
+    "domains": [
+      "course",
+      "exam"
+    ],
+    "intents": [
+      "schedule",
+      "read"
+    ]
+  },
+  "期末考试": {
+    "aliases": [
+      "期末",
+      "考试安排",
+      "考场安排",
+      "考试周"
+    ],
+    "domains": [
+      "exam"
+    ],
+    "intents": [
+      "schedule"
+    ]
+  },
+  "规章制度": {
+    "aliases": [
+      "规章",
+      "制度",
+      "管理办法",
+      "政策文件"
+    ],
+    "domains": [
+      "policy"
+    ],
+    "intents": [
+      "read"
+    ]
+  },
+  "办事流程": {
+    "aliases": [
+      "流程",
+      "学生事务",
+      "办理指南",
+      "办事指南"
+    ],
+    "domains": [
+      "academic"
+    ],
+    "intents": [
+      "read",
+      "download"
+    ]
+  },
+  "学生相关文件及表格": {
+    "aliases": [
+      "学生表格",
+      "常用下载",
+      "表格下载"
+    ],
+    "domains": [
+      "resource"
+    ],
+    "intents": [
+      "download"
+    ]
+  },
+  "教务管理系统": {
+    "aliases": [
+      "正方教务",
+      "教务系统",
+      "jwxt"
+    ],
+    "domains": [
+      "academic",
+      "course"
+    ],
+    "intents": [
+      "read"
+    ]
+  },
+  "成绩": {
+    "aliases": [
+      "成绩查询",
+      "成绩单",
+      "绩点"
+    ],
+    "domains": [
+      "academic"
+    ],
+    "intents": [
+      "check_result",
+      "read"
+    ]
+  },
+  "附件1": {
+    "aliases": [
+      "附件 1",
+      "附件一",
+      "附件"
+    ],
+    "domains": [
+      "resource"
+    ],
+    "intents": [
+      "download"
+    ]
+  },
+  "xlsx": {
+    "aliases": [
+      "Excel",
+      "xls"
+    ],
+    "domains": [
+      "resource"
+    ],
+    "intents": [
+      "download"
+    ]
   }
 }

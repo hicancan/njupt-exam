@@ -31,8 +31,7 @@
       "exam"
     ],
     "preferred_sources": [
-      "jwc",
-      "njupt_notice"
+      "jwc"
     ],
     "preferred_channels": [
       "jwc_exam"
@@ -46,14 +45,10 @@
       "international",
       "innovation_project"
     ],
-    "blocked_sources_for_top5": [
-      "exchange",
-      "cxcy",
-      "github"
-    ],
+    "blocked_sources_for_top5": [],
     "allow_resource_top5": false,
     "freshness_preference": "recent",
-    "explanation": "四六级考试类通知，优先显示教务处和官方考试通知。"
+    "explanation": "四六级考试类通知，优先显示教务处官方记录。"
   },
   {
     "id": "exam_notice_search",
@@ -87,8 +82,7 @@
       "exam"
     ],
     "preferred_sources": [
-      "jwc",
-      "njupt_notice"
+      "jwc"
     ],
     "preferred_channels": [
       "jwc_exam"
@@ -102,14 +96,10 @@
       "international",
       "innovation_project"
     ],
-    "blocked_sources_for_top5": [
-      "exchange",
-      "cxcy",
-      "github"
-    ],
+    "blocked_sources_for_top5": [],
     "allow_resource_top5": false,
     "freshness_preference": "recent",
-    "explanation": "考试类通知（如四六级、期末安排等），优先显示教务处和官方考试通知。"
+    "explanation": "考试类通知（如四六级、期末安排等），优先显示教务处官方记录。"
   },
   {
     "id": "class_exam_lookup",
@@ -140,7 +130,8 @@
       "exam_vertical"
     ],
     "explanation": "班级具体考试查询，优先展示垂直考试频道的精确匹配结果。",
-    "top1_prefer_exact_title": true
+    "top1_prefer_exact_title": true,
+    "blocked_sources_for_top5": []
   },
   {
     "id": "degree_defense_search",
@@ -176,12 +167,9 @@
       "academic"
     ],
     "preferred_sources": [
-      "pg",
       "jwc"
     ],
     "preferred_channels": [
-      "pg_degree",
-      "pg_graduation",
       "jwc_degree"
     ],
     "preferred_intents": [
@@ -192,12 +180,10 @@
     "blocked_domains_for_top5": [
       "innovation_project"
     ],
-    "blocked_sources_for_top5": [
-      "cxcy"
-    ],
+    "blocked_sources_for_top5": [],
     "allow_resource_top5": false,
     "freshness_preference": "recent",
-    "explanation": "学位论文/毕业论文答辩类查询优先研究生院、学院和学位相关通知。",
+    "explanation": "学位论文/毕业论文答辩类查询优先JWC 学位相关官方记录。",
     "bad_result_terms": [
       "申请考核制",
       "招生实施细则",
@@ -218,13 +204,16 @@
       "参保",
       "报销"
     ],
-    "must_have_any": [],
+    "must_have_any": [
+      "医保",
+      "参保",
+      "报销"
+    ],
     "soft_terms": [
       "医疗",
       "门诊",
       "费用",
-      "保险",
-      "学生"
+      "保险"
     ],
     "negative_terms": [
       "校园网",
@@ -244,20 +233,14 @@
       "subsidy"
     ],
     "preferred_sources": [
-      "hqc",
-      "xsc",
-      "ygb"
+      "jwc"
     ],
     "blocked_domains_for_top5": [
       "campus_network",
       "resource",
       "innovation_project"
     ],
-    "blocked_sources_for_top5": [
-      "github",
-      "cxcy",
-      "xxb"
-    ],
+    "blocked_sources_for_top5": [],
     "allow_resource_top5": false,
     "bad_result_terms": [
       "校园网",
@@ -271,7 +254,7 @@
       "参保",
       "报销"
     ],
-    "explanation": "医保、参保和医疗报销查询，优先后勤/学生事务，排除校园网资源。"
+    "explanation": "医保、参保和医疗报销查询，优先JWC 官方记录，排除校园网资源。"
   },
   {
     "id": "service_search",
@@ -307,16 +290,13 @@
       "campus_network"
     ],
     "preferred_sources": [
-      "hqc",
-      "xxb"
+      "jwc"
     ],
     "blocked_domains_for_top5": [
       "innovation_project"
     ],
-    "blocked_sources_for_top5": [
-      "cxcy"
-    ],
-    "explanation": "校园生活服务类（如医保、网络等），优先后勤和信息中心。",
+    "blocked_sources_for_top5": [],
+    "explanation": "校园生活服务类（如医保、网络等），优先JWC 官方记录。",
     "subtypes": [
       "medical_insurance_service",
       "campus_network_service",
@@ -357,15 +337,12 @@
       "policy"
     ],
     "preferred_sources": [
-      "jwc",
-      "xsc"
+      "jwc"
     ],
     "blocked_domains_for_top5": [
       "innovation_project"
     ],
-    "blocked_sources_for_top5": [
-      "cxcy"
-    ],
+    "blocked_sources_for_top5": [],
     "explanation": "官方学籍/学业通知，优先教务处或学生处。",
     "must_include_terms_for_top_results": [
       "转专业",
@@ -407,10 +384,9 @@
       "course"
     ],
     "preferred_sources": [
-      "github",
-      "github_resource"
+      "jwc"
     ],
-    "explanation": "课程资料和复习内容，优先显示GitHub资源。",
+    "explanation": "课程资料和复习内容，优先显示 JWC 附件元数据和官方资源记录。",
     "subtypes": [
       "course_resource",
       "exam_paper_resource",
@@ -448,7 +424,7 @@
       "project"
     ],
     "preferred_sources": [
-      "cxcy"
+      "jwc"
     ],
     "explanation": "大创和各类创新项目通知。"
   },
@@ -476,8 +452,7 @@
       "logistics"
     ],
     "preferred_sources": [
-      "hqc",
-      "bwc"
+      "jwc"
     ],
     "freshness_preference": "very_recent",
     "explanation": "校园突发或预警通知（停水停电等）。"
@@ -509,8 +484,7 @@
       "scholarship"
     ],
     "preferred_sources": [
-      "xsc",
-      "ygb"
+      "jwc"
     ],
     "explanation": "奖学金及评优通知。"
   },
@@ -540,7 +514,7 @@
       "subsidy"
     ],
     "preferred_sources": [
-      "xsc"
+      "jwc"
     ],
     "explanation": "助学金和困难认定等资助政策。"
   },
@@ -568,9 +542,7 @@
       "degree"
     ],
     "preferred_sources": [
-      "pg",
-      "jwc",
-      "job"
+      "jwc"
     ],
     "explanation": "毕业和离校相关事宜。"
   },
@@ -625,7 +597,7 @@
       "employment"
     ],
     "preferred_sources": [
-      "job"
+      "jwc"
     ],
     "explanation": "校园招聘和就业信息。"
   },
@@ -653,7 +625,7 @@
       "library"
     ],
     "preferred_sources": [
-      "lib"
+      "jwc"
     ],
     "explanation": "图书馆相关通知和资源。"
   },

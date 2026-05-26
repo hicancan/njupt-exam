@@ -149,6 +149,7 @@ def document_recall_text(document: Dict[str, Any]) -> str:
         str(document.get("source_id") or ""),
         str(document.get("channel") or ""),
         str(document.get("channel_id") or ""),
+        str(document.get("url") or ""),
         str(document.get("source_domain") or ""),
         str(document.get("domain") or ""),
         str(document.get("intent") or ""),
@@ -161,10 +162,11 @@ def document_recall_text(document: Dict[str, Any]) -> str:
     parts.extend(str(item) for item in document.get("required_materials", []) or [])
     for attachment in document.get("attachments", []) or []:
         if isinstance(attachment, dict):
-            parts.extend(str(attachment.get(key) or "") for key in ("name", "role", "description"))
+            parts.extend(collect_strings(attachment))
     parts.extend(collect_strings(document.get("typed_search_terms")))
     parts.extend(collect_strings(document.get("synonyms")))
     parts.extend(collect_strings(document.get("notice_card")))
+    parts.extend(collect_strings(document.get("sitegraph_provenance")))
     parts.extend(collect_strings([llm.get("semantic_queries"), llm.get("query_phrases"), llm.get("search_profile")]))
     return " ".join(part for part in parts if part)
 

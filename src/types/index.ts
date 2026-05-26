@@ -68,7 +68,7 @@ export type SearchSourceType = z.infer<typeof SearchSourceTypeSchema>;
 export const SearchLifecycleSchema = z.enum(['active', 'upcoming', 'expired', 'evergreen', 'unknown']);
 export type SearchLifecycle = z.infer<typeof SearchLifecycleSchema>;
 
-export const SearchSemanticModeSchema = z.enum(['llm', 'heuristic', 'heuristic_degraded', 'guarded_metadata', 'structured_exam', 'unprocessed']);
+export const SearchSemanticModeSchema = z.enum(['llm', 'heuristic', 'heuristic_degraded', 'guarded_metadata', 'structured_exam', 'sitegraph_rule', 'unprocessed']);
 export type SearchSemanticMode = z.infer<typeof SearchSemanticModeSchema>;
 
 export const TaskFrameSourceModeSchema = z.enum([
@@ -89,10 +89,15 @@ export const SearchAttachmentSchema = z.object({
     name: z.string(),
     url: z.string(),
     type: z.string().optional(),
+    extension: z.string().nullable().optional(),
+    parent_url: z.string().optional(),
+    section_id: z.string().optional(),
+    section_path: z.string().optional(),
+    metadata_only: z.boolean().optional(),
     role: z.string().nullable().optional(),
     description: z.string().nullable().optional(),
     sensitive: z.boolean().optional().default(false)
-});
+}).passthrough();
 export type SearchAttachment = z.infer<typeof SearchAttachmentSchema>;
 
 export const SearchDocumentLLMSchema = z.object({

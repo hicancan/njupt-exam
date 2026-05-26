@@ -14,7 +14,27 @@ interface UseSearchIndexResult {
     error: string | null;
 }
 
+const sitegraphShardPaths = (manifest: SearchManifest): string[] => {
+    const sitegraph = (manifest as SearchManifest & { sitegraph?: { shards?: unknown[] } }).sitegraph;
+    const shards = Array.isArray(sitegraph?.shards) ? sitegraph.shards : [];
+    return shards
+        .map(shard => {
+            if (!shard || typeof shard !== 'object') return '';
+            return String((shard as { path?: unknown }).path || '').trim();
+        })
+        .filter(Boolean);
+};
 
+const mergeDocumentsById = (baseDocuments: SearchDocument[], fullDocuments: SearchDocument[]): SearchDocument[] => {
+    const merged = new Map<string, SearchDocument>();
+    for (const document of baseDocuments) {
+        merged.set(document.id, document);
+    }
+    for (const document of fullDocuments) {
+        merged.set(document.id, document);
+    }
+    return Array.from(merged.values());
+};
 
 export function useSearchIndex(): UseSearchIndexResult {
     const [documents, setDocuments] = useState<SearchDocument[]>([]);
@@ -66,6 +86,33 @@ export function useSearchIndex(): UseSearchIndexResult {
             setDocuments(parsedDocuments);
             setManifest(parsedManifest);
             setError(null);
+            const shardPaths = sitegraphShardPaths(parsedManifest);
+            if (shardPaths.length > 0) {
+                void Promise.allSettled(
+                    shardPaths.map(async path => {
+                        const payload = await fetchJson(path, controller.signal);
+                        return parseSearchDocuments(payload, path);
+                    })
+                ).then(results => {
+                    if (controller.signal.aborted) return;
+                    const shardUnavailable: string[] = [];
+                    const fullDocuments: SearchDocument[] = [];
+                    results.forEach((result, index) => {
+                        if (result.status === 'fulfilled') {
+                            fullDocuments.push(...result.value);
+                        } else {
+                            shardUnavailable.push(`sitegraph_shard:${shardPaths[index]}`);
+                            console.warn(`Optional sitegraph full-text shard unavailable: ${shardPaths[index]}`, result.reason);
+                        }
+                    });
+                    if (fullDocuments.length > 0) {
+                        setDocuments(current => mergeDocumentsById(current, fullDocuments));
+                    }
+                    if (shardUnavailable.length > 0) {
+                        setOptionalUnavailable(current => Array.from(new Set([...current, ...shardUnavailable])));
+                    }
+                });
+            }
         };
 
         load()

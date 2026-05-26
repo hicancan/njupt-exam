@@ -211,6 +211,7 @@ const documentRecallText = (document: SearchDocument): string => {
     const typedSearchTerms = collectStrings(payload.typed_search_terms);
     const synonyms = collectStrings(payload.synonyms);
     const noticeCard = collectStrings(payload.notice_card);
+    const sitegraphProvenance = collectStrings(payload.sitegraph_provenance);
     const semanticTerms = collectStrings([
         llm.semantic_queries,
         llm.query_phrases,
@@ -225,6 +226,7 @@ const documentRecallText = (document: SearchDocument): string => {
         document.source_id,
         document.channel,
         document.channel_id,
+        document.url,
         document.source_domain,
         DOMAIN_LABELS[document.domain] || document.domain,
         INTENT_LABELS[document.intent] || document.intent,
@@ -233,11 +235,12 @@ const documentRecallText = (document: SearchDocument): string => {
         ...document.tags,
         ...document.evidence,
         ...document.required_materials,
-        ...document.attachments.flatMap(attachment => [attachment.name, attachment.role, attachment.description]),
+        ...document.attachments.flatMap(attachment => collectStrings(attachment)),
         taskFrameText(document),
         ...typedSearchTerms,
         ...synonyms,
         ...noticeCard,
+        ...sitegraphProvenance,
         ...semanticTerms
     ].filter(Boolean).join(' ');
 };

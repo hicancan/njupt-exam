@@ -1,10 +1,10 @@
 # Source Adapters
 
-Campus crawling is static-first and source-channel-aware.
+Source adapters are legacy crawler support. Current production non-exam public search does not run campus source adapters; it consumes the JWC sitegraph package through `scripts/ingest_sitegraph.py`.
 
 ## Config
 
-Use `config/source_channels.json` for each source and channel.
+`config/source_channels.json` is retained for legacy tests and historical crawler work, not for the production public search update workflow.
 
 Important source fields:
 

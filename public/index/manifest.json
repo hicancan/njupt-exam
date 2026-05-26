@@ -1,3254 +1,560 @@
 {
-  "generated_at": "2026-05-26T22:50:21.005368+08:00",
-  "total_documents": 298,
-  "strategy": "source-fidelity-offline-llm-card-recall-chronological-v1",
-  "semantic_pipeline_version": "semantic-router-v2",
-  "llm_schema_version": "hytask-taskframe-v2.2",
-  "llm_enabled": true,
-  "llm_provider": "deepseek",
-  "llm_model": "deepseek-v4-flash",
-  "llm_batch_size": 32,
-  "llm_batch_max_chars": 250000,
-  "llm_batch_max_output_tokens": 60000,
-  "llm_stats": {
-    "cache_reused": 0,
-    "llm_reused": 249,
-    "llm_attempted": 3,
-    "llm_reprocessed": 2,
-    "llm_failed": 1,
-    "llm_fallback": 50,
-    "llm_skipped_by_limit": 0,
-    "llm_batches_attempted": 5,
-    "llm_batch_docs_attempted": 3,
-    "candidate_llm_cache_reused": 249,
-    "restricted": 11
-  },
+  "generated_at": "2026-05-26T15:27:20.599394+00:00",
+  "total_documents": 7114,
+  "strategy": "sitegraph-backed-jwc-v1",
+  "semantic_pipeline_version": "sitegraph-ingest-v1",
+  "llm_schema_version": "sitegraph-rule-v1",
+  "llm_enabled": false,
+  "llm_provider": null,
+  "llm_model": null,
+  "source_count": 1,
+  "channel_count": 74,
+  "audited_channel_count": 139,
+  "production_channel_count": 139,
+  "failed_channel_count": 0,
+  "task_frame_count": 5021,
+  "documents_with_task_frame": 5021,
   "semantic_mode_counts": {
-    "llm": 240,
-    "guarded_metadata": 47,
-    "heuristic": 11,
-    "heuristic_degraded": 0,
-    "unprocessed": 0
+    "sitegraph_rule": 7114
   },
   "field_source_counts": {
-    "category": {
-      "llm": 186,
-      "display_mapping": 96,
-      "heuristic": 11,
-      "rule_guard": 5
-    },
-    "domain": {
-      "llm": 240,
-      "rule_guard": 47,
-      "heuristic": 11
-    },
-    "intent": {
-      "llm": 240,
-      "rule_guard": 47,
-      "heuristic": 11
-    },
-    "deadline": {
-      "llm": 240,
-      "rule_guard": 47,
-      "heuristic": 11
-    },
-    "action_required": {
-      "llm": 240,
-      "rule_guard": 47,
-      "heuristic": 11
-    },
-    "action_summary": {
-      "llm": 240,
-      "rule_guard": 47,
-      "heuristic": 11
-    },
-    "required_materials": {
-      "llm": 221,
-      "rule_guard": 47,
-      "verifier_removed": 19,
-      "heuristic": 11
-    },
-    "summary": {
-      "llm": 240,
-      "rule_guard": 47,
-      "heuristic": 11
-    },
-    "evidence": {
-      "llm": 240,
-      "rule_guard": 47,
-      "heuristic": 11
-    },
-    "sensitive": {
-      "llm": 240,
-      "rule_guard": 47,
-      "heuristic": 11
-    },
-    "review_required": {
-      "llm": 240,
-      "rule_guard": 47,
-      "heuristic": 11
-    },
-    "task_frames": {
-      "empty_not_applicable": 211,
-      "guarded_metadata_empty": 47,
-      "llm_raw_task_frame": 29,
-      "heuristic_rule_frame": 11
-    }
+    "sitegraph_rule": 7114
   },
-  "task_frame_source_mode_counts": {
-    "generated_from_llm_fields": 62
+  "review_required_count": 0,
+  "low_evidence_count": 750,
+  "old_source_channel_production_enabled": false,
+  "github_resource_production_enabled": false,
+  "exam_vertical_preserved": true,
+  "sitegraph": {
+    "site_id": "jwc",
+    "source": "D:\\code\\github\\hicancan\\njupt-site-graph\\data\\sites\\jwc\\index",
+    "actual_source": "D:\\code\\github\\hicancan\\njupt-site-graph\\data\\sites\\jwc\\index",
+    "truth_counts": {
+      "sections": 139,
+      "nav_nodes": 119,
+      "homepage_modules": 10,
+      "list_pages": 661,
+      "detail_pages": 6884,
+      "low_content_detail_pages": 750,
+      "attachments": 7905,
+      "external_links": 426,
+      "edges": 16311,
+      "url_outcomes": 19089
+    },
+    "quality": {
+      "all_discovered_urls_have_outcomes": true,
+      "errors": 0,
+      "attachment_policy": "metadata_only",
+      "external_link_policy": "record_only"
+    },
+    "upstream_generated_at": "2026-05-26T11:33:21.896047+00:00",
+    "detail_page_records": 6884,
+    "direct_attachment_records": 223,
+    "attachment_metadata_records": 7905,
+    "external_system_records": 6,
+    "utility_link_records": 1,
+    "shards": [
+      {
+        "path": "index/sitegraph/jwc/documents.000.json",
+        "count": 1000,
+        "full_text": true
+      },
+      {
+        "path": "index/sitegraph/jwc/documents.001.json",
+        "count": 1000,
+        "full_text": true
+      },
+      {
+        "path": "index/sitegraph/jwc/documents.002.json",
+        "count": 1000,
+        "full_text": true
+      },
+      {
+        "path": "index/sitegraph/jwc/documents.003.json",
+        "count": 1000,
+        "full_text": true
+      },
+      {
+        "path": "index/sitegraph/jwc/documents.004.json",
+        "count": 1000,
+        "full_text": true
+      },
+      {
+        "path": "index/sitegraph/jwc/documents.005.json",
+        "count": 1000,
+        "full_text": true
+      },
+      {
+        "path": "index/sitegraph/jwc/documents.006.json",
+        "count": 1000,
+        "full_text": true
+      },
+      {
+        "path": "index/sitegraph/jwc/documents.007.json",
+        "count": 114,
+        "full_text": true
+      }
+    ],
+    "default_index": "index/documents.json",
+    "full_text_policy": "default index is slim; full JWC shards load in background",
+    "attachment_policy": "metadata_only",
+    "external_link_policy": "record_only"
   },
-  "llm_missing_field_counts": {
-    "category": 0,
-    "domain": 0,
-    "intent": 0,
-    "deadline": 0,
-    "action_required": 0,
-    "action_summary": 0,
-    "required_materials": 0,
-    "summary": 0,
-    "evidence": 0,
-    "sensitive": 0,
-    "review_required": 0,
-    "task_frames": 0
-  },
-  "training_eligible_count": 213,
-  "heuristic_degraded_count": 0,
-  "llm_purity_rate": 1.0,
-  "source_count": 30,
-  "channel_count": 99,
-  "audited_channel_count": 99,
-  "production_channel_count": 99,
-  "failed_channel_count": 0,
-  "task_frame_count": 62,
-  "documents_with_task_frame": 62,
-  "evidence_coverage": {
-    "audience": 1.0,
-    "action": 1.0,
-    "deadline": 1.0,
-    "materials": 0.0,
-    "location": 0.0,
-    "sensitive": 0.0,
-    "overall": 1.0
-  },
-  "non_null_field_rates": {
-    "deadline": 0.0302,
-    "action_required": 0.0973,
-    "required_materials": 0.0,
-    "task_frames": 0.2081
-  },
-  "grounded_field_rates": {
-    "deadline": 1.0,
-    "action_required": 1.0,
-    "required_materials": 0.0,
-    "task_frames": 1.0
-  },
-  "verifier_removal_counts": {},
-  "task_frame_grounded_rate": 1.0,
-  "review_required_count": 85,
-  "low_evidence_count": 27,
-  "restricted_count": 11,
-  "sensitive_count": 21,
   "sources": [
     {
       "id": "jwc",
       "name": "本科生院 / 教务处",
       "domain": "jwc.njupt.edu.cn",
       "source_type": "central_admin",
-      "adapter_kind": "njupt_wp",
-      "allow_insecure_tls": false,
-      "priority": 1.0,
-      "requires_devtools_audit": false,
-      "channel_count": 7,
-      "channels": [
-        {
-          "id": "jwc_exam",
-          "name": "考试工作",
-          "priority": 1.0,
-          "student_value": 1.0,
-          "audit_status": "chrome_audited",
-          "selectors": {
-            "list_item": null,
-            "title": null,
-            "date": null,
-            "link": null,
-            "content": ".wp_articlecontent",
-            "attachments": "a[href]"
-          },
-          "status": "ok_with_docs",
-          "documents": 1,
-          "candidates": 1,
-          "list_errors": [],
-          "selector_strategies": {
-            "global_anchor_fallback": 1
-          },
-          "selector_warnings": []
-        },
-        {
-          "id": "jwc_course",
-          "name": "选课与课程",
-          "priority": 0.98,
-          "student_value": 0.98,
-          "audit_status": "chrome_audited",
-          "selectors": {
-            "list_item": null,
-            "title": null,
-            "date": null,
-            "link": null,
-            "content": ".wp_articlecontent",
-            "attachments": "a[href]"
-          },
-          "status": "ok_with_docs",
-          "documents": 2,
-          "candidates": 2,
-          "list_errors": [],
-          "selector_strategies": {
-            "global_anchor_fallback": 2
-          },
-          "selector_warnings": []
-        },
-        {
-          "id": "jwc_degree",
-          "name": "毕业结业与学位",
-          "priority": 0.96,
-          "student_value": 0.96,
-          "audit_status": "chrome_audited",
-          "selectors": {
-            "list_item": null,
-            "title": null,
-            "date": null,
-            "link": null,
-            "content": ".wp_articlecontent",
-            "attachments": "a[href]"
-          },
-          "status": "ok_with_docs",
-          "documents": 1,
-          "candidates": 1,
-          "list_errors": [],
-          "selector_strategies": {
-            "global_anchor_fallback": 1
-          },
-          "selector_warnings": []
-        },
-        {
-          "id": "jwc_transfer",
-          "name": "转专业与学籍",
-          "priority": 0.96,
-          "student_value": 0.96,
-          "audit_status": "chrome_audited",
-          "selectors": {
-            "list_item": null,
-            "title": null,
-            "date": null,
-            "link": null,
-            "content": ".wp_articlecontent",
-            "attachments": "a[href]"
-          },
-          "status": "ok_with_docs",
-          "documents": 1,
-          "candidates": 1,
-          "list_errors": [],
-          "selector_strategies": {
-            "global_anchor_fallback": 1
-          },
-          "selector_warnings": []
-        },
-        {
-          "id": "jwc_recommendation",
-          "name": "推免与升学",
-          "priority": 0.98,
-          "student_value": 0.98,
-          "audit_status": "chrome_audited",
-          "selectors": {
-            "list_item": null,
-            "title": null,
-            "date": null,
-            "link": null,
-            "content": ".wp_articlecontent",
-            "attachments": "a[href]"
-          },
-          "status": "ok_with_docs",
-          "documents": 9,
-          "candidates": 36,
-          "list_errors": [],
-          "selector_strategies": {
-            "global_anchor_fallback": 36
-          },
-          "selector_warnings": []
-        },
-        {
-          "id": "jwc_download",
-          "name": "教务常用下载",
-          "priority": 0.9,
-          "student_value": 0.9,
-          "audit_status": "chrome_audited",
-          "selectors": {
-            "list_item": null,
-            "title": null,
-            "date": null,
-            "link": null,
-            "content": ".wp_articlecontent",
-            "attachments": "a[href]"
-          },
-          "status": "warning_filtered_all",
-          "documents": 0,
-          "candidates": 1,
-          "list_errors": [],
-          "selector_strategies": {
-            "global_anchor_fallback": 1
-          },
-          "selector_warnings": []
-        },
-        {
-          "id": "jwc_calendar",
-          "name": "校历与制度",
-          "priority": 0.88,
-          "student_value": 0.88,
-          "audit_status": "chrome_audited",
-          "selectors": {
-            "list_item": null,
-            "title": null,
-            "date": null,
-            "link": null,
-            "content": ".wp_articlecontent",
-            "attachments": "a[href]"
-          },
-          "status": "error_fetch_failed",
-          "documents": 0,
-          "candidates": 1,
-          "list_errors": [
-            "http://jwc.njupt.edu.cn/2025/0904/c1528a288083/page.htm: 412 Client Error: Precondition Failed for url: http://jwc.njupt.edu.cn/2025/0904/c1528a288083/page.htm"
-          ],
-          "selector_strategies": {
-            "global_anchor_fallback": 1
-          },
-          "selector_warnings": []
-        }
-      ],
       "status": "ok",
-      "documents": 14,
-      "last_fetch_at": "2026-05-26T22:50:21.005368+08:00",
-      "list_errors": [
-        "http://jwc.njupt.edu.cn/2025/0904/c1528a288083/page.htm: 412 Client Error: Precondition Failed for url: http://jwc.njupt.edu.cn/2025/0904/c1528a288083/page.htm"
-      ],
-      "candidates": 14,
-      "filtered_out": 0,
-      "capped_out": 0
-    },
-    {
-      "id": "xsc",
-      "name": "学生工作处",
-      "domain": "xsc.njupt.edu.cn",
-      "source_type": "central_admin",
-      "adapter_kind": "njupt_wp",
-      "allow_insecure_tls": false,
-      "priority": 0.96,
-      "requires_devtools_audit": false,
-      "channel_count": 6,
+      "documents": 7114,
+      "last_fetch_at": "2026-05-26T11:33:21.896047+00:00",
       "channels": [
         {
-          "id": "xsc_scholarship",
-          "name": "奖学金与评优",
-          "priority": 0.96,
-          "student_value": 0.98,
-          "audit_status": "chrome_audited",
-          "selectors": {
-            "list_item": null,
-            "title": null,
-            "date": null,
-            "link": null,
-            "content": ".wp_articlecontent",
-            "attachments": "a[href]"
-          },
-          "status": "ok_no_recent_docs",
-          "documents": 0,
-          "candidates": 0,
-          "list_errors": [],
-          "selector_strategies": {},
-          "selector_warnings": []
-        },
-        {
-          "id": "xsc_subsidy",
-          "name": "资助与困难认定",
-          "priority": 0.96,
-          "student_value": 0.98,
-          "audit_status": "chrome_audited",
-          "selectors": {
-            "list_item": null,
-            "title": null,
-            "date": null,
-            "link": null,
-            "content": ".wp_articlecontent",
-            "attachments": "a[href]"
-          },
-          "status": "ok_no_recent_docs",
-          "documents": 0,
-          "candidates": 0,
-          "list_errors": [],
-          "selector_strategies": {},
-          "selector_warnings": []
-        },
-        {
-          "id": "xsc_dormitory",
-          "name": "宿舍与学生社区",
-          "priority": 0.88,
-          "student_value": 0.9,
-          "audit_status": "chrome_audited",
-          "selectors": {
-            "list_item": null,
-            "title": null,
-            "date": null,
-            "link": null,
-            "content": ".wp_articlecontent",
-            "attachments": "a[href]"
-          },
-          "status": "ok_with_docs",
-          "documents": 14,
-          "candidates": 26,
-          "list_errors": [],
-          "selector_strategies": {
-            "global_anchor_fallback": 26
-          },
-          "selector_warnings": []
-        },
-        {
-          "id": "xsc_psychology",
-          "name": "心理健康",
-          "priority": 0.84,
-          "student_value": 0.86,
-          "audit_status": "chrome_audited",
-          "selectors": {
-            "list_item": null,
-            "title": null,
-            "date": null,
-            "link": null,
-            "content": ".wp_articlecontent",
-            "attachments": "a[href]"
-          },
-          "status": "warning_filtered_all",
-          "documents": 0,
-          "candidates": 25,
-          "list_errors": [],
-          "selector_strategies": {
-            "global_anchor_fallback": 25
-          },
-          "selector_warnings": []
-        },
-        {
-          "id": "xsc_service",
-          "name": "学生事务服务",
-          "priority": 0.88,
-          "student_value": 0.9,
-          "audit_status": "chrome_audited",
-          "selectors": {
-            "list_item": null,
-            "title": null,
-            "date": null,
-            "link": null,
-            "content": ".wp_articlecontent",
-            "attachments": "a[href]"
-          },
-          "status": "ok_no_recent_docs",
-          "documents": 0,
-          "candidates": 0,
-          "list_errors": [],
-          "selector_strategies": {},
-          "selector_warnings": []
-        },
-        {
-          "id": "xsc_download",
-          "name": "学工下载专区",
-          "priority": 0.84,
-          "student_value": 0.86,
-          "audit_status": "chrome_audited",
-          "selectors": {
-            "list_item": null,
-            "title": null,
-            "date": null,
-            "link": null,
-            "content": ".wp_articlecontent",
-            "attachments": "a[href]"
-          },
-          "status": "ok_no_recent_docs",
-          "documents": 0,
-          "candidates": 0,
-          "list_errors": [],
-          "selector_strategies": {},
-          "selector_warnings": []
-        }
-      ],
-      "status": "ok",
-      "documents": 14,
-      "last_fetch_at": "2026-05-26T22:50:21.005368+08:00",
-      "candidates": 14,
-      "filtered_out": 0,
-      "capped_out": 0
-    },
-    {
-      "id": "pg",
-      "name": "研究生院",
-      "domain": "pg.njupt.edu.cn",
-      "source_type": "central_admin",
-      "adapter_kind": "njupt_wp",
-      "allow_insecure_tls": false,
-      "priority": 0.96,
-      "requires_devtools_audit": false,
-      "channel_count": 5,
-      "channels": [
-        {
-          "id": "pg_training",
-          "name": "研究生培养",
-          "priority": 0.96,
-          "student_value": 0.96,
-          "audit_status": "chrome_audited",
-          "selectors": {
-            "list_item": null,
-            "title": null,
-            "date": null,
-            "link": null,
-            "content": ".wp_articlecontent",
-            "attachments": "a[href]"
-          },
-          "status": "ok_with_docs",
-          "documents": 13,
-          "candidates": 36,
-          "list_errors": [],
-          "selector_strategies": {
-            "global_anchor_fallback": 36
-          },
-          "selector_warnings": []
-        },
-        {
-          "id": "pg_degree",
-          "name": "学位与答辩",
-          "priority": 0.96,
-          "student_value": 0.96,
-          "audit_status": "chrome_audited",
-          "selectors": {
-            "list_item": null,
-            "title": null,
-            "date": null,
-            "link": null,
-            "content": ".wp_articlecontent",
-            "attachments": "a[href]"
-          },
-          "status": "warning_filtered_all",
-          "documents": 0,
-          "candidates": 29,
-          "list_errors": [],
-          "selector_strategies": {
-            "global_anchor_fallback": 29
-          },
-          "selector_warnings": []
-        },
-        {
-          "id": "pg_download",
-          "name": "研究生下载专区",
-          "priority": 0.88,
-          "student_value": 0.88,
-          "audit_status": "chrome_audited",
-          "selectors": {
-            "list_item": null,
-            "title": null,
-            "date": null,
-            "link": null,
-            "content": ".wp_articlecontent",
-            "attachments": "a[href]"
-          },
-          "status": "warning_filtered_all",
-          "documents": 0,
-          "candidates": 12,
-          "list_errors": [],
-          "selector_strategies": {
-            "global_anchor_fallback": 12
-          },
-          "selector_warnings": []
-        },
-        {
-          "id": "pg_policy",
-          "name": "研究生规章制度",
-          "priority": 0.8,
-          "student_value": 0.8,
-          "audit_status": "chrome_audited",
-          "selectors": {
-            "list_item": null,
-            "title": null,
-            "date": null,
-            "link": null,
-            "content": ".wp_articlecontent",
-            "attachments": "a[href]"
-          },
-          "status": "warning_filtered_all",
-          "documents": 0,
-          "candidates": 18,
-          "list_errors": [],
-          "selector_strategies": {
-            "global_anchor_fallback": 18
-          },
-          "selector_warnings": []
-        },
-        {
-          "id": "pg_graduation",
-          "name": "毕业与论文",
-          "priority": 0.94,
-          "student_value": 0.94,
-          "audit_status": "chrome_audited",
-          "selectors": {
-            "list_item": null,
-            "title": null,
-            "date": null,
-            "link": null,
-            "content": ".wp_articlecontent",
-            "attachments": "a[href]"
-          },
-          "status": "warning_filtered_all",
-          "documents": 0,
-          "candidates": 36,
-          "list_errors": [],
-          "selector_strategies": {
-            "global_anchor_fallback": 36
-          },
-          "selector_warnings": []
-        }
-      ],
-      "status": "ok",
-      "documents": 13,
-      "last_fetch_at": "2026-05-26T22:50:21.005368+08:00",
-      "candidates": 13,
-      "filtered_out": 0,
-      "capped_out": 0
-    },
-    {
-      "id": "ygb",
-      "name": "研究生工作部",
-      "domain": "ygb.njupt.edu.cn",
-      "source_type": "central_admin",
-      "adapter_kind": "njupt_wp",
-      "allow_insecure_tls": false,
-      "priority": 0.92,
-      "requires_devtools_audit": false,
-      "channel_count": 4,
-      "channels": [
-        {
-          "id": "ygb_scholarship",
-          "name": "研究生奖学金",
-          "priority": 0.92,
-          "student_value": 0.94,
-          "audit_status": "chrome_audited",
-          "selectors": {
-            "list_item": null,
-            "title": null,
-            "date": null,
-            "link": null,
-            "content": ".wp_articlecontent",
-            "attachments": "a[href]"
-          },
-          "status": "ok_with_docs",
-          "documents": 14,
-          "candidates": 25,
-          "list_errors": [],
-          "selector_strategies": {
-            "global_anchor_fallback": 25
-          },
-          "selector_warnings": []
-        },
-        {
-          "id": "ygb_subsidy",
-          "name": "研究生资助",
-          "priority": 0.88,
-          "student_value": 0.9,
-          "audit_status": "chrome_audited",
-          "selectors": {
-            "list_item": null,
-            "title": null,
-            "date": null,
-            "link": null,
-            "content": ".wp_articlecontent",
-            "attachments": "a[href]"
-          },
-          "status": "warning_filtered_all",
-          "documents": 0,
-          "candidates": 7,
-          "list_errors": [],
-          "selector_strategies": {
-            "global_anchor_fallback": 7
-          },
-          "selector_warnings": []
-        },
-        {
-          "id": "ygb_practice",
-          "name": "学术科技与实践",
-          "priority": 0.86,
-          "student_value": 0.88,
-          "audit_status": "chrome_audited",
-          "selectors": {
-            "list_item": null,
-            "title": null,
-            "date": null,
-            "link": null,
-            "content": ".wp_articlecontent",
-            "attachments": "a[href]"
-          },
-          "status": "warning_filtered_all",
-          "documents": 0,
-          "candidates": 12,
-          "list_errors": [],
-          "selector_strategies": {
-            "global_anchor_fallback": 12
-          },
-          "selector_warnings": []
-        },
-        {
-          "id": "ygb_service",
-          "name": "研工事务管理",
-          "priority": 0.82,
-          "student_value": 0.84,
-          "audit_status": "chrome_audited",
-          "selectors": {
-            "list_item": null,
-            "title": null,
-            "date": null,
-            "link": null,
-            "content": ".wp_articlecontent",
-            "attachments": "a[href]"
-          },
-          "status": "warning_filtered_all",
-          "documents": 0,
-          "candidates": 18,
-          "list_errors": [],
-          "selector_strategies": {
-            "global_anchor_fallback": 18
-          },
-          "selector_warnings": []
-        }
-      ],
-      "status": "ok",
-      "documents": 14,
-      "last_fetch_at": "2026-05-26T22:50:21.005368+08:00",
-      "candidates": 14,
-      "filtered_out": 0,
-      "capped_out": 0
-    },
-    {
-      "id": "youth",
-      "name": "团委 / 青春南邮",
-      "domain": "youth.njupt.edu.cn",
-      "source_type": "central_admin",
-      "adapter_kind": "njupt_wp",
-      "allow_insecure_tls": false,
-      "priority": 0.9,
-      "requires_devtools_audit": false,
-      "channel_count": 4,
-      "channels": [
-        {
-          "id": "youth_competition",
-          "name": "挑战杯与竞赛",
-          "priority": 0.9,
-          "student_value": 0.92,
-          "audit_status": "chrome_audited",
-          "selectors": {
-            "list_item": null,
-            "title": null,
-            "date": null,
-            "link": null,
-            "content": ".wp_articlecontent",
-            "attachments": "a[href]"
-          },
-          "status": "ok_with_docs",
-          "documents": 13,
-          "candidates": 36,
-          "list_errors": [],
-          "selector_strategies": {
-            "global_anchor_fallback": 36
-          },
-          "selector_warnings": []
-        },
-        {
-          "id": "youth_volunteer",
-          "name": "志愿服务",
-          "priority": 0.84,
-          "student_value": 0.86,
-          "audit_status": "chrome_audited",
-          "selectors": {
-            "list_item": null,
-            "title": null,
-            "date": null,
-            "link": null,
-            "content": ".wp_articlecontent",
-            "attachments": "a[href]"
-          },
-          "status": "warning_filtered_all",
-          "documents": 0,
-          "candidates": 36,
-          "list_errors": [],
-          "selector_strategies": {
-            "global_anchor_fallback": 36
-          },
-          "selector_warnings": []
-        },
-        {
-          "id": "youth_organization",
-          "name": "团学组织",
-          "priority": 0.82,
-          "student_value": 0.84,
-          "audit_status": "chrome_audited",
-          "selectors": {
-            "list_item": null,
-            "title": null,
-            "date": null,
-            "link": null,
-            "content": ".wp_articlecontent",
-            "attachments": "a[href]"
-          },
-          "status": "warning_filtered_all",
-          "documents": 0,
-          "candidates": 36,
-          "list_errors": [],
-          "selector_strategies": {
-            "global_anchor_fallback": 36
-          },
-          "selector_warnings": []
-        },
-        {
-          "id": "youth_download",
-          "name": "团委下载与专题",
-          "priority": 0.76,
-          "student_value": 0.78,
-          "audit_status": "chrome_audited",
-          "selectors": {
-            "list_item": null,
-            "title": null,
-            "date": null,
-            "link": null,
-            "content": ".wp_articlecontent",
-            "attachments": "a[href]"
-          },
-          "status": "warning_filtered_all",
-          "documents": 0,
-          "candidates": 29,
-          "list_errors": [],
-          "selector_strategies": {
-            "global_anchor_fallback": 29
-          },
-          "selector_warnings": []
-        }
-      ],
-      "status": "ok",
-      "documents": 13,
-      "last_fetch_at": "2026-05-26T22:50:21.005368+08:00",
-      "candidates": 13,
-      "filtered_out": 0,
-      "capped_out": 0
-    },
-    {
-      "id": "cxcy",
-      "name": "创新创业教育学院",
-      "domain": "cxcy.njupt.edu.cn",
-      "source_type": "central_admin",
-      "adapter_kind": "njupt_wp",
-      "allow_insecure_tls": false,
-      "priority": 0.9,
-      "requires_devtools_audit": false,
-      "channel_count": 5,
-      "channels": [
-        {
-          "id": "cxcy_project",
-          "name": "大创项目",
-          "priority": 0.94,
-          "student_value": 0.98,
-          "audit_status": "chrome_audited",
-          "selectors": {
-            "list_item": null,
-            "title": null,
-            "date": null,
-            "link": null,
-            "content": ".wp_articlecontent",
-            "attachments": "a[href]"
-          },
-          "status": "ok_with_docs",
-          "documents": 14,
-          "candidates": 22,
-          "list_errors": [],
-          "selector_strategies": {
-            "global_anchor_fallback": 22
-          },
-          "selector_warnings": []
-        },
-        {
-          "id": "cxcy_competition",
-          "name": "学科竞赛",
-          "priority": 0.9,
-          "student_value": 0.94,
-          "audit_status": "chrome_audited",
-          "selectors": {
-            "list_item": null,
-            "title": null,
-            "date": null,
-            "link": null,
-            "content": ".wp_articlecontent",
-            "attachments": "a[href]"
-          },
-          "status": "warning_filtered_all",
-          "documents": 0,
-          "candidates": 36,
-          "list_errors": [],
-          "selector_strategies": {
-            "global_anchor_fallback": 36
-          },
-          "selector_warnings": []
-        },
-        {
-          "id": "cxcy_fund",
-          "name": "创业基金与孵化",
-          "priority": 0.84,
-          "student_value": 0.86,
-          "audit_status": "chrome_audited",
-          "selectors": {
-            "list_item": null,
-            "title": null,
-            "date": null,
-            "link": null,
-            "content": ".wp_articlecontent",
-            "attachments": "a[href]"
-          },
-          "status": "warning_filtered_all",
-          "documents": 0,
-          "candidates": 20,
-          "list_errors": [],
-          "selector_strategies": {
-            "global_anchor_fallback": 20
-          },
-          "selector_warnings": []
-        },
-        {
-          "id": "cxcy_publicity",
-          "name": "项目竞赛公示",
-          "priority": 0.86,
-          "student_value": 0.88,
-          "audit_status": "chrome_audited",
-          "selectors": {
-            "list_item": null,
-            "title": null,
-            "date": null,
-            "link": null,
-            "content": ".wp_articlecontent",
-            "attachments": "a[href]"
-          },
-          "status": "ok_no_recent_docs",
-          "documents": 0,
-          "candidates": 0,
-          "list_errors": [],
-          "selector_strategies": {},
-          "selector_warnings": []
-        },
-        {
-          "id": "cxcy_download",
-          "name": "创新创业下载",
-          "priority": 0.8,
-          "student_value": 0.82,
-          "audit_status": "chrome_audited",
-          "selectors": {
-            "list_item": null,
-            "title": null,
-            "date": null,
-            "link": null,
-            "content": ".wp_articlecontent",
-            "attachments": "a[href]"
-          },
-          "status": "ok_no_recent_docs",
-          "documents": 0,
-          "candidates": 0,
-          "list_errors": [],
-          "selector_strategies": {},
-          "selector_warnings": []
-        }
-      ],
-      "status": "ok",
-      "documents": 14,
-      "last_fetch_at": "2026-05-26T22:50:21.005368+08:00",
-      "candidates": 14,
-      "filtered_out": 0,
-      "capped_out": 0
-    },
-    {
-      "id": "job",
-      "name": "就业信息网",
-      "domain": "njupt.91job.org.cn",
-      "source_type": "job_platform",
-      "adapter_kind": "job_api",
-      "allow_insecure_tls": false,
-      "priority": 0.88,
-      "requires_devtools_audit": false,
-      "channel_count": 3,
-      "channels": [
-        {
-          "id": "job_talk",
-          "name": "宣讲会",
-          "priority": 0.9,
-          "student_value": 0.92,
-          "audit_status": "chrome_audited",
-          "selectors": {
-            "list_item": null,
-            "title": null,
-            "date": null,
-            "link": null,
-            "content": ".wp_articlecontent",
-            "attachments": "a[href]"
-          },
+          "id": "jwc_direct_detail_links",
+          "name": "jwc_direct_detail_links",
           "status": "ok",
-          "documents": 0
+          "documents": 49
         },
         {
-          "id": "job_fair",
-          "name": "招聘会与双选会",
-          "priority": 0.88,
-          "student_value": 0.9,
-          "audit_status": "chrome_audited",
-          "selectors": {
-            "list_item": null,
-            "title": null,
-            "date": null,
-            "link": null,
-            "content": ".wp_articlecontent",
-            "attachments": "a[href]"
-          },
+          "id": "jwc_download_student_forms",
+          "name": "jwc_download_student_forms",
           "status": "ok",
-          "documents": 0
+          "documents": 56
         },
         {
-          "id": "job_internship",
-          "name": "实习岗位",
-          "priority": 0.84,
-          "student_value": 0.86,
-          "audit_status": "chrome_audited",
-          "selectors": {
-            "list_item": null,
-            "title": null,
-            "date": null,
-            "link": null,
-            "content": ".wp_articlecontent",
-            "attachments": "a[href]"
-          },
+          "id": "jwc_home_link_006e248ec9af",
+          "name": "jwc_home_link_006e248ec9af",
           "status": "ok",
-          "documents": 0
+          "documents": 2
+        },
+        {
+          "id": "jwc_home_link_0790f6986162",
+          "name": "jwc_home_link_0790f6986162",
+          "status": "ok",
+          "documents": 9
+        },
+        {
+          "id": "jwc_home_link_12537b67a465",
+          "name": "jwc_home_link_12537b67a465",
+          "status": "ok",
+          "documents": 10
+        },
+        {
+          "id": "jwc_home_link_179e02018d65",
+          "name": "jwc_home_link_179e02018d65",
+          "status": "ok",
+          "documents": 7
+        },
+        {
+          "id": "jwc_home_link_197c0a55bac3",
+          "name": "jwc_home_link_197c0a55bac3",
+          "status": "ok",
+          "documents": 2
+        },
+        {
+          "id": "jwc_home_link_2a04d4a80cc3",
+          "name": "jwc_home_link_2a04d4a80cc3",
+          "status": "ok",
+          "documents": 10
+        },
+        {
+          "id": "jwc_home_link_2e685d4ef560",
+          "name": "jwc_home_link_2e685d4ef560",
+          "status": "ok",
+          "documents": 4
+        },
+        {
+          "id": "jwc_home_link_30e0882dec9f",
+          "name": "jwc_home_link_30e0882dec9f",
+          "status": "ok",
+          "documents": 3
+        },
+        {
+          "id": "jwc_home_link_350581d05002",
+          "name": "jwc_home_link_350581d05002",
+          "status": "ok",
+          "documents": 6
+        },
+        {
+          "id": "jwc_home_link_36be2d2a02c1",
+          "name": "jwc_home_link_36be2d2a02c1",
+          "status": "ok",
+          "documents": 8
+        },
+        {
+          "id": "jwc_home_link_3aca24ab030b",
+          "name": "jwc_home_link_3aca24ab030b",
+          "status": "ok",
+          "documents": 5
+        },
+        {
+          "id": "jwc_home_link_40dec3dc239c",
+          "name": "jwc_home_link_40dec3dc239c",
+          "status": "ok",
+          "documents": 4
+        },
+        {
+          "id": "jwc_home_link_45c127006cf8",
+          "name": "jwc_home_link_45c127006cf8",
+          "status": "ok",
+          "documents": 5
+        },
+        {
+          "id": "jwc_home_link_49c141948401",
+          "name": "jwc_home_link_49c141948401",
+          "status": "ok",
+          "documents": 3
+        },
+        {
+          "id": "jwc_home_link_4b088528562d",
+          "name": "jwc_home_link_4b088528562d",
+          "status": "ok",
+          "documents": 9
+        },
+        {
+          "id": "jwc_home_link_4f32903ba0c2",
+          "name": "jwc_home_link_4f32903ba0c2",
+          "status": "ok",
+          "documents": 3
+        },
+        {
+          "id": "jwc_home_link_55a5e4d3f99b",
+          "name": "jwc_home_link_55a5e4d3f99b",
+          "status": "ok",
+          "documents": 39
+        },
+        {
+          "id": "jwc_home_link_55baf3d150eb",
+          "name": "jwc_home_link_55baf3d150eb",
+          "status": "ok",
+          "documents": 3
+        },
+        {
+          "id": "jwc_home_link_57dd4e76bd27",
+          "name": "jwc_home_link_57dd4e76bd27",
+          "status": "ok",
+          "documents": 8
+        },
+        {
+          "id": "jwc_home_link_58476f9e5f19",
+          "name": "jwc_home_link_58476f9e5f19",
+          "status": "ok",
+          "documents": 9
+        },
+        {
+          "id": "jwc_home_link_5ca02a2cd5fd",
+          "name": "jwc_home_link_5ca02a2cd5fd",
+          "status": "ok",
+          "documents": 3
+        },
+        {
+          "id": "jwc_home_link_5fa70e288bf6",
+          "name": "jwc_home_link_5fa70e288bf6",
+          "status": "ok",
+          "documents": 2
+        },
+        {
+          "id": "jwc_home_link_681acacbed27",
+          "name": "jwc_home_link_681acacbed27",
+          "status": "ok",
+          "documents": 65
+        },
+        {
+          "id": "jwc_home_link_6b5394e7d644",
+          "name": "jwc_home_link_6b5394e7d644",
+          "status": "ok",
+          "documents": 7
+        },
+        {
+          "id": "jwc_home_link_6bf45e7462be",
+          "name": "jwc_home_link_6bf45e7462be",
+          "status": "ok",
+          "documents": 2
+        },
+        {
+          "id": "jwc_home_link_77cebc8d2a4f",
+          "name": "jwc_home_link_77cebc8d2a4f",
+          "status": "ok",
+          "documents": 2
+        },
+        {
+          "id": "jwc_home_link_7bc2c247c3ba",
+          "name": "jwc_home_link_7bc2c247c3ba",
+          "status": "ok",
+          "documents": 2
+        },
+        {
+          "id": "jwc_home_link_7d80addd53ab",
+          "name": "jwc_home_link_7d80addd53ab",
+          "status": "ok",
+          "documents": 54
+        },
+        {
+          "id": "jwc_home_link_7e0fa272815a",
+          "name": "jwc_home_link_7e0fa272815a",
+          "status": "ok",
+          "documents": 3
+        },
+        {
+          "id": "jwc_home_link_835055f3dc8d",
+          "name": "jwc_home_link_835055f3dc8d",
+          "status": "ok",
+          "documents": 2
+        },
+        {
+          "id": "jwc_home_link_860650153043",
+          "name": "jwc_home_link_860650153043",
+          "status": "ok",
+          "documents": 3
+        },
+        {
+          "id": "jwc_home_link_881b88a391ce",
+          "name": "jwc_home_link_881b88a391ce",
+          "status": "ok",
+          "documents": 6
+        },
+        {
+          "id": "jwc_home_link_8b55b962271f",
+          "name": "jwc_home_link_8b55b962271f",
+          "status": "ok",
+          "documents": 30
+        },
+        {
+          "id": "jwc_home_link_8f5868924cde",
+          "name": "jwc_home_link_8f5868924cde",
+          "status": "ok",
+          "documents": 9
+        },
+        {
+          "id": "jwc_home_link_92dd5a7b3216",
+          "name": "jwc_home_link_92dd5a7b3216",
+          "status": "ok",
+          "documents": 7
+        },
+        {
+          "id": "jwc_home_link_96d52d3a0866",
+          "name": "jwc_home_link_96d52d3a0866",
+          "status": "ok",
+          "documents": 2
+        },
+        {
+          "id": "jwc_home_link_96e9d58cc088",
+          "name": "jwc_home_link_96e9d58cc088",
+          "status": "ok",
+          "documents": 8
+        },
+        {
+          "id": "jwc_home_link_978d67afab3f",
+          "name": "jwc_home_link_978d67afab3f",
+          "status": "ok",
+          "documents": 5
+        },
+        {
+          "id": "jwc_home_link_9cb72c9cd068",
+          "name": "jwc_home_link_9cb72c9cd068",
+          "status": "ok",
+          "documents": 11
+        },
+        {
+          "id": "jwc_home_link_9deb76df8697",
+          "name": "jwc_home_link_9deb76df8697",
+          "status": "ok",
+          "documents": 3
+        },
+        {
+          "id": "jwc_home_link_a5f895271909",
+          "name": "jwc_home_link_a5f895271909",
+          "status": "ok",
+          "documents": 4
+        },
+        {
+          "id": "jwc_home_link_ad2fbab7ffe5",
+          "name": "jwc_home_link_ad2fbab7ffe5",
+          "status": "ok",
+          "documents": 3
+        },
+        {
+          "id": "jwc_home_link_ae8bc2341bcb",
+          "name": "jwc_home_link_ae8bc2341bcb",
+          "status": "ok",
+          "documents": 42
+        },
+        {
+          "id": "jwc_home_link_afde05307990",
+          "name": "jwc_home_link_afde05307990",
+          "status": "ok",
+          "documents": 4
+        },
+        {
+          "id": "jwc_home_link_b009ba03b8f5",
+          "name": "jwc_home_link_b009ba03b8f5",
+          "status": "ok",
+          "documents": 2
+        },
+        {
+          "id": "jwc_home_link_b020e2164d9e",
+          "name": "jwc_home_link_b020e2164d9e",
+          "status": "ok",
+          "documents": 8
+        },
+        {
+          "id": "jwc_home_link_b44fc08f67ff",
+          "name": "jwc_home_link_b44fc08f67ff",
+          "status": "ok",
+          "documents": 6
+        },
+        {
+          "id": "jwc_home_link_b6cad3105bca",
+          "name": "jwc_home_link_b6cad3105bca",
+          "status": "ok",
+          "documents": 9
+        },
+        {
+          "id": "jwc_home_link_b92f37f37ee0",
+          "name": "jwc_home_link_b92f37f37ee0",
+          "status": "ok",
+          "documents": 7
+        },
+        {
+          "id": "jwc_home_link_bcf357317532",
+          "name": "jwc_home_link_bcf357317532",
+          "status": "ok",
+          "documents": 7
+        },
+        {
+          "id": "jwc_home_link_c13759a4c0df",
+          "name": "jwc_home_link_c13759a4c0df",
+          "status": "ok",
+          "documents": 2
+        },
+        {
+          "id": "jwc_home_link_c8a1e307e5e1",
+          "name": "jwc_home_link_c8a1e307e5e1",
+          "status": "ok",
+          "documents": 13
+        },
+        {
+          "id": "jwc_home_link_c8a4ce2fbd3d",
+          "name": "jwc_home_link_c8a4ce2fbd3d",
+          "status": "ok",
+          "documents": 4
+        },
+        {
+          "id": "jwc_home_link_cbb564e0098b",
+          "name": "jwc_home_link_cbb564e0098b",
+          "status": "ok",
+          "documents": 3
+        },
+        {
+          "id": "jwc_home_link_d83f85def033",
+          "name": "jwc_home_link_d83f85def033",
+          "status": "ok",
+          "documents": 6
+        },
+        {
+          "id": "jwc_home_link_d89a01fd3e8a",
+          "name": "jwc_home_link_d89a01fd3e8a",
+          "status": "ok",
+          "documents": 4
+        },
+        {
+          "id": "jwc_home_link_d8cc45b54a2a",
+          "name": "jwc_home_link_d8cc45b54a2a",
+          "status": "ok",
+          "documents": 5
+        },
+        {
+          "id": "jwc_home_link_dbec04e96205",
+          "name": "jwc_home_link_dbec04e96205",
+          "status": "ok",
+          "documents": 4
+        },
+        {
+          "id": "jwc_home_link_dd35727c9247",
+          "name": "jwc_home_link_dd35727c9247",
+          "status": "ok",
+          "documents": 37
+        },
+        {
+          "id": "jwc_home_link_e34c88d046f2",
+          "name": "jwc_home_link_e34c88d046f2",
+          "status": "ok",
+          "documents": 2
+        },
+        {
+          "id": "jwc_home_link_e78f777eec8a",
+          "name": "jwc_home_link_e78f777eec8a",
+          "status": "ok",
+          "documents": 7
+        },
+        {
+          "id": "jwc_home_link_e8590755234a",
+          "name": "jwc_home_link_e8590755234a",
+          "status": "ok",
+          "documents": 36
+        },
+        {
+          "id": "jwc_home_link_e99320285600",
+          "name": "jwc_home_link_e99320285600",
+          "status": "ok",
+          "documents": 2
+        },
+        {
+          "id": "jwc_home_link_eac1b448ec1d",
+          "name": "jwc_home_link_eac1b448ec1d",
+          "status": "ok",
+          "documents": 5
+        },
+        {
+          "id": "jwc_home_link_fba32a15bd50",
+          "name": "jwc_home_link_fba32a15bd50",
+          "status": "ok",
+          "documents": 6
+        },
+        {
+          "id": "jwc_home_module_8c416cb0a096",
+          "name": "jwc_home_module_8c416cb0a096",
+          "status": "ok",
+          "documents": 232
+        },
+        {
+          "id": "jwc_homepage_external_opinion_module",
+          "name": "jwc_homepage_external_opinion_module",
+          "status": "ok",
+          "documents": 373
+        },
+        {
+          "id": "jwc_homepage_jw_news_module",
+          "name": "jwc_homepage_jw_news_module",
+          "status": "ok",
+          "documents": 1680
+        },
+        {
+          "id": "jwc_homepage_news_module",
+          "name": "jwc_homepage_news_module",
+          "status": "ok",
+          "documents": 172
+        },
+        {
+          "id": "jwc_homepage_notice_module",
+          "name": "jwc_homepage_notice_module",
+          "status": "ok",
+          "documents": 3826
+        },
+        {
+          "id": "jwc_homepage_teaching_reform_module",
+          "name": "jwc_homepage_teaching_reform_module",
+          "status": "ok",
+          "documents": 86
+        },
+        {
+          "id": "jwc_rules_root",
+          "name": "jwc_rules_root",
+          "status": "ok",
+          "documents": 37
         }
-      ],
-      "status": "ok",
-      "documents": 18,
-      "last_fetch_at": "2026-05-26T22:50:21.005368+08:00"
-    },
-    {
-      "id": "lib",
-      "name": "图书馆",
-      "domain": "lib.njupt.edu.cn",
-      "source_type": "service_unit",
-      "adapter_kind": "njupt_wp",
-      "allow_insecure_tls": false,
-      "priority": 0.82,
-      "requires_devtools_audit": false,
-      "channel_count": 4,
-      "channels": [
-        {
-          "id": "lib_opening",
-          "name": "开放时间与通知",
-          "priority": 0.84,
-          "student_value": 0.86,
-          "audit_status": "chrome_audited",
-          "selectors": {
-            "list_item": null,
-            "title": null,
-            "date": null,
-            "link": null,
-            "content": ".wp_articlecontent",
-            "attachments": "a[href]"
-          },
-          "status": "ok_with_docs",
-          "documents": 14,
-          "candidates": 14,
-          "list_errors": [],
-          "selector_strategies": {
-            "global_anchor_fallback": 14
-          },
-          "selector_warnings": []
-        },
-        {
-          "id": "lib_resource",
-          "name": "数据库与资源",
-          "priority": 0.82,
-          "student_value": 0.84,
-          "audit_status": "chrome_audited",
-          "selectors": {
-            "list_item": null,
-            "title": null,
-            "date": null,
-            "link": null,
-            "content": ".wp_articlecontent",
-            "attachments": "a[href]"
-          },
-          "status": "ok_no_recent_docs",
-          "documents": 0,
-          "candidates": 0,
-          "list_errors": [],
-          "selector_strategies": {},
-          "selector_warnings": []
-        },
-        {
-          "id": "lib_study_space",
-          "name": "研读室与空间",
-          "priority": 0.78,
-          "student_value": 0.8,
-          "audit_status": "chrome_audited",
-          "selectors": {
-            "list_item": null,
-            "title": null,
-            "date": null,
-            "link": null,
-            "content": ".wp_articlecontent",
-            "attachments": "a[href]"
-          },
-          "status": "ok_no_recent_docs",
-          "documents": 0,
-          "candidates": 0,
-          "list_errors": [],
-          "selector_strategies": {},
-          "selector_warnings": []
-        },
-        {
-          "id": "lib_activity",
-          "name": "阅读活动",
-          "priority": 0.74,
-          "student_value": 0.76,
-          "audit_status": "chrome_audited",
-          "selectors": {
-            "list_item": null,
-            "title": null,
-            "date": null,
-            "link": null,
-            "content": ".wp_articlecontent",
-            "attachments": "a[href]"
-          },
-          "status": "warning_filtered_all",
-          "documents": 0,
-          "candidates": 14,
-          "list_errors": [],
-          "selector_strategies": {
-            "global_anchor_fallback": 14
-          },
-          "selector_warnings": []
-        }
-      ],
-      "status": "ok",
-      "documents": 14,
-      "last_fetch_at": "2026-05-26T22:50:21.005368+08:00",
-      "candidates": 14,
-      "filtered_out": 0,
-      "capped_out": 0
-    },
-    {
-      "id": "bwc",
-      "name": "保卫处",
-      "domain": "bwc.njupt.edu.cn",
-      "source_type": "service_unit",
-      "adapter_kind": "njupt_wp",
-      "allow_insecure_tls": false,
-      "priority": 0.8,
-      "requires_devtools_audit": false,
-      "channel_count": 4,
-      "channels": [
-        {
-          "id": "bwc_security",
-          "name": "校园安全",
-          "priority": 0.82,
-          "student_value": 0.84,
-          "audit_status": "chrome_audited",
-          "selectors": {
-            "list_item": null,
-            "title": null,
-            "date": null,
-            "link": null,
-            "content": ".wp_articlecontent",
-            "attachments": "a[href]"
-          },
-          "status": "ok_with_docs",
-          "documents": 11,
-          "candidates": 11,
-          "list_errors": [],
-          "selector_strategies": {
-            "global_anchor_fallback": 11
-          },
-          "selector_warnings": []
-        },
-        {
-          "id": "bwc_household",
-          "name": "户籍与证件",
-          "priority": 0.78,
-          "student_value": 0.8,
-          "audit_status": "chrome_audited",
-          "selectors": {
-            "list_item": null,
-            "title": null,
-            "date": null,
-            "link": null,
-            "content": ".wp_articlecontent",
-            "attachments": "a[href]"
-          },
-          "status": "ok_with_docs",
-          "documents": 1,
-          "candidates": 5,
-          "list_errors": [],
-          "selector_strategies": {
-            "global_anchor_fallback": 5
-          },
-          "selector_warnings": []
-        },
-        {
-          "id": "bwc_traffic",
-          "name": "交通与管制",
-          "priority": 0.8,
-          "student_value": 0.82,
-          "audit_status": "chrome_audited",
-          "selectors": {
-            "list_item": null,
-            "title": null,
-            "date": null,
-            "link": null,
-            "content": ".wp_articlecontent",
-            "attachments": "a[href]"
-          },
-          "status": "ok_no_recent_docs",
-          "documents": 0,
-          "candidates": 0,
-          "list_errors": [],
-          "selector_strategies": {},
-          "selector_warnings": []
-        },
-        {
-          "id": "bwc_fire",
-          "name": "消防安全",
-          "priority": 0.76,
-          "student_value": 0.78,
-          "audit_status": "chrome_audited",
-          "selectors": {
-            "list_item": null,
-            "title": null,
-            "date": null,
-            "link": null,
-            "content": ".wp_articlecontent",
-            "attachments": "a[href]"
-          },
-          "status": "ok_no_recent_docs",
-          "documents": 0,
-          "candidates": 0,
-          "list_errors": [],
-          "selector_strategies": {},
-          "selector_warnings": []
-        }
-      ],
-      "status": "ok",
-      "documents": 12,
-      "last_fetch_at": "2026-05-26T22:50:21.005368+08:00",
-      "candidates": 12,
-      "filtered_out": 0,
-      "capped_out": 0
-    },
-    {
-      "id": "hqc",
-      "name": "后勤管理处",
-      "domain": "hqc.njupt.edu.cn",
-      "source_type": "service_unit",
-      "adapter_kind": "njupt_wp",
-      "allow_insecure_tls": false,
-      "priority": 0.8,
-      "requires_devtools_audit": false,
-      "channel_count": 5,
-      "channels": [
-        {
-          "id": "hqc_logistics",
-          "name": "停水停电与后勤通知",
-          "priority": 0.84,
-          "student_value": 0.88,
-          "audit_status": "chrome_audited",
-          "selectors": {
-            "list_item": null,
-            "title": null,
-            "date": null,
-            "link": null,
-            "content": ".wp_articlecontent",
-            "attachments": "a[href]"
-          },
-          "status": "ok_with_docs",
-          "documents": 14,
-          "candidates": 36,
-          "list_errors": [],
-          "selector_strategies": {
-            "global_anchor_fallback": 36
-          },
-          "selector_warnings": []
-        },
-        {
-          "id": "hqc_repair",
-          "name": "维修服务",
-          "priority": 0.8,
-          "student_value": 0.82,
-          "audit_status": "chrome_audited",
-          "selectors": {
-            "list_item": null,
-            "title": null,
-            "date": null,
-            "link": null,
-            "content": ".wp_articlecontent",
-            "attachments": "a[href]"
-          },
-          "status": "warning_filtered_all",
-          "documents": 0,
-          "candidates": 12,
-          "list_errors": [],
-          "selector_strategies": {
-            "global_anchor_fallback": 12
-          },
-          "selector_warnings": []
-        },
-        {
-          "id": "hqc_shuttle",
-          "name": "班车时刻表",
-          "priority": 0.8,
-          "student_value": 0.82,
-          "audit_status": "chrome_audited",
-          "selectors": {
-            "list_item": null,
-            "title": null,
-            "date": null,
-            "link": null,
-            "content": ".wp_articlecontent",
-            "attachments": "a[href]"
-          },
-          "status": "ok_no_recent_docs",
-          "documents": 0,
-          "candidates": 0,
-          "list_errors": [],
-          "selector_strategies": {},
-          "selector_warnings": []
-        },
-        {
-          "id": "hqc_medical",
-          "name": "医保体检",
-          "priority": 0.82,
-          "student_value": 0.84,
-          "audit_status": "chrome_audited",
-          "selectors": {
-            "list_item": null,
-            "title": null,
-            "date": null,
-            "link": null,
-            "content": ".wp_articlecontent",
-            "attachments": "a[href]"
-          },
-          "status": "warning_filtered_all",
-          "documents": 0,
-          "candidates": 35,
-          "list_errors": [],
-          "selector_strategies": {
-            "global_anchor_fallback": 35
-          },
-          "selector_warnings": []
-        },
-        {
-          "id": "hqc_download",
-          "name": "后勤下载",
-          "priority": 0.7,
-          "student_value": 0.72,
-          "audit_status": "chrome_audited",
-          "selectors": {
-            "list_item": null,
-            "title": null,
-            "date": null,
-            "link": null,
-            "content": ".wp_articlecontent",
-            "attachments": "a[href]"
-          },
-          "status": "warning_filtered_all",
-          "documents": 0,
-          "candidates": 12,
-          "list_errors": [],
-          "selector_strategies": {
-            "global_anchor_fallback": 12
-          },
-          "selector_warnings": []
-        }
-      ],
-      "status": "ok",
-      "documents": 14,
-      "last_fetch_at": "2026-05-26T22:50:21.005368+08:00",
-      "candidates": 14,
-      "filtered_out": 0,
-      "capped_out": 0
-    },
-    {
-      "id": "njupt_notice",
-      "name": "南邮官网通知通告",
-      "domain": "www.njupt.edu.cn",
-      "source_type": "central_notice",
-      "adapter_kind": "njupt_wp",
-      "allow_insecure_tls": false,
-      "priority": 0.86,
-      "requires_devtools_audit": false,
-      "channel_count": 3,
-      "channels": [
-        {
-          "id": "njupt_notice_main",
-          "name": "校级通知通告",
-          "priority": 0.86,
-          "student_value": 0.86,
-          "audit_status": "chrome_audited",
-          "selectors": {
-            "list_item": null,
-            "title": null,
-            "date": null,
-            "link": null,
-            "content": ".wp_articlecontent",
-            "attachments": "a[href]"
-          },
-          "status": "ok_with_docs",
-          "documents": 14,
-          "candidates": 36,
-          "list_errors": [],
-          "selector_strategies": {
-            "global_anchor_fallback": 36
-          },
-          "selector_warnings": []
-        },
-        {
-          "id": "njupt_admission_employment",
-          "name": "招生就业入口",
-          "priority": 0.7,
-          "student_value": 0.72,
-          "audit_status": "chrome_audited",
-          "selectors": {
-            "list_item": null,
-            "title": null,
-            "date": null,
-            "link": null,
-            "content": ".wp_articlecontent",
-            "attachments": "a[href]"
-          },
-          "status": "warning_filtered_all",
-          "documents": 0,
-          "candidates": 36,
-          "list_errors": [],
-          "selector_strategies": {
-            "global_anchor_fallback": 36
-          },
-          "selector_warnings": []
-        },
-        {
-          "id": "njupt_smart_campus",
-          "name": "智慧校园入口",
-          "priority": 0.66,
-          "student_value": 0.68,
-          "audit_status": "chrome_audited",
-          "selectors": {
-            "list_item": null,
-            "title": null,
-            "date": null,
-            "link": null,
-            "content": ".wp_articlecontent",
-            "attachments": "a[href]"
-          },
-          "status": "warning_filtered_all",
-          "documents": 0,
-          "candidates": 36,
-          "list_errors": [],
-          "selector_strategies": {
-            "global_anchor_fallback": 36
-          },
-          "selector_warnings": []
-        }
-      ],
-      "status": "ok",
-      "documents": 14,
-      "last_fetch_at": "2026-05-26T22:50:21.005368+08:00",
-      "candidates": 14,
-      "filtered_out": 0,
-      "capped_out": 0
-    },
-    {
-      "id": "news",
-      "name": "南邮新闻网",
-      "domain": "news.njupt.edu.cn",
-      "source_type": "central_news",
-      "adapter_kind": "njupt_wp",
-      "allow_insecure_tls": false,
-      "priority": 0.62,
-      "requires_devtools_audit": false,
-      "channel_count": 2,
-      "channels": [
-        {
-          "id": "news_campus",
-          "name": "校园新闻",
-          "priority": 0.62,
-          "student_value": 0.55,
-          "audit_status": "manual_seeded",
-          "selectors": {
-            "list_item": null,
-            "title": null,
-            "date": null,
-            "link": null,
-            "content": ".wp_articlecontent",
-            "attachments": "a[href]"
-          },
-          "status": "ok_with_docs",
-          "documents": 14,
-          "candidates": 36,
-          "list_errors": [],
-          "selector_strategies": {
-            "global_anchor_fallback": 36
-          },
-          "selector_warnings": []
-        },
-        {
-          "id": "news_activity",
-          "name": "学生活动新闻",
-          "priority": 0.56,
-          "student_value": 0.5,
-          "audit_status": "manual_seeded",
-          "selectors": {
-            "list_item": null,
-            "title": null,
-            "date": null,
-            "link": null,
-            "content": ".wp_articlecontent",
-            "attachments": "a[href]"
-          },
-          "status": "warning_filtered_all",
-          "documents": 0,
-          "candidates": 36,
-          "list_errors": [],
-          "selector_strategies": {
-            "global_anchor_fallback": 36
-          },
-          "selector_warnings": []
-        }
-      ],
-      "status": "ok",
-      "documents": 14,
-      "last_fetch_at": "2026-05-26T22:50:21.005368+08:00",
-      "candidates": 14,
-      "filtered_out": 0,
-      "capped_out": 0
-    },
-    {
-      "id": "xxgk",
-      "name": "信息公开",
-      "domain": "xxgk.njupt.edu.cn",
-      "source_type": "policy",
-      "adapter_kind": "njupt_wp",
-      "allow_insecure_tls": false,
-      "priority": 0.58,
-      "requires_devtools_audit": false,
-      "channel_count": 3,
-      "channels": [
-        {
-          "id": "xxgk_policy",
-          "name": "信息公开目录",
-          "priority": 0.62,
-          "student_value": 0.62,
-          "audit_status": "chrome_audited",
-          "selectors": {
-            "list_item": null,
-            "title": null,
-            "date": null,
-            "link": null,
-            "content": ".wp_articlecontent",
-            "attachments": "a[href]"
-          },
-          "status": "ok_no_recent_docs",
-          "documents": 0,
-          "candidates": 0,
-          "list_errors": [],
-          "selector_strategies": {},
-          "selector_warnings": []
-        },
-        {
-          "id": "xxgk_student_service",
-          "name": "学生管理服务公开",
-          "priority": 0.62,
-          "student_value": 0.64,
-          "audit_status": "chrome_audited",
-          "selectors": {
-            "list_item": null,
-            "title": null,
-            "date": null,
-            "link": null,
-            "content": ".wp_articlecontent",
-            "attachments": "a[href]"
-          },
-          "status": "ok_no_recent_docs",
-          "documents": 0,
-          "candidates": 0,
-          "list_errors": [],
-          "selector_strategies": {},
-          "selector_warnings": []
-        },
-        {
-          "id": "xxgk_fee_degree",
-          "name": "收费教学学位公开",
-          "priority": 0.58,
-          "student_value": 0.6,
-          "audit_status": "chrome_audited",
-          "selectors": {
-            "list_item": null,
-            "title": null,
-            "date": null,
-            "link": null,
-            "content": ".wp_articlecontent",
-            "attachments": "a[href]"
-          },
-          "status": "ok_no_recent_docs",
-          "documents": 0,
-          "candidates": 0,
-          "list_errors": [],
-          "selector_strategies": {},
-          "selector_warnings": []
-        }
-      ],
-      "status": "ok",
-      "documents": 0,
-      "last_fetch_at": "2026-05-26T22:50:21.005368+08:00",
-      "candidates": 0,
-      "filtered_out": 0,
-      "capped_out": 0
-    },
-    {
-      "id": "exchange",
-      "name": "国际合作交流处",
-      "domain": "exchange.njupt.edu.cn",
-      "source_type": "central_admin",
-      "adapter_kind": "njupt_wp",
-      "allow_insecure_tls": false,
-      "priority": 0.78,
-      "requires_devtools_audit": false,
-      "channel_count": 4,
-      "channels": [
-        {
-          "id": "exchange_notice",
-          "name": "国际交流通知",
-          "priority": 0.72,
-          "student_value": 0.74,
-          "audit_status": "chrome_audited",
-          "selectors": {
-            "list_item": null,
-            "title": null,
-            "date": null,
-            "link": null,
-            "content": ".wp_articlecontent",
-            "attachments": "a[href]"
-          },
-          "status": "ok_with_docs",
-          "documents": 14,
-          "candidates": 35,
-          "list_errors": [
-            "https://exchange.njupt.edu.cn/7442/list2.htm: HTTPSConnectionPool(host='exchange.njupt.edu.cn', port=443): Read timed out. (read timeout=16)"
-          ],
-          "selector_strategies": {
-            "global_anchor_fallback": 35
-          },
-          "selector_warnings": []
-        },
-        {
-          "id": "exchange_project",
-          "name": "海外交流项目",
-          "priority": 0.76,
-          "student_value": 0.78,
-          "audit_status": "chrome_audited",
-          "selectors": {
-            "list_item": null,
-            "title": null,
-            "date": null,
-            "link": null,
-            "content": ".wp_articlecontent",
-            "attachments": "a[href]"
-          },
-          "status": "warning_filtered_all",
-          "documents": 0,
-          "candidates": 25,
-          "list_errors": [],
-          "selector_strategies": {
-            "global_anchor_fallback": 25
-          },
-          "selector_warnings": []
-        },
-        {
-          "id": "exchange_download",
-          "name": "国际交流材料下载",
-          "priority": 0.68,
-          "student_value": 0.7,
-          "audit_status": "chrome_audited",
-          "selectors": {
-            "list_item": null,
-            "title": null,
-            "date": null,
-            "link": null,
-            "content": ".wp_articlecontent",
-            "attachments": "a[href]"
-          },
-          "status": "warning_filtered_all",
-          "documents": 0,
-          "candidates": 2,
-          "list_errors": [],
-          "selector_strategies": {
-            "global_anchor_fallback": 2
-          },
-          "selector_warnings": []
-        },
-        {
-          "id": "exchange_admission",
-          "name": "留学与港澳台招生",
-          "priority": 0.6,
-          "student_value": 0.62,
-          "audit_status": "chrome_audited",
-          "selectors": {
-            "list_item": null,
-            "title": null,
-            "date": null,
-            "link": null,
-            "content": ".wp_articlecontent",
-            "attachments": "a[href]"
-          },
-          "status": "warning_filtered_all",
-          "documents": 0,
-          "candidates": 10,
-          "list_errors": [],
-          "selector_strategies": {
-            "global_anchor_fallback": 10
-          },
-          "selector_warnings": []
-        }
-      ],
-      "status": "ok",
-      "documents": 14,
-      "last_fetch_at": "2026-05-26T22:50:21.005368+08:00",
-      "list_errors": [
-        "https://exchange.njupt.edu.cn/7442/list2.htm: HTTPSConnectionPool(host='exchange.njupt.edu.cn', port=443): Read timed out. (read timeout=16)"
-      ],
-      "candidates": 14,
-      "filtered_out": 0,
-      "capped_out": 0
-    },
-    {
-      "id": "yzb",
-      "name": "研究生招生",
-      "domain": "yzb.njupt.edu.cn",
-      "source_type": "central_admin",
-      "adapter_kind": "njupt_wp",
-      "allow_insecure_tls": false,
-      "priority": 0.74,
-      "requires_devtools_audit": false,
-      "channel_count": 5,
-      "channels": [
-        {
-          "id": "yzb_master",
-          "name": "硕士招生",
-          "priority": 0.74,
-          "student_value": 0.76,
-          "audit_status": "chrome_audited",
-          "selectors": {
-            "list_item": null,
-            "title": null,
-            "date": null,
-            "link": null,
-            "content": ".wp_articlecontent",
-            "attachments": "a[href]"
-          },
-          "status": "ok_with_docs",
-          "documents": 8,
-          "candidates": 28,
-          "list_errors": [],
-          "selector_strategies": {
-            "global_anchor_fallback": 28
-          },
-          "selector_warnings": []
-        },
-        {
-          "id": "yzb_recommendation",
-          "name": "推免生招生",
-          "priority": 0.8,
-          "student_value": 0.82,
-          "audit_status": "chrome_audited",
-          "selectors": {
-            "list_item": null,
-            "title": null,
-            "date": null,
-            "link": null,
-            "content": ".wp_articlecontent",
-            "attachments": "a[href]"
-          },
-          "status": "warning_filtered_all",
-          "documents": 0,
-          "candidates": 28,
-          "list_errors": [],
-          "selector_strategies": {
-            "global_anchor_fallback": 28
-          },
-          "selector_warnings": []
-        },
-        {
-          "id": "yzb_doctor",
-          "name": "博士招生",
-          "priority": 0.66,
-          "student_value": 0.68,
-          "audit_status": "chrome_audited",
-          "selectors": {
-            "list_item": null,
-            "title": null,
-            "date": null,
-            "link": null,
-            "content": ".wp_articlecontent",
-            "attachments": "a[href]"
-          },
-          "status": "warning_filtered_all",
-          "documents": 0,
-          "candidates": 36,
-          "list_errors": [],
-          "selector_strategies": {
-            "global_anchor_fallback": 36
-          },
-          "selector_warnings": []
-        },
-        {
-          "id": "yzb_data",
-          "name": "招生历史数据",
-          "priority": 0.62,
-          "student_value": 0.64,
-          "audit_status": "chrome_audited",
-          "selectors": {
-            "list_item": null,
-            "title": null,
-            "date": null,
-            "link": null,
-            "content": ".wp_articlecontent",
-            "attachments": "a[href]"
-          },
-          "status": "warning_filtered_all",
-          "documents": 0,
-          "candidates": 25,
-          "list_errors": [],
-          "selector_strategies": {
-            "global_anchor_fallback": 25
-          },
-          "selector_warnings": []
-        },
-        {
-          "id": "yzb_download",
-          "name": "招生下载",
-          "priority": 0.62,
-          "student_value": 0.64,
-          "audit_status": "chrome_audited",
-          "selectors": {
-            "list_item": null,
-            "title": null,
-            "date": null,
-            "link": null,
-            "content": ".wp_articlecontent",
-            "attachments": "a[href]"
-          },
-          "status": "warning_filtered_all",
-          "documents": 0,
-          "candidates": 5,
-          "list_errors": [],
-          "selector_strategies": {
-            "global_anchor_fallback": 5
-          },
-          "selector_warnings": []
-        }
-      ],
-      "status": "ok",
-      "documents": 8,
-      "last_fetch_at": "2026-05-26T22:50:21.005368+08:00",
-      "candidates": 8,
-      "filtered_out": 0,
-      "capped_out": 0
-    },
-    {
-      "id": "xxb",
-      "name": "信息化建设与管理办公室",
-      "domain": "xxb.njupt.edu.cn",
-      "source_type": "service_unit",
-      "adapter_kind": "njupt_wp",
-      "allow_insecure_tls": false,
-      "priority": 0.72,
-      "requires_devtools_audit": false,
-      "channel_count": 4,
-      "channels": [
-        {
-          "id": "xxb_network",
-          "name": "校园网服务",
-          "priority": 0.78,
-          "student_value": 0.82,
-          "audit_status": "chrome_audited",
-          "selectors": {
-            "list_item": null,
-            "title": null,
-            "date": null,
-            "link": null,
-            "content": ".wp_articlecontent",
-            "attachments": "a[href]"
-          },
-          "status": "ok_with_docs",
-          "documents": 2,
-          "candidates": 5,
-          "list_errors": [],
-          "selector_strategies": {
-            "global_anchor_fallback": 5
-          },
-          "selector_warnings": []
-        },
-        {
-          "id": "xxb_identity",
-          "name": "统一身份认证",
-          "priority": 0.74,
-          "student_value": 0.78,
-          "audit_status": "chrome_audited",
-          "selectors": {
-            "list_item": null,
-            "title": null,
-            "date": null,
-            "link": null,
-            "content": ".wp_articlecontent",
-            "attachments": "a[href]"
-          },
-          "status": "ok_no_recent_docs",
-          "documents": 0,
-          "candidates": 0,
-          "list_errors": [],
-          "selector_strategies": {},
-          "selector_warnings": []
-        },
-        {
-          "id": "xxb_platform",
-          "name": "智慧校园与平台服务",
-          "priority": 0.7,
-          "student_value": 0.72,
-          "audit_status": "chrome_audited",
-          "selectors": {
-            "list_item": null,
-            "title": null,
-            "date": null,
-            "link": null,
-            "content": ".wp_articlecontent",
-            "attachments": "a[href]"
-          },
-          "status": "ok_with_docs",
-          "documents": 2,
-          "candidates": 4,
-          "list_errors": [],
-          "selector_strategies": {
-            "global_anchor_fallback": 4
-          },
-          "selector_warnings": []
-        },
-        {
-          "id": "xxb_download",
-          "name": "信息化下载中心",
-          "priority": 0.66,
-          "student_value": 0.68,
-          "audit_status": "chrome_audited",
-          "selectors": {
-            "list_item": null,
-            "title": null,
-            "date": null,
-            "link": null,
-            "content": ".wp_articlecontent",
-            "attachments": "a[href]"
-          },
-          "status": "ok_with_docs",
-          "documents": 2,
-          "candidates": 12,
-          "list_errors": [],
-          "selector_strategies": {
-            "global_anchor_fallback": 12
-          },
-          "selector_warnings": []
-        }
-      ],
-      "status": "ok",
-      "documents": 6,
-      "last_fetch_at": "2026-05-26T22:50:21.005368+08:00",
-      "candidates": 6,
-      "filtered_out": 0,
-      "capped_out": 0
-    },
-    {
-      "id": "cwc",
-      "name": "财务处",
-      "domain": "cwc.njupt.edu.cn",
-      "source_type": "service_unit",
-      "adapter_kind": "njupt_wp",
-      "allow_insecure_tls": false,
-      "priority": 0.62,
-      "requires_devtools_audit": false,
-      "channel_count": 2,
-      "channels": [
-        {
-          "id": "cwc_notice",
-          "name": "财务通知",
-          "priority": 0.56,
-          "student_value": 0.58,
-          "audit_status": "manual_seeded",
-          "selectors": {
-            "list_item": null,
-            "title": null,
-            "date": null,
-            "link": null,
-            "content": ".wp_articlecontent",
-            "attachments": "a[href]"
-          },
-          "status": "ok_with_docs",
-          "documents": 13,
-          "candidates": 22,
-          "list_errors": [],
-          "selector_strategies": {
-            "global_anchor_fallback": 22
-          },
-          "selector_warnings": []
-        },
-        {
-          "id": "cwc_download",
-          "name": "财务下载与流程",
-          "priority": 0.52,
-          "student_value": 0.54,
-          "audit_status": "manual_seeded",
-          "selectors": {
-            "list_item": null,
-            "title": null,
-            "date": null,
-            "link": null,
-            "content": ".wp_articlecontent",
-            "attachments": "a[href]"
-          },
-          "status": "warning_filtered_all",
-          "documents": 0,
-          "candidates": 22,
-          "list_errors": [],
-          "selector_strategies": {
-            "global_anchor_fallback": 22
-          },
-          "selector_warnings": []
-        }
-      ],
-      "status": "ok",
-      "documents": 13,
-      "last_fetch_at": "2026-05-26T22:50:21.005368+08:00",
-      "candidates": 13,
-      "filtered_out": 0,
-      "capped_out": 0
-    },
-    {
-      "id": "archives",
-      "name": "档案馆",
-      "domain": "dag.njupt.edu.cn",
-      "source_type": "service_unit",
-      "adapter_kind": "njupt_wp",
-      "allow_insecure_tls": false,
-      "priority": 0.62,
-      "requires_devtools_audit": false,
-      "channel_count": 3,
-      "channels": [
-        {
-          "id": "archives_guide",
-          "name": "用档服务指南",
-          "priority": 0.64,
-          "student_value": 0.66,
-          "audit_status": "chrome_audited",
-          "selectors": {
-            "list_item": null,
-            "title": null,
-            "date": null,
-            "link": null,
-            "content": ".wp_articlecontent",
-            "attachments": "a[href]"
-          },
-          "status": "ok_no_recent_docs",
-          "documents": 0,
-          "candidates": 0,
-          "list_errors": [],
-          "selector_strategies": {},
-          "selector_warnings": []
-        },
-        {
-          "id": "archives_notice",
-          "name": "档案馆通知",
-          "priority": 0.6,
-          "student_value": 0.62,
-          "audit_status": "chrome_audited",
-          "selectors": {
-            "list_item": null,
-            "title": null,
-            "date": null,
-            "link": null,
-            "content": ".wp_articlecontent",
-            "attachments": "a[href]"
-          },
-          "status": "ok_with_docs",
-          "documents": 14,
-          "candidates": 36,
-          "list_errors": [],
-          "selector_strategies": {
-            "global_anchor_fallback": 36
-          },
-          "selector_warnings": []
-        },
-        {
-          "id": "archives_download",
-          "name": "档案下载专栏",
-          "priority": 0.56,
-          "student_value": 0.58,
-          "audit_status": "chrome_audited",
-          "selectors": {
-            "list_item": null,
-            "title": null,
-            "date": null,
-            "link": null,
-            "content": ".wp_articlecontent",
-            "attachments": "a[href]"
-          },
-          "status": "ok_no_recent_docs",
-          "documents": 0,
-          "candidates": 0,
-          "list_errors": [],
-          "selector_strategies": {},
-          "selector_warnings": []
-        }
-      ],
-      "status": "ok",
-      "documents": 14,
-      "last_fetch_at": "2026-05-26T22:50:21.005368+08:00",
-      "candidates": 14,
-      "filtered_out": 0,
-      "capped_out": 0
-    },
-    {
-      "id": "pe",
-      "name": "体育部",
-      "domain": "tyb.njupt.edu.cn",
-      "source_type": "service_unit",
-      "adapter_kind": "njupt_wp",
-      "allow_insecure_tls": false,
-      "priority": 0.58,
-      "requires_devtools_audit": false,
-      "channel_count": 4,
-      "channels": [
-        {
-          "id": "pe_course",
-          "name": "体育课程",
-          "priority": 0.62,
-          "student_value": 0.64,
-          "audit_status": "chrome_audited",
-          "selectors": {
-            "list_item": null,
-            "title": null,
-            "date": null,
-            "link": null,
-            "content": ".wp_articlecontent",
-            "attachments": "a[href]"
-          },
-          "status": "ok_with_docs",
-          "documents": 12,
-          "candidates": 24,
-          "list_errors": [],
-          "selector_strategies": {
-            "global_anchor_fallback": 24
-          },
-          "selector_warnings": []
-        },
-        {
-          "id": "pe_running",
-          "name": "晨跑与体测",
-          "priority": 0.64,
-          "student_value": 0.66,
-          "audit_status": "chrome_audited",
-          "selectors": {
-            "list_item": null,
-            "title": null,
-            "date": null,
-            "link": null,
-            "content": ".wp_articlecontent",
-            "attachments": "a[href]"
-          },
-          "status": "warning_filtered_all",
-          "documents": 0,
-          "candidates": 36,
-          "list_errors": [],
-          "selector_strategies": {
-            "global_anchor_fallback": 36
-          },
-          "selector_warnings": []
-        },
-        {
-          "id": "pe_competition",
-          "name": "体育竞赛",
-          "priority": 0.6,
-          "student_value": 0.62,
-          "audit_status": "chrome_audited",
-          "selectors": {
-            "list_item": null,
-            "title": null,
-            "date": null,
-            "link": null,
-            "content": ".wp_articlecontent",
-            "attachments": "a[href]"
-          },
-          "status": "warning_filtered_all",
-          "documents": 0,
-          "candidates": 28,
-          "list_errors": [],
-          "selector_strategies": {
-            "global_anchor_fallback": 28
-          },
-          "selector_warnings": []
-        },
-        {
-          "id": "pe_download",
-          "name": "体育资料下载",
-          "priority": 0.52,
-          "student_value": 0.54,
-          "audit_status": "chrome_audited",
-          "selectors": {
-            "list_item": null,
-            "title": null,
-            "date": null,
-            "link": null,
-            "content": ".wp_articlecontent",
-            "attachments": "a[href]"
-          },
-          "status": "warning_filtered_all",
-          "documents": 0,
-          "candidates": 9,
-          "list_errors": [],
-          "selector_strategies": {
-            "global_anchor_fallback": 9
-          },
-          "selector_warnings": []
-        }
-      ],
-      "status": "ok",
-      "documents": 12,
-      "last_fetch_at": "2026-05-26T22:50:21.005368+08:00",
-      "candidates": 12,
-      "filtered_out": 0,
-      "capped_out": 0
-    },
-    {
-      "id": "cs",
-      "name": "计算机学院",
-      "domain": "cs.njupt.edu.cn",
-      "source_type": "college",
-      "adapter_kind": "njupt_wp",
-      "allow_insecure_tls": false,
-      "priority": 0.78,
-      "requires_devtools_audit": false,
-      "channel_count": 2,
-      "channels": [
-        {
-          "id": "cs_academic",
-          "name": "学院学业通知",
-          "priority": 0.78,
-          "student_value": 0.78,
-          "audit_status": "manual_seeded",
-          "selectors": {
-            "list_item": null,
-            "title": null,
-            "date": null,
-            "link": null,
-            "content": ".wp_articlecontent",
-            "attachments": "a[href]"
-          },
-          "status": "ok_with_docs",
-          "documents": 4,
-          "candidates": 4,
-          "list_errors": [],
-          "selector_strategies": {
-            "global_anchor_fallback": 4
-          },
-          "selector_warnings": []
-        },
-        {
-          "id": "cs_competition",
-          "name": "学院竞赛项目",
-          "priority": 0.74,
-          "student_value": 0.74,
-          "audit_status": "manual_seeded",
-          "selectors": {
-            "list_item": null,
-            "title": null,
-            "date": null,
-            "link": null,
-            "content": ".wp_articlecontent",
-            "attachments": "a[href]"
-          },
-          "status": "ok_with_docs",
-          "documents": 4,
-          "candidates": 4,
-          "list_errors": [],
-          "selector_strategies": {
-            "global_anchor_fallback": 4
-          },
-          "selector_warnings": []
-        }
-      ],
-      "status": "ok",
-      "documents": 8,
-      "last_fetch_at": "2026-05-26T22:50:21.005368+08:00",
-      "candidates": 8,
-      "filtered_out": 0,
-      "capped_out": 0
-    },
-    {
-      "id": "scie",
-      "name": "通信与信息工程学院",
-      "domain": "scie.njupt.edu.cn",
-      "source_type": "college",
-      "adapter_kind": "njupt_wp",
-      "allow_insecure_tls": false,
-      "priority": 0.76,
-      "requires_devtools_audit": false,
-      "channel_count": 2,
-      "channels": [
-        {
-          "id": "scie_academic",
-          "name": "学院学业通知",
-          "priority": 0.76,
-          "student_value": 0.76,
-          "audit_status": "manual_seeded",
-          "selectors": {
-            "list_item": null,
-            "title": null,
-            "date": null,
-            "link": null,
-            "content": ".wp_articlecontent",
-            "attachments": "a[href]"
-          },
-          "status": "ok_no_recent_docs",
-          "documents": 0,
-          "candidates": 0,
-          "list_errors": [],
-          "selector_strategies": {},
-          "selector_warnings": []
-        },
-        {
-          "id": "scie_competition",
-          "name": "学院竞赛项目",
-          "priority": 0.72,
-          "student_value": 0.72,
-          "audit_status": "manual_seeded",
-          "selectors": {
-            "list_item": null,
-            "title": null,
-            "date": null,
-            "link": null,
-            "content": ".wp_articlecontent",
-            "attachments": "a[href]"
-          },
-          "status": "ok_no_recent_docs",
-          "documents": 0,
-          "candidates": 0,
-          "list_errors": [],
-          "selector_strategies": {},
-          "selector_warnings": []
-        }
-      ],
-      "status": "ok",
-      "documents": 0,
-      "last_fetch_at": "2026-05-26T22:50:21.005368+08:00",
-      "candidates": 0,
-      "filtered_out": 0,
-      "capped_out": 0
-    },
-    {
-      "id": "eoe",
-      "name": "电子与光学工程学院",
-      "domain": "eoe.njupt.edu.cn",
-      "source_type": "college",
-      "adapter_kind": "njupt_wp",
-      "allow_insecure_tls": false,
-      "priority": 0.74,
-      "requires_devtools_audit": false,
-      "channel_count": 2,
-      "channels": [
-        {
-          "id": "eoe_academic",
-          "name": "学院学业通知",
-          "priority": 0.74,
-          "student_value": 0.74,
-          "audit_status": "manual_seeded",
-          "selectors": {
-            "list_item": null,
-            "title": null,
-            "date": null,
-            "link": null,
-            "content": ".wp_articlecontent",
-            "attachments": "a[href]"
-          },
-          "status": "ok_no_recent_docs",
-          "documents": 0,
-          "candidates": 0,
-          "list_errors": [],
-          "selector_strategies": {},
-          "selector_warnings": []
-        },
-        {
-          "id": "eoe_competition",
-          "name": "学院竞赛项目",
-          "priority": 0.7,
-          "student_value": 0.7,
-          "audit_status": "manual_seeded",
-          "selectors": {
-            "list_item": null,
-            "title": null,
-            "date": null,
-            "link": null,
-            "content": ".wp_articlecontent",
-            "attachments": "a[href]"
-          },
-          "status": "ok_no_recent_docs",
-          "documents": 0,
-          "candidates": 0,
-          "list_errors": [],
-          "selector_strategies": {},
-          "selector_warnings": []
-        }
-      ],
-      "status": "ok",
-      "documents": 0,
-      "last_fetch_at": "2026-05-26T22:50:21.005368+08:00",
-      "candidates": 0,
-      "filtered_out": 0,
-      "capped_out": 0
-    },
-    {
-      "id": "ic",
-      "name": "集成电路科学与工程学院",
-      "domain": "ic.njupt.edu.cn",
-      "source_type": "college",
-      "adapter_kind": "njupt_wp",
-      "allow_insecure_tls": false,
-      "priority": 0.74,
-      "requires_devtools_audit": false,
-      "channel_count": 2,
-      "channels": [
-        {
-          "id": "ic_academic",
-          "name": "学院学业通知",
-          "priority": 0.74,
-          "student_value": 0.74,
-          "audit_status": "manual_seeded",
-          "selectors": {
-            "list_item": null,
-            "title": null,
-            "date": null,
-            "link": null,
-            "content": ".wp_articlecontent",
-            "attachments": "a[href]"
-          },
-          "status": "ok_no_recent_docs",
-          "documents": 0,
-          "candidates": 0,
-          "list_errors": [],
-          "selector_strategies": {},
-          "selector_warnings": []
-        },
-        {
-          "id": "ic_competition",
-          "name": "学院竞赛项目",
-          "priority": 0.7,
-          "student_value": 0.7,
-          "audit_status": "manual_seeded",
-          "selectors": {
-            "list_item": null,
-            "title": null,
-            "date": null,
-            "link": null,
-            "content": ".wp_articlecontent",
-            "attachments": "a[href]"
-          },
-          "status": "ok_no_recent_docs",
-          "documents": 0,
-          "candidates": 0,
-          "list_errors": [],
-          "selector_strategies": {},
-          "selector_warnings": []
-        }
-      ],
-      "status": "ok",
-      "documents": 0,
-      "last_fetch_at": "2026-05-26T22:50:21.005368+08:00",
-      "candidates": 0,
-      "filtered_out": 0,
-      "capped_out": 0
-    },
-    {
-      "id": "coa",
-      "name": "自动化学院",
-      "domain": "coa.njupt.edu.cn",
-      "source_type": "college",
-      "adapter_kind": "njupt_wp",
-      "allow_insecure_tls": false,
-      "priority": 0.72,
-      "requires_devtools_audit": false,
-      "channel_count": 2,
-      "channels": [
-        {
-          "id": "coa_academic",
-          "name": "学院学业通知",
-          "priority": 0.72,
-          "student_value": 0.72,
-          "audit_status": "manual_seeded",
-          "selectors": {
-            "list_item": null,
-            "title": null,
-            "date": null,
-            "link": null,
-            "content": ".wp_articlecontent",
-            "attachments": "a[href]"
-          },
-          "status": "ok_no_recent_docs",
-          "documents": 0,
-          "candidates": 0,
-          "list_errors": [],
-          "selector_strategies": {},
-          "selector_warnings": []
-        },
-        {
-          "id": "coa_competition",
-          "name": "学院竞赛项目",
-          "priority": 0.6799999999999999,
-          "student_value": 0.6799999999999999,
-          "audit_status": "manual_seeded",
-          "selectors": {
-            "list_item": null,
-            "title": null,
-            "date": null,
-            "link": null,
-            "content": ".wp_articlecontent",
-            "attachments": "a[href]"
-          },
-          "status": "ok_no_recent_docs",
-          "documents": 0,
-          "candidates": 0,
-          "list_errors": [],
-          "selector_strategies": {},
-          "selector_warnings": []
-        }
-      ],
-      "status": "ok",
-      "documents": 0,
-      "last_fetch_at": "2026-05-26T22:50:21.005368+08:00",
-      "candidates": 0,
-      "filtered_out": 0,
-      "capped_out": 0
-    },
-    {
-      "id": "ai",
-      "name": "人工智能学院",
-      "domain": "ai.njupt.edu.cn",
-      "source_type": "college",
-      "adapter_kind": "njupt_wp",
-      "allow_insecure_tls": false,
-      "priority": 0.72,
-      "requires_devtools_audit": false,
-      "channel_count": 2,
-      "channels": [
-        {
-          "id": "ai_academic",
-          "name": "学院学业通知",
-          "priority": 0.72,
-          "student_value": 0.72,
-          "audit_status": "manual_seeded",
-          "selectors": {
-            "list_item": null,
-            "title": null,
-            "date": null,
-            "link": null,
-            "content": ".wp_articlecontent",
-            "attachments": "a[href]"
-          },
-          "status": "ok_no_recent_docs",
-          "documents": 0,
-          "candidates": 0,
-          "list_errors": [],
-          "selector_strategies": {},
-          "selector_warnings": []
-        },
-        {
-          "id": "ai_competition",
-          "name": "学院竞赛项目",
-          "priority": 0.6799999999999999,
-          "student_value": 0.6799999999999999,
-          "audit_status": "manual_seeded",
-          "selectors": {
-            "list_item": null,
-            "title": null,
-            "date": null,
-            "link": null,
-            "content": ".wp_articlecontent",
-            "attachments": "a[href]"
-          },
-          "status": "ok_no_recent_docs",
-          "documents": 0,
-          "candidates": 0,
-          "list_errors": [],
-          "selector_strategies": {},
-          "selector_warnings": []
-        }
-      ],
-      "status": "ok",
-      "documents": 0,
-      "last_fetch_at": "2026-05-26T22:50:21.005368+08:00",
-      "candidates": 0,
-      "filtered_out": 0,
-      "capped_out": 0
-    },
-    {
-      "id": "ciot",
-      "name": "物联网学院",
-      "domain": "ciot.njupt.edu.cn",
-      "source_type": "college",
-      "adapter_kind": "njupt_wp",
-      "allow_insecure_tls": false,
-      "priority": 0.72,
-      "requires_devtools_audit": false,
-      "channel_count": 2,
-      "channels": [
-        {
-          "id": "ciot_academic",
-          "name": "学院学业通知",
-          "priority": 0.72,
-          "student_value": 0.72,
-          "audit_status": "manual_seeded",
-          "selectors": {
-            "list_item": null,
-            "title": null,
-            "date": null,
-            "link": null,
-            "content": ".wp_articlecontent",
-            "attachments": "a[href]"
-          },
-          "status": "ok_no_recent_docs",
-          "documents": 0,
-          "candidates": 0,
-          "list_errors": [],
-          "selector_strategies": {},
-          "selector_warnings": []
-        },
-        {
-          "id": "ciot_competition",
-          "name": "学院竞赛项目",
-          "priority": 0.6799999999999999,
-          "student_value": 0.6799999999999999,
-          "audit_status": "manual_seeded",
-          "selectors": {
-            "list_item": null,
-            "title": null,
-            "date": null,
-            "link": null,
-            "content": ".wp_articlecontent",
-            "attachments": "a[href]"
-          },
-          "status": "ok_no_recent_docs",
-          "documents": 0,
-          "candidates": 0,
-          "list_errors": [],
-          "selector_strategies": {},
-          "selector_warnings": []
-        }
-      ],
-      "status": "ok",
-      "documents": 0,
-      "last_fetch_at": "2026-05-26T22:50:21.005368+08:00",
-      "candidates": 0,
-      "filtered_out": 0,
-      "capped_out": 0
-    },
-    {
-      "id": "lxy",
-      "name": "理学院",
-      "domain": "lxy.njupt.edu.cn",
-      "source_type": "college",
-      "adapter_kind": "njupt_wp",
-      "allow_insecure_tls": false,
-      "priority": 0.68,
-      "requires_devtools_audit": false,
-      "channel_count": 2,
-      "channels": [
-        {
-          "id": "lxy_academic",
-          "name": "学院学业通知",
-          "priority": 0.68,
-          "student_value": 0.68,
-          "audit_status": "manual_seeded",
-          "selectors": {
-            "list_item": null,
-            "title": null,
-            "date": null,
-            "link": null,
-            "content": ".wp_articlecontent",
-            "attachments": "a[href]"
-          },
-          "status": "ok_no_recent_docs",
-          "documents": 0,
-          "candidates": 0,
-          "list_errors": [],
-          "selector_strategies": {},
-          "selector_warnings": []
-        },
-        {
-          "id": "lxy_competition",
-          "name": "学院竞赛项目",
-          "priority": 0.64,
-          "student_value": 0.64,
-          "audit_status": "manual_seeded",
-          "selectors": {
-            "list_item": null,
-            "title": null,
-            "date": null,
-            "link": null,
-            "content": ".wp_articlecontent",
-            "attachments": "a[href]"
-          },
-          "status": "ok_no_recent_docs",
-          "documents": 0,
-          "candidates": 0,
-          "list_errors": [],
-          "selector_strategies": {},
-          "selector_warnings": []
-        }
-      ],
-      "status": "ok",
-      "documents": 0,
-      "last_fetch_at": "2026-05-26T22:50:21.005368+08:00",
-      "candidates": 0,
-      "filtered_out": 0,
-      "capped_out": 0
-    },
-    {
-      "id": "simp",
-      "name": "现代邮政学院 / 智慧交通学院",
-      "domain": "simp.njupt.edu.cn",
-      "source_type": "college",
-      "adapter_kind": "njupt_wp",
-      "allow_insecure_tls": false,
-      "priority": 0.68,
-      "requires_devtools_audit": false,
-      "channel_count": 2,
-      "channels": [
-        {
-          "id": "simp_academic",
-          "name": "学院学业通知",
-          "priority": 0.68,
-          "student_value": 0.68,
-          "audit_status": "manual_seeded",
-          "selectors": {
-            "list_item": null,
-            "title": null,
-            "date": null,
-            "link": null,
-            "content": ".wp_articlecontent",
-            "attachments": "a[href]"
-          },
-          "status": "ok_with_docs",
-          "documents": 13,
-          "candidates": 36,
-          "list_errors": [],
-          "selector_strategies": {
-            "global_anchor_fallback": 36
-          },
-          "selector_warnings": []
-        },
-        {
-          "id": "simp_competition",
-          "name": "学院竞赛项目",
-          "priority": 0.64,
-          "student_value": 0.64,
-          "audit_status": "manual_seeded",
-          "selectors": {
-            "list_item": null,
-            "title": null,
-            "date": null,
-            "link": null,
-            "content": ".wp_articlecontent",
-            "attachments": "a[href]"
-          },
-          "status": "warning_filtered_all",
-          "documents": 0,
-          "candidates": 36,
-          "list_errors": [],
-          "selector_strategies": {
-            "global_anchor_fallback": 36
-          },
-          "selector_warnings": []
-        }
-      ],
-      "status": "ok",
-      "documents": 13,
-      "last_fetch_at": "2026-05-26T22:50:21.005368+08:00",
-      "candidates": 13,
-      "filtered_out": 0,
-      "capped_out": 0
-    },
-    {
-      "id": "bc",
-      "name": "管理学院",
-      "domain": "bc.njupt.edu.cn",
-      "source_type": "college",
-      "adapter_kind": "njupt_wp",
-      "allow_insecure_tls": false,
-      "priority": 0.66,
-      "requires_devtools_audit": false,
-      "channel_count": 2,
-      "channels": [
-        {
-          "id": "bc_academic",
-          "name": "学院学业通知",
-          "priority": 0.66,
-          "student_value": 0.66,
-          "audit_status": "manual_seeded",
-          "selectors": {
-            "list_item": null,
-            "title": null,
-            "date": null,
-            "link": null,
-            "content": ".wp_articlecontent",
-            "attachments": "a[href]"
-          },
-          "status": "ok_with_docs",
-          "documents": 14,
-          "candidates": 26,
-          "list_errors": [],
-          "selector_strategies": {
-            "global_anchor_fallback": 26
-          },
-          "selector_warnings": []
-        },
-        {
-          "id": "bc_competition",
-          "name": "学院竞赛项目",
-          "priority": 0.62,
-          "student_value": 0.62,
-          "audit_status": "manual_seeded",
-          "selectors": {
-            "list_item": null,
-            "title": null,
-            "date": null,
-            "link": null,
-            "content": ".wp_articlecontent",
-            "attachments": "a[href]"
-          },
-          "status": "warning_filtered_all",
-          "documents": 0,
-          "candidates": 26,
-          "list_errors": [],
-          "selector_strategies": {
-            "global_anchor_fallback": 26
-          },
-          "selector_warnings": []
-        }
-      ],
-      "status": "ok",
-      "documents": 14,
-      "last_fetch_at": "2026-05-26T22:50:21.005368+08:00",
-      "candidates": 14,
-      "filtered_out": 0,
-      "capped_out": 0
-    },
-    {
-      "id": "jjxy",
-      "name": "经济学院",
-      "domain": "jjxy.njupt.edu.cn",
-      "source_type": "college",
-      "adapter_kind": "njupt_wp",
-      "allow_insecure_tls": false,
-      "priority": 0.66,
-      "requires_devtools_audit": false,
-      "channel_count": 2,
-      "channels": [
-        {
-          "id": "jjxy_academic",
-          "name": "学院学业通知",
-          "priority": 0.66,
-          "student_value": 0.66,
-          "audit_status": "manual_seeded",
-          "selectors": {
-            "list_item": null,
-            "title": null,
-            "date": null,
-            "link": null,
-            "content": ".wp_articlecontent",
-            "attachments": "a[href]"
-          },
-          "status": "ok_no_recent_docs",
-          "documents": 0,
-          "candidates": 0,
-          "list_errors": [],
-          "selector_strategies": {},
-          "selector_warnings": []
-        },
-        {
-          "id": "jjxy_competition",
-          "name": "学院竞赛项目",
-          "priority": 0.62,
-          "student_value": 0.62,
-          "audit_status": "manual_seeded",
-          "selectors": {
-            "list_item": null,
-            "title": null,
-            "date": null,
-            "link": null,
-            "content": ".wp_articlecontent",
-            "attachments": "a[href]"
-          },
-          "status": "ok_no_recent_docs",
-          "documents": 0,
-          "candidates": 0,
-          "list_errors": [],
-          "selector_strategies": {},
-          "selector_warnings": []
-        }
-      ],
-      "status": "ok",
-      "documents": 0,
-      "last_fetch_at": "2026-05-26T22:50:21.005368+08:00",
-      "candidates": 0,
-      "filtered_out": 0,
-      "capped_out": 0
-    },
-    {
-      "id": "github:hicancan/njupt-net",
-      "name": "njupt-net 校园网络工具",
-      "domain": "github.com",
-      "source_type": "github_resource",
-      "status": "ok",
-      "documents": 2,
-      "last_fetch_at": "2026-05-26T22:50:21.005368+08:00",
-      "candidates": 2
-    },
-    {
-      "id": "github:hicancan/njupt-jwxt-assistant",
-      "name": "教务助手资料",
-      "domain": "github.com",
-      "source_type": "github_resource",
-      "status": "ok",
-      "documents": 1,
-      "last_fetch_at": "2026-05-26T22:50:21.005368+08:00",
-      "candidates": 1
-    },
-    {
-      "id": "github:ZsgsDesign/NOJ",
-      "name": "⚡ The most advanced open-sourc...",
-      "domain": "github.com",
-      "source_type": "github_resource",
-      "status": "ok",
-      "documents": 5,
-      "last_fetch_at": "2026-05-26T22:50:21.005368+08:00",
-      "candidates": 5
-    },
-    {
-      "id": "github:NJUPTFreeExams/NJUPT-General-Free-Exams",
-      "name": "南京邮电大学课程资源共享平台，此仓库包括门户网站和通识类课程...",
-      "domain": "github.com",
-      "source_type": "github_resource",
-      "status": "ok",
-      "documents": 1,
-      "last_fetch_at": "2026-05-26T22:50:21.005368+08:00",
-      "candidates": 1
-    },
-    {
-      "id": "github:NJUPTFreeExams/NJUPT-CST-Free-Exams",
-      "name": "【Deprecated】南京邮电大学计算机科学与技术专业历年...",
-      "domain": "github.com",
-      "source_type": "github_resource",
-      "status": "ok",
-      "documents": 1,
-      "last_fetch_at": "2026-05-26T22:50:21.005368+08:00",
-      "candidates": 1
-    },
-    {
-      "id": "github:NJUPTFreeExams/NJUPT-CS-FREE",
-      "name": "南京邮电大学计算机相关专业历年考试资料",
-      "domain": "github.com",
-      "source_type": "github_resource",
-      "status": "ok",
-      "documents": 1,
-      "last_fetch_at": "2026-05-26T22:50:21.005368+08:00",
-      "candidates": 1
-    },
-    {
-      "id": "github:bmxbmx3/cn_sort",
-      "name": "中文排序：按拼音/笔顺快速排序简体中文词组（百万数量级，可含...",
-      "domain": "github.com",
-      "source_type": "github_resource",
-      "status": "ok",
-      "documents": 1,
-      "last_fetch_at": "2026-05-26T22:50:21.005368+08:00",
-      "candidates": 1
-    },
-    {
-      "id": "github:leftjs/StudentGradesManageSystem",
-      "name": "student grades manage system, ...",
-      "domain": "github.com",
-      "source_type": "github_resource",
-      "status": "ok",
-      "documents": 1,
-      "last_fetch_at": "2026-05-26T22:50:21.005368+08:00",
-      "candidates": 1
-    },
-    {
-      "id": "github:renyuanzhe/NJUPT-CS-Courses",
-      "name": "NJUPT南京邮电大学,计算机相关课程的实验报告，大作业以及...",
-      "domain": "github.com",
-      "source_type": "github_resource",
-      "status": "ok",
-      "documents": 1,
-      "last_fetch_at": "2026-05-26T22:50:21.005368+08:00",
-      "candidates": 1
-    },
-    {
-      "id": "github:Wonz5130/NJUPT-Yellow-Page",
-      "name": ":yum:南京邮电大学黄页",
-      "domain": "github.com",
-      "source_type": "github_resource",
-      "status": "ok",
-      "documents": 1,
-      "last_fetch_at": "2026-05-26T22:50:21.005368+08:00",
-      "candidates": 1
-    },
-    {
-      "id": "github:GreenPomelo/Undergraduate",
-      "name": "🔧mini program of NJUPT | 南京邮电大...",
-      "domain": "github.com",
-      "source_type": "github_resource",
-      "status": "ok",
-      "documents": 3,
-      "last_fetch_at": "2026-05-26T22:50:21.005368+08:00",
-      "candidates": 3
-    },
-    {
-      "id": "github:NJUPTFreeExams/NJUPT-AUTO-Free-Exams",
-      "name": "南京邮电大学自动化专业历年考试资料",
-      "domain": "github.com",
-      "source_type": "github_resource",
-      "status": "ok",
-      "documents": 1,
-      "last_fetch_at": "2026-05-26T22:50:21.005368+08:00",
-      "candidates": 1
-    },
-    {
-      "id": "github:NJUPT-CG/NCTF2018",
-      "name": "Official repository of NJUPT C...",
-      "domain": "github.com",
-      "source_type": "github_resource",
-      "status": "ok",
-      "documents": 1,
-      "last_fetch_at": "2026-05-26T22:50:21.005368+08:00",
-      "candidates": 1
-    },
-    {
-      "id": "github:gzr-lgtm/NJUPThesis-Bachelor",
-      "name": "LaTeX template for NJUPT Under...",
-      "domain": "github.com",
-      "source_type": "github_resource",
-      "status": "ok",
-      "documents": 1,
-      "last_fetch_at": "2026-05-26T22:50:21.005368+08:00",
-      "candidates": 1
-    },
-    {
-      "id": "github:gaoliang/NJUPT-API",
-      "name": "Python API Wrappers for NJUPT....",
-      "domain": "github.com",
-      "source_type": "github_resource",
-      "status": "ok",
-      "documents": 1,
-      "last_fetch_at": "2026-05-26T22:50:21.005368+08:00",
-      "candidates": 1
-    },
-    {
-      "id": "github:xiafanglongfei/NJUPT-auto-evaluate",
-      "name": "🐶 南邮本科生学生评教活动的一键自动评价脚本 #南邮# #一...",
-      "domain": "github.com",
-      "source_type": "github_resource",
-      "status": "ok",
-      "documents": 1,
-      "last_fetch_at": "2026-05-26T22:50:21.005368+08:00",
-      "candidates": 1
-    },
-    {
-      "id": "github:NJUPTFreeExams/NJUPT-TE-Free-Exams",
-      "name": "南京邮电大学通信工程专业历年考试资料",
-      "domain": "github.com",
-      "source_type": "github_resource",
-      "status": "ok",
-      "documents": 1,
-      "last_fetch_at": "2026-05-26T22:50:21.005368+08:00",
-      "candidates": 1
-    },
-    {
-      "id": "github:kaijy91/NJUPT_NET",
-      "name": "南京邮电大学_校园网/电信宽带/移动宽带_路由器共享WiFi...",
-      "domain": "github.com",
-      "source_type": "github_resource",
-      "status": "ok",
-      "documents": 1,
-      "last_fetch_at": "2026-05-26T22:50:21.005368+08:00",
-      "candidates": 1
-    },
-    {
-      "id": "github:s235784/NJUPT_AutoLogin",
-      "name": "南京邮电大学校园网自动登录脚本，支持Linux（OpenWR...",
-      "domain": "github.com",
-      "source_type": "github_resource",
-      "status": "ok",
-      "documents": 2,
-      "last_fetch_at": "2026-05-26T22:50:21.005368+08:00",
-      "candidates": 2
-    },
-    {
-      "id": "github:Freedomisgood/NjuptCmcc",
-      "name": "校园网一键上网脚本",
-      "domain": "github.com",
-      "source_type": "github_resource",
-      "status": "ok",
-      "documents": 1,
-      "last_fetch_at": "2026-05-26T22:50:21.005368+08:00",
-      "candidates": 1
-    },
-    {
-      "id": "github:love98ooo/ZhengFangJiaoWuSystemTampermonkeyScript",
-      "name": "南京邮电大学正方教务系统油猴脚本，主要用于查询平时分和卷面分",
-      "domain": "github.com",
-      "source_type": "github_resource",
-      "status": "ok",
-      "documents": 1,
-      "last_fetch_at": "2026-05-26T22:50:21.005368+08:00",
-      "candidates": 1
-    },
-    {
-      "id": "github:NJUPT-NAVI/NJUPT-Survival-Guide",
-      "name": "南京邮电大学生存指南，用于导航和整合各种公开的资源和信息，减...",
-      "domain": "github.com",
-      "source_type": "github_resource",
-      "status": "ok",
-      "documents": 2,
-      "last_fetch_at": "2026-05-26T22:50:21.005368+08:00",
-      "warning": "GitHub fetch failed; reused stale cached documents: name 'provider_chain' is not defined"
-    },
-    {
-      "id": "github:bmxbmx3/finger_vein_recognition",
-      "name": "A python software used to reco...",
-      "domain": "github.com",
-      "source_type": "github_resource",
-      "status": "ok",
-      "documents": 1,
-      "last_fetch_at": "2026-05-26T22:50:21.005368+08:00",
-      "candidates": 1
-    },
-    {
-      "id": "github:lux-QAQ/NJUPT_Fastlogin",
-      "name": "南京邮电大学校园网最快登录脚本 for Android Wi...",
-      "domain": "github.com",
-      "source_type": "github_resource",
-      "status": "ok",
-      "documents": 1,
-      "last_fetch_at": "2026-05-26T22:50:21.005368+08:00",
-      "candidates": 1
-    },
-    {
-      "id": "github:NJUPTFreeExams/njuptfreeexams.github.io",
-      "name": "NJUPTFreeExams 官方文档，现已迁移至 Netl...",
-      "domain": "github.com",
-      "source_type": "github_resource",
-      "status": "ok",
-      "documents": 1,
-      "last_fetch_at": "2026-05-26T22:50:21.005368+08:00",
-      "candidates": 1
-    },
-    {
-      "id": "github:dhiyu/NJUPT-Bachelor",
-      "name": "南京邮电大学本科生毕业设计Latex模板",
-      "domain": "github.com",
-      "source_type": "github_resource",
-      "status": "ok",
-      "documents": 1,
-      "last_fetch_at": "2026-05-26T22:50:21.005368+08:00",
-      "candidates": 1
-    },
-    {
-      "id": "github:yosunpeng/postgraduate_test_njupt",
-      "name": "南京邮电大学研究生期末考试复习资料",
-      "domain": "github.com",
-      "source_type": "github_resource",
-      "status": "ok",
-      "documents": 1,
-      "last_fetch_at": "2026-05-26T22:50:21.005368+08:00",
-      "candidates": 1
-    },
-    {
-      "id": "github:NJUPTFreeExams/NJUPT-InfoSec-Free-Exams",
-      "name": "【Deprecated】南京邮电大学信息安全专业历年考试资料...",
-      "domain": "github.com",
-      "source_type": "github_resource",
-      "status": "ok",
-      "documents": 1,
-      "last_fetch_at": "2026-05-26T22:50:21.005368+08:00",
-      "candidates": 1
-    },
-    {
-      "id": "github:ace-trump-tech/NJUPT-Graduation-thesis",
-      "name": "南京邮电大学毕业论文模板（能毕业就行，有时间多回去陪陪家人）",
-      "domain": "github.com",
-      "source_type": "github_resource",
-      "status": "ok",
-      "documents": 1,
-      "last_fetch_at": "2026-05-26T22:50:21.005368+08:00",
-      "candidates": 1
-    },
-    {
-      "id": "github:Yolumia/NJUPT-NETWORK",
-      "name": "南京邮电大学校园网登录脚本-windows&ios&安卓",
-      "domain": "github.com",
-      "source_type": "github_resource",
-      "status": "ok",
-      "documents": 1,
-      "last_fetch_at": "2026-05-26T22:50:21.005368+08:00",
-      "candidates": 1
-    },
-    {
-      "id": "github:Moonike1217/NJUPTExamICSBuilder",
-      "name": "一个将南京邮电大学考试时间文件转换为ics文件的工具",
-      "domain": "github.com",
-      "source_type": "github_resource",
-      "status": "ok",
-      "documents": 1,
-      "last_fetch_at": "2026-05-26T22:50:21.005368+08:00",
-      "candidates": 1
-    },
-    {
-      "id": "github:musnows/Njupt-Wifi-Login",
-      "name": "路由器(刷机) 实现自动连接南京邮电大学校园网",
-      "domain": "github.com",
-      "source_type": "github_resource",
-      "status": "ok",
-      "documents": 1,
-      "last_fetch_at": "2026-05-26T22:50:21.005368+08:00",
-      "candidates": 1
-    },
-    {
-      "id": "github:ArcticLampyrid/njupt_wifi_login",
-      "name": "A tool to help NJUPTer to conn...",
-      "domain": "github.com",
-      "source_type": "github_resource",
-      "status": "ok",
-      "documents": 1,
-      "last_fetch_at": "2026-05-26T22:50:21.005368+08:00",
-      "candidates": 1
+      ]
     }
   ]
 }

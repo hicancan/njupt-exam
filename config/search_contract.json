@@ -55,7 +55,7 @@
     "exam_vertical"
   ],
   "lifecycles": ["active", "upcoming", "expired", "evergreen", "unknown"],
-  "semantic_modes": ["llm", "heuristic", "heuristic_degraded", "guarded_metadata", "structured_exam", "unprocessed"],
+  "semantic_modes": ["llm", "heuristic", "heuristic_degraded", "guarded_metadata", "structured_exam", "sitegraph_rule", "unprocessed"],
   "task_frame_source_modes": [
     "llm_raw_task_frame",
     "generated_from_llm_fields",
