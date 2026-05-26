@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import re
 import sys
 from pathlib import Path
 from typing import Any
@@ -54,7 +55,15 @@ def load_full_documents(manifest: dict[str, Any]) -> list[dict[str, Any]]:
     for shard in shards:
         if not isinstance(shard, dict):
             fail("manifest.sitegraph.full_shards contains a non-object shard")
-        shard_path = BASE_DIR / "public" / str(shard.get("path") or "")
+        shard_rel = str(shard.get("path") or "")
+        if "\\" in shard_rel or re.search(r"^[A-Za-z]:", shard_rel):
+            fail(f"full shard path must be public-relative: {shard_rel}")
+        if not re.search(r"\.[0-9a-f]{16}\.json$", shard_rel):
+            fail(f"full shard path must use content hash filename: {shard_rel}")
+        for field in ("shard_id", "facet_range", "section_range", "year_range", "hash_bucket", "sha256", "bytes"):
+            if field not in shard:
+                fail(f"full shard missing {field}: {shard_rel}")
+        shard_path = BASE_DIR / "public" / shard_rel
         if not shard_path.exists():
             fail(f"full shard missing: {shard_path}")
         payload = read_json(shard_path)
@@ -66,12 +75,35 @@ def load_full_documents(manifest: dict[str, Any]) -> list[dict[str, Any]]:
     return documents
 
 
+def artifact_path(manifest: dict[str, Any], name: str) -> Path:
+    artifacts = manifest.get("artifacts") if isinstance(manifest.get("artifacts"), dict) else {}
+    entry = artifacts.get(name)
+    if not isinstance(entry, dict) or not entry.get("path"):
+        fail(f"manifest.artifacts.{name}.path is missing")
+    path = str(entry["path"])
+    if "\\" in path or re.search(r"^[A-Za-z]:", path):
+        fail(f"manifest artifact path must be public-relative, got {name}: {path}")
+    if name != "manifest" and not re.search(r"\.[0-9a-f]{16}\.json$", path):
+        fail(f"artifact {name} must use a content hash filename: {path}")
+    return BASE_DIR / "public" / path
+
+
 def ensure_no_llm_null(payload: Any, path: str = "$") -> None:
     if isinstance(payload, dict):
         for key, value in payload.items():
             if key == "llm_provider" and value is None:
                 fail(f"{path}.llm_provider must not be null")
-            if key in {"llm", "semantic_mode", "task_frames", "llm_schema_version"}:
+            if key in {
+                "llm",
+                "llm_provider",
+                "semantic_mode",
+                "task_frames",
+                "llm_schema_version",
+                "llm_in_core_path",
+                "old_hytask_removed",
+                "source_channel_production_enabled",
+                "github_resource_production_enabled",
+            }:
                 fail(f"{path}.{key} is an old LLM/HyTask field and must not be in the sitegraph core index")
             ensure_no_llm_null(value, f"{path}.{key}")
     elif isinstance(payload, list):
@@ -80,42 +112,67 @@ def ensure_no_llm_null(payload: Any, path: str = "$") -> None:
 
 
 def validate_generated_index(package: dict[str, Any]) -> dict[str, Any]:
-    required_paths = {
-        "manifest": PUBLIC_INDEX_DIR / "manifest.json",
-        "doc_meta": PUBLIC_INDEX_DIR / "doc_meta.json",
-        "inverted_index": PUBLIC_INDEX_DIR / "inverted_index.json",
-        "section_index": PUBLIC_INDEX_DIR / "section_index.json",
-        "attachment_index": PUBLIC_INDEX_DIR / "attachment_index.json",
-        "external_index": PUBLIC_INDEX_DIR / "external_index.json",
-        "query_aliases": PUBLIC_INDEX_DIR / "query_aliases.json",
-        "outcomes": PUBLIC_SITEGRAPH_DIR / "outcomes.json",
-    }
-    for name, path in required_paths.items():
-        if not path.exists():
-            fail(f"required generated artifact missing: {name}: {path}")
-    for stale in ("documents.json", "task_frames.json", "ontology.json"):
+    manifest_path = PUBLIC_INDEX_DIR / "manifest.json"
+    if not manifest_path.exists():
+        fail(f"required generated artifact missing: manifest: {manifest_path}")
+    for stale in (
+        "documents.json",
+        "task_frames.json",
+        "ontology.json",
+        "doc_meta.json",
+        "inverted_index.json",
+        "section_index.json",
+        "attachment_index.json",
+        "external_index.json",
+        "query_aliases.json",
+    ):
         if (PUBLIC_INDEX_DIR / stale).exists():
-            fail(f"public/index/{stale} must not exist in the pure sitegraph contract")
+            fail(f"public/index/{stale} must not exist in the v2 hash-addressed contract")
 
-    manifest = read_json(required_paths["manifest"])
+    manifest = read_json(manifest_path)
     if not isinstance(manifest, dict):
         fail("public/index/manifest.json must be an object")
     ensure_no_llm_null(manifest)
-    if manifest.get("strategy") != "pure-sitegraph-code-search-v1":
-        fail(f"manifest.strategy must be pure-sitegraph-code-search-v1, got {manifest.get('strategy')!r}")
+    if manifest.get("strategy") != "pure-sitegraph-code-search-v2":
+        fail(f"manifest.strategy must be pure-sitegraph-code-search-v2, got {manifest.get('strategy')!r}")
+    manifest_text = json.dumps(manifest, ensure_ascii=False)
+    if "D:\\" in manifest_text or "D:/" in manifest_text:
+        fail("public manifest must not expose local D: paths")
+    for field in ("producer_repo", "producer_ref", "site_id", "artifact_path", "upstream_generated_at", "truth_counts"):
+        if not manifest.get(field):
+            fail(f"manifest missing required public producer field: {field}")
     core_search = manifest.get("core_search") if isinstance(manifest.get("core_search"), dict) else {}
-    if core_search.get("llm_in_core_path") is not False:
-        fail("core_search.llm_in_core_path must be false")
-    if core_search.get("source_channel_production_enabled") is not False:
-        fail("old source-channel production path must be disabled")
-    if core_search.get("github_resource_production_enabled") is not False:
-        fail("GitHub resource production path must be disabled")
+    if core_search.get("execution_model") != "pure_frontend_worker":
+        fail("core_search.execution_model must be pure_frontend_worker")
     if core_search.get("light_first_screen") is not True:
         fail("core_search.light_first_screen must be true")
-    if core_search.get("full_text_loading") != "on_demand_by_shard":
+    if core_search.get("body_index_loading") != "on_deep_search":
+        fail("body index must be loaded only on deep search")
+    if core_search.get("full_text_loading") != "on_demand_by_candidate_shard":
         fail("full text must be loaded on demand by shard")
+    if core_search.get("search_worker") is not True:
+        fail("manifest must declare search worker execution")
     if manifest.get("exam_vertical_preserved") is not True:
         fail("exam_vertical_preserved must be true")
+    first_screen = core_search.get("first_screen_artifacts")
+    if first_screen != ["doc_meta_light", "light_inverted_index", "query_aliases"]:
+        fail(f"unexpected first_screen_artifacts: {first_screen!r}")
+
+    required_artifacts = (
+        "doc_meta_light",
+        "light_inverted_index",
+        "body_inverted_index",
+        "section_index",
+        "attachment_index",
+        "external_index",
+        "query_aliases",
+        "outcomes",
+        "size_report",
+    )
+    for name in required_artifacts:
+        path = artifact_path(manifest, name)
+        if not path.exists():
+            fail(f"required generated artifact missing: {name}: {path}")
 
     sitegraph = manifest.get("sitegraph") if isinstance(manifest.get("sitegraph"), dict) else {}
     truth_counts = sitegraph.get("truth_counts") if isinstance(sitegraph.get("truth_counts"), dict) else {}
@@ -123,15 +180,26 @@ def validate_generated_index(package: dict[str, Any]) -> dict[str, Any]:
         if int(truth_counts.get(field, -1) or 0) != int(actual):
             fail(f"manifest.sitegraph.truth_counts.{field} mismatch: manifest={truth_counts.get(field)} actual={actual}")
 
-    doc_meta = read_json(required_paths["doc_meta"])
+    shard_strategy = sitegraph.get("shard_strategy") if isinstance(sitegraph.get("shard_strategy"), dict) else {}
+    if shard_strategy.get("sequential_fixed_size_shards") is not False:
+        fail("full shards must not use sequential fixed-size strategy")
+    for dimension in ("facet", "record_type", "year", "top_nav_section", "hash_bucket"):
+        if dimension not in (shard_strategy.get("dimensions") or []):
+            fail(f"shard strategy missing dimension: {dimension}")
+
+    doc_meta = read_json(artifact_path(manifest, "doc_meta_light"))
     if not isinstance(doc_meta, list):
-        fail("doc_meta.json must be a list")
+        fail("doc_meta_light must be a list")
     full_documents = load_full_documents(manifest)
     if len(doc_meta) != len(full_documents):
         fail(f"doc_meta/full document count mismatch: meta={len(doc_meta)} full={len(full_documents)}")
     if int(manifest.get("total_documents", -1)) != len(full_documents):
         fail(f"manifest total_documents mismatch: manifest={manifest.get('total_documents')} full={len(full_documents)}")
     ensure_no_llm_null(full_documents)
+    ensure_no_llm_null(doc_meta)
+    for item in doc_meta:
+        if any(field in item for field in ("content", "summary", "attachments", "provenance")):
+            fail("doc_meta_light must not contain content, summary, attachments, or raw provenance")
 
     ids = [str(item.get("id") or "") for item in full_documents if isinstance(item, dict)]
     if len(ids) != len(set(ids)):
@@ -147,7 +215,7 @@ def validate_generated_index(package: dict[str, Any]) -> dict[str, Any]:
     if len(detail_docs) != package["actual_counts"]["detail_pages"]:
         fail(f"detail document count mismatch: {len(detail_docs)} != {package['actual_counts']['detail_pages']}")
 
-    attachment_index = read_json(required_paths["attachment_index"])
+    attachment_index = read_json(artifact_path(manifest, "attachment_index"))
     if not isinstance(attachment_index, list):
         fail("attachment_index.json must be a list")
     if len(attachment_index) != package["actual_counts"]["attachments"]:
@@ -159,13 +227,13 @@ def validate_generated_index(package: dict[str, Any]) -> dict[str, Any]:
             if not item.get(field):
                 fail(f"attachment_index record missing {field}")
 
-    external_index = read_json(required_paths["external_index"])
+    external_index = read_json(artifact_path(manifest, "external_index"))
     if not isinstance(external_index, list):
         fail("external_index.json must be a list")
     if len(external_index) != package["actual_counts"]["external_links"]:
         fail(f"external index count mismatch: {len(external_index)} != {package['actual_counts']['external_links']}")
 
-    outcomes = read_json(required_paths["outcomes"])
+    outcomes = read_json(artifact_path(manifest, "outcomes"))
     if not isinstance(outcomes, dict):
         fail("outcomes must be an object")
     if len(outcomes.get("detail_page_records") or []) != package["actual_counts"]["detail_pages"]:
@@ -175,15 +243,22 @@ def validate_generated_index(package: dict[str, Any]) -> dict[str, Any]:
     if len(outcomes.get("external_link_records") or []) != package["actual_counts"]["external_links"]:
         fail("outcomes.external_link_records must cover every external link")
 
-    inverted = read_json(required_paths["inverted_index"])
-    if not isinstance(inverted, dict) or not isinstance(inverted.get("tokens"), dict) or not inverted["tokens"]:
-        fail("inverted_index.json must contain tokens")
+    light_index = read_json(artifact_path(manifest, "light_inverted_index"))
+    if not isinstance(light_index, dict) or not isinstance(light_index.get("tokens"), dict) or not light_index["tokens"]:
+        fail("light_inverted_index must contain tokens")
+    light_codes = set((light_index.get("field_codes") or {}).values())
+    if light_codes.difference({"t", "s", "n", "g", "a", "e", "y"}):
+        fail(f"light index contains non-entry field codes: {sorted(light_codes)}")
+    body_index = read_json(artifact_path(manifest, "body_inverted_index"))
+    body_codes = set((body_index.get("field_codes") or {}).values())
+    if body_codes != {"m", "c"}:
+        fail(f"body index must only contain summary/content field codes, got {sorted(body_codes)}")
 
     full_text = json.dumps([doc_meta, attachment_index, external_index], ensure_ascii=False)
     for required in ("教务管理系统", "自主学分系统", "创新管理系统", "毕业设计系统", "考试信息查询"):
         if required not in full_text:
             fail(f"required system or utility entry is not searchable: {required}")
-    aliases = read_json(required_paths["query_aliases"])
+    aliases = read_json(artifact_path(manifest, "query_aliases"))
     for query in REQUIRED_QUERIES:
         if query not in full_text and query not in aliases:
             fail(f"representative query lacks searchable text or alias: {query}")

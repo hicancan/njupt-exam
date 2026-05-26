@@ -29,8 +29,8 @@ export function useExamData(): UseExamDataResult {
         const controller = new AbortController();
 
         Promise.all([
-            fetchJson(APP_CONFIG.DATA_URLS.EXAMS, controller.signal),
-            fetchJson(APP_CONFIG.DATA_URLS.SUMMARY, controller.signal)
+            fetchJson(APP_CONFIG.DATA_URLS.EXAMS, controller.signal, 'exam-data'),
+            fetchJson(APP_CONFIG.DATA_URLS.SUMMARY, controller.signal, 'exam-data')
         ])
             .then(([examsPayload, manifestPayload]) => {
                 const examsData = parseExamData(examsPayload, APP_CONFIG.DATA_URLS.EXAMS);

@@ -19,6 +19,7 @@ export default defineConfig({
     tailwindcss(),
     VitePWA({
       registerType: 'autoUpdate',
+      injectRegister: 'auto',
       includeAssets: ['assets/logo.png', 'assets/icon-192x192.png', 'assets/icon-512x512.png'],
       manifest: {
         name: 'njupt-search',
@@ -42,15 +43,64 @@ export default defineConfig({
         ]
       },
       workbox: {
+        cleanupOutdatedCaches: true,
+        skipWaiting: true,
+        clientsClaim: true,
         runtimeCaching: [
           {
-            urlPattern: ({ url }) => url.pathname.includes('/data/') || url.pathname.includes('/index/'),
+            urlPattern: ({ url }) => url.pathname.endsWith('/index/manifest.json'),
             handler: 'NetworkFirst',
             options: {
-              cacheName: 'njupt-search-data-cache',
+              cacheName: 'njupt-search-manifest-v2',
               expiration: {
-                maxEntries: 10,
-                maxAgeSeconds: 60 * 60 * 24 * 30 // 30 Days
+                maxEntries: 4,
+                maxAgeSeconds: 60 * 5
+              },
+              cacheableResponse: {
+                statuses: [0, 200]
+              },
+              broadcastUpdate: {
+                channelName: 'search-data-update-channel',
+                options: {}
+              }
+            }
+          },
+          {
+            urlPattern: ({ url }) => url.pathname.includes('/index/sitegraph/jwc/artifacts/'),
+            handler: 'CacheFirst',
+            options: {
+              cacheName: 'njupt-search-sitegraph-index-v2',
+              expiration: {
+                maxEntries: 40,
+                maxAgeSeconds: 60 * 60 * 24 * 365
+              },
+              cacheableResponse: {
+                statuses: [0, 200]
+              }
+            }
+          },
+          {
+            urlPattern: ({ url }) => url.pathname.includes('/index/sitegraph/jwc/shards/'),
+            handler: 'CacheFirst',
+            options: {
+              cacheName: 'njupt-search-sitegraph-shards-v2',
+              expiration: {
+                maxEntries: 650,
+                maxAgeSeconds: 60 * 60 * 24 * 365
+              },
+              cacheableResponse: {
+                statuses: [0, 200]
+              }
+            }
+          },
+          {
+            urlPattern: ({ url }) => url.pathname.includes('/data/'),
+            handler: 'NetworkFirst',
+            options: {
+              cacheName: 'njupt-search-exam-data-v2',
+              expiration: {
+                maxEntries: 12,
+                maxAgeSeconds: 60 * 60 * 24 * 30
               },
               cacheableResponse: {
                 statuses: [0, 200]

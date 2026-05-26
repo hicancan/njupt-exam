@@ -16,7 +16,7 @@ import { ResultsView } from '@/views/ResultsView';
 
 function App() {
     const { exams: allExams, loading: examLoading, error: examError, sourceUrl, sourceTitle, generatedAt, totalRecords } = useExamData();
-    const { bundle: sitegraphBundle, optionalUnavailable, loading: searchLoading, error: searchIndexError } = useSearchIndex();
+    const { worker: searchWorker, optionalUnavailable, loading: searchLoading, error: searchIndexError } = useSearchIndex();
     const { newDataAvailable, reloadToUpdate } = useDataUpdateNotifier();
 
     const { classParam, qParam, navigate } = useUrlState();
@@ -29,7 +29,7 @@ function App() {
     const searchQuery = initialQuery;
     const manualSelection = classParam;
 
-    const { recalledResults, searching, searchError: sitegraphSearchError } = useSearchEngine(sitegraphBundle, searchQuery);
+    const { recalledResults, queryStats, searching, searchError: sitegraphSearchError } = useSearchEngine(searchWorker, searchQuery);
     const classSearchResult = useClassSearch(allExams, initialQuery, manualSelection);
     const currentClass = classSearchResult.mode === 'DETAIL' ? classSearchResult.classes[0] || null : null;
     const { selectedIds, toggleExamSelection } = useSelectedExamIds(currentClass, classSearchResult.exams);
@@ -135,7 +135,7 @@ function App() {
                     isLoading={isLoading}
                     query={searchQuery}
                     results={recalledResults}
-                    resources={[]}
+                    queryStats={queryStats}
                     classMode={classSearchResult}
                     selectedIds={selectedIds}
                     reminders={reminders}

@@ -1,9 +1,9 @@
 import { useMemo, useState } from 'react';
-import { CalendarDays, Download, ExternalLink, FileText, Filter, GraduationCap } from 'lucide-react';
+import { CalendarDays, Download, ExternalLink, FileText, Filter } from 'lucide-react';
 import { ExamList } from '@/components/ExamList';
 import { ExamDetail } from '@/components/ExamDetail';
 import { ResultsSkeleton } from '@/components/ResultsSkeleton';
-import { RankedSitegraphDocument, SearchResult, SitegraphFacet, SitegraphFullDocument } from '@/types';
+import { RankedSitegraphDocument, SearchResult, SitegraphFacet, SitegraphFullDocument, SitegraphQueryStats } from '@/types';
 import { formatSearchDate } from '@/utils/searchIndex';
 
 type FacetFilter = SitegraphFacet | 'all';
@@ -24,26 +24,25 @@ const isExternalUrl = (url: string): boolean => /^https?:\/\//.test(url);
 
 interface SearchResultCardProps {
     document: RankedSitegraphDocument | SitegraphFullDocument;
-    onOpenClass: (className: string) => void;
 }
 
-function SearchResultCard({ document, onOpenClass }: SearchResultCardProps) {
-    const isExamClass = document.record_type === 'utility' && document.title.includes('考试信息查询');
+function methodLabel(method: string): string {
+    if (method === 'search_record') return '官网页面收录';
+    if (method === 'attachment_metadata_only') return '附件元数据收录';
+    if (method === 'external_record_only') return '外部入口收录';
+    return '站点图收录';
+}
+
+function SearchResultCard({ document }: SearchResultCardProps) {
     const recallReason = (document as Partial<RankedSitegraphDocument>).score_reason || '';
-    const Wrapper = isExamClass ? 'button' : 'a';
-    const wrapperProps = isExamClass
-        ? {
-            type: 'button' as const,
-            onClick: () => onOpenClass(''),
-        }
-        : {
-            href: document.url,
-            target: isExternalUrl(document.url) ? '_blank' : undefined,
-            rel: isExternalUrl(document.url) ? 'noopener noreferrer' : undefined,
-        };
+    const wrapperProps = {
+        href: document.url,
+        target: isExternalUrl(document.url) ? '_blank' : undefined,
+        rel: isExternalUrl(document.url) ? 'noopener noreferrer' : undefined,
+    };
 
     return (
-        <Wrapper {...wrapperProps} className="block w-full text-left py-4 group border-b border-[#e8eaed] dark:border-[#3c4043] last:border-b-0">
+        <a {...wrapperProps} className="block w-full text-left py-4 group border-b border-[#e8eaed] dark:border-[#3c4043] last:border-b-0">
             <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-[13px] text-[#70757a] dark:text-[#9aa0a6]">
                 <span className="font-medium text-[#3c4043] dark:text-[#bdc1c6]">{FACET_LABELS[document.facet]}</span>
                 <span>{document.source}</span>
@@ -93,9 +92,7 @@ function SearchResultCard({ document, onOpenClass }: SearchResultCardProps) {
                     </span>
                 ) : null}
                 <span className="rounded bg-[#f1f3f4] dark:bg-[#303134] px-2 py-1">
-                    provenance: {document.provenance.site_id}
-                    {document.provenance.section_id ? ` / ${document.provenance.section_id}` : ''}
-                    {document.provenance.outcome ? ` / ${document.provenance.outcome}` : ''}
+                    {methodLabel(document.collection_method)}
                 </span>
             </div>
 
@@ -119,7 +116,7 @@ function SearchResultCard({ document, onOpenClass }: SearchResultCardProps) {
                     召回依据：{recallReason}
                 </div>
             ) : null}
-        </Wrapper>
+        </a>
     );
 }
 
@@ -127,7 +124,7 @@ interface ResultsViewProps {
     isLoading?: boolean;
     query: string;
     results: RankedSitegraphDocument[];
-    resources: SitegraphFullDocument[];
+    queryStats: SitegraphQueryStats | null;
     classMode: SearchResult;
     selectedIds: Set<string>;
     reminders: number[];
@@ -144,7 +141,7 @@ export function ResultsView({
     isLoading,
     query,
     results,
-    resources,
+    queryStats,
     classMode,
     selectedIds,
     reminders,
@@ -203,20 +200,6 @@ export function ResultsView({
                     </section>
                 ) : null}
 
-                {resources.length > 0 ? (
-                    <section className="mt-8">
-                        <div className="flex items-center gap-2 mb-3">
-                            <GraduationCap className="w-5 h-5 text-[#1a73e8]" aria-hidden="true" />
-                            <h2 className="text-lg font-semibold text-[#202124] dark:text-[#e8eaed]">相关学习资源</h2>
-                        </div>
-                        <div className="grid md:grid-cols-2 gap-3">
-                            {resources.map(resource => (
-                                <SearchResultCard key={resource.id} document={resource} onOpenClass={onOpenClass} />
-                            ))}
-                        </div>
-                    </section>
-                ) : null}
-
                 {trimmedQuery === '考试安排' && classMode.mode === 'NOT_FOUND' ? (
                     <section className="mt-8">
                         <div className="border border-[#dadce0] dark:border-[#3c4043] rounded-xl bg-[#f8fafc] dark:bg-[#2d2e30] p-8 text-center max-w-[692px] mx-auto shadow-sm">
@@ -247,7 +230,7 @@ export function ResultsView({
                             </div>
                             <p className="mt-1 text-sm text-[#70757a] dark:text-[#9aa0a6]">
                                 {trimmedQuery.length >= 2
-                                    ? `找到 ${filteredResults.length} 条结果。全文 shard 按当前候选按需加载。`
+                                    ? `找到 ${filteredResults.length} 条结果。已加载 ${queryStats?.loadedShardCount ?? 0} 个全文分片${queryStats?.usedBodyIndex ? '，已触发正文深搜。' : '。'}`
                                     : '输入至少两个字符搜索本科生院 / 教务处站点图。'}
                             </p>
                         </div>
@@ -255,7 +238,7 @@ export function ResultsView({
                         {visibleResults.length > 0 ? (
                             <div>
                                 {visibleResults.map(document => (
-                                    <SearchResultCard key={document.id} document={document} onOpenClass={onOpenClass} />
+                                    <SearchResultCard key={document.id} document={document} />
                                 ))}
                                 {visibleCount < filteredResults.length && (
                                     <div className="pt-4 pb-2 text-center">

@@ -15,10 +15,15 @@ FIELD_WEIGHTS = {
     "t": 120.0,
     "a": 95.0,
     "e": 95.0,
+    "y": 95.0,
     "s": 60.0,
+    "n": 55.0,
     "g": 45.0,
-    "b": 12.0,
+    "m": 16.0,
+    "c": 10.0,
 }
+
+DEFAULT_MAX_SHARD_LOADS = 32
 
 
 def read_json(path: Path) -> Any:
@@ -58,25 +63,62 @@ def tokens_for_query(query: str, aliases: dict[str, Any]) -> list[str]:
 
 def load_index() -> dict[str, Any]:
     manifest = read_json(PUBLIC_INDEX_DIR / "manifest.json")
+    artifacts = manifest.get("artifacts") if isinstance(manifest.get("artifacts"), dict) else {}
+
+    def artifact(name: str) -> Any:
+        entry = artifacts.get(name)
+        if not isinstance(entry, dict) or not entry.get("path"):
+            raise FileNotFoundError(f"manifest.artifacts.{name}.path is missing")
+        return read_json(BASE_DIR / "public" / str(entry["path"]))
+
     return {
         "manifest": manifest,
-        "doc_meta": read_json(PUBLIC_INDEX_DIR / "doc_meta.json"),
-        "inverted": read_json(PUBLIC_INDEX_DIR / "inverted_index.json"),
-        "aliases": read_json(PUBLIC_INDEX_DIR / "query_aliases.json"),
+        "doc_meta": artifact("doc_meta_light"),
+        "light_inverted": artifact("light_inverted_index"),
+        "body_inverted": None,
+        "aliases": artifact("query_aliases"),
     }
 
 
-def load_shards_for_indices(manifest: dict[str, Any], indices: set[int]) -> dict[int, dict[str, Any]]:
-    shard_paths = [item["path"] for item in manifest["sitegraph"]["full_shards"]]
+def load_body_index(index: dict[str, Any]) -> dict[str, Any]:
+    if index.get("body_inverted") is not None:
+        return index["body_inverted"]
+    manifest = index["manifest"]
+    entry = manifest["artifacts"]["body_inverted_index"]
+    index["body_inverted"] = read_json(BASE_DIR / "public" / str(entry["path"]))
+    return index["body_inverted"]
+
+
+def shard_path_for_meta(manifest: dict[str, Any], meta: dict[str, Any]) -> str:
+    shard = meta.get("shard") if isinstance(meta.get("shard"), dict) else {}
+    path = str(shard.get("path") or "")
+    if path:
+        return path
+    shard_id = str(shard.get("shard_id") or "")
+    for item in ((manifest.get("sitegraph") or {}).get("full_shards") or []):
+        if isinstance(item, dict) and item.get("shard_id") == shard_id:
+            return str(item.get("path") or "")
+    return ""
+
+
+def load_shards_for_indices(
+    manifest: dict[str, Any],
+    doc_meta: list[dict[str, Any]],
+    indices: set[int],
+) -> tuple[dict[int, dict[str, Any]], set[str]]:
     docs_by_index: dict[int, dict[str, Any]] = {}
-    wanted_shards = {index // 1000 for index in indices}
-    for shard_index in wanted_shards:
-        if shard_index < 0 or shard_index >= len(shard_paths):
+    wanted_paths: set[str] = set()
+    for index in indices:
+        if index < 0 or index >= len(doc_meta):
             continue
-        payload = read_json(BASE_DIR / "public" / shard_paths[shard_index])
+        path = shard_path_for_meta(manifest, doc_meta[index])
+        if path:
+            wanted_paths.add(path)
+    for path in wanted_paths:
+        payload = read_json(BASE_DIR / "public" / path)
         for doc in payload:
             docs_by_index[int(doc["doc_index"])] = doc
-    return docs_by_index
+    return docs_by_index, wanted_paths
 
 
 def text_blob(document: dict[str, Any], *fields: str) -> str:
@@ -103,7 +145,7 @@ def freshness_score(document: dict[str, Any]) -> float:
     if published.tzinfo is None:
         published = published.replace(tzinfo=timezone.utc)
     days = max(0.0, (datetime.now(timezone.utc) - published).total_seconds() / 86400)
-    return max(0.0, 30.0 - min(days, 365.0) / 365.0 * 30.0)
+    return max(0.0, 600.0 - min(days, 3650.0) / 3650.0 * 600.0)
 
 
 def rank_document(document: dict[str, Any], query: str, terms: list[str], light_score: float) -> dict[str, Any]:
@@ -169,6 +211,15 @@ def rank_document(document: dict[str, Any], query: str, terms: list[str], light_
     if document.get("facet") == "download" and any(term in normalized_query for term in ("附件", "下载", "xlsx", "xls", "表格")):
         score += 120
         reasons.append("下载资源")
+    if document.get("facet") == "policy" and any(term in normalized_query for term in ("规章", "制度", "管理办法", "政策")):
+        score += 900
+        reasons.append("政策制度")
+    if document.get("facet") == "workflow" and any(term in normalized_query for term in ("办事流程", "办理", "申请流程", "流程")):
+        score += 900
+        reasons.append("办事流程")
+    if document.get("facet") == "exam" and any(term in normalized_query for term in ("考试", "期末", "慕课", "mooc")):
+        score += 650
+        reasons.append("考试相关")
     score += freshness_score(document)
 
     ranked = dict(document)
@@ -177,13 +228,7 @@ def rank_document(document: dict[str, Any], query: str, terms: list[str], light_
     return ranked
 
 
-def recall_documents(query: str, *, limit: int = 20, candidate_limit: int = 120) -> list[dict[str, Any]]:
-    index = load_index()
-    manifest = index["manifest"]
-    doc_meta = index["doc_meta"]
-    inverted_tokens = index["inverted"]["tokens"]
-    terms = tokens_for_query(query, index["aliases"])
-    scores: dict[int, float] = {}
+def apply_postings(scores: dict[int, float], inverted_tokens: dict[str, Any], terms: list[str]) -> None:
     for term in terms:
         postings = inverted_tokens.get(term)
         if not isinstance(postings, dict):
@@ -193,26 +238,77 @@ def recall_documents(query: str, *, limit: int = 20, candidate_limit: int = 120)
             for doc_index in ids:
                 scores[int(doc_index)] = scores.get(int(doc_index), 0.0) + weight + min(len(term), 8)
 
+
+def recall_documents_with_stats(
+    query: str,
+    *,
+    limit: int = 20,
+    candidate_limit: int = 120,
+    max_shard_loads: int = DEFAULT_MAX_SHARD_LOADS,
+) -> dict[str, Any]:
+    index = load_index()
+    doc_meta = index["doc_meta"]
+    terms = tokens_for_query(query, index["aliases"])
+    scores: dict[int, float] = {}
+    apply_postings(scores, index["light_inverted"]["tokens"], terms)
+
     normalized_query = normalize_text(query)
+    used_body_index = False
+    if len(scores) < 24:
+        body_index = load_body_index(index)
+        apply_postings(scores, body_index["tokens"], terms)
+        used_body_index = True
+
     if len(scores) < 8:
         for meta in doc_meta:
-            haystack = text_blob(meta, "title", "summary", "section", "nav_path_text", "tags")
+            haystack = text_blob(meta, "title", "section", "nav_path_text")
             if normalized_query and normalized_query in haystack:
                 index_id = int(meta["doc_index"])
                 scores[index_id] = scores.get(index_id, 0.0) + 90.0
 
     if not scores:
-        return []
+        return {"results": [], "stats": {"used_body_index": used_body_index, "loaded_shard_count": 0, "loaded_shard_paths": []}}
 
-    candidate_indices = {
-        doc_index
-        for doc_index, _ in sorted(scores.items(), key=lambda item: item[1], reverse=True)[:candidate_limit]
-    }
-    full_docs = load_shards_for_indices(manifest, candidate_indices)
+    selected_candidate_indices: list[int] = []
+    seen_shard_paths: set[str] = set()
+    for doc_index, _ in sorted(scores.items(), key=lambda item: item[1], reverse=True)[:candidate_limit]:
+        if doc_index < 0 or doc_index >= len(doc_meta):
+            continue
+        path = shard_path_for_meta(index["manifest"], doc_meta[doc_index])
+        is_new_shard = bool(path) and path not in seen_shard_paths
+        if is_new_shard and len(seen_shard_paths) >= max_shard_loads and len(selected_candidate_indices) >= limit:
+            continue
+        selected_candidate_indices.append(doc_index)
+        if is_new_shard:
+            seen_shard_paths.add(path)
+    full_docs, loaded_paths = load_shards_for_indices(index["manifest"], doc_meta, set(selected_candidate_indices))
     ranked = [
         rank_document(full_docs[doc_index], query, terms, scores.get(doc_index, 0.0))
-        for doc_index in candidate_indices
+        for doc_index in selected_candidate_indices
         if doc_index in full_docs
     ]
     ranked.sort(key=lambda item: (-float(item.get("score") or 0), str(item.get("published_at") or ""), str(item.get("id") or "")))
-    return ranked[:limit]
+    return {
+        "results": ranked[:limit],
+        "stats": {
+            "used_body_index": used_body_index,
+            "loaded_shard_count": len(loaded_paths),
+            "loaded_shard_paths": sorted(loaded_paths),
+            "candidate_count": len(selected_candidate_indices),
+        },
+    }
+
+
+def recall_documents(
+    query: str,
+    *,
+    limit: int = 20,
+    candidate_limit: int = 120,
+    max_shard_loads: int = DEFAULT_MAX_SHARD_LOADS,
+) -> list[dict[str, Any]]:
+    return recall_documents_with_stats(
+        query,
+        limit=limit,
+        candidate_limit=candidate_limit,
+        max_shard_loads=max_shard_loads,
+    )["results"]

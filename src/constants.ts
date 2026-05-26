@@ -10,13 +10,6 @@ export const APP_CONFIG = {
         EXAMS: 'data/all_exams.json',
         SUMMARY: 'data/data_summary.json',
         SEARCH_MANIFEST: 'index/manifest.json',
-        SITEGRAPH_DOC_META: 'index/doc_meta.json',
-        SITEGRAPH_INVERTED_INDEX: 'index/inverted_index.json',
-        SITEGRAPH_SECTION_INDEX: 'index/section_index.json',
-        SITEGRAPH_ATTACHMENT_INDEX: 'index/attachment_index.json',
-        SITEGRAPH_EXTERNAL_INDEX: 'index/external_index.json',
-        QUERY_ALIASES: 'index/query_aliases.json',
-        ONTOLOGY: 'index/ontology.json'
     },
     UPDATE_CHANNEL: 'search-data-update-channel',
     START_TIME_DEFAULT: '2025-12-15T00:00:00',

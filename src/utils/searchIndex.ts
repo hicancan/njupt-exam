@@ -24,7 +24,20 @@ class SearchContractError extends Error {
     }
 }
 
-const LEGACY_FIELDS = new Set(['llm', 'llm_provider', 'llm_schema_version', 'semantic_mode', 'task_frames']);
+const LEGACY_FIELDS = new Set([
+    'llm',
+    'llm_provider',
+    'llm_schema_version',
+    'semantic_mode',
+    'task_frames',
+    'llm_in_core_path',
+    'old_hytask_removed',
+    'source_channel_production_enabled',
+    'github_resource_production_enabled'
+]);
+const DOC_META_FORBIDDEN_FIELDS = new Set(['content', 'summary', 'attachments', 'provenance']);
+const DEFAULT_CANDIDATE_LIMIT = 120;
+const DEFAULT_MAX_SHARD_LOADS = 32;
 
 const valueAtPath = (payload: unknown, path: PropertyKey[]): unknown => {
     let current = payload;
@@ -71,6 +84,10 @@ const assertNoLegacyFields = (payload: unknown, source: string, path = '$'): voi
 export const parseSitegraphManifest = (payload: unknown, source = 'sitegraph manifest'): SitegraphSearchManifest => {
     try {
         assertNoLegacyFields(payload, source);
+        const text = JSON.stringify(payload);
+        if (text.includes('D:\\') || text.includes('D:/')) {
+            throw new SearchContractError(`Validation failed for ${source}: public manifest must not expose local D: paths`);
+        }
         return SitegraphSearchManifestSchema.parse(payload);
     } catch (e) {
         if (e instanceof z.ZodError) {
@@ -86,6 +103,11 @@ export const parseSitegraphDocMeta = (payload: unknown, source = 'sitegraph doc_
     const ids = new Set<string>();
     for (const item of docs) {
         if (ids.has(item.id)) throw new SearchContractError(`${source} contains duplicate id: ${item.id}`);
+        for (const field of DOC_META_FORBIDDEN_FIELDS) {
+            if (field in item) {
+                throw new SearchContractError(`Validation failed for ${source}: doc_meta_light must not contain ${field}`);
+            }
+        }
         ids.add(item.id);
     }
     return docs;
@@ -156,17 +178,30 @@ const FIELD_WEIGHTS: Record<string, number> = {
     t: 120,
     a: 95,
     e: 95,
+    y: 95,
     s: 60,
+    n: 55,
     g: 45,
-    b: 12
+    m: 16,
+    c: 10
 };
 
 const shardCache = new Map<string, Promise<SitegraphFullDocument[]>>();
 
+const publicAssetPath = (path: string): string => {
+    if (/^https?:\/\//.test(path) || path.startsWith('/')) return path;
+    return `/${path}`;
+};
+
+const shardPathForMeta = (bundle: SitegraphIndexBundle, meta: SitegraphDocMeta): string | null => {
+    if (meta.shard.path) return meta.shard.path;
+    return bundle.manifest.sitegraph.full_shards.find(shard => shard.shard_id === meta.shard.shard_id)?.path || null;
+};
+
 const loadShard = (path: string, signal: AbortSignal): Promise<SitegraphFullDocument[]> => {
     const existing = shardCache.get(path);
     if (existing) return existing;
-    const promise = fetchJson(path, signal).then(payload => parseSitegraphFullDocuments(payload, path));
+    const promise = fetchJson(publicAssetPath(path), signal, 'shard').then(payload => parseSitegraphFullDocuments(payload, path));
     shardCache.set(path, promise);
     return promise;
 };
@@ -198,7 +233,7 @@ const freshnessScore = (document: SitegraphFullDocument): number => {
     const value = dateSortValue(document.published_at);
     if (!value) return 0;
     const days = Math.max(0, (Date.now() - value) / 86_400_000);
-    return Math.max(0, 30 - Math.min(days, 365) / 365 * 30);
+    return Math.max(0, 600 - Math.min(days, 3650) / 3650 * 600);
 };
 
 const rankDocument = (
@@ -276,6 +311,18 @@ const rankDocument = (
         score += 120;
         reasons.push('下载资源');
     }
+    if (document.facet === 'policy' && ['规章', '制度', '管理办法', '政策'].some(term => normalizedQuery.includes(term))) {
+        score += 900;
+        reasons.push('政策制度');
+    }
+    if (document.facet === 'workflow' && ['办事流程', '办理', '申请流程', '流程'].some(term => normalizedQuery.includes(term))) {
+        score += 900;
+        reasons.push('办事流程');
+    }
+    if (document.facet === 'exam' && ['考试', '期末', '慕课', 'mooc'].some(term => normalizedQuery.includes(term))) {
+        score += 650;
+        reasons.push('考试相关');
+    }
     score += freshnessScore(document);
 
     return {
@@ -289,49 +336,79 @@ export const recallSitegraphDocuments = async (
     bundle: SitegraphIndexBundle,
     query: string,
     signal: AbortSignal,
-    limit = 30
-): Promise<RankedSitegraphDocument[]> => {
+    limit = 30,
+    candidateLimit = DEFAULT_CANDIDATE_LIMIT,
+    maxShardLoads = DEFAULT_MAX_SHARD_LOADS
+): Promise<{ results: RankedSitegraphDocument[]; stats: { usedBodyIndex: boolean; loadedShardCount: number; loadedShardPaths: string[]; candidateCount: number } }> => {
     const trimmed = query.trim();
-    if (trimmed.length < 2) return [];
+    if (trimmed.length < 2) {
+        return { results: [], stats: { usedBodyIndex: false, loadedShardCount: 0, loadedShardPaths: [], candidateCount: 0 } };
+    }
     const terms = queryTokens(trimmed, bundle.queryAliases);
     const scores = new Map<number, number>();
-    for (const term of terms) {
-        const postings = bundle.invertedIndex.tokens[term];
-        if (!postings) continue;
-        for (const [field, ids] of Object.entries(postings)) {
-            const weight = FIELD_WEIGHTS[field] || 8;
-            for (const docIndex of ids) {
-                scores.set(docIndex, (scores.get(docIndex) || 0) + weight + Math.min(term.length, 8));
+
+    const applyPostings = (tokens: SitegraphInvertedIndex['tokens']) => {
+        for (const term of terms) {
+            const postings = tokens[term];
+            if (!postings) continue;
+            for (const [field, ids] of Object.entries(postings)) {
+                const weight = FIELD_WEIGHTS[field] || 8;
+                for (const docIndex of ids) {
+                    scores.set(docIndex, (scores.get(docIndex) || 0) + weight + Math.min(term.length, 8));
+                }
             }
         }
+    };
+
+    applyPostings(bundle.lightInvertedIndex.tokens);
+
+    let usedBodyIndex = false;
+    if (scores.size < 24 && bundle.bodyInvertedIndex) {
+        applyPostings(bundle.bodyInvertedIndex.tokens);
+        usedBodyIndex = true;
     }
 
     const normalizedQuery = normalize(trimmed);
     if (scores.size < 8) {
         for (const meta of bundle.docMeta) {
-            const haystack = textBlob(meta, ['title', 'summary', 'section', 'nav_path_text', 'tags']);
+            const haystack = textBlob(meta, ['title', 'section', 'nav_path_text']);
             if (normalizedQuery && haystack.includes(normalizedQuery)) {
                 scores.set(meta.doc_index, (scores.get(meta.doc_index) || 0) + 90);
             }
         }
     }
-    if (scores.size === 0) return [];
+    if (scores.size === 0) {
+        return { results: [], stats: { usedBodyIndex, loadedShardCount: 0, loadedShardPaths: [], candidateCount: 0 } };
+    }
 
-    const candidateIndices = Array.from(scores.entries())
+    const candidateEntries = Array.from(scores.entries())
         .sort((a, b) => b[1] - a[1])
-        .slice(0, 120)
-        .map(([docIndex]) => docIndex);
-    const candidateMeta = candidateIndices
-        .map(docIndex => bundle.docMeta[docIndex])
-        .filter((meta): meta is SitegraphDocMeta => Boolean(meta));
-    const shardPaths = Array.from(new Set(candidateMeta.map(meta => meta.shard.path)));
+        .slice(0, candidateLimit);
+    const selectedCandidateIndices: number[] = [];
+    const shardPaths: string[] = [];
+    const seenShardPaths = new Set<string>();
+    for (const [docIndex] of candidateEntries) {
+        const meta = bundle.docMeta[docIndex];
+        if (!meta?.shard?.shard_id) continue;
+        const shardPath = shardPathForMeta(bundle, meta);
+        if (!shardPath) continue;
+        const isNewShard = !seenShardPaths.has(shardPath);
+        if (isNewShard && seenShardPaths.size >= maxShardLoads && selectedCandidateIndices.length >= limit) {
+            continue;
+        }
+        selectedCandidateIndices.push(docIndex);
+        if (isNewShard) {
+            seenShardPaths.add(shardPath);
+            shardPaths.push(shardPath);
+        }
+    }
     const shardResults = await Promise.all(shardPaths.map(path => loadShard(path, signal)));
     const fullDocs = new Map<number, SitegraphFullDocument>();
     for (const shard of shardResults) {
         for (const document of shard) fullDocs.set(document.doc_index, document);
     }
 
-    return candidateIndices
+    const results = selectedCandidateIndices
         .map(docIndex => {
             const document = fullDocs.get(docIndex);
             return document ? rankDocument(document, trimmed, terms, scores.get(docIndex) || 0) : null;
@@ -345,6 +422,24 @@ export const recallSitegraphDocuments = async (
             return a.id.localeCompare(b.id);
         })
         .slice(0, limit);
+
+    const stats = {
+        usedBodyIndex,
+        loadedShardCount: shardPaths.length,
+        loadedShardPaths: shardPaths,
+        candidateCount: selectedCandidateIndices.length
+    };
+
+    return { results: results.map(item => ({ ...item, query_stats: stats })), stats };
+};
+
+export const recallSitegraphDocumentsLegacy = async (
+    bundle: SitegraphIndexBundle,
+    query: string,
+    signal: AbortSignal,
+    limit = 30
+): Promise<RankedSitegraphDocument[]> => {
+    return (await recallSitegraphDocuments(bundle, query, signal, limit)).results;
 };
 
 export const formatSearchDate = (dateLike: string | null | undefined): string => {

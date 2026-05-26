@@ -6,7 +6,17 @@ from sitegraph_search import recall_documents
 
 ROOT_DIR = Path(__file__).resolve().parents[1]
 PUBLIC_INDEX_DIR = ROOT_DIR / "public" / "index"
-BANNED_KEYS = {"llm", "llm_provider", "llm_schema_version", "semantic_mode", "task_frames"}
+BANNED_KEYS = {
+    "llm",
+    "llm_provider",
+    "llm_schema_version",
+    "semantic_mode",
+    "task_frames",
+    "llm_in_core_path",
+    "old_hytask_removed",
+    "source_channel_production_enabled",
+    "github_resource_production_enabled",
+}
 REQUIRED_QUERIES = [
     "校历",
     "慕课考试",
@@ -40,18 +50,41 @@ def walk_keys(payload):
 
 def test_public_index_is_pure_sitegraph_contract():
     manifest = read_json(PUBLIC_INDEX_DIR / "manifest.json")
-    assert manifest["strategy"] == "pure-sitegraph-code-search-v1"
+    assert manifest["strategy"] == "pure-sitegraph-code-search-v2"
+    assert manifest["producer_repo"] == "hicancan/njupt-search"
+    assert manifest["site_id"] == "jwc"
+    assert manifest["artifact_path"] == "index"
+    assert manifest["upstream_generated_at"]
+    assert "D:\\" not in json.dumps(manifest, ensure_ascii=False)
+    assert "D:/" not in json.dumps(manifest, ensure_ascii=False)
     assert manifest["exam_vertical_preserved"] is True
-    assert manifest["core_search"]["llm_in_core_path"] is False
-    assert manifest["core_search"]["source_channel_production_enabled"] is False
-    assert manifest["core_search"]["github_resource_production_enabled"] is False
+    assert manifest["core_search"]["execution_model"] == "pure_frontend_worker"
     assert manifest["core_search"]["light_first_screen"] is True
-    assert manifest["core_search"]["full_text_loading"] == "on_demand_by_shard"
+    assert manifest["core_search"]["first_screen_artifacts"] == ["doc_meta_light", "light_inverted_index", "query_aliases"]
+    assert manifest["core_search"]["body_index_loading"] == "on_deep_search"
+    assert manifest["core_search"]["full_text_loading"] == "on_demand_by_candidate_shard"
+    assert manifest["core_search"]["search_worker"] is True
 
-    for stale in ("documents.json", "task_frames.json", "ontology.json"):
+    for stale in (
+        "documents.json",
+        "task_frames.json",
+        "ontology.json",
+        "doc_meta.json",
+        "inverted_index.json",
+        "section_index.json",
+        "attachment_index.json",
+        "external_index.json",
+        "query_aliases.json",
+    ):
         assert not (PUBLIC_INDEX_DIR / stale).exists()
 
     assert not (BANNED_KEYS & set(walk_keys(manifest)))
+    for name, artifact in manifest["artifacts"].items():
+        assert artifact["path"].startswith("index/sitegraph/jwc/")
+        assert artifact["path"].endswith(".json")
+        assert artifact["path"].rsplit(".", 2)[-2]
+        assert "\\" not in artifact["path"]
+        assert (ROOT_DIR / "public" / artifact["path"]).exists(), name
 
 
 def test_jwc_truth_counts_are_preserved():
@@ -72,14 +105,24 @@ def test_jwc_truth_counts_are_preserved():
 
 def test_light_index_and_shards_have_no_legacy_fields():
     manifest = read_json(PUBLIC_INDEX_DIR / "manifest.json")
-    doc_meta = read_json(PUBLIC_INDEX_DIR / "doc_meta.json")
+    doc_meta = read_json(ROOT_DIR / "public" / manifest["artifacts"]["doc_meta_light"]["path"])
     assert not (BANNED_KEYS & set(walk_keys(doc_meta)))
     assert all("content" not in item for item in doc_meta)
+    assert all("summary" not in item for item in doc_meta)
+    assert all("attachments" not in item for item in doc_meta)
+    assert all("provenance" not in item for item in doc_meta)
+
+    light_index = read_json(ROOT_DIR / "public" / manifest["artifacts"]["light_inverted_index"]["path"])
+    body_index = read_json(ROOT_DIR / "public" / manifest["artifacts"]["body_inverted_index"]["path"])
+    assert set(light_index["field_codes"].values()) <= {"t", "s", "n", "g", "a", "e", "y"}
+    assert set(body_index["field_codes"].values()) == {"m", "c"}
 
     for shard in manifest["sitegraph"]["full_shards"]:
         documents = read_json(ROOT_DIR / "public" / shard["path"])
         assert len(documents) == shard["count"]
         assert not (BANNED_KEYS & set(walk_keys(documents)))
+        assert ".000." not in shard["path"]
+        assert "\\" not in shard["path"]
 
 
 def test_required_queries_return_results():

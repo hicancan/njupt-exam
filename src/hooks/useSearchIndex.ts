@@ -1,17 +1,8 @@
-import { useEffect, useState } from 'react';
-import { APP_CONFIG } from '@/constants';
-import { SitegraphIndexBundle, SitegraphSearchManifest } from '@/types';
-import {
-    parseSitegraphAttachmentIndex,
-    parseSitegraphDocMeta,
-    parseSitegraphExternalIndex,
-    parseSitegraphInvertedIndex,
-    parseSitegraphManifest
-} from '@/utils/searchIndex';
-import { fetchJson } from '@/utils/fetch';
+import { useEffect, useRef, useState } from 'react';
+import { SitegraphSearchManifest } from '@/types';
 
 interface UseSearchIndexResult {
-    bundle: SitegraphIndexBundle | null;
+    worker: Worker | null;
     manifest: SitegraphSearchManifest | null;
     optionalUnavailable: string[];
     loading: boolean;
@@ -19,67 +10,53 @@ interface UseSearchIndexResult {
 }
 
 export function useSearchIndex(): UseSearchIndexResult {
-    const [bundle, setBundle] = useState<SitegraphIndexBundle | null>(null);
+    const workerRef = useRef<Worker | null>(null);
+    const requestIdRef = useRef(0);
+    const [workerState, setWorkerState] = useState<Worker | null>(null);
     const [manifest, setManifest] = useState<SitegraphSearchManifest | null>(null);
     const [optionalUnavailable, setOptionalUnavailable] = useState<string[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
-        const controller = new AbortController();
+        const worker = new Worker(new URL('../workers/searchWorker.ts', import.meta.url), { type: 'module' });
+        const requestId = ++requestIdRef.current;
+        workerRef.current = worker;
 
-        const load = async () => {
-            const [
-                manifestPayload,
-                docMetaPayload,
-                invertedPayload,
-                attachmentPayload,
-                externalPayload,
-                aliasesPayload
-            ] = await Promise.all([
-                fetchJson(APP_CONFIG.DATA_URLS.SEARCH_MANIFEST, controller.signal),
-                fetchJson(APP_CONFIG.DATA_URLS.SITEGRAPH_DOC_META, controller.signal),
-                fetchJson(APP_CONFIG.DATA_URLS.SITEGRAPH_INVERTED_INDEX, controller.signal),
-                fetchJson(APP_CONFIG.DATA_URLS.SITEGRAPH_ATTACHMENT_INDEX, controller.signal),
-                fetchJson(APP_CONFIG.DATA_URLS.SITEGRAPH_EXTERNAL_INDEX, controller.signal),
-                fetchJson(APP_CONFIG.DATA_URLS.QUERY_ALIASES, controller.signal),
-            ]);
-
-            const parsedManifest = parseSitegraphManifest(manifestPayload, APP_CONFIG.DATA_URLS.SEARCH_MANIFEST);
-            const parsedBundle: SitegraphIndexBundle = {
-                manifest: parsedManifest,
-                docMeta: parseSitegraphDocMeta(docMetaPayload, APP_CONFIG.DATA_URLS.SITEGRAPH_DOC_META),
-                invertedIndex: parseSitegraphInvertedIndex(invertedPayload, APP_CONFIG.DATA_URLS.SITEGRAPH_INVERTED_INDEX),
-                attachmentIndex: parseSitegraphAttachmentIndex(attachmentPayload, APP_CONFIG.DATA_URLS.SITEGRAPH_ATTACHMENT_INDEX),
-                externalIndex: parseSitegraphExternalIndex(externalPayload, APP_CONFIG.DATA_URLS.SITEGRAPH_EXTERNAL_INDEX),
-                queryAliases: aliasesPayload as Record<string, unknown>
-            };
-
-            setManifest(parsedManifest);
-            setBundle(parsedBundle);
-            setOptionalUnavailable([]);
-            setError(null);
-        };
-
-        load()
-            .catch(err => {
-                if (err instanceof DOMException && err.name === 'AbortError') {
-                    return;
-                }
-                console.error(err);
-                setBundle(null);
-                setManifest(null);
+        worker.onmessage = (event: MessageEvent) => {
+            const message = event.data as { type?: string; requestId?: number; manifest?: SitegraphSearchManifest; message?: string };
+            if (message.requestId !== requestId) return;
+            if (message.type === 'ready' && message.manifest) {
+                setManifest(message.manifest);
+                setWorkerState(worker);
                 setOptionalUnavailable([]);
-                setError(err instanceof Error ? err.message : '无法加载 JWC sitegraph 搜索索引');
-            })
-            .finally(() => {
-                if (!controller.signal.aborted) {
-                    setLoading(false);
-                }
-            });
+                setError(null);
+                setLoading(false);
+            } else if (message.type === 'error') {
+                setManifest(null);
+                setWorkerState(null);
+                setOptionalUnavailable([]);
+                setError(message.message || '无法加载 JWC sitegraph 搜索索引 Worker');
+                setLoading(false);
+            }
+        };
+        worker.onerror = event => {
+            setManifest(null);
+            setWorkerState(null);
+            setOptionalUnavailable([]);
+            setError(event.message || 'JWC sitegraph 搜索 Worker 启动失败');
+            setLoading(false);
+        };
+        worker.postMessage({ type: 'init', requestId });
 
-        return () => controller.abort();
+        return () => {
+            worker.terminate();
+            if (workerRef.current === worker) {
+                workerRef.current = null;
+                setWorkerState(null);
+            }
+        };
     }, []);
 
-    return { bundle, manifest, optionalUnavailable, loading, error };
+    return { worker: workerState, manifest, optionalUnavailable, loading, error };
 }

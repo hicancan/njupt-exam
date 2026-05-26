@@ -3,8 +3,10 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import os
 import re
 import shutil
+import subprocess
 import unicodedata
 from collections import Counter, defaultdict
 from datetime import datetime, timezone
@@ -17,6 +19,8 @@ BASE_DIR = Path(__file__).resolve().parents[1]
 DEFAULT_SITEGRAPH_INDEX = BASE_DIR.parent / "njupt-site-graph" / "data" / "sites" / "jwc" / "index"
 PUBLIC_INDEX_DIR = BASE_DIR / "public" / "index"
 PUBLIC_SITEGRAPH_DIR = PUBLIC_INDEX_DIR / "sitegraph" / "jwc"
+PUBLIC_ARTIFACT_DIR = PUBLIC_SITEGRAPH_DIR / "artifacts"
+PUBLIC_SHARD_DIR = PUBLIC_SITEGRAPH_DIR / "shards"
 
 REQUIRED_SITEGRAPH_FILES = {
     "manifest.json",
@@ -61,11 +65,19 @@ QUERY_SYNONYMS: dict[str, list[str]] = {
 FIELD_CODES = {
     "title": "t",
     "section": "s",
+    "nav_path": "n",
     "attachment": "a",
     "external": "e",
-    "body": "b",
+    "system": "y",
     "tag": "g",
+    "summary": "m",
+    "content": "c",
 }
+
+LIGHT_FIELD_CODES = {key: FIELD_CODES[key] for key in ("title", "section", "nav_path", "attachment", "external", "system", "tag")}
+BODY_FIELD_CODES = {key: FIELD_CODES[key] for key in ("summary", "content")}
+
+FACET_ORDER = ("notice_article", "policy", "workflow", "download", "system", "exam", "news", "external")
 
 
 def read_json(path: Path) -> Any:
@@ -100,8 +112,53 @@ def write_json(path: Path, payload: Any, *, compact: bool = False) -> None:
             handle.write("\n")
 
 
+def json_bytes(payload: Any, *, compact: bool = True) -> bytes:
+    if compact:
+        text = json.dumps(payload, ensure_ascii=False, separators=(",", ":"))
+    else:
+        text = json.dumps(payload, ensure_ascii=False, indent=2) + "\n"
+    return text.encode("utf-8")
+
+
+def write_hashed_json(directory: Path, logical_name: str, payload: Any, *, compact: bool = True) -> dict[str, Any]:
+    data = json_bytes(payload, compact=compact)
+    digest = hashlib.sha256(data).hexdigest()
+    filename = f"{logical_name}.{digest[:16]}.json"
+    path = directory / filename
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_bytes(data)
+    return {
+        "path": str(path.relative_to(BASE_DIR / "public")).replace("\\", "/"),
+        "sha256": digest,
+        "bytes": len(data),
+    }
+
+
 def sha1_text(text: str, length: int = 20) -> str:
     return hashlib.sha1(text.encode("utf-8")).hexdigest()[:length]
+
+
+def sha256_text(text: str, length: int = 16) -> str:
+    return hashlib.sha256(text.encode("utf-8")).hexdigest()[:length]
+
+
+def stable_slug(value: Any, *, fallback: str = "unknown", max_length: int = 48) -> str:
+    text = normalize_text(value)
+    text = re.sub(r"[^a-z0-9\u4e00-\u9fff_-]+", "-", text).strip("-")
+    if not text:
+        text = fallback
+    return text[:max_length]
+
+
+def producer_ref() -> str:
+    for env_name in ("GITHUB_SHA", "GITHUB_REF_NAME"):
+        value = os.environ.get(env_name)
+        if value:
+            return value
+    try:
+        return subprocess.check_output(["git", "rev-parse", "--short=12", "HEAD"], cwd=BASE_DIR, text=True).strip()
+    except (subprocess.CalledProcessError, FileNotFoundError):
+        return "local-unversioned"
 
 
 def now_iso() -> str:
@@ -343,6 +400,7 @@ def make_doc_meta(
         "attachment_count": int(attachment_count or 0),
         "hash": content_hash,
         "tags": unique_strings([*(tags or []), *section_tags, facet, record_type], limit=16),
+        "collection_method": outcome,
         "provenance": {
             "site_id": clean_text(site.get("site_id")) or "jwc",
             "section_id": clean_text(section.get("section_id")) if section else None,
@@ -548,70 +606,168 @@ def add_postings(index: dict[str, dict[str, set[int]]], doc_index: int, field_co
         index[token][field_code].add(doc_index)
 
 
-def build_inverted_index(documents: list[dict[str, Any]]) -> dict[str, Any]:
-    raw_index: dict[str, dict[str, set[int]]] = defaultdict(lambda: defaultdict(set))
-    for document in documents:
-        doc_index = int(document["doc_index"])
-        add_postings(raw_index, doc_index, FIELD_CODES["title"], sitegraph_tokens(document.get("title"), cjk_max_n=5))
-        add_postings(raw_index, doc_index, FIELD_CODES["section"], sitegraph_tokens([document.get("section"), document.get("nav_path_text")], cjk_max_n=5))
-        add_postings(raw_index, doc_index, FIELD_CODES["tag"], sitegraph_tokens(" ".join(document.get("tags") or []), cjk_max_n=4))
-        add_postings(raw_index, doc_index, FIELD_CODES["body"], sitegraph_tokens(document.get("summary"), cjk_max_n=4, cap=60))
-        add_postings(raw_index, doc_index, FIELD_CODES["body"], sitegraph_tokens(document.get("content"), cjk_max_n=3, cap=120))
-        attachment_text = " ".join(
-            " ".join(clean_text(attachment.get(field)) for field in ("name", "extension", "section", "parent_url"))
-            for attachment in document.get("attachments") or []
-        )
-        add_postings(raw_index, doc_index, FIELD_CODES["attachment"], sitegraph_tokens(attachment_text, cjk_max_n=5))
-        if document.get("record_type") == "external":
-            add_postings(raw_index, doc_index, FIELD_CODES["external"], sitegraph_tokens([document.get("title"), document.get("url"), document.get("summary")], cjk_max_n=5))
-
+def compact_postings(raw_index: dict[str, dict[str, set[int]]]) -> dict[str, dict[str, list[int]]]:
     tokens: dict[str, dict[str, list[int]]] = {}
     for token, fields in raw_index.items():
         compact_fields: dict[str, list[int]] = {}
         for field, ids in fields.items():
             compact_fields[field] = sorted(ids)
         tokens[token] = compact_fields
+    return tokens
+
+
+def build_light_inverted_index(documents: list[dict[str, Any]]) -> dict[str, Any]:
+    raw_index: dict[str, dict[str, set[int]]] = defaultdict(lambda: defaultdict(set))
+    for document in documents:
+        doc_index = int(document["doc_index"])
+        add_postings(raw_index, doc_index, FIELD_CODES["title"], sitegraph_tokens(document.get("title"), cjk_max_n=4, cap=120))
+        add_postings(raw_index, doc_index, FIELD_CODES["section"], sitegraph_tokens([document.get("section"), document.get("nav_path_text")], cjk_max_n=4, cap=80))
+        add_postings(raw_index, doc_index, FIELD_CODES["nav_path"], sitegraph_tokens(" ".join(document.get("nav_path") or []), cjk_max_n=4, cap=80))
+        add_postings(raw_index, doc_index, FIELD_CODES["tag"], sitegraph_tokens(" ".join(document.get("tags") or []), cjk_max_n=4))
+        attachment_text = " ".join(
+            " ".join(clean_text(attachment.get(field)) for field in ("name", "extension", "section"))
+            for attachment in document.get("attachments") or []
+        )
+        add_postings(raw_index, doc_index, FIELD_CODES["attachment"], sitegraph_tokens(attachment_text, cjk_max_n=4, cap=80))
+        if document.get("record_type") == "external":
+            add_postings(raw_index, doc_index, FIELD_CODES["external"], sitegraph_tokens([document.get("title"), document.get("url")], cjk_max_n=5))
+        if document.get("record_type") == "utility" or document.get("facet") == "system":
+            add_postings(raw_index, doc_index, FIELD_CODES["system"], sitegraph_tokens([document.get("title"), document.get("url"), document.get("section")], cjk_max_n=5))
 
     return {
-        "version": "sitegraph-inverted-v1",
+        "version": "sitegraph-light-inverted-v2",
         "tokenizer": "nfkc-lower-cjk-ngram-code",
-        "field_codes": FIELD_CODES,
-        "tokens": tokens,
+        "field_codes": LIGHT_FIELD_CODES,
+        "entry_fields": ["title", "section", "nav_path", "tag", "attachment", "external", "system"],
+        "tokens": compact_postings(raw_index),
     }
 
 
+def build_body_inverted_index(documents: list[dict[str, Any]]) -> dict[str, Any]:
+    raw_index: dict[str, dict[str, set[int]]] = defaultdict(lambda: defaultdict(set))
+    for document in documents:
+        doc_index = int(document["doc_index"])
+        add_postings(raw_index, doc_index, FIELD_CODES["summary"], sitegraph_tokens(document.get("summary"), cjk_max_n=4, cap=80))
+        add_postings(raw_index, doc_index, FIELD_CODES["content"], sitegraph_tokens(document.get("content"), cjk_max_n=3, cap=180))
+    return {
+        "version": "sitegraph-body-inverted-v2",
+        "tokenizer": "nfkc-lower-cjk-ngram-code",
+        "field_codes": BODY_FIELD_CODES,
+        "entry_fields": ["summary", "content"],
+        "tokens": compact_postings(raw_index),
+    }
+
+
+def shard_year(document: dict[str, Any]) -> str:
+    published = clean_text(document.get("published_at"))
+    match = re.search(r"(20\d{2}|19\d{2})", published)
+    return match.group(1) if match else "undated"
+
+
+def shard_section(document: dict[str, Any]) -> str:
+    nav_path = document.get("nav_path") if isinstance(document.get("nav_path"), list) else []
+    section = nav_path[0] if nav_path else document.get("section_id") or document.get("section")
+    return stable_slug(section, fallback="root", max_length=32)
+
+
+def shard_bucket(document: dict[str, Any], bucket_count: int = 4) -> str:
+    digest = hashlib.sha1(str(document.get("id") or "").encode("utf-8")).hexdigest()
+    return f"b{int(digest[:2], 16) % bucket_count}"
+
+
+def shard_id_for_document(document: dict[str, Any]) -> str:
+    return "__".join(
+        [
+            stable_slug(document.get("facet"), fallback="facet"),
+            stable_slug(document.get("record_type"), fallback="record"),
+            shard_year(document),
+            shard_section(document),
+            shard_bucket(document),
+        ]
+    )
+
+
+def build_locality_shards(documents: list[dict[str, Any]]) -> tuple[list[dict[str, Any]], dict[str, dict[str, Any]]]:
+    groups: dict[str, list[dict[str, Any]]] = defaultdict(list)
+    for document in documents:
+        groups[shard_id_for_document(document)].append(document)
+
+    shard_refs: list[dict[str, Any]] = []
+    shard_by_id: dict[str, dict[str, Any]] = {}
+    for shard_id in sorted(groups):
+        shard_docs = sorted(groups[shard_id], key=lambda item: int(item["doc_index"]))
+        facets = sorted({str(item.get("facet")) for item in shard_docs})
+        record_types = sorted({str(item.get("record_type")) for item in shard_docs})
+        sections = sorted({str(item.get("section_id") or "unknown") for item in shard_docs})
+        years = sorted({shard_year(item) for item in shard_docs})
+        payload_docs = [
+            {key: value for key, value in document.items() if key != "shard"}
+            for document in shard_docs
+        ]
+        artifact = write_hashed_json(PUBLIC_SHARD_DIR, f"full.{shard_id}", payload_docs, compact=True)
+        shard_ref = {
+            "shard_id": shard_id,
+            "path": artifact["path"],
+            "sha256": artifact["sha256"],
+            "bytes": artifact["bytes"],
+            "count": len(shard_docs),
+            "contains": "full_documents",
+            "facet_range": facets,
+            "record_type_range": record_types,
+            "section_range": sections[:24],
+            "year_range": years,
+            "hash_bucket": shard_id.rsplit("__", 1)[-1],
+        }
+        shard_refs.append(shard_ref)
+        shard_by_id[shard_id] = shard_ref
+        for document in shard_docs:
+            document["shard"] = {
+                "shard_id": shard_id,
+            }
+    return shard_refs, shard_by_id
+
+
+def artifact_entry(artifact: dict[str, Any], *, role: str, count: int | None = None, load: str = "on_demand") -> dict[str, Any]:
+    entry = {
+        "path": artifact["path"],
+        "sha256": artifact["sha256"],
+        "bytes": artifact["bytes"],
+        "role": role,
+        "load": load,
+    }
+    if count is not None:
+        entry["count"] = count
+    return entry
+
+
 def write_public_index(package: dict[str, Any], built: dict[str, Any], *, shard_size: int) -> dict[str, Any]:
-    PUBLIC_INDEX_DIR.mkdir(parents=True, exist_ok=True)
-    if PUBLIC_SITEGRAPH_DIR.exists():
-        shutil.rmtree(PUBLIC_SITEGRAPH_DIR)
-    PUBLIC_SITEGRAPH_DIR.mkdir(parents=True, exist_ok=True)
-    for stale in ("documents.json", "task_frames.json", "ontology.json"):
-        stale_path = PUBLIC_INDEX_DIR / stale
-        if stale_path.exists():
-            stale_path.unlink()
+    # v2 is intentionally immutable except for manifest.json. Removing the
+    # directory prevents stale fixed-name v1 indexes from being deployed.
+    if PUBLIC_INDEX_DIR.exists():
+        shutil.rmtree(PUBLIC_INDEX_DIR)
+    PUBLIC_ARTIFACT_DIR.mkdir(parents=True, exist_ok=True)
+    PUBLIC_SHARD_DIR.mkdir(parents=True, exist_ok=True)
 
     documents = built["documents"]
-    full_shards: list[dict[str, Any]] = []
-    for start in range(0, len(documents), shard_size):
-        shard_number = start // shard_size
-        shard_docs = documents[start : start + shard_size]
-        shard_name = f"documents.{shard_number:03d}.json"
-        shard_path = PUBLIC_SITEGRAPH_DIR / shard_name
-        for item in shard_docs:
-            item["shard"] = {
-                "path": f"index/sitegraph/jwc/{shard_name}",
-                "index": shard_number,
-            }
-        write_json(shard_path, shard_docs, compact=True)
-        full_shards.append({"path": f"index/sitegraph/jwc/{shard_name}", "count": len(shard_docs), "contains": "full_documents"})
+    full_shards, _ = build_locality_shards(documents)
 
-    doc_meta = [{key: value for key, value in document.items() if key not in {"content", "attachments"}} for document in documents]
-    write_json(PUBLIC_INDEX_DIR / "doc_meta.json", doc_meta, compact=True)
-    write_json(PUBLIC_INDEX_DIR / "inverted_index.json", build_inverted_index(documents), compact=True)
-    write_json(PUBLIC_INDEX_DIR / "attachment_index.json", built["attachment_index"], compact=True)
-    write_json(PUBLIC_INDEX_DIR / "external_index.json", built["external_index"], compact=True)
-    write_json(PUBLIC_INDEX_DIR / "query_aliases.json", query_alias_payload())
-    write_json(PUBLIC_SITEGRAPH_DIR / "outcomes.json", built["outcomes"], compact=True)
+    doc_meta_light_fields = {
+        "doc_index",
+        "id",
+        "record_type",
+        "facet",
+        "title",
+        "section",
+        "nav_path_text",
+        "published_at",
+        "shard",
+    }
+    doc_meta_light = [
+        {key: document.get(key) for key in doc_meta_light_fields if key in document}
+        for document in documents
+    ]
+    light_inverted_index = build_light_inverted_index(documents)
+    body_inverted_index = build_body_inverted_index(documents)
 
     section_counts = Counter(clean_text(document.get("section_id")) or "unknown" for document in documents)
     section_index = []
@@ -629,34 +785,77 @@ def write_public_index(package: dict[str, Any], built: dict[str, Any], *, shard_
                 "document_count": section_counts.get(section_id, 0),
             }
         )
-    write_json(PUBLIC_INDEX_DIR / "section_index.json", section_index)
+
+    query_aliases = query_alias_payload()
+    artifacts: dict[str, dict[str, Any]] = {}
+    doc_meta_artifact = write_hashed_json(PUBLIC_ARTIFACT_DIR, "doc_meta_light", doc_meta_light, compact=True)
+    light_index_artifact = write_hashed_json(PUBLIC_ARTIFACT_DIR, "light_inverted_index", light_inverted_index, compact=True)
+    body_index_artifact = write_hashed_json(PUBLIC_ARTIFACT_DIR, "body_inverted_index", body_inverted_index, compact=True)
+    section_artifact = write_hashed_json(PUBLIC_ARTIFACT_DIR, "section_index", section_index, compact=True)
+    attachment_artifact = write_hashed_json(PUBLIC_ARTIFACT_DIR, "attachment_index", built["attachment_index"], compact=True)
+    external_artifact = write_hashed_json(PUBLIC_ARTIFACT_DIR, "external_index", built["external_index"], compact=True)
+    aliases_artifact = write_hashed_json(PUBLIC_ARTIFACT_DIR, "query_aliases", query_aliases, compact=False)
+    outcomes_artifact = write_hashed_json(PUBLIC_ARTIFACT_DIR, "outcomes", built["outcomes"], compact=True)
+
+    artifacts["doc_meta_light"] = artifact_entry(doc_meta_artifact, role="doc_meta_light", count=len(doc_meta_light), load="initial")
+    artifacts["light_inverted_index"] = artifact_entry(light_index_artifact, role="light_inverted_index", load="initial")
+    artifacts["query_aliases"] = artifact_entry(aliases_artifact, role="query_aliases", count=len(query_aliases), load="initial")
+    artifacts["body_inverted_index"] = artifact_entry(body_index_artifact, role="body_inverted_index", load="deep_search")
+    artifacts["section_index"] = artifact_entry(section_artifact, role="section_index", count=len(section_index), load="on_demand")
+    artifacts["attachment_index"] = artifact_entry(attachment_artifact, role="attachment_index", count=len(built["attachment_index"]), load="on_demand")
+    artifacts["external_index"] = artifact_entry(external_artifact, role="external_index", count=len(built["external_index"]), load="on_demand")
+    artifacts["outcomes"] = artifact_entry(outcomes_artifact, role="outcomes", load="audit")
 
     upstream_counts = dict(package["actual_counts"])
     record_counts = Counter(document["record_type"] for document in documents)
     facet_counts = Counter(document["facet"] for document in documents)
+    first_screen_artifacts = ["doc_meta_light", "light_inverted_index", "query_aliases"]
+    size_report = {
+        "generated_at": now_iso(),
+        "first_screen_files": [
+            {"name": name, "path": artifacts[name]["path"], "bytes": artifacts[name]["bytes"]}
+            for name in first_screen_artifacts
+        ],
+        "first_screen_total_bytes": sum(int(artifacts[name]["bytes"]) for name in first_screen_artifacts),
+        "body_index_bytes": artifacts["body_inverted_index"]["bytes"],
+        "full_shard_count": len(full_shards),
+        "max_full_shard_bytes": max((int(item["bytes"]) for item in full_shards), default=0),
+        "avg_full_shard_bytes": round(sum(int(item["bytes"]) for item in full_shards) / max(1, len(full_shards)), 2),
+        "max_full_shard_documents": max((int(item["count"]) for item in full_shards), default=0),
+        "avg_full_shard_documents": round(sum(int(item["count"]) for item in full_shards) / max(1, len(full_shards)), 2),
+    }
+    size_artifact = write_hashed_json(PUBLIC_ARTIFACT_DIR, "size_report", size_report, compact=False)
+    artifacts["size_report"] = artifact_entry(size_artifact, role="size_report", load="audit")
+
     generated_at = now_iso()
+    upstream_generated_at = clean_text(package["manifest"].get("generated_at")) or None
     manifest = {
         "generated_at": generated_at,
-        "strategy": "pure-sitegraph-code-search-v1",
+        "strategy": "pure-sitegraph-code-search-v2",
+        "producer_repo": os.environ.get("GITHUB_REPOSITORY") or "hicancan/njupt-search",
+        "producer_ref": producer_ref(),
         "site_id": "jwc",
-        "source": str(package.get("source_index_dir") or DEFAULT_SITEGRAPH_INDEX),
+        "artifact_path": "index",
+        "upstream_generated_at": upstream_generated_at,
+        "truth_counts": upstream_counts,
         "total_documents": len(documents),
         "record_counts": dict(record_counts),
         "facet_counts": dict(facet_counts),
         "exam_vertical_preserved": True,
         "core_search": {
-            "algorithm": "static inverted index plus on-demand full shard ranking",
-            "llm_in_core_path": False,
-            "old_hytask_removed": True,
-            "source_channel_production_enabled": False,
-            "github_resource_production_enabled": False,
+            "algorithm": "worker light inverted recall plus lazy body index and locality shard ranking",
+            "execution_model": "pure_frontend_worker",
             "light_first_screen": True,
-            "full_text_loading": "on_demand_by_shard",
+            "first_screen_artifacts": first_screen_artifacts,
+            "body_index_loading": "on_deep_search",
+            "full_text_loading": "on_demand_by_candidate_shard",
+            "search_worker": True,
         },
+        "artifacts": artifacts,
         "sitegraph": {
             "truth_counts": upstream_counts,
             "quality": package["manifest"].get("quality"),
-            "upstream_generated_at": package["manifest"].get("generated_at"),
+            "upstream_generated_at": upstream_generated_at,
             "detail_page_records": record_counts.get("detail", 0),
             "attachment_metadata_records": len(built["attachment_index"]),
             "direct_attachment_records": record_counts.get("attachment", 0),
@@ -666,19 +865,16 @@ def write_public_index(package: dict[str, Any], built: dict[str, Any], *, shard_
             "attachment_policy": "metadata_only",
             "external_link_policy": "record_only",
             "full_shards": full_shards,
-            "indexes": {
-                "doc_meta": "index/doc_meta.json",
-                "inverted_index": "index/inverted_index.json",
-                "section_index": "index/section_index.json",
-                "attachment_index": "index/attachment_index.json",
-                "external_index": "index/external_index.json",
-                "query_aliases": "index/query_aliases.json",
-                "outcomes": "index/sitegraph/jwc/outcomes.json",
+            "shard_strategy": {
+                "version": "locality-facet-record-year-section-hash-v1",
+                "dimensions": ["facet", "record_type", "year", "top_nav_section", "hash_bucket"],
+                "hash_bucket_count": 4,
+                "sequential_fixed_size_shards": False,
             },
+            "indexes": artifacts,
         },
     }
     write_json(PUBLIC_INDEX_DIR / "manifest.json", manifest)
-    write_json(PUBLIC_SITEGRAPH_DIR / "manifest.json", {"generated_at": generated_at, "full_shards": full_shards, "record_counts": dict(record_counts)})
     return manifest
 
 

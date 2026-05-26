@@ -52,32 +52,74 @@ def main() -> None:
     manifest = read_json(manifest_path)
     if not isinstance(manifest, dict):
         fail("manifest must be an object")
-    ensure_absent(manifest, {"llm", "llm_provider", "llm_schema_version", "semantic_mode", "task_frames"})
-    if manifest.get("strategy") != "pure-sitegraph-code-search-v1":
+    ensure_absent(
+        manifest,
+        {
+            "llm",
+            "llm_provider",
+            "llm_schema_version",
+            "semantic_mode",
+            "task_frames",
+            "llm_in_core_path",
+            "old_hytask_removed",
+            "source_channel_production_enabled",
+            "github_resource_production_enabled",
+        },
+    )
+    if manifest.get("strategy") != "pure-sitegraph-code-search-v2":
         fail(f"unexpected manifest strategy: {manifest.get('strategy')!r}")
+    manifest_text = json.dumps(manifest, ensure_ascii=False)
+    if "D:\\" in manifest_text or "D:/" in manifest_text:
+        fail("public manifest must not expose local D: paths")
+    for field in ("producer_repo", "producer_ref", "site_id", "artifact_path", "upstream_generated_at", "truth_counts"):
+        if not manifest.get(field):
+            fail(f"manifest missing required v2 producer field: {field}")
     core_search = manifest.get("core_search") if isinstance(manifest.get("core_search"), dict) else {}
-    if core_search.get("llm_in_core_path") is not False:
-        fail("LLM must not be in the core search path")
-    if core_search.get("source_channel_production_enabled") is not False:
-        fail("Source-Channel production path must be disabled")
-    if core_search.get("github_resource_production_enabled") is not False:
-        fail("GitHub resource production path must be disabled")
-    if core_search.get("full_text_loading") != "on_demand_by_shard":
-        fail("full text must be loaded on demand by shard")
+    if core_search.get("execution_model") != "pure_frontend_worker":
+        fail("core search must execute in the pure frontend worker")
+    if core_search.get("first_screen_artifacts") != ["doc_meta_light", "light_inverted_index", "query_aliases"]:
+        fail("first screen must only load manifest, doc_meta_light, light_inverted_index, and query_aliases")
+    if core_search.get("body_index_loading") != "on_deep_search":
+        fail("body index must be loaded only on deep search")
+    if core_search.get("full_text_loading") != "on_demand_by_candidate_shard":
+        fail("full text must be loaded on demand by candidate shard")
+    if core_search.get("search_worker") is not True:
+        fail("search worker must be enabled")
 
+    artifacts = manifest.get("artifacts") if isinstance(manifest.get("artifacts"), dict) else {}
     required = (
+        "doc_meta_light",
+        "light_inverted_index",
+        "body_inverted_index",
+        "section_index",
+        "attachment_index",
+        "external_index",
+        "query_aliases",
+        "outcomes",
+        "size_report",
+    )
+    for name in required:
+        entry = artifacts.get(name)
+        if not isinstance(entry, dict) or not entry.get("path"):
+            fail(f"manifest.artifacts.{name}.path is missing")
+        relative = str(entry["path"])
+        if "\\" in relative or ":" in relative:
+            fail(f"artifact path must be public-relative: {relative}")
+        if not (BASE_DIR / "public" / relative).exists():
+            fail(f"missing pure sitegraph index artifact: {relative}")
+        if not relative.endswith(".json") or len(relative.rsplit(".", 2)) < 3:
+            fail(f"artifact must use content hash filename: {relative}")
+    for stale in (
+        "documents.json",
+        "task_frames.json",
+        "ontology.json",
         "doc_meta.json",
         "inverted_index.json",
         "section_index.json",
         "attachment_index.json",
         "external_index.json",
         "query_aliases.json",
-        "sitegraph/jwc/outcomes.json",
-    )
-    for relative in required:
-        if not (PUBLIC_INDEX_DIR / relative).exists():
-            fail(f"missing pure sitegraph index artifact: {relative}")
-    for stale in ("documents.json", "task_frames.json", "ontology.json"):
+    ):
         if (PUBLIC_INDEX_DIR / stale).exists():
             fail(f"stale old search artifact still exists: {stale}")
 
