@@ -1,16 +1,21 @@
 import {
-    RankedSearchDocument,
-    SearchDocument,
-    SearchDomain,
-    SearchIntent,
-    SearchLifecycle,
-    SearchManifest,
-    SearchSourceType,
-    SearchDocumentSchema,
-    SearchManifestSchema
+    RankedSitegraphDocument,
+    SitegraphAttachment,
+    SitegraphAttachmentSchema,
+    SitegraphDocMeta,
+    SitegraphDocMetaSchema,
+    SitegraphExternalRecord,
+    SitegraphExternalRecordSchema,
+    SitegraphFullDocument,
+    SitegraphFullDocumentSchema,
+    SitegraphIndexBundle,
+    SitegraphInvertedIndex,
+    SitegraphInvertedIndexSchema,
+    SitegraphSearchManifest,
+    SitegraphSearchManifestSchema
 } from '@/types';
+import { fetchJson } from '@/utils/fetch';
 import { z } from 'zod';
-import { routeQuery } from './queryRouter';
 
 class SearchContractError extends Error {
     constructor(message: string) {
@@ -18,6 +23,8 @@ class SearchContractError extends Error {
         this.name = 'SearchContractError';
     }
 }
+
+const LEGACY_FIELDS = new Set(['llm', 'llm_provider', 'llm_schema_version', 'semantic_mode', 'task_frames']);
 
 const valueAtPath = (payload: unknown, path: PropertyKey[]): unknown => {
     let current = payload;
@@ -36,116 +43,149 @@ const formatZodIssues = (payload: unknown, error: z.ZodError): string => {
     }).join('; ');
 };
 
-const DOMAIN_LABELS: Record<SearchDomain, string> = {
-    academic: '学业事务',
-    exam: '考试',
-    course: '课程选课',
-    degree: '学位培养',
-    scholarship: '资助评优',
-    employment: '就业实习',
-    competition: '竞赛活动',
-    project: '项目机会',
-    innovation_project: '大创项目',
-    international: '国际交流',
-    life: '校园生活',
-    library: '图书馆',
-    security: '安全保卫',
-    logistics: '后勤服务',
-    campus_network: '校园网络',
-    subsidy: '资助补助',
-    medical_insurance: '医保体检',
-    archive: '档案服务',
-    lecture: '讲座活动',
-    research: '科研事务',
-    resource: '学习资料',
-    news: '校园新闻',
-    policy: '政策制度'
-};
-
-const INTENT_LABELS: Record<SearchIntent, string> = {
-    apply: '申请',
-    register: '报名',
-    submit: '提交',
-    attend: '参加',
-    check_result: '查结果',
-    publicity: '公示',
-    download: '下载',
-    read: '阅读',
-    schedule: '安排',
-    alert: '提醒',
-    pay: '缴费',
-    contact: '联系',
-    export: '导出'
-};
-
-const SOURCE_TYPE_LABELS: Record<SearchSourceType, string> = {
-    central_admin: '校级部门',
-    central_notice: '校级通知',
-    central_news: '校园新闻',
-    college: '学院站',
-    service_unit: '服务单位',
-    job_platform: '就业平台',
-    github_resource: '资料仓库',
-    research_admin: '科研管理',
-    policy: '信息公开',
-    exam_vertical: '考试频道'
-};
-
-const LIFECYCLE_LABELS: Record<SearchLifecycle, string> = {
-    active: '进行中',
-    upcoming: '即将开始',
-    expired: '已过期',
-    evergreen: '长期有效',
-    unknown: '时效未知'
-};
-
-const normalize = (value: string): string => {
-    return value.toLowerCase().replace(/\s+/g, '');
-};
-
-const tokenize = (query: string): string[] => {
-    const normalized = query.trim();
-    if (!normalized) return [];
-
-    const parts = normalized
-        .split(/[\s,，、/|]+/)
-        .map(part => part.trim())
-        .filter(Boolean);
-
-    return parts.length > 0 ? parts : [normalized];
-};
-
-const asRecord = (value: unknown): Record<string, unknown> => {
-    return value && typeof value === 'object' && !Array.isArray(value) ? value as Record<string, unknown> : {};
-};
-
-const collectStrings = (value: unknown, limit = 120): string[] => {
-    const result: string[] = [];
-    const visit = (item: unknown) => {
-        if (result.length >= limit || item === null || item === undefined) return;
-        if (typeof item === 'string' || typeof item === 'number' || typeof item === 'boolean') {
-            const text = String(item).trim();
-            if (text) result.push(text);
-            return;
+const parseArray = <T>(schema: z.ZodType<T>, payload: unknown, source: string): T[] => {
+    try {
+        return z.array(schema).parse(payload);
+    } catch (e) {
+        if (e instanceof z.ZodError) {
+            throw new SearchContractError(`Validation failed for ${source}: ${formatZodIssues(payload, e)}`);
         }
-        if (Array.isArray(item)) {
-            for (const child of item) visit(child);
-            return;
-        }
-        if (typeof item === 'object') {
-            for (const child of Object.values(item as Record<string, unknown>)) visit(child);
-        }
-    };
-    visit(value);
-    return result;
+        throw new SearchContractError(`Validation failed for ${source}: ${e instanceof Error ? e.message : String(e)}`);
+    }
 };
 
-const daysFromNow = (dateLike: string | null | undefined): number | null => {
-    if (!dateLike) return null;
-    const date = new Date(dateLike);
-    if (Number.isNaN(date.getTime())) return null;
-    return (Date.now() - date.getTime()) / 86_400_000;
+const assertNoLegacyFields = (payload: unknown, source: string, path = '$'): void => {
+    if (Array.isArray(payload)) {
+        payload.forEach((item, index) => assertNoLegacyFields(item, source, `${path}[${index}]`));
+        return;
+    }
+    if (!payload || typeof payload !== 'object') return;
+    for (const [key, value] of Object.entries(payload as Record<string, unknown>)) {
+        if (LEGACY_FIELDS.has(key)) {
+            throw new SearchContractError(`Validation failed for ${source}: ${path}.${key} is a legacy LLM/HyTask field`);
+        }
+        assertNoLegacyFields(value, source, `${path}.${key}`);
+    }
 };
+
+export const parseSitegraphManifest = (payload: unknown, source = 'sitegraph manifest'): SitegraphSearchManifest => {
+    try {
+        assertNoLegacyFields(payload, source);
+        return SitegraphSearchManifestSchema.parse(payload);
+    } catch (e) {
+        if (e instanceof z.ZodError) {
+            throw new SearchContractError(`Validation failed for ${source}: ${formatZodIssues(payload, e)}`);
+        }
+        throw new SearchContractError(`Validation failed for ${source}: ${e instanceof Error ? e.message : String(e)}`);
+    }
+};
+
+export const parseSitegraphDocMeta = (payload: unknown, source = 'sitegraph doc_meta'): SitegraphDocMeta[] => {
+    assertNoLegacyFields(payload, source);
+    const docs = parseArray(SitegraphDocMetaSchema, payload, source);
+    const ids = new Set<string>();
+    for (const item of docs) {
+        if (ids.has(item.id)) throw new SearchContractError(`${source} contains duplicate id: ${item.id}`);
+        ids.add(item.id);
+    }
+    return docs;
+};
+
+export const parseSitegraphFullDocuments = (payload: unknown, source = 'sitegraph full shard'): SitegraphFullDocument[] => {
+    assertNoLegacyFields(payload, source);
+    return parseArray(SitegraphFullDocumentSchema, payload, source);
+};
+
+export const parseSitegraphAttachmentIndex = (payload: unknown, source = 'sitegraph attachment_index'): SitegraphAttachment[] => {
+    return parseArray(SitegraphAttachmentSchema, payload, source);
+};
+
+export const parseSitegraphExternalIndex = (payload: unknown, source = 'sitegraph external_index'): SitegraphExternalRecord[] => {
+    return parseArray(SitegraphExternalRecordSchema, payload, source);
+};
+
+export const parseSitegraphInvertedIndex = (payload: unknown, source = 'sitegraph inverted_index'): SitegraphInvertedIndex => {
+    try {
+        return SitegraphInvertedIndexSchema.parse(payload);
+    } catch (e) {
+        if (e instanceof z.ZodError) {
+            throw new SearchContractError(`Validation failed for ${source}: ${formatZodIssues(payload, e)}`);
+        }
+        throw new SearchContractError(`Validation failed for ${source}: ${e instanceof Error ? e.message : String(e)}`);
+    }
+};
+
+const normalize = (value: unknown): string => String(value || '')
+    .normalize('NFKC')
+    .toLowerCase()
+    .replace(/\s+/g, '');
+
+const queryTokens = (query: string, queryAliases: Record<string, unknown>): string[] => {
+    const candidates = [query];
+    const normalizedQuery = normalize(query);
+    for (const [key, rawPayload] of Object.entries(queryAliases)) {
+        const payload = rawPayload && typeof rawPayload === 'object' ? rawPayload as { aliases?: unknown[] } : {};
+        const terms = [key, ...(Array.isArray(payload.aliases) ? payload.aliases.map(String) : [])];
+        if (terms.some(term => normalize(term) && normalizedQuery.includes(normalize(term)))) {
+            candidates.push(...terms);
+        }
+    }
+
+    const tokens = new Set<string>();
+    for (const candidate of candidates) {
+        const text = normalize(candidate);
+        if (text.length >= 2) tokens.add(text);
+        const matches = text.match(/[\u4e00-\u9fff]{2,}|[a-z0-9][a-z0-9._-]{1,}/g) || [];
+        for (const part of matches) {
+            if (/^[\u4e00-\u9fff]+$/.test(part)) {
+                const maxSize = Math.min(5, part.length);
+                for (let size = 2; size <= maxSize; size += 1) {
+                    for (let index = 0; index <= part.length - size; index += 1) {
+                        tokens.add(part.slice(index, index + size));
+                    }
+                }
+            } else {
+                tokens.add(part);
+            }
+        }
+    }
+    return Array.from(tokens).sort((a, b) => b.length - a.length);
+};
+
+const FIELD_WEIGHTS: Record<string, number> = {
+    t: 120,
+    a: 95,
+    e: 95,
+    s: 60,
+    g: 45,
+    b: 12
+};
+
+const shardCache = new Map<string, Promise<SitegraphFullDocument[]>>();
+
+const loadShard = (path: string, signal: AbortSignal): Promise<SitegraphFullDocument[]> => {
+    const existing = shardCache.get(path);
+    if (existing) return existing;
+    const promise = fetchJson(path, signal).then(payload => parseSitegraphFullDocuments(payload, path));
+    shardCache.set(path, promise);
+    return promise;
+};
+
+const textBlob = (document: SitegraphFullDocument | SitegraphDocMeta, fields: Array<keyof SitegraphFullDocument | keyof SitegraphDocMeta>): string => {
+    const values: string[] = [];
+    for (const field of fields) {
+        const value = document[field as keyof typeof document];
+        if (Array.isArray(value)) values.push(...value.map(String));
+        else if (value !== null && value !== undefined) values.push(String(value));
+    }
+    return normalize(values.join(' '));
+};
+
+const attachmentBlob = (document: SitegraphFullDocument): string => normalize(
+    document.attachments
+        .map(attachment => [attachment.name, attachment.extension, attachment.section, attachment.parent_url].filter(Boolean).join(' '))
+        .join(' ')
+);
 
 const dateSortValue = (dateLike: string | null | undefined): number => {
     if (!dateLike) return 0;
@@ -153,261 +193,162 @@ const dateSortValue = (dateLike: string | null | undefined): number => {
     return Number.isNaN(date.getTime()) ? 0 : date.getTime();
 };
 
-type QueryAliasPayload = {
-    aliases?: unknown[];
-    domains?: unknown[];
-    intents?: unknown[];
+const freshnessScore = (document: SitegraphFullDocument): number => {
+    if (!['notice_article', 'exam', 'news'].includes(document.facet)) return 0;
+    const value = dateSortValue(document.published_at);
+    if (!value) return 0;
+    const days = Math.max(0, (Date.now() - value) / 86_400_000);
+    return Math.max(0, 30 - Math.min(days, 365) / 365 * 30);
 };
 
-const aliasPayloadsForQuery = (query: string, queryAliases: Record<string, unknown>): QueryAliasPayload[] => {
-    const normalizedQuery = normalize(query);
-    const payloads: QueryAliasPayload[] = [];
-    for (const [key, rawPayload] of Object.entries(queryAliases)) {
-        const payload = rawPayload as QueryAliasPayload;
-        const aliases = Array.isArray(payload.aliases) ? payload.aliases.map(String) : [];
-        const candidates = [key, ...aliases];
-        if (candidates.some(candidate => normalize(candidate) && normalizedQuery.includes(normalize(candidate)))) {
-            payloads.push(payload);
-        }
-    }
-    return payloads;
-};
-
-const aliasTermsFromPayloads = (payloads: QueryAliasPayload[]): string[] => {
-    const terms: string[] = [];
-    for (const payload of payloads) {
-        if (Array.isArray(payload.aliases)) {
-            terms.push(...payload.aliases.map(String));
-        }
-    }
-    return Array.from(new Set(terms.filter(Boolean)));
-};
-
-const queryTerms = (query: string, queryAliases: Record<string, unknown>): string[] => {
-    return Array.from(new Set([
-        ...tokenize(query),
-        ...aliasTermsFromPayloads(aliasPayloadsForQuery(query, queryAliases))
-    ].map(term => term.trim()).filter(Boolean)));
-};
-
-const taskFrameText = (document: SearchDocument): string => {
-    return document.task_frames.map(frame => [
-        frame.what,
-        frame.action.summary,
-        frame.action.verb,
-        frame.action.object,
-        frame.time.deadline,
-        ...frame.materials.map(material => material.name),
-        frame.location.place,
-        frame.location.online,
-        frame.location.contact,
-        ...frame.evidence.map(item => item.text)
-    ].filter(Boolean).join(' ')).join(' ');
-};
-
-const documentRecallText = (document: SearchDocument): string => {
-    const payload = document as SearchDocument & Record<string, unknown>;
-    const llm = asRecord(payload.llm);
-    const typedSearchTerms = collectStrings(payload.typed_search_terms);
-    const synonyms = collectStrings(payload.synonyms);
-    const noticeCard = collectStrings(payload.notice_card);
-    const sitegraphProvenance = collectStrings(payload.sitegraph_provenance);
-    const semanticTerms = collectStrings([
-        llm.semantic_queries,
-        llm.query_phrases,
-        llm.search_profile
-    ]);
-
-    return [
-        document.title,
-        document.summary,
-        document.content,
-        document.source,
-        document.source_id,
-        document.channel,
-        document.channel_id,
-        document.url,
-        document.source_domain,
-        DOMAIN_LABELS[document.domain] || document.domain,
-        INTENT_LABELS[document.intent] || document.intent,
-        SOURCE_TYPE_LABELS[document.source_type] || document.source_type,
-        document.class_name,
-        ...document.tags,
-        ...document.evidence,
-        ...document.required_materials,
-        ...document.attachments.flatMap(attachment => collectStrings(attachment)),
-        taskFrameText(document),
-        ...typedSearchTerms,
-        ...synonyms,
-        ...noticeCard,
-        ...sitegraphProvenance,
-        ...semanticTerms
-    ].filter(Boolean).join(' ');
-};
-
-const containsAny = (text: string, terms: string[]): boolean => {
-    return terms.some(term => {
-        const normalizedTerm = normalize(term);
-        return normalizedTerm.length > 0 && text.includes(normalizedTerm);
-    });
-};
-
-type RecallRoute = ReturnType<typeof routeQuery>;
-
-const routeRejectsDocument = (document: SearchDocument, route: RecallRoute, normalizedText: string): boolean => {
-    const blockedDomains = new Set(route.blocked_domains_for_top5);
-    const blockedSources = new Set(route.blocked_sources_for_top5.map(normalize));
-    const source = normalize(document.source);
-    const sourceId = normalize(document.source_id);
-
-    if (blockedDomains.has(document.domain)) return true;
-    if (blockedSources.has(source) || blockedSources.has(sourceId)) return true;
-    if (!route.allow_resource_top5 && document.source_type === 'github_resource') return true;
-    if (containsAny(normalizedText, route.bad_result_terms)) return true;
-    if (route.must_include_terms_for_top_results.length > 0 && !containsAny(normalizedText, route.must_include_terms_for_top_results)) {
-        return true;
-    }
-    return false;
-};
-
-const recallReasons = (
-    document: SearchDocument,
+const rankDocument = (
+    document: SitegraphFullDocument,
     query: string,
     terms: string[],
-    route: RecallRoute
-): string[] => {
-    const normalizedText = normalize(documentRecallText(document));
-    if (routeRejectsDocument(document, route, normalizedText)) return [];
-
+    lightScore: number
+): RankedSitegraphDocument => {
     const normalizedQuery = normalize(query);
+    const title = textBlob(document, ['title']);
+    const section = textBlob(document, ['section', 'nav_path_text']);
+    const summary = textBlob(document, ['summary']);
+    const content = textBlob(document, ['content']);
+    const tags = textBlob(document, ['tags']);
+    const attachment = attachmentBlob(document);
+    const external = document.record_type === 'external' ? normalize(`${document.title} ${document.url} ${document.summary}`) : '';
+    let score = lightScore;
     const reasons: string[] = [];
-    const title = normalize(document.title);
-    if (normalizedQuery && title.includes(normalizedQuery)) reasons.push('标题命中');
 
-    const matchedTerms = terms
-        .filter(term => {
-            const normalizedTerm = normalize(term);
-            return normalizedTerm.length > 0 && normalizedText.includes(normalizedTerm);
-        })
-        .slice(0, 6);
-    if (matchedTerms.length > 0) reasons.push(`关键词/同义词: ${matchedTerms.join('、')}`);
-
-    if (route.target_domains.includes(document.domain)) reasons.push(`领域: ${getDomainLabel(document.domain)}`);
-    if (route.target_intents.includes(document.intent)) reasons.push(`动作: ${getIntentLabel(document.intent)}`);
-
-    const hasGroundedTextHit = matchedTerms.length > 0 || (normalizedQuery.length > 0 && title.includes(normalizedQuery));
-    return reasons.length > 0 && hasGroundedTextHit ? reasons : [];
-};
-
-const recallReasonText = (document: SearchDocument, reasons: string[]): string => {
-    const lead = reasons.length > 0 ? reasons.join('；') : '候选召回';
-    const source = `${document.source} · ${document.channel}`;
-    return `${lead}；${source}；按发布时间倒序`;
-};
-
-const compareByPublishedAtDesc = (a: SearchDocument, b: SearchDocument): number => {
-    const dateDelta = dateSortValue(b.published_at) - dateSortValue(a.published_at);
-    if (dateDelta !== 0) return dateDelta;
-    return a.id.localeCompare(b.id);
-};
-
-export const parseSearchDocuments = (payload: unknown, source = 'search documents'): SearchDocument[] => {
-    try {
-        const docs = z.array(SearchDocumentSchema).parse(payload);
-        const ids = new Set<string>();
-        for (const item of docs) {
-            if (ids.has(item.id)) {
-                throw new SearchContractError(`${source} contains duplicate id: ${item.id}`);
-            }
-            ids.add(item.id);
-        }
-        return docs as unknown as SearchDocument[];
-    } catch (e) {
-        if (e instanceof z.ZodError) {
-            throw new SearchContractError(`Validation failed for ${source}: ${formatZodIssues(payload, e)}`);
-        }
-        throw new SearchContractError(`Validation failed for ${source}: ${e instanceof Error ? e.message : String(e)}`);
+    if (normalizedQuery && title === normalizedQuery) {
+        score += 5000;
+        reasons.push('标题精确');
+    } else if (normalizedQuery && title.includes(normalizedQuery)) {
+        score += 520;
+        reasons.push('标题包含');
     }
-};
-
-export const parseSearchManifest = (payload: unknown, source = 'search manifest'): SearchManifest => {
-    try {
-        return SearchManifestSchema.parse(payload) as unknown as SearchManifest;
-    } catch (e) {
-        if (e instanceof z.ZodError) {
-            throw new SearchContractError(`Validation failed for ${source}: ${formatZodIssues(payload, e)}`);
-        }
-        throw new SearchContractError(`Validation failed for ${source}: ${e instanceof Error ? e.message : String(e)}`);
+    if (normalizedQuery && attachment.includes(normalizedQuery)) {
+        score += 360;
+        reasons.push('附件名命中');
     }
+    if (normalizedQuery && external.includes(normalizedQuery)) {
+        score += 360;
+        reasons.push('外部入口命中');
+    }
+    if (normalizedQuery && section.includes(normalizedQuery)) {
+        score += 180;
+        reasons.push('栏目路径命中');
+    }
+    if (normalizedQuery && content.includes(normalizedQuery)) {
+        score += 120;
+        reasons.push('正文命中');
+    }
+    if (normalizedQuery && tags.includes(normalizedQuery)) {
+        score += 80;
+        reasons.push('标签命中');
+    }
+
+    const matchedTerms: string[] = [];
+    for (const term of terms.slice(0, 12)) {
+        if (title.includes(term)) {
+            score += 80;
+            matchedTerms.push(term);
+        } else if (attachment.includes(term)) {
+            score += 70;
+            matchedTerms.push(term);
+        } else if (external.includes(term)) {
+            score += 65;
+            matchedTerms.push(term);
+        } else if (section.includes(term)) {
+            score += 45;
+            matchedTerms.push(term);
+        } else if (summary.includes(term) || content.includes(term)) {
+            score += 12;
+            matchedTerms.push(term);
+        }
+    }
+    if (matchedTerms.length > 0) {
+        reasons.push(`词项：${Array.from(new Set(matchedTerms)).sort((a, b) => b.length - a.length).slice(0, 6).join('、')}`);
+    }
+    if (document.facet === 'system' && ['系统', 'jwxt', '教务'].some(term => normalizedQuery.includes(term))) {
+        score += 1500;
+        reasons.push('系统入口');
+    }
+    if (document.facet === 'download' && ['附件', '下载', 'xlsx', 'xls', '表格'].some(term => normalizedQuery.includes(term))) {
+        score += 120;
+        reasons.push('下载资源');
+    }
+    score += freshnessScore(document);
+
+    return {
+        ...document,
+        score,
+        score_reason: reasons.join('；') || '倒排候选'
+    };
 };
 
-export const recallSearchDocuments = (
-    documents: SearchDocument[],
+export const recallSitegraphDocuments = async (
+    bundle: SitegraphIndexBundle,
     query: string,
-    queryAliases: Record<string, unknown> = {},
+    signal: AbortSignal,
     limit = 30
-): RankedSearchDocument[] => {
+): Promise<RankedSitegraphDocument[]> => {
     const trimmed = query.trim();
     if (trimmed.length < 2) return [];
-
-    const route = routeQuery(trimmed);
-    const terms = queryTerms(trimmed, queryAliases);
-    const normalizedQuery = normalize(trimmed);
-    const queryFirst: RankedSearchDocument[] = [];
-    const aliasOnly: RankedSearchDocument[] = [];
-
-    for (const document of documents) {
-        const reasons = recallReasons(document, trimmed, terms, route);
-        if (reasons.length === 0) continue;
-        const ranked = {
-            ...document,
-            score: 1,
-            score_reason: recallReasonText(document, reasons)
-        };
-        const normalizedText = normalize(documentRecallText(document));
-        if (normalizedQuery && normalizedText.includes(normalizedQuery)) {
-            queryFirst.push(ranked);
-        } else {
-            aliasOnly.push(ranked);
+    const terms = queryTokens(trimmed, bundle.queryAliases);
+    const scores = new Map<number, number>();
+    for (const term of terms) {
+        const postings = bundle.invertedIndex.tokens[term];
+        if (!postings) continue;
+        for (const [field, ids] of Object.entries(postings)) {
+            const weight = FIELD_WEIGHTS[field] || 8;
+            for (const docIndex of ids) {
+                scores.set(docIndex, (scores.get(docIndex) || 0) + weight + Math.min(term.length, 8));
+            }
         }
     }
 
-    queryFirst.sort(compareByPublishedAtDesc);
-    aliasOnly.sort(compareByPublishedAtDesc);
+    const normalizedQuery = normalize(trimmed);
+    if (scores.size < 8) {
+        for (const meta of bundle.docMeta) {
+            const haystack = textBlob(meta, ['title', 'summary', 'section', 'nav_path_text', 'tags']);
+            if (normalizedQuery && haystack.includes(normalizedQuery)) {
+                scores.set(meta.doc_index, (scores.get(meta.doc_index) || 0) + 90);
+            }
+        }
+    }
+    if (scores.size === 0) return [];
 
-    return [...queryFirst, ...aliasOnly].slice(0, limit);
-};
+    const candidateIndices = Array.from(scores.entries())
+        .sort((a, b) => b[1] - a[1])
+        .slice(0, 120)
+        .map(([docIndex]) => docIndex);
+    const candidateMeta = candidateIndices
+        .map(docIndex => bundle.docMeta[docIndex])
+        .filter((meta): meta is SitegraphDocMeta => Boolean(meta));
+    const shardPaths = Array.from(new Set(candidateMeta.map(meta => meta.shard.path)));
+    const shardResults = await Promise.all(shardPaths.map(path => loadShard(path, signal)));
+    const fullDocs = new Map<number, SitegraphFullDocument>();
+    for (const shard of shardResults) {
+        for (const document of shard) fullDocs.set(document.doc_index, document);
+    }
 
-export const getDomainLabel = (domain: SearchDomain): string => DOMAIN_LABELS[domain] || domain;
-
-export const getIntentLabel = (intent: SearchIntent): string => INTENT_LABELS[intent] || intent;
-
-export const getSourceTypeLabel = (sourceType: SearchSourceType): string => SOURCE_TYPE_LABELS[sourceType] || sourceType;
-
-export const getLifecycleLabel = (lifecycle: SearchLifecycle): string => LIFECYCLE_LABELS[lifecycle] || lifecycle;
-
-export const getRecentDocuments = (documents: SearchDocument[], limit: number): SearchDocument[] => {
-    return [...documents]
-        .sort(compareByPublishedAtDesc)
+    return candidateIndices
+        .map(docIndex => {
+            const document = fullDocs.get(docIndex);
+            return document ? rankDocument(document, trimmed, terms, scores.get(docIndex) || 0) : null;
+        })
+        .filter((item): item is RankedSitegraphDocument => Boolean(item))
+        .sort((a, b) => {
+            const scoreDelta = b.score - a.score;
+            if (scoreDelta !== 0) return scoreDelta;
+            const dateDelta = dateSortValue(b.published_at) - dateSortValue(a.published_at);
+            if (dateDelta !== 0) return dateDelta;
+            return a.id.localeCompare(b.id);
+        })
         .slice(0, limit);
 };
 
-export const getUpdateStats = (documents: SearchDocument[]) => {
-    const noticeDocuments = documents.filter(document => document.kind !== 'exam');
-    const today = noticeDocuments.filter(document => {
-        const days = daysFromNow(document.published_at);
-        return days !== null && days >= 0 && days <= 1;
-    }).length;
-    const sevenDays = noticeDocuments.filter(document => {
-        const days = daysFromNow(document.published_at);
-        return days !== null && days >= 0 && days <= 7;
-    }).length;
-
-    return { today, sevenDays };
-};
-
 export const formatSearchDate = (dateLike: string | null | undefined): string => {
-    if (!dateLike) return '日期待确认';
+    if (!dateLike) return '日期未标注';
     const date = new Date(dateLike);
     if (Number.isNaN(date.getTime())) return dateLike;
 

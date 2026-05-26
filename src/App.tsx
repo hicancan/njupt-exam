@@ -16,7 +16,7 @@ import { ResultsView } from '@/views/ResultsView';
 
 function App() {
     const { exams: allExams, loading: examLoading, error: examError, sourceUrl, sourceTitle, generatedAt, totalRecords } = useExamData();
-    const { documents: noticeDocuments, queryAliases, optionalUnavailable, loading: searchLoading, error: searchError } = useSearchIndex();
+    const { bundle: sitegraphBundle, optionalUnavailable, loading: searchLoading, error: searchIndexError } = useSearchIndex();
     const { newDataAvailable, reloadToUpdate } = useDataUpdateNotifier();
 
     const { classParam, qParam, navigate } = useUrlState();
@@ -29,7 +29,7 @@ function App() {
     const searchQuery = initialQuery;
     const manualSelection = classParam;
 
-    const { recalledResults, learningResources } = useSearchEngine(noticeDocuments, searchQuery, queryAliases);
+    const { recalledResults, searching, searchError: sitegraphSearchError } = useSearchEngine(sitegraphBundle, searchQuery);
     const classSearchResult = useClassSearch(allExams, initialQuery, manualSelection);
     const currentClass = classSearchResult.mode === 'DETAIL' ? classSearchResult.classes[0] || null : null;
     const { selectedIds, toggleExamSelection } = useSelectedExamIds(currentClass, classSearchResult.exams);
@@ -85,7 +85,8 @@ function App() {
         navigate({ class: null, q: null });
     };
 
-    const isLoading = examLoading || searchLoading;
+    const searchError = searchIndexError || sitegraphSearchError;
+    const isLoading = examLoading || searchLoading || searching;
 
     if (examError && searchError) {
         return (
@@ -108,7 +109,7 @@ function App() {
                 <div className="max-w-6xl mx-auto w-full px-4 pt-4">
                     <div className="border border-[#f4c7c3] dark:border-[#5f2b26] bg-[#fce8e6] dark:bg-[#2b1715] text-[#b3261e] dark:text-[#f28b82] rounded-md p-3 text-sm flex gap-2">
                         <AlertCircle className="w-4 h-4 shrink-0 mt-0.5" aria-hidden="true" />
-                        <span>{searchError || examError}</span>
+                    <span>{searchError || examError}</span>
                     </div>
                 </div>
             ) : null}
@@ -134,7 +135,7 @@ function App() {
                     isLoading={isLoading}
                     query={searchQuery}
                     results={recalledResults}
-                    resources={learningResources}
+                    resources={[]}
                     classMode={classSearchResult}
                     selectedIds={selectedIds}
                     reminders={reminders}

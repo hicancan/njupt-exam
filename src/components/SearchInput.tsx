@@ -2,13 +2,13 @@ import { useEffect, useRef, useState } from 'react';
 import { Search, X } from 'lucide-react';
 
 const SEARCH_SUGGESTIONS = [
-    '搜考试安排',
-    '搜奖学金公示',
-    '搜竞赛报名',
-    '搜讲座活动',
-    '搜招聘宣讲',
-    '搜图书馆开放',
-    '搜停水停电',
+    '搜校历',
+    '搜期末考试',
+    '搜转专业',
+    '搜规章制度',
+    '搜办事流程',
+    '搜学生表格',
+    '搜教务管理系统',
     '搜 B250403'
 ];
 
@@ -44,7 +44,7 @@ export function SearchInput({
 
         let timeoutId = 0;
         const tick = () => {
-            const suggestion = SEARCH_SUGGESTIONS[suggestionIndexRef.current] ?? '搜考试安排';
+            const suggestion = SEARCH_SUGGESTIONS[suggestionIndexRef.current] ?? '搜校历';
             const nextLength = charIndexRef.current + directionRef.current;
             charIndexRef.current = nextLength;
             setDynamicPlaceholder(suggestion.slice(0, Math.max(1, nextLength)));

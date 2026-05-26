@@ -61,14 +61,14 @@ jobs:
         run: python scripts/analyze_and_update.py
 
       - name: Validate upstream JWC sitegraph package
-        run: python scripts/validate_sitegraph_ingest.py --sitegraph-index "$SITEGRAPH_INDEX" --skip-output
+        run: python scripts/validate_sitegraph_index.py --sitegraph-index "$SITEGRAPH_INDEX" --skip-output
 
-      - name: Build sitegraph-backed public index
-        run: python scripts/ingest_sitegraph.py --sitegraph-index "$SITEGRAPH_INDEX"
+      - name: Build pure JWC sitegraph search index
+        run: python scripts/build_sitegraph_index.py --sitegraph-index "$SITEGRAPH_INDEX"
 
-      - name: Validate sitegraph-backed public index
+      - name: Validate pure JWC sitegraph search index
         run: |
-          python scripts/validate_sitegraph_ingest.py --sitegraph-index "$SITEGRAPH_INDEX"
+          python scripts/validate_sitegraph_index.py --sitegraph-index "$SITEGRAPH_INDEX"
           python scripts/utils/validate_search_index.py
 
       - name: Representative sitegraph search smoke test
@@ -77,20 +77,15 @@ jobs:
       - name: Python integrity checks
         run: |
           python -m py_compile \
-            scripts/ingest_sitegraph.py \
-            scripts/validate_sitegraph_ingest.py \
+            scripts/build_sitegraph_index.py \
+            scripts/validate_sitegraph_index.py \
+            scripts/sitegraph_search.py \
             scripts/auto_update_exam_data.py \
             scripts/analyze_and_update.py \
-            scripts/search/query_router.py \
-            scripts/search/vertical_ranker.py \
             scripts/eval/sitegraph_query_smoke_test.py \
-            scripts/utils/validate_search_index.py \
-            scripts/utils/validate_query_routes.py
+            scripts/utils/validate_search_index.py
           python -m unittest discover -s tests
           python -m pytest
-
-      - name: Validate query routes
-        run: python scripts/utils/validate_query_routes.py
 
       - name: Frontend checks
         run: |

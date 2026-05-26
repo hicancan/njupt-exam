@@ -1,14 +1,15 @@
-import { Bell, BookOpen, CalendarDays, Search, Sparkles, Trophy, Users } from 'lucide-react';
+import { CalendarDays, Download, FileText, Search, Shuffle, Trophy, Waypoints } from 'lucide-react';
 import { SearchInput } from '@/components/SearchInput';
 import { ThemeToggle } from '@/components/ThemeToggle';
 
 const QUICK_SEARCHES: { label: string; query: string; icon: typeof Search }[] = [
     { label: '考试安排', query: '考试安排', icon: CalendarDays },
-    { label: '竞赛报名', query: '竞赛 报名', icon: Trophy },
-    { label: '奖学金公示', query: '奖学金 公示', icon: Sparkles },
-    { label: '招聘宣讲', query: '招聘 宣讲会', icon: Users },
-    { label: '图书馆开放', query: '图书馆 开放', icon: BookOpen },
-    { label: '停水停电', query: '停水 停电', icon: Bell },
+    { label: '校历', query: '校历', icon: CalendarDays },
+    { label: '转专业', query: '转专业', icon: Shuffle },
+    { label: '学生表格', query: '学生相关文件及表格', icon: Download },
+    { label: '教务系统', query: '教务管理系统', icon: Waypoints },
+    { label: '大创', query: '大创', icon: Trophy },
+    { label: '规章制度', query: '规章制度', icon: FileText },
 ];
 
 interface HomeViewProps {

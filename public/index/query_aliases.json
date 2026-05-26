@@ -1,364 +1,33 @@
 {
-  "保研": {
+  "xlsx": {
     "aliases": [
-      "推免",
-      "推荐免试",
-      "免试研究生"
-    ],
-    "domains": [
-      "degree",
-      "academic"
-    ],
-    "intents": [
-      "apply",
-      "publicity",
-      "check_result"
+      "xls",
+      "Excel",
+      "表格"
+    ]
+  },
+  "办事流程": {
+    "aliases": [
+      "流程",
+      "办理指南",
+      "办事指南",
+      "申请流程"
     ]
   },
   "大创": {
     "aliases": [
-      "大学生创新创业训练计划",
-      "创新创业项目申报",
-      "创新训练项目"
-    ],
-    "domains": [
-      "project",
-      "innovation_project"
-    ],
-    "intents": [
-      "apply",
-      "submit"
+      "大学生创新创业",
+      "创新创业",
+      "创新训练",
+      "创业训练"
     ]
   },
-  "奖学金": {
+  "学生相关文件及表格": {
     "aliases": [
-      "评奖评优",
-      "奖助",
-      "优秀学生奖学金"
-    ],
-    "domains": [
-      "scholarship"
-    ],
-    "intents": [
-      "apply",
-      "publicity"
-    ]
-  },
-  "助学金": {
-    "aliases": [
-      "困难认定",
-      "资助",
-      "贫困补助"
-    ],
-    "domains": [
-      "subsidy",
-      "scholarship"
-    ],
-    "intents": [
-      "apply",
-      "submit"
-    ]
-  },
-  "找工作": {
-    "aliases": [
-      "就业",
-      "宣讲会",
-      "招聘会",
-      "双选会",
-      "实习"
-    ],
-    "domains": [
-      "employment"
-    ],
-    "intents": [
-      "attend",
-      "register"
-    ]
-  },
-  "停电": {
-    "aliases": [
-      "停水停电",
-      "后勤通知",
-      "电力检修"
-    ],
-    "domains": [
-      "logistics"
-    ],
-    "intents": [
-      "alert",
-      "read"
-    ]
-  },
-  "校园网": {
-    "aliases": [
-      "VPN",
-      "统一身份认证",
-      "邮箱",
-      "信息化"
-    ],
-    "domains": [
-      "campus_network"
-    ],
-    "intents": [
-      "read",
-      "download"
-    ]
-  },
-  "四六级": {
-    "aliases": [
-      "CET",
-      "英语四级",
-      "英语六级",
-      "大学英语四六级"
-    ],
-    "domains": [
-      "exam"
-    ],
-    "intents": [
-      "schedule",
-      "register",
-      "check_result"
-    ]
-  },
-  "补考": {
-    "aliases": [
-      "重修考试",
-      "缓考",
-      "补缓考"
-    ],
-    "domains": [
-      "exam",
-      "course"
-    ],
-    "intents": [
-      "schedule",
-      "check_result"
-    ]
-  },
-  "宣讲会": {
-    "aliases": [
-      "招聘宣讲",
-      "校园招聘",
-      "双选会"
-    ],
-    "domains": [
-      "employment"
-    ],
-    "intents": [
-      "attend",
-      "register"
-    ]
-  },
-  "挑战杯": {
-    "aliases": [
-      "大学生课外学术科技作品竞赛",
-      "挑战杯竞赛",
-      "团委竞赛"
-    ],
-    "domains": [
-      "competition"
-    ],
-    "intents": [
-      "register",
-      "apply",
-      "check_result"
-    ]
-  },
-  "蓝桥杯": {
-    "aliases": [
-      "蓝桥杯软件赛",
-      "蓝桥杯报名",
-      "程序设计竞赛"
-    ],
-    "domains": [
-      "competition"
-    ],
-    "intents": [
-      "register",
-      "check_result"
-    ]
-  },
-  "实习": {
-    "aliases": [
-      "实习岗位",
-      "就业实习",
-      "招聘岗位"
-    ],
-    "domains": [
-      "employment"
-    ],
-    "intents": [
-      "apply",
-      "read"
-    ]
-  },
-  "停水": {
-    "aliases": [
-      "停水通知",
-      "后勤通知",
-      "供水检修"
-    ],
-    "domains": [
-      "logistics"
-    ],
-    "intents": [
-      "alert",
-      "read"
-    ]
-  },
-  "图书馆开放": {
-    "aliases": [
-      "图书馆开放时间",
-      "闭馆通知",
-      "研读室开放"
-    ],
-    "domains": [
-      "library"
-    ],
-    "intents": [
-      "schedule",
-      "read"
-    ]
-  },
-  "转专业": {
-    "aliases": [
-      "专业调整",
-      "转入转出",
-      "转专业公示"
-    ],
-    "domains": [
-      "academic",
-      "course"
-    ],
-    "intents": [
-      "apply",
-      "check_result"
-    ]
-  },
-  "毕业设计": {
-    "aliases": [
-      "毕设",
-      "本科毕业论文",
-      "毕业论文"
-    ],
-    "domains": [
-      "academic",
-      "degree",
-      "resource"
-    ],
-    "intents": [
-      "submit",
-      "schedule",
-      "download"
-    ]
-  },
-  "论文答辩": {
-    "aliases": [
-      "答辩公告",
-      "学位论文答辩",
-      "毕业答辩"
-    ],
-    "domains": [
-      "degree"
-    ],
-    "intents": [
-      "schedule",
-      "submit",
-      "read"
-    ]
-  },
-  "海外交流": {
-    "aliases": [
-      "访学项目",
-      "出国境交流",
-      "国际交流项目"
-    ],
-    "domains": [
-      "international",
-      "project"
-    ],
-    "intents": [
-      "apply",
-      "submit"
-    ]
-  },
-  "医保": {
-    "aliases": [
-      "医疗保险",
-      "大学生医保",
-      "体检"
-    ],
-    "domains": [
-      "medical_insurance",
-      "life"
-    ],
-    "intents": [
-      "read",
-      "submit",
-      "pay"
-    ]
-  },
-  "档案": {
-    "aliases": [
-      "成绩单办理",
-      "用档指南",
-      "档案证明"
-    ],
-    "domains": [
-      "archive"
-    ],
-    "intents": [
-      "read",
-      "download"
-    ]
-  },
-  "高数": {
-    "aliases": [
-      "高等数学",
-      "数学期末",
-      "高数复习"
-    ],
-    "domains": [
-      "exam",
-      "resource",
-      "course"
-    ],
-    "intents": [
-      "schedule",
-      "read",
-      "download"
-    ]
-  },
-  "离散数学": {
-    "aliases": [
-      "离散数学考试",
-      "离散数学复习",
-      "离散数学资料"
-    ],
-    "domains": [
-      "exam",
-      "resource",
-      "course"
-    ],
-    "intents": [
-      "schedule",
-      "read",
-      "download"
-    ]
-  },
-  "校历": {
-    "aliases": [
-      "校历查询",
-      "教学日历",
-      "教学周历"
-    ],
-    "domains": [
-      "academic",
-      "exam"
-    ],
-    "intents": [
-      "schedule",
-      "read"
+      "学生表格",
+      "常用下载",
+      "表格下载",
+      "学生相关文件"
     ]
   },
   "慕课考试": {
@@ -367,15 +36,29 @@
       "MOOC",
       "SPOC",
       "在线开放课程",
-      "考试"
-    ],
-    "domains": [
-      "course",
-      "exam"
-    ],
-    "intents": [
-      "schedule",
-      "read"
+      "线下考试"
+    ]
+  },
+  "成绩": {
+    "aliases": [
+      "成绩查询",
+      "成绩单",
+      "绩点",
+      "成绩复核"
+    ]
+  },
+  "推免": {
+    "aliases": [
+      "免试攻读研究生",
+      "推荐免试",
+      "推免生"
+    ]
+  },
+  "教务管理系统": {
+    "aliases": [
+      "正方教务",
+      "教务系统",
+      "jwxt"
     ]
   },
   "期末考试": {
@@ -384,12 +67,13 @@
       "考试安排",
       "考场安排",
       "考试周"
-    ],
-    "domains": [
-      "exam"
-    ],
-    "intents": [
-      "schedule"
+    ]
+  },
+  "校历": {
+    "aliases": [
+      "教学日历",
+      "教学周历",
+      "2025-2026学年校历"
     ]
   },
   "规章制度": {
@@ -398,68 +82,13 @@
       "制度",
       "管理办法",
       "政策文件"
-    ],
-    "domains": [
-      "policy"
-    ],
-    "intents": [
-      "read"
     ]
   },
-  "办事流程": {
+  "转专业": {
     "aliases": [
-      "流程",
-      "学生事务",
-      "办理指南",
-      "办事指南"
-    ],
-    "domains": [
-      "academic"
-    ],
-    "intents": [
-      "read",
-      "download"
-    ]
-  },
-  "学生相关文件及表格": {
-    "aliases": [
-      "学生表格",
-      "常用下载",
-      "表格下载"
-    ],
-    "domains": [
-      "resource"
-    ],
-    "intents": [
-      "download"
-    ]
-  },
-  "教务管理系统": {
-    "aliases": [
-      "正方教务",
-      "教务系统",
-      "jwxt"
-    ],
-    "domains": [
-      "academic",
-      "course"
-    ],
-    "intents": [
-      "read"
-    ]
-  },
-  "成绩": {
-    "aliases": [
-      "成绩查询",
-      "成绩单",
-      "绩点"
-    ],
-    "domains": [
-      "academic"
-    ],
-    "intents": [
-      "check_result",
-      "read"
+      "专业变更",
+      "转入转出",
+      "转专业管理办法"
     ]
   },
   "附件1": {
@@ -467,24 +96,6 @@
       "附件 1",
       "附件一",
       "附件"
-    ],
-    "domains": [
-      "resource"
-    ],
-    "intents": [
-      "download"
-    ]
-  },
-  "xlsx": {
-    "aliases": [
-      "Excel",
-      "xls"
-    ],
-    "domains": [
-      "resource"
-    ],
-    "intents": [
-      "download"
     ]
   }
 }
