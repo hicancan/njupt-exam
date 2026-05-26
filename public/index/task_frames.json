@@ -1,5 +1,80 @@
 [
   {
+    "task_id": "task_0cd35681746eb270",
+    "doc_id": "jwc-a268e4893a7032fec1da",
+    "source_mode": "generated_from_llm_fields",
+    "field_sources": {
+      "category": "llm",
+      "domain": "llm",
+      "intent": "llm",
+      "deadline": "llm",
+      "action_required": "llm",
+      "action_summary": "llm",
+      "required_materials": "llm",
+      "summary": "llm",
+      "evidence": "llm",
+      "sensitive": "llm",
+      "review_required": "llm",
+      "task_frames": "empty_not_applicable"
+    },
+    "task_type": "schedule",
+    "who": {
+      "audience": [
+        "本科生"
+      ],
+      "college": [],
+      "grade": [],
+      "major": [],
+      "class_name": []
+    },
+    "what": "【教务管理办公室】2025-2026学年第二学期考试安排表",
+    "action": {
+      "required": false,
+      "verb": null,
+      "object": null,
+      "summary": null
+    },
+    "time": {
+      "published_at": "2026-05-25",
+      "deadline": null,
+      "lifecycle": "active",
+      "urgency_days": null
+    },
+    "materials": [],
+    "location": {
+      "place": null,
+      "online": null,
+      "contact": null
+    },
+    "source": {
+      "source_id": "jwc",
+      "channel_id": "jwc_recommendation",
+      "authority": 0.7,
+      "official": true
+    },
+    "evidence": [
+      {
+        "field": "general",
+        "text": "现公布2025-2026学年第二学期考试安排表"
+      },
+      {
+        "field": "general",
+        "text": "请及时通知相关学生参加考试"
+      },
+      {
+        "field": "audience",
+        "text": "现公布2025-2026学年第二学期考试安排表"
+      }
+    ],
+    "risk": {
+      "sensitive": false,
+      "restricted": false,
+      "low_evidence": false,
+      "review_required": false
+    },
+    "confidence": 0.9
+  },
+  {
     "task_id": "task_c387f07d6af241cf",
     "doc_id": "github-Moonike1217-NJUPTExamICSBuilder-6d7b3d1df6772dcac729",
     "source_mode": "generated_from_llm_fields",
@@ -69,77 +144,6 @@
       {
         "field": "audience",
         "text": "南邮考试日历生成器 这是一个帮助南京邮电大学学生将考试信息转换为 ICS 日历文件的工具"
-      }
-    ],
-    "risk": {
-      "sensitive": false,
-      "restricted": false,
-      "low_evidence": false,
-      "review_required": false
-    },
-    "confidence": 0.9
-  },
-  {
-    "task_id": "task_1c28412ce77c847b",
-    "doc_id": "jwc-5b4427b16b11f6941a73",
-    "source_mode": "generated_from_llm_fields",
-    "field_sources": {
-      "category": "llm",
-      "domain": "llm",
-      "intent": "llm",
-      "deadline": "llm",
-      "action_required": "llm",
-      "action_summary": "llm",
-      "required_materials": "llm",
-      "summary": "llm",
-      "evidence": "llm",
-      "sensitive": "llm",
-      "review_required": "llm",
-      "task_frames": "empty_not_applicable"
-    },
-    "task_type": "result_check",
-    "who": {
-      "audience": [
-        "本科生"
-      ],
-      "college": [],
-      "grade": [],
-      "major": [],
-      "class_name": []
-    },
-    "what": "【教务管理办公室】2025-2026学年第二学期考试安排表",
-    "action": {
-      "required": false,
-      "verb": null,
-      "object": null,
-      "summary": null
-    },
-    "time": {
-      "published_at": "2026-05-22",
-      "deadline": null,
-      "lifecycle": "active",
-      "urgency_days": null
-    },
-    "materials": [],
-    "location": {
-      "place": null,
-      "online": null,
-      "contact": null
-    },
-    "source": {
-      "source_id": "jwc",
-      "channel_id": "jwc_recommendation",
-      "authority": 0.7,
-      "official": true
-    },
-    "evidence": [
-      {
-        "field": "general",
-        "text": "现公布2025-2026学年第二学期考试安排表，考试分为学校组织和学院组织，请及时通知相关学生参加考试。"
-      },
-      {
-        "field": "audience",
-        "text": "现公布2025-2026学年第二学期考试安排表，考试分为学校组织和学院组织，请及时通知相关学生参加考试。"
       }
     ],
     "risk": {

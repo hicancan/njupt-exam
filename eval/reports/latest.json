@@ -4,13 +4,13 @@
     "precision_at_5": 0.8146,
     "recall_at_10": 0.0505,
     "mrr_at_10": 0.8681,
-    "ndcg_at_10": 0.495,
+    "ndcg_at_10": 0.4904,
     "task_frame_count": 61,
     "evidence_coverage": 1.0,
     "restricted_count": 12,
     "sensitive_count": 19,
     "llm_cache_hit_rate": 0.0,
-    "generated_at": "2026-05-25T19:30:42.246699"
+    "generated_at": "2026-05-26T02:45:11.075502"
   },
   "queries": [
     {
@@ -19,7 +19,7 @@
       "precision_at_5": 1.0,
       "recall_at_10": 0.10112359550561797,
       "mrr_at_10": 1.0,
-      "ndcg_at_10": 0.6066979570072282,
+      "ndcg_at_10": 0.5814830058990145,
       "top_ids": [
         "news-cbd56e0e02b3e55bc381",
         "simp-44246937f195803f6db3",
@@ -34,9 +34,9 @@
       "precision_at_5": 0.6,
       "recall_at_10": 0.06741573033707865,
       "mrr_at_10": 1.0,
-      "ndcg_at_10": 0.3443287096939445,
+      "ndcg_at_10": 0.26056645519635824,
       "top_ids": [
-        "jwc-5b4427b16b11f6941a73",
+        "jwc-a268e4893a7032fec1da",
         "news-cbd56e0e02b3e55bc381",
         "jwc-3169f05504d4bfad9732",
         "jwc-3c4799da800a48a91f42",
