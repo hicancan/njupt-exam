@@ -1,7 +1,7 @@
 [
   {
-    "task_id": "task_0cd35681746eb270",
-    "doc_id": "jwc-a268e4893a7032fec1da",
+    "task_id": "task_7c34f8d77e6ae747",
+    "doc_id": "jwc-d7d7092f32f832bb410a",
     "source_mode": "generated_from_llm_fields",
     "field_sources": {
       "category": "llm",
@@ -35,7 +35,7 @@
       "summary": null
     },
     "time": {
-      "published_at": "2026-05-25",
+      "published_at": "2026-05-26",
       "deadline": null,
       "lifecycle": "active",
       "urgency_days": null
@@ -55,11 +55,15 @@
     "evidence": [
       {
         "field": "general",
-        "text": "现 公布2025-2026学年第二学期考试安排表，考试分为学校组织和学院组织，请及时通知相关学生参加考试。"
+        "text": "现公布2025-2026学年第二学期考试安排表"
+      },
+      {
+        "field": "general",
+        "text": "请及时通知相关学生参加考试"
       },
       {
         "field": "audience",
-        "text": "现 公布2025-2026学年第二学期考试安排表，考试分为学校组织和学院组织，请及时通知相关学生参加考试。"
+        "text": "现公布2025-2026学年第二学期考试安排表"
       }
     ],
     "risk": {

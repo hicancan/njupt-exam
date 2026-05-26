@@ -1,25 +1,25 @@
 {
   "summary": {
     "query_count": 24,
-    "precision_at_5": 0.8146,
-    "recall_at_10": 0.05,
-    "mrr_at_10": 0.8681,
-    "ndcg_at_10": 0.4904,
+    "precision_at_5": 0.7646,
+    "recall_at_10": 0.0485,
+    "mrr_at_10": 0.7986,
+    "ndcg_at_10": 0.4761,
     "task_frame_count": 62,
     "evidence_coverage": 1.0,
-    "restricted_count": 12,
-    "sensitive_count": 19,
+    "restricted_count": 11,
+    "sensitive_count": 21,
     "llm_cache_hit_rate": 0.0,
-    "generated_at": "2026-05-26T09:49:42.981588"
+    "generated_at": "2026-05-26T15:05:29.515662"
   },
   "queries": [
     {
       "id": "q001",
       "query": "保研",
       "precision_at_5": 1.0,
-      "recall_at_10": 0.1,
+      "recall_at_10": 0.08888888888888889,
       "mrr_at_10": 1.0,
-      "ndcg_at_10": 0.5814830058990145,
+      "ndcg_at_10": 0.5688755303449076,
       "top_ids": [
         "news-cbd56e0e02b3e55bc381",
         "simp-44246937f195803f6db3",
@@ -31,16 +31,16 @@
     {
       "id": "q002",
       "query": "推免",
-      "precision_at_5": 0.6,
+      "precision_at_5": 0.4,
       "recall_at_10": 0.06666666666666667,
-      "mrr_at_10": 1.0,
-      "ndcg_at_10": 0.26056645519635824,
+      "mrr_at_10": 0.3333333333333333,
+      "ndcg_at_10": 0.20510881927945118,
       "top_ids": [
-        "jwc-a268e4893a7032fec1da",
-        "news-cbd56e0e02b3e55bc381",
-        "jwc-3169f05504d4bfad9732",
-        "jwc-3c4799da800a48a91f42",
-        "jwc-acae1866bba9bae13b2c"
+        "jwc-a39a4b6f5759733f330e",
+        "jwc-b75157516288a7679498",
+        "jwc-d7d7092f32f832bb410a",
+        "jwc-ed0e25122f8b209af75b",
+        "news-cbd56e0e02b3e55bc381"
       ]
     },
     {
@@ -92,7 +92,7 @@
       "id": "q006",
       "query": "大创",
       "precision_at_5": 1.0,
-      "recall_at_10": 0.12987012987012986,
+      "recall_at_10": 0.125,
       "mrr_at_10": 1.0,
       "ndcg_at_10": 0.8323110352014628,
       "top_ids": [
@@ -205,19 +205,17 @@
     {
       "id": "q014",
       "query": "四六级",
-      "precision_at_5": 1.0,
-      "recall_at_10": 0.014705882352941176,
-      "mrr_at_10": 1.0,
-      "ndcg_at_10": 0.347318750845473,
-      "top_ids": [
-        "jwc-3c4799da800a48a91f42"
-      ]
+      "precision_at_5": 0.0,
+      "recall_at_10": 0.0,
+      "mrr_at_10": 0.0,
+      "ndcg_at_10": 0.0,
+      "top_ids": []
     },
     {
       "id": "q015",
       "query": "补考",
       "precision_at_5": 1.0,
-      "recall_at_10": 0.01282051282051282,
+      "recall_at_10": 0.012987012987012988,
       "mrr_at_10": 1.0,
       "ndcg_at_10": 0.12564338174637948,
       "top_ids": [
@@ -228,11 +226,10 @@
       "id": "q016",
       "query": "转专业",
       "precision_at_5": 1.0,
-      "recall_at_10": 0.007380073800738007,
+      "recall_at_10": 0.0036900369003690036,
       "mrr_at_10": 1.0,
-      "ndcg_at_10": 0.24448908575664813,
+      "ndcg_at_10": 0.3159643654927256,
       "top_ids": [
-        "jwc-2c809d4eebc54bd7287d",
         "jwc-68a41687f15408883b85"
       ]
     },
@@ -264,7 +261,7 @@
       "id": "q019",
       "query": "海外交流",
       "precision_at_5": 0.75,
-      "recall_at_10": 0.028037383177570093,
+      "recall_at_10": 0.027522935779816515,
       "mrr_at_10": 1.0,
       "ndcg_at_10": 0.45374257454118544,
       "top_ids": [

@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-05-26T09:49:47.659757",
+  "timestamp": "2026-05-26T15:05:35.434091",
   "thresholds": {
     "route_fixture": 1.0,
     "critical_top1_match_rate": 1.0,
@@ -21,7 +21,7 @@
     "top1_source_match_count": 14,
     "top1_source_match_rate": 1.0,
     "avg_jaccard": 1.0,
-    "avg_kendall_tau": 0.8571,
+    "avg_kendall_tau": 0.7857,
     "all_metrics": {
       "total_queries": 30,
       "top1_match_count": 30,
@@ -29,7 +29,7 @@
       "top1_source_match_count": 30,
       "top1_source_match_rate": 1.0,
       "avg_jaccard": 0.9889,
-      "avg_kendall_tau": 0.6622
+      "avg_kendall_tau": 0.6289
     },
     "comparable_metrics": {
       "total_queries": 22,
@@ -38,7 +38,7 @@
       "top1_source_match_count": 22,
       "top1_source_match_rate": 1.0,
       "avg_jaccard": 0.9848,
-      "avg_kendall_tau": 0.8576
+      "avg_kendall_tau": 0.8121
     },
     "critical_metrics": {
       "total_queries": 14,
@@ -47,18 +47,14 @@
       "top1_source_match_count": 14,
       "top1_source_match_rate": 1.0,
       "avg_jaccard": 1.0,
-      "avg_kendall_tau": 0.8571
+      "avg_kendall_tau": 0.7857
     },
     "gate_sample": "critical_non_data_gap",
     "details": [
       {
         "query": "四六级",
-        "py_top5": [
-          "jwc-3c4799da800a48a91f42"
-        ],
-        "ts_top5": [
-          "jwc-3c4799da800a48a91f42"
-        ],
+        "py_top5": [],
+        "ts_top5": [],
         "jaccard": 1.0,
         "top1_match": true,
         "top1_source_match": true,
@@ -69,12 +65,8 @@
       },
       {
         "query": "CET",
-        "py_top5": [
-          "jwc-3c4799da800a48a91f42"
-        ],
-        "ts_top5": [
-          "jwc-3c4799da800a48a91f42"
-        ],
+        "py_top5": [],
+        "ts_top5": [],
         "jaccard": 1.0,
         "top1_match": true,
         "top1_source_match": true,
@@ -85,12 +77,8 @@
       },
       {
         "query": "四级",
-        "py_top5": [
-          "jwc-3c4799da800a48a91f42"
-        ],
-        "ts_top5": [
-          "jwc-3c4799da800a48a91f42"
-        ],
+        "py_top5": [],
+        "ts_top5": [],
         "jaccard": 1.0,
         "top1_match": true,
         "top1_source_match": true,
@@ -101,12 +89,8 @@
       },
       {
         "query": "六级",
-        "py_top5": [
-          "jwc-3c4799da800a48a91f42"
-        ],
-        "ts_top5": [
-          "jwc-3c4799da800a48a91f42"
-        ],
+        "py_top5": [],
+        "ts_top5": [],
         "jaccard": 1.0,
         "top1_match": true,
         "top1_source_match": true,
@@ -226,17 +210,15 @@
       {
         "query": "转专业",
         "py_top5": [
-          "jwc-2c809d4eebc54bd7287d",
           "jwc-68a41687f15408883b85"
         ],
         "ts_top5": [
-          "jwc-2c809d4eebc54bd7287d",
           "jwc-68a41687f15408883b85"
         ],
         "jaccard": 1.0,
         "top1_match": true,
         "top1_source_match": true,
-        "kendall_tau": 1.0,
+        "kendall_tau": 0.0,
         "is_data_gap_allowed": false,
         "is_critical": true,
         "route_match": true

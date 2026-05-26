@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-05-26T17:49:46.463390+08:00",
+  "timestamp": "2026-05-26T23:05:33.891988+08:00",
   "mode": "both",
   "evaluated_modes": [
     "python",
@@ -11,20 +11,36 @@
   "total_cases": 30,
   "route_accuracy": 1.0,
   "status_counts": {
-    "strict_pass": 27,
-    "data_gap": 3,
+    "strict_pass": 23,
+    "data_gap": 7,
     "fail": 0
   },
-  "strict_pass_count": 27,
-  "data_gap_count": 2,
-  "data_gap_case_count": 3,
+  "strict_pass_count": 23,
+  "data_gap_count": 3,
+  "data_gap_case_count": 7,
   "fail_count": 0,
   "data_gap_cases": [
+    "四六级",
+    "CET",
+    "四级",
+    "六级",
     "论文答辩",
     "毕业答辩",
     "蓝桥杯"
   ],
   "data_gap_channels": {
+    "四六级": [
+      "jwc_exam"
+    ],
+    "CET": [
+      "jwc_exam"
+    ],
+    "四级": [
+      "jwc_exam"
+    ],
+    "六级": [
+      "jwc_exam"
+    ],
     "论文答辩": [
       "pg_degree",
       "pg_graduation"
@@ -38,6 +54,7 @@
     ]
   },
   "data_gap_groups": [
+    "cet_notice",
     "competition_specific",
     "degree_defense"
   ],
@@ -45,37 +62,28 @@
   "case_details": [
     {
       "query": "四六级",
-      "status": "strict_pass",
-      "python_pass": true,
-      "frontend_pass": true,
-      "python_top5": [
-        {
-          "id": "jwc-3c4799da800a48a91f42",
-          "title": "【教务管理办公室】南京邮电大学2026年5月全国大学英语四六级口语考试通知",
-          "domain": "exam",
-          "intent": "read",
-          "source": "本科生院 / 教务处",
-          "source_id": "jwc",
-          "channel_id": "jwc_recommendation",
-          "kind": "notice"
-        }
+      "status": "data_gap",
+      "python_pass": false,
+      "frontend_pass": false,
+      "python_top5": [],
+      "frontend_top5": [],
+      "failure_reasons": [
+        "python: top5 is empty",
+        "python: top3 relevant count 0 < 1",
+        "frontend: top5 is empty",
+        "frontend: top3 relevant count 0 < 1"
       ],
-      "frontend_top5": [
-        {
-          "id": "jwc-3c4799da800a48a91f42",
-          "title": "【教务管理办公室】南京邮电大学2026年5月全国大学英语四六级口语考试通知",
-          "domain": "exam",
-          "intent": "read",
-          "source": "本科生院 / 教务处",
-          "source_id": "jwc",
-          "channel_id": "jwc_recommendation",
-          "kind": "notice"
-        }
+      "blocking_failure_reasons": [
+        "frontend: top5 is empty",
+        "frontend: top3 relevant count 0 < 1"
       ],
-      "failure_reasons": [],
-      "blocking_failure_reasons": [],
-      "non_blocking_failure_reasons": [],
-      "data_gap_channels": [],
+      "non_blocking_failure_reasons": [
+        "python: top5 is empty",
+        "python: top3 relevant count 0 < 1"
+      ],
+      "data_gap_channels": [
+        "jwc_exam"
+      ],
       "route_obj": {
         "raw_query": "四六级",
         "normalized_query": "四六级",
@@ -119,37 +127,28 @@
     },
     {
       "query": "CET",
-      "status": "strict_pass",
-      "python_pass": true,
-      "frontend_pass": true,
-      "python_top5": [
-        {
-          "id": "jwc-3c4799da800a48a91f42",
-          "title": "【教务管理办公室】南京邮电大学2026年5月全国大学英语四六级口语考试通知",
-          "domain": "exam",
-          "intent": "read",
-          "source": "本科生院 / 教务处",
-          "source_id": "jwc",
-          "channel_id": "jwc_recommendation",
-          "kind": "notice"
-        }
+      "status": "data_gap",
+      "python_pass": false,
+      "frontend_pass": false,
+      "python_top5": [],
+      "frontend_top5": [],
+      "failure_reasons": [
+        "python: top5 is empty",
+        "python: top3 relevant count 0 < 1",
+        "frontend: top5 is empty",
+        "frontend: top3 relevant count 0 < 1"
       ],
-      "frontend_top5": [
-        {
-          "id": "jwc-3c4799da800a48a91f42",
-          "title": "【教务管理办公室】南京邮电大学2026年5月全国大学英语四六级口语考试通知",
-          "domain": "exam",
-          "intent": "read",
-          "source": "本科生院 / 教务处",
-          "source_id": "jwc",
-          "channel_id": "jwc_recommendation",
-          "kind": "notice"
-        }
+      "blocking_failure_reasons": [
+        "frontend: top5 is empty",
+        "frontend: top3 relevant count 0 < 1"
       ],
-      "failure_reasons": [],
-      "blocking_failure_reasons": [],
-      "non_blocking_failure_reasons": [],
-      "data_gap_channels": [],
+      "non_blocking_failure_reasons": [
+        "python: top5 is empty",
+        "python: top3 relevant count 0 < 1"
+      ],
+      "data_gap_channels": [
+        "jwc_exam"
+      ],
       "route_obj": {
         "raw_query": "CET",
         "normalized_query": "CET",
@@ -193,37 +192,28 @@
     },
     {
       "query": "四级",
-      "status": "strict_pass",
-      "python_pass": true,
-      "frontend_pass": true,
-      "python_top5": [
-        {
-          "id": "jwc-3c4799da800a48a91f42",
-          "title": "【教务管理办公室】南京邮电大学2026年5月全国大学英语四六级口语考试通知",
-          "domain": "exam",
-          "intent": "read",
-          "source": "本科生院 / 教务处",
-          "source_id": "jwc",
-          "channel_id": "jwc_recommendation",
-          "kind": "notice"
-        }
+      "status": "data_gap",
+      "python_pass": false,
+      "frontend_pass": false,
+      "python_top5": [],
+      "frontend_top5": [],
+      "failure_reasons": [
+        "python: top5 is empty",
+        "python: top3 relevant count 0 < 1",
+        "frontend: top5 is empty",
+        "frontend: top3 relevant count 0 < 1"
       ],
-      "frontend_top5": [
-        {
-          "id": "jwc-3c4799da800a48a91f42",
-          "title": "【教务管理办公室】南京邮电大学2026年5月全国大学英语四六级口语考试通知",
-          "domain": "exam",
-          "intent": "read",
-          "source": "本科生院 / 教务处",
-          "source_id": "jwc",
-          "channel_id": "jwc_recommendation",
-          "kind": "notice"
-        }
+      "blocking_failure_reasons": [
+        "frontend: top5 is empty",
+        "frontend: top3 relevant count 0 < 1"
       ],
-      "failure_reasons": [],
-      "blocking_failure_reasons": [],
-      "non_blocking_failure_reasons": [],
-      "data_gap_channels": [],
+      "non_blocking_failure_reasons": [
+        "python: top5 is empty",
+        "python: top3 relevant count 0 < 1"
+      ],
+      "data_gap_channels": [
+        "jwc_exam"
+      ],
       "route_obj": {
         "raw_query": "四级",
         "normalized_query": "四级",
@@ -267,37 +257,28 @@
     },
     {
       "query": "六级",
-      "status": "strict_pass",
-      "python_pass": true,
-      "frontend_pass": true,
-      "python_top5": [
-        {
-          "id": "jwc-3c4799da800a48a91f42",
-          "title": "【教务管理办公室】南京邮电大学2026年5月全国大学英语四六级口语考试通知",
-          "domain": "exam",
-          "intent": "read",
-          "source": "本科生院 / 教务处",
-          "source_id": "jwc",
-          "channel_id": "jwc_recommendation",
-          "kind": "notice"
-        }
+      "status": "data_gap",
+      "python_pass": false,
+      "frontend_pass": false,
+      "python_top5": [],
+      "frontend_top5": [],
+      "failure_reasons": [
+        "python: top5 is empty",
+        "python: top3 relevant count 0 < 1",
+        "frontend: top5 is empty",
+        "frontend: top3 relevant count 0 < 1"
       ],
-      "frontend_top5": [
-        {
-          "id": "jwc-3c4799da800a48a91f42",
-          "title": "【教务管理办公室】南京邮电大学2026年5月全国大学英语四六级口语考试通知",
-          "domain": "exam",
-          "intent": "read",
-          "source": "本科生院 / 教务处",
-          "source_id": "jwc",
-          "channel_id": "jwc_recommendation",
-          "kind": "notice"
-        }
+      "blocking_failure_reasons": [
+        "frontend: top5 is empty",
+        "frontend: top3 relevant count 0 < 1"
       ],
-      "failure_reasons": [],
-      "blocking_failure_reasons": [],
-      "non_blocking_failure_reasons": [],
-      "data_gap_channels": [],
+      "non_blocking_failure_reasons": [
+        "python: top5 is empty",
+        "python: top3 relevant count 0 < 1"
+      ],
+      "data_gap_channels": [
+        "jwc_exam"
+      ],
       "route_obj": {
         "raw_query": "六级",
         "normalized_query": "六级",
@@ -1030,16 +1011,6 @@
       "frontend_pass": true,
       "python_top5": [
         {
-          "id": "jwc-2c809d4eebc54bd7287d",
-          "title": "【教务管理办公室】2025-2026学年第二学期转入转出创新实验班工作方案 2026-04-30",
-          "domain": "news",
-          "intent": "read",
-          "source": "本科生院 / 教务处",
-          "source_id": "jwc",
-          "channel_id": "jwc_recommendation",
-          "kind": "notice"
-        },
-        {
           "id": "jwc-68a41687f15408883b85",
           "title": "南京邮电大学本科生转专业管理办法（2025年9月18日修订） 2025-09-26",
           "domain": "course",
@@ -1051,16 +1022,6 @@
         }
       ],
       "frontend_top5": [
-        {
-          "id": "jwc-2c809d4eebc54bd7287d",
-          "title": "【教务管理办公室】2025-2026学年第二学期转入转出创新实验班工作方案 2026-04-30",
-          "domain": "news",
-          "intent": "read",
-          "source": "本科生院 / 教务处",
-          "source_id": "jwc",
-          "channel_id": "jwc_recommendation",
-          "kind": "notice"
-        },
         {
           "id": "jwc-68a41687f15408883b85",
           "title": "南京邮电大学本科生转专业管理办法（2025年9月18日修订） 2025-09-26",

@@ -3,21 +3,11 @@
     "query": "四六级",
     "route_type": "cet_notice_search",
     "top1_prefer_exact_title": false,
-    "top5_ids": [
-      "jwc-3c4799da800a48a91f42"
-    ],
-    "top5_titles": [
-      "【教务管理办公室】南京邮电大学2026年5月全国大学英语四六级口语考试通知"
-    ],
-    "top5_sources": [
-      "jwc"
-    ],
-    "top5_domains": [
-      "exam"
-    ],
-    "top5_channel_ids": [
-      "jwc_recommendation"
-    ],
+    "top5_ids": [],
+    "top5_titles": [],
+    "top5_sources": [],
+    "top5_domains": [],
+    "top5_channel_ids": [],
     "expected_route": "cet_notice_search",
     "route_match": true
   },
@@ -25,21 +15,11 @@
     "query": "CET",
     "route_type": "cet_notice_search",
     "top1_prefer_exact_title": false,
-    "top5_ids": [
-      "jwc-3c4799da800a48a91f42"
-    ],
-    "top5_titles": [
-      "【教务管理办公室】南京邮电大学2026年5月全国大学英语四六级口语考试通知"
-    ],
-    "top5_sources": [
-      "jwc"
-    ],
-    "top5_domains": [
-      "exam"
-    ],
-    "top5_channel_ids": [
-      "jwc_recommendation"
-    ],
+    "top5_ids": [],
+    "top5_titles": [],
+    "top5_sources": [],
+    "top5_domains": [],
+    "top5_channel_ids": [],
     "expected_route": "cet_notice_search",
     "route_match": true
   },
@@ -47,21 +27,11 @@
     "query": "四级",
     "route_type": "cet_notice_search",
     "top1_prefer_exact_title": false,
-    "top5_ids": [
-      "jwc-3c4799da800a48a91f42"
-    ],
-    "top5_titles": [
-      "【教务管理办公室】南京邮电大学2026年5月全国大学英语四六级口语考试通知"
-    ],
-    "top5_sources": [
-      "jwc"
-    ],
-    "top5_domains": [
-      "exam"
-    ],
-    "top5_channel_ids": [
-      "jwc_recommendation"
-    ],
+    "top5_ids": [],
+    "top5_titles": [],
+    "top5_sources": [],
+    "top5_domains": [],
+    "top5_channel_ids": [],
     "expected_route": "cet_notice_search",
     "route_match": true
   },
@@ -69,21 +39,11 @@
     "query": "六级",
     "route_type": "cet_notice_search",
     "top1_prefer_exact_title": false,
-    "top5_ids": [
-      "jwc-3c4799da800a48a91f42"
-    ],
-    "top5_titles": [
-      "【教务管理办公室】南京邮电大学2026年5月全国大学英语四六级口语考试通知"
-    ],
-    "top5_sources": [
-      "jwc"
-    ],
-    "top5_domains": [
-      "exam"
-    ],
-    "top5_channel_ids": [
-      "jwc_recommendation"
-    ],
+    "top5_ids": [],
+    "top5_titles": [],
+    "top5_sources": [],
+    "top5_domains": [],
+    "top5_channel_ids": [],
     "expected_route": "cet_notice_search",
     "route_match": true
   },
@@ -254,23 +214,18 @@
     "route_type": "official_notice_search",
     "top1_prefer_exact_title": false,
     "top5_ids": [
-      "jwc-2c809d4eebc54bd7287d",
       "jwc-68a41687f15408883b85"
     ],
     "top5_titles": [
-      "【教务管理办公室】2025-2026学年第二学期转入转出创新实验班工作方案 2026-04-30",
       "南京邮电大学本科生转专业管理办法（2025年9月18日修订） 2025-09-26"
     ],
     "top5_sources": [
-      "jwc",
       "jwc"
     ],
     "top5_domains": [
-      "news",
       "course"
     ],
     "top5_channel_ids": [
-      "jwc_recommendation",
       "jwc_course"
     ],
     "expected_route": "official_notice_search",
