@@ -1,29 +1,36 @@
 import { useEffect, useState } from 'react';
 import { RankedSitegraphDocument, SitegraphQueryStats } from '@/types';
 
+type SearchState = {
+    query: string;
+    results: RankedSitegraphDocument[];
+    stats: SitegraphQueryStats | null;
+    error: string | null;
+    settled: boolean;
+};
+
 export function useSearchEngine(
     worker: Worker | null,
     searchQuery: string
 ) {
-    const [recalledResults, setRecalledResults] = useState<RankedSitegraphDocument[]>([]);
-    const [queryStats, setQueryStats] = useState<SitegraphQueryStats | null>(null);
-    const [searching, setSearching] = useState(false);
-    const [error, setError] = useState<string | null>(null);
+    const [searchState, setSearchState] = useState<SearchState>({
+        query: '',
+        results: [],
+        stats: null,
+        error: null,
+        settled: true
+    });
     const trimmed = searchQuery.trim();
     const canSearch = Boolean(worker && trimmed.length >= 2);
 
     useEffect(() => {
         if (!worker || trimmed.length < 2) {
-            setRecalledResults([]);
-            setQueryStats(null);
-            setSearching(false);
-            setError(null);
             return;
         }
 
         const requestId = Date.now() + Math.floor(Math.random() * 100000);
+        const requestQuery = trimmed;
         let active = true;
-        setSearching(true);
 
         const handleMessage = (event: MessageEvent) => {
             const message = event.data as {
@@ -35,20 +42,26 @@ export function useSearchEngine(
             };
             if (!active || message.requestId !== requestId) return;
             if (message.type === 'results') {
-                setRecalledResults(message.results || []);
-                setQueryStats(message.stats || null);
-                setError(null);
-                setSearching(false);
+                setSearchState({
+                    query: requestQuery,
+                    results: message.results || [],
+                    stats: message.stats || null,
+                    error: null,
+                    settled: true
+                });
             } else if (message.type === 'error') {
-                setRecalledResults([]);
-                setQueryStats(null);
-                setError(message.message || '搜索 JWC sitegraph 失败');
-                setSearching(false);
+                setSearchState({
+                    query: requestQuery,
+                    results: [],
+                    stats: null,
+                    error: message.message || '搜索 JWC sitegraph 失败',
+                    settled: true
+                });
             }
         };
 
         worker.addEventListener('message', handleMessage);
-        worker.postMessage({ type: 'query', requestId, query: trimmed, limit: 30 });
+        worker.postMessage({ type: 'query', requestId, query: requestQuery, limit: 30 });
 
         return () => {
             active = false;
@@ -57,10 +70,12 @@ export function useSearchEngine(
         };
     }, [worker, trimmed]);
 
+    const isCurrentResult = canSearch && searchState.query === trimmed;
+
     return {
-        recalledResults: canSearch ? recalledResults : [],
-        queryStats: canSearch ? queryStats : null,
-        searching: canSearch ? searching : false,
-        searchError: canSearch ? error : null
+        recalledResults: isCurrentResult ? searchState.results : [],
+        queryStats: isCurrentResult ? searchState.stats : null,
+        searching: canSearch ? !(isCurrentResult && searchState.settled) : false,
+        searchError: isCurrentResult ? searchState.error : null
     };
 }

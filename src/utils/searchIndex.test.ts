@@ -139,19 +139,39 @@ const fullDocument = {
     }]
 };
 
+const docMetaLightFixture = () => {
+    return {
+        doc_index: fullDocument.doc_index,
+        id: fullDocument.id,
+        record_type: fullDocument.record_type,
+        facet: fullDocument.facet,
+        title: fullDocument.title,
+        url: fullDocument.url,
+        source: fullDocument.source,
+        section_id: fullDocument.section_id,
+        section: fullDocument.section,
+        nav_path: fullDocument.nav_path,
+        nav_path_text: fullDocument.nav_path_text,
+        published_at: fullDocument.published_at,
+        attachment_count: fullDocument.attachment_count,
+        collection_method: fullDocument.collection_method,
+        shard: fullDocument.shard
+    };
+};
+
 describe('sitegraph search contract', () => {
     it('rejects llm_provider=null instead of masking schema errors', () => {
         expect(() => parseSitegraphManifest({ ...manifest, llm_provider: null })).toThrow(/unrecognized|llm_provider|Validation/);
     });
 
     it('rejects old semantic fields in doc meta', () => {
-        const { content: _content, summary: _summary, attachments: _attachments, provenance: _provenance, ...docMeta } = fullDocument;
+        const docMeta = docMetaLightFixture();
         expect(() => parseSitegraphDocMeta([{ ...docMeta, semantic_mode: 'sitegraph_rule' }], 'fixture')).toThrow();
         expect(() => parseSitegraphDocMeta([{ ...docMeta, content: 'must stay in body index' }], 'fixture')).toThrow(/doc_meta_light/);
     });
 
     it('ranks title and attachment matches after loading only candidate shard', async () => {
-        const { content: _content, summary: _summary, attachments: _attachments, provenance: _provenance, page_type: _pageType, source_domain: _sourceDomain, publisher: _publisher, hash: _hash, tags: _tags, ...docMeta } = fullDocument;
+        const docMeta = docMetaLightFixture();
         const bundle: SitegraphIndexBundle = {
             manifest,
             docMeta: [docMeta],
