@@ -1,8 +1,8 @@
 {
-  "generated_at": "2026-05-27T13:09:48.666007+00:00",
+  "generated_at": "2026-05-27T13:18:50.070716+00:00",
   "strategy": "progressive-verifiable-static-search",
   "producer_repo": "hicancan/njupt-search",
-  "producer_ref": "91a616cf1894c4d408e58f844a14757bdcc293af",
+  "producer_ref": "b96ac88c8061044b7d1279f859ec2fff260d8a00",
   "site_id": "jwc",
   "artifact_path": "index",
   "upstream_generated_at": "2026-05-26T11:33:21.896047+00:00",
@@ -111,16 +111,16 @@
   },
   "artifacts": {
     "doc_meta_light": {
-      "path": "index/sitegraph/jwc/artifacts/doc_meta_light.aceca1546087cc77.json",
-      "sha256": "aceca1546087cc77ff03d0b42168947868ab01b8fc971a8c371b2b47a20df2e7",
+      "path": "index/sitegraph/jwc/artifacts/doc_meta_light.0bb3697e86c1d9bb.json",
+      "sha256": "0bb3697e86c1d9bb2507d4c93ef2ba604aac73ca5ce51ca27ec2208795441ccd",
       "bytes": 2663639,
       "role": "doc_meta_light",
       "load": "initial",
       "count": 7534
     },
     "light_inverted_index": {
-      "path": "index/sitegraph/jwc/artifacts/light_inverted_index.c56dcb0967bfa4ab.json",
-      "sha256": "c56dcb0967bfa4ab9fee9dbb5e128566f2c0d4afd3e2c6f1867975c953a98af5",
+      "path": "index/sitegraph/jwc/artifacts/light_inverted_index.534eee65740c9042.json",
+      "sha256": "534eee65740c9042c1805f97849fc4c2cdf696c7a48799ac46964e937e855a8a",
       "bytes": 8920380,
       "role": "light_inverted_index",
       "load": "initial"
@@ -134,8 +134,8 @@
       "count": 13
     },
     "body_inverted_index": {
-      "path": "index/sitegraph/jwc/artifacts/body_inverted_index.ac58af24bd5f698b.json",
-      "sha256": "ac58af24bd5f698b91c2bec0668726c2ad5a94582a7998256d14dc41f24a30b6",
+      "path": "index/sitegraph/jwc/artifacts/body_inverted_index.8bcfcf2354d3e669.json",
+      "sha256": "8bcfcf2354d3e669e3da6075ca3520058f9f801e28f3ad2e479fe9af36b48f85",
       "bytes": 12655437,
       "role": "body_inverted_index",
       "load": "deep_search"
@@ -188,9 +188,9 @@
       "load": "audit"
     },
     "size_report": {
-      "path": "index/sitegraph/jwc/artifacts/size_report.7954c7143032e82d.json",
-      "sha256": "7954c7143032e82d7444f8a5a1eadb85c3796e2d1d8b374daaeef5cc694399c9",
-      "bytes": 1353,
+      "path": "index/sitegraph/jwc/artifacts/size_report.c35a67a1df4a1545.json",
+      "sha256": "c35a67a1df4a1545f0ac553ad53ec724af365d8f3630a0f80bd421622d6f1b65",
+      "bytes": 1355,
       "role": "size_report",
       "load": "audit"
     }
@@ -12236,16 +12236,16 @@
     },
     "indexes": {
       "doc_meta_light": {
-        "path": "index/sitegraph/jwc/artifacts/doc_meta_light.aceca1546087cc77.json",
-        "sha256": "aceca1546087cc77ff03d0b42168947868ab01b8fc971a8c371b2b47a20df2e7",
+        "path": "index/sitegraph/jwc/artifacts/doc_meta_light.0bb3697e86c1d9bb.json",
+        "sha256": "0bb3697e86c1d9bb2507d4c93ef2ba604aac73ca5ce51ca27ec2208795441ccd",
         "bytes": 2663639,
         "role": "doc_meta_light",
         "load": "initial",
         "count": 7534
       },
       "light_inverted_index": {
-        "path": "index/sitegraph/jwc/artifacts/light_inverted_index.c56dcb0967bfa4ab.json",
-        "sha256": "c56dcb0967bfa4ab9fee9dbb5e128566f2c0d4afd3e2c6f1867975c953a98af5",
+        "path": "index/sitegraph/jwc/artifacts/light_inverted_index.534eee65740c9042.json",
+        "sha256": "534eee65740c9042c1805f97849fc4c2cdf696c7a48799ac46964e937e855a8a",
         "bytes": 8920380,
         "role": "light_inverted_index",
         "load": "initial"
@@ -12259,8 +12259,8 @@
         "count": 13
       },
       "body_inverted_index": {
-        "path": "index/sitegraph/jwc/artifacts/body_inverted_index.ac58af24bd5f698b.json",
-        "sha256": "ac58af24bd5f698b91c2bec0668726c2ad5a94582a7998256d14dc41f24a30b6",
+        "path": "index/sitegraph/jwc/artifacts/body_inverted_index.8bcfcf2354d3e669.json",
+        "sha256": "8bcfcf2354d3e669e3da6075ca3520058f9f801e28f3ad2e479fe9af36b48f85",
         "bytes": 12655437,
         "role": "body_inverted_index",
         "load": "deep_search"
@@ -12313,9 +12313,9 @@
         "load": "audit"
       },
       "size_report": {
-        "path": "index/sitegraph/jwc/artifacts/size_report.7954c7143032e82d.json",
-        "sha256": "7954c7143032e82d7444f8a5a1eadb85c3796e2d1d8b374daaeef5cc694399c9",
-        "bytes": 1353,
+        "path": "index/sitegraph/jwc/artifacts/size_report.c35a67a1df4a1545.json",
+        "sha256": "c35a67a1df4a1545f0ac553ad53ec724af365d8f3630a0f80bd421622d6f1b65",
+        "bytes": 1355,
         "role": "size_report",
         "load": "audit"
       }
