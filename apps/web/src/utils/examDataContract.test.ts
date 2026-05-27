@@ -14,11 +14,11 @@ const loadPublicJson = (relativePath: string): unknown => {
 describe('exam data contract', () => {
     it('accepts the committed public data files', () => {
         const exams = parseExamData(
-            loadPublicJson('../../public/data/all_exams.json'),
+            loadPublicJson('../../../../public/data/all_exams.json'),
             'public/data/all_exams.json'
         );
         const manifest = parseManifest(
-            loadPublicJson('../../public/data/data_summary.json'),
+            loadPublicJson('../../../../public/data/data_summary.json'),
             'public/data/data_summary.json'
         );
 

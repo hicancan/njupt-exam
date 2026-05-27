@@ -21,7 +21,7 @@ njupt-site-graph/data/sites/jwc/index
 -> public/index/manifest.json
 -> public/index/sitegraph/jwc/artifacts/*.json
 -> public/index/sitegraph/jwc/shards/full.*.<hash>.json
--> src/workers/searchWorker.ts
+-> apps/web/src/workers/searchWorker.ts
 -> React UI
 ```
 
@@ -84,8 +84,8 @@ npm run build
 ```text
 public/data/            # 考试垂直频道数据
 public/index/           # JWC progressive static search index
+apps/web/               # React/Vite/PWA 前端与 Worker
 scripts/                # 考试更新、sitegraph build/validate/eval
-src/                    # React/Vite/PWA 前端与 Worker
 tests/                  # Python sitegraph contract tests
 ```
 

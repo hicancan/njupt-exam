@@ -12,7 +12,7 @@ Current responsibilities:
 - progressive search phases and coverage accounting;
 - non-React result formatting.
 
-`src/utils/searchIndex.ts` remains as a temporary compatibility facade until imports are migrated in later milestones. The current Worker protocol and user-visible search behavior must stay compatible while this package becomes the runtime owner.
+`apps/web/src/utils/searchIndex.ts` remains as a temporary compatibility facade until imports are migrated in later milestones. The current Worker protocol and user-visible search behavior must stay compatible while this package becomes the runtime owner.
 
 Package checks:
 

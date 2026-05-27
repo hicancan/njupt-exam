@@ -1,12 +1,12 @@
-# Web App Migration Target
+# Web App
 
-This directory is the Milestone 5 target for the React/Vite/PWA product. It is intentionally README-only during Milestone 1 so production behavior continues to run from the current root `src/`, `public/`, `index.html`, and `vite.config.ts` layout.
+This directory owns the React/Vite/PWA product after Milestone 5.
 
-Near-term migration purpose:
+Current boundary:
 
-- receive the current browser application when Milestone 5 moves the Vite app;
-- become the owner of routing, pages, widgets, Worker integration, PWA config, and generated public runtime assets;
-- preserve current public URLs until the generated artifact layout migration has passed browser acceptance and CI.
+- `src/` owns the current web UI, hooks, Worker integration, and temporary compatibility facades into `packages/*`.
+- `index.html` and `vite.config.ts` are the Vite entry and PWA configuration.
+- Root `public/` remains the public runtime directory until the generated artifact layout migration milestone. This preserves existing `/data/*` and `/index/*` URLs and current update workflows.
+- Root `dist/` remains the build output consumed by GitHub Pages deployment.
 
-Do not move source code here before the milestone that explicitly owns the move.
-
+Use the root npm scripts for development and validation so CI behavior remains stable.
