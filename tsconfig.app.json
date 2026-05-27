@@ -38,6 +38,7 @@
     "include": [
         "src",
         "packages/contracts/src",
-        "packages/search-core/src"
+        "packages/search-core/src",
+        "packages/exam-core/src"
     ]
 }

@@ -1,12 +1,12 @@
-# Contracts Package Migration Target
+# Contracts Package
 
-This directory is the Milestone 2 target for runtime and generated-artifact contracts. It is README-only until contracts are moved with compatibility re-exports and tests.
+Runtime and generated-artifact contract package.
 
-Near-term migration purpose:
+It owns:
 
-- own exam data contracts currently in `src/utils/examDataContract.ts` and shared types currently in `src/types/index.ts`;
-- own source-sitegraph input contracts, search collection manifests, and search index artifact contracts;
-- provide a stable package boundary used by the web app, search core, exam core, tools, tests, and quality gates.
+- exam data types and schemas used by `packages/exam-core`;
+- source-sitegraph input contracts;
+- search collection manifests and search index artifact contracts;
+- shared runtime types used by the web app, search core, tests, and quality gates.
 
-Milestone 2 must keep current imports working while contract consumers are migrated.
-
+The current web app still imports shared types through `src/types/index.ts` until the app is moved and split in later milestones.

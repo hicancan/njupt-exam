@@ -1,1 +1,1 @@
-export * from '../../packages/contracts/src/exam';
+export * from '../../packages/exam-core/src/contract';

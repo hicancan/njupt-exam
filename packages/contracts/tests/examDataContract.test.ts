@@ -1,49 +1,39 @@
 import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import {
-    assertManifestMatchesExams,
-    DataContractError,
-    parseExamData,
-    parseManifest
+    ExamSchema,
+    ManifestSchema
 } from '../src/exam';
+import { z } from 'zod';
 
 const loadPublicJson = (relativePath: string): unknown => {
     return JSON.parse(readFileSync(new URL(relativePath, import.meta.url), 'utf-8'));
 };
 
 describe('exam data contract package', () => {
-    it('accepts the committed public data files', () => {
-        const exams = parseExamData(
-            loadPublicJson('../../../public/data/all_exams.json'),
-            'public/data/all_exams.json'
-        );
-        const manifest = parseManifest(
-            loadPublicJson('../../../public/data/data_summary.json'),
-            'public/data/data_summary.json'
-        );
-
-        assertManifestMatchesExams(manifest, exams);
+    it('accepts the committed public data file shapes', () => {
+        const exams = z.array(ExamSchema).parse(loadPublicJson('../../../public/data/all_exams.json'));
+        const manifest = ManifestSchema.parse(loadPublicJson('../../../public/data/data_summary.json'));
 
         expect(exams.length).toBeGreaterThan(0);
         expect(manifest.files_processed.length).toBeGreaterThan(0);
-        expect(new Set(exams.map(exam => exam.id)).size).toBe(exams.length);
     });
 
-    it('fails fast when all_exams is not an array', () => {
-        expect(() => parseExamData({ data: [] }, 'all_exams.json')).toThrow(DataContractError);
-    });
-
-    it('fails fast on duplicate exam ids', () => {
+    it('rejects invalid exam field shapes', () => {
         const exam = {
-            id: 'duplicate',
+            id: 'invalid-time',
             class_name: 'B240402',
             course_name: '算法分析与设计',
-            duration_minutes: 110,
-            start_timestamp: null,
-            end_timestamp: null
+            duration_minutes: 0,
+            start_timestamp: '2026-07-01T08:00:00+08:00',
+            end_timestamp: '2026-07-01T09:50:00+08:00'
         };
 
-        expect(() => parseExamData([exam, exam], 'all_exams.json')).toThrow(/duplicate id/);
+        expect(ExamSchema.safeParse(exam).success).toBe(false);
+        expect(ExamSchema.safeParse({
+            ...exam,
+            duration_minutes: 110,
+            start_timestamp: 'not-a-date'
+        }).success).toBe(false);
     });
 });
-

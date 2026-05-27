@@ -1,12 +1,11 @@
-# Exam Core Package Migration Target
+# Exam Core Package
 
-This directory is the Milestone 4 target for pure exam-domain logic. It is README-only until exam logic and tests are moved.
+Pure exam-domain package for the web product and future tools.
 
-Near-term migration purpose:
+It owns:
 
-- own exam model helpers and contract-facing pure logic;
-- own class/course search behavior currently covered by `useClassSearch`, `examQuery`, and generated data tests;
-- own `.ics` calendar/export logic currently in `src/utils/icsGenerator.ts`.
+- generated exam data parsing and manifest consistency checks;
+- class query routing and class/course search behavior;
+- `.ics` calendar/export generation.
 
-React hooks and UI remain in the web app; this package should contain browser-safe pure domain code.
-
+The current web app still imports through temporary `src` compatibility facades until the app is moved and split in later milestones.
