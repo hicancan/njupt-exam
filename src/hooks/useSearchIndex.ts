@@ -8,15 +8,18 @@ interface UseSearchIndexResult {
     error: string | null;
 }
 
-export function useSearchIndex(): UseSearchIndexResult {
+export function useSearchIndex(enabled = true): UseSearchIndexResult {
     const workerRef = useRef<Worker | null>(null);
     const requestIdRef = useRef(0);
     const [workerState, setWorkerState] = useState<Worker | null>(null);
     const [manifest, setManifest] = useState<SitegraphSearchManifest | null>(null);
-    const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
+        if (!enabled) {
+            return;
+        }
+
         const worker = new Worker(new URL('../workers/searchWorker.ts', import.meta.url), { type: 'module' });
         const requestId = ++requestIdRef.current;
         workerRef.current = worker;
@@ -28,19 +31,16 @@ export function useSearchIndex(): UseSearchIndexResult {
                 setManifest(message.manifest);
                 setWorkerState(worker);
                 setError(null);
-                setLoading(false);
             } else if (message.type === 'error') {
                 setManifest(null);
                 setWorkerState(null);
                 setError(message.message || '无法加载 JWC sitegraph 搜索索引 Worker');
-                setLoading(false);
             }
         };
         worker.onerror = event => {
             setManifest(null);
             setWorkerState(null);
             setError(event.message || 'JWC sitegraph 搜索 Worker 启动失败');
-            setLoading(false);
         };
         worker.postMessage({ type: 'init', requestId });
 
@@ -51,7 +51,12 @@ export function useSearchIndex(): UseSearchIndexResult {
                 setWorkerState(null);
             }
         };
-    }, []);
+    }, [enabled]);
 
-    return { worker: workerState, manifest, loading, error };
+    return {
+        worker: enabled ? workerState : null,
+        manifest: enabled ? manifest : null,
+        loading: enabled && !workerState && !error,
+        error: enabled ? error : null
+    };
 }

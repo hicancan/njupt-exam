@@ -9,25 +9,28 @@ import { useDataUpdateNotifier } from '@/hooks/useDataUpdateNotifier';
 import { useSearchIndex } from '@/hooks/useSearchIndex';
 import { useUrlState } from '@/hooks/useUrlState';
 import { useSearchEngine } from '@/hooks/useSearchEngine';
+import { isClassLookupQuery, isCompleteClassQuery, isExamHelperQuery, normalizeClassQuery } from '@/utils/examQuery';
 
 import { Header } from '@/components/Header';
 import { HomeView } from '@/views/HomeView';
 import { ResultsView } from '@/views/ResultsView';
 
 function App() {
-    const { exams: allExams, loading: examLoading, error: examError, sourceUrl, sourceTitle, generatedAt, totalRecords } = useExamData();
-    const { worker: searchWorker, loading: searchLoading, error: searchIndexError } = useSearchIndex();
-    const { newDataAvailable, reloadToUpdate } = useDataUpdateNotifier();
-
     const { classParam, qParam, navigate } = useUrlState();
 
     const initialQuery = classParam || qParam || '';
+    const isHome = !classParam && !qParam;
+    const isExamRoute = Boolean(classParam) || isExamHelperQuery(qParam || '') || isClassLookupQuery(qParam || '');
+    const needsExamData = Boolean(classParam) || isClassLookupQuery(qParam || '');
+    const shouldSearchSitegraph = Boolean(qParam && !isExamRoute && qParam.trim().length >= 2);
+    const searchQuery = shouldSearchSitegraph ? qParam || '' : '';
+    const manualSelection = classParam;
+
+    const { exams: allExams, loading: examLoading, error: examError, sourceUrl, sourceTitle, generatedAt, totalRecords } = useExamData(needsExamData);
+    const { newDataAvailable, reloadToUpdate } = useDataUpdateNotifier();
     const [inputValue, setInputValue] = useState<string>(initialQuery);
     const [reminders, setReminders] = useState<number[]>([30, 60]);
-
-    const isHome = !classParam && !qParam;
-    const searchQuery = initialQuery;
-    const manualSelection = classParam;
+    const { worker: searchWorker, loading: searchLoading, error: searchIndexError } = useSearchIndex(shouldSearchSitegraph);
 
     const {
         recalledResults,
@@ -36,7 +39,7 @@ function App() {
         searchPhase,
         searching,
         searchError: sitegraphSearchError
-    } = useSearchEngine(searchWorker, searchQuery);
+    } = useSearchEngine(searchWorker, searchQuery, shouldSearchSitegraph);
     const classSearchResult = useClassSearch(allExams, initialQuery, manualSelection);
     const currentClass = classSearchResult.mode === 'DETAIL' ? classSearchResult.classes[0] || null : null;
     const { selectedIds, toggleExamSelection } = useSelectedExamIds(currentClass, classSearchResult.exams);
@@ -65,6 +68,10 @@ function App() {
     const handleSearchSubmit = (value: string) => {
         const trimmed = value.trim();
         if (trimmed.length >= 2) {
+            if (isCompleteClassQuery(trimmed)) {
+                navigate({ class: normalizeClassQuery(trimmed), q: null });
+                return;
+            }
             navigate({ q: trimmed, class: null });
         } else {
             navigate({ q: null, class: null });
@@ -93,16 +100,21 @@ function App() {
     };
 
     const searchError = searchIndexError || sitegraphSearchError;
-    const isLoading = examLoading || searchLoading || (searching && recalledResults.length === 0);
+    const activeExamError = needsExamData ? examError : null;
+    const activeSearchError = shouldSearchSitegraph ? searchError : null;
+    const displayedError = activeSearchError || activeExamError;
+    const isLoading = needsExamData
+        ? examLoading
+        : shouldSearchSitegraph && (searchLoading || (searching && recalledResults.length === 0));
 
-    if (examError && searchError) {
+    if (activeExamError && activeSearchError) {
         return (
             <div className="min-h-screen flex items-center justify-center bg-[#f8fafc] dark:bg-[#171717] text-[#202124] dark:text-[#e8eaed] px-4">
                 <div className="max-w-md border border-[#dadce0] dark:border-[#3c4043] rounded-md bg-white dark:bg-[#202124] p-6">
                     <AlertCircle className="w-8 h-8 text-[#d93025]" aria-hidden="true" />
                     <h1 className="mt-3 text-xl font-semibold">数据加载失败</h1>
-                    <p className="mt-2 text-sm text-[#4d5156] dark:text-[#bdc1c6]">{examError}</p>
-                    <p className="mt-1 text-sm text-[#4d5156] dark:text-[#bdc1c6]">{searchError}</p>
+                    <p className="mt-2 text-sm text-[#4d5156] dark:text-[#bdc1c6]">{activeExamError}</p>
+                    <p className="mt-1 text-sm text-[#4d5156] dark:text-[#bdc1c6]">{activeSearchError}</p>
                 </div>
             </div>
         );
@@ -112,11 +124,11 @@ function App() {
         <div className="min-h-screen flex flex-col bg-white dark:bg-[#202124] text-[#202124] dark:text-[#e8eaed] transition-colors duration-200 font-sans">
             {!isHome ? <Header inputValue={inputValue} onInputChange={handleInputChange} onSubmit={handleSearchSubmit} onGoHome={handleGoHome} /> : null}
 
-            {searchError || examError ? (
+            {displayedError ? (
                 <div className="max-w-6xl mx-auto w-full px-4 pt-4">
                     <div className="border border-[#f4c7c3] dark:border-[#5f2b26] bg-[#fce8e6] dark:bg-[#2b1715] text-[#b3261e] dark:text-[#f28b82] rounded-md p-3 text-sm flex gap-2">
                         <AlertCircle className="w-4 h-4 shrink-0 mt-0.5" aria-hidden="true" />
-                    <span>{searchError || examError}</span>
+                    <span>{displayedError}</span>
                     </div>
                 </div>
             ) : null}
@@ -131,7 +143,7 @@ function App() {
             ) : (
                 <ResultsView
                     isLoading={isLoading}
-                    query={searchQuery}
+                    query={initialQuery}
                     results={recalledResults}
                     queryStats={queryStats}
                     queryCoverage={queryCoverage}

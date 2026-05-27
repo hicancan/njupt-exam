@@ -18,7 +18,8 @@ type SearchState = {
 
 export function useSearchEngine(
     worker: Worker | null,
-    searchQuery: string
+    searchQuery: string,
+    enabled = true
 ) {
     const [searchState, setSearchState] = useState<SearchState>({
         query: '',
@@ -30,10 +31,10 @@ export function useSearchEngine(
         settled: true
     });
     const trimmed = searchQuery.trim();
-    const canSearch = Boolean(worker && trimmed.length >= 2);
+    const canSearch = Boolean(enabled && worker && trimmed.length >= 2);
 
     useEffect(() => {
-        if (!worker || trimmed.length < 2) {
+        if (!enabled || !worker || trimmed.length < 2) {
             return;
         }
 
@@ -95,7 +96,7 @@ export function useSearchEngine(
             worker.removeEventListener('message', handleMessage);
             worker.postMessage({ type: 'cancel', requestId });
         };
-    }, [worker, trimmed]);
+    }, [enabled, worker, trimmed]);
 
     const isCurrentResult = canSearch && searchState.query === trimmed;
 

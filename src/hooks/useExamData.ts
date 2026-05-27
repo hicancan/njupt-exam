@@ -16,7 +16,7 @@ interface UseExamDataResult {
 
 
 
-export function useExamData(): UseExamDataResult {
+export function useExamData(enabled = true): UseExamDataResult {
     const [exams, setExams] = useState<Exam[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
@@ -26,6 +26,10 @@ export function useExamData(): UseExamDataResult {
     const [totalRecords, setTotalRecords] = useState<number | null>(null);
 
     useEffect(() => {
+        if (!enabled) {
+            return;
+        }
+
         const controller = new AbortController();
 
         Promise.all([
@@ -61,7 +65,15 @@ export function useExamData(): UseExamDataResult {
             });
 
         return () => controller.abort();
-    }, []);
+    }, [enabled]);
 
-    return { exams, loading, error, sourceUrl, sourceTitle, generatedAt, totalRecords };
+    return {
+        exams,
+        loading: enabled && loading,
+        error: enabled ? error : null,
+        sourceUrl,
+        sourceTitle,
+        generatedAt,
+        totalRecords
+    };
 }
