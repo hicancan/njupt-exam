@@ -7,9 +7,9 @@ export const APP_CONFIG = {
     BILIBILI_PAGE: 'https://space.bilibili.com/1144561698',
     VISITOR_BADGE_URL: 'https://visitor-badge.laobi.icu/badge?page_id=njupt.hicancan.top&left_text=%20%E8%AE%BF%E9%97%AE%E9%87%8F%20&right_color=%234F46E5',
     DATA_URLS: {
-        EXAMS: 'data/all_exams.json',
-        SUMMARY: 'data/data_summary.json',
-        SEARCH_MANIFEST: 'index/manifest.json',
+        EXAMS: 'generated/exam/all_exams.json',
+        SUMMARY: 'generated/exam/data_summary.json',
+        SEARCH_MANIFEST: 'generated/collections/njupt-public/manifest.json',
     },
     UPDATE_CHANNEL: 'search-data-update-channel',
     START_TIME_DEFAULT: '2025-12-15T00:00:00',

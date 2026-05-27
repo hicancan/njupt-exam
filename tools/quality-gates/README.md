@@ -1,12 +1,16 @@
-# Quality Gates Tool Migration Target
+# Quality Gates
 
-This directory is the Milestone 9 target for deterministic generated-artifact and contract gates. It is README-only until current validation scripts are moved.
+This directory owns deterministic generated-artifact and contract gates.
 
 Near-term migration purpose:
 
-- own generated artifact validation currently in `scripts/utils/validate_search_index.py`;
-- own legacy-field rejection and public artifact size checks as explicit gates;
+- own obsolete-field rejection and public artifact size checks as explicit gates;
 - keep deployment blocked when generated artifacts or contracts fail validation.
 
 Quality gates must remain deterministic and must not depend on Codex or other AI review workflows.
 
+```powershell
+uv run python tools\quality-gates\scripts\validate_search_index.py
+uv run python tools\quality-gates\scripts\check_no_obsolete_fields.py
+uv run python tools\quality-gates\scripts\check_public_artifact_sizes.py
+```

@@ -98,7 +98,7 @@ Owns representative query smoke tests and evaluation fixtures.
 
 ### `tools/quality-gates`
 
-Owns deterministic artifact and contract gates such as legacy-field rejection, generated artifact size checks, and public artifact validation.
+Owns deterministic artifact and contract gates such as obsolete-field rejection, generated artifact size checks, and public artifact validation.
 
 ## Collection Abstraction
 
@@ -113,21 +113,11 @@ sources:
 
 Sources are origin packages. Verticals are product experiences. `exam` is a vertical, not a `sitegraph` source.
 
-## Compatibility Strategy
+## Generated Runtime Layout
 
-The migration must preserve current public URLs until browser acceptance and CI prove a replacement layout is safe:
-
-```text
-public/data/*
-public/index/manifest.json
-public/index/sitegraph/jwc/artifacts/*
-public/index/sitegraph/jwc/shards/*
-```
-
-The target generated layout is introduced alongside legacy URLs before any removal:
+Generated runtime artifacts live only under:
 
 ```text
 apps/web/public/generated/collections/njupt-public/
 apps/web/public/generated/exam/
 ```
-

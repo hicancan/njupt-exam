@@ -10,7 +10,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url))
 // https://vite.dev/config/
 export default defineConfig({
   root: __dirname,
-  publicDir: path.resolve(__dirname, '../../public'),
+  publicDir: path.resolve(__dirname, 'public'),
   build: {
     outDir: path.resolve(__dirname, '../../dist'),
     emptyOutDir: true,
@@ -54,7 +54,7 @@ export default defineConfig({
         clientsClaim: true,
         runtimeCaching: [
           {
-            urlPattern: ({ url }) => url.pathname.endsWith('/index/manifest.json'),
+            urlPattern: ({ url }) => url.pathname.endsWith('/generated/collections/njupt-public/manifest.json'),
             handler: 'NetworkFirst',
             options: {
               cacheName: 'njupt-search-manifest-progressive',
@@ -72,7 +72,7 @@ export default defineConfig({
             }
           },
           {
-            urlPattern: ({ url }) => url.pathname.includes('/index/sitegraph/jwc/artifacts/'),
+            urlPattern: ({ url }) => url.pathname.includes('/generated/collections/njupt-public/sitegraph/jwc/artifacts/'),
             handler: 'CacheFirst',
             options: {
               cacheName: 'njupt-search-sitegraph-index-progressive',
@@ -86,7 +86,7 @@ export default defineConfig({
             }
           },
           {
-            urlPattern: ({ url }) => url.pathname.includes('/index/sitegraph/jwc/shards/'),
+            urlPattern: ({ url }) => url.pathname.includes('/generated/collections/njupt-public/sitegraph/jwc/shards/'),
             handler: 'CacheFirst',
             options: {
               cacheName: 'njupt-search-sitegraph-shards-progressive',
@@ -100,7 +100,7 @@ export default defineConfig({
             }
           },
           {
-            urlPattern: ({ url }) => url.pathname.includes('/data/'),
+            urlPattern: ({ url }) => url.pathname.includes('/generated/exam/'),
             handler: 'NetworkFirst',
             options: {
               cacheName: 'njupt-search-exam-data-current',

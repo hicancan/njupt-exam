@@ -14,12 +14,12 @@ const loadPublicJson = (relativePath: string): unknown => {
 describe('exam-core data contract', () => {
     it('accepts the committed public data files', () => {
         const exams = parseExamData(
-            loadPublicJson('../../../public/data/all_exams.json'),
-            'public/data/all_exams.json'
+            loadPublicJson('../../../apps/web/public/generated/exam/all_exams.json'),
+            'apps/web/public/generated/exam/all_exams.json'
         );
         const manifest = parseManifest(
-            loadPublicJson('../../../public/data/data_summary.json'),
-            'public/data/data_summary.json'
+            loadPublicJson('../../../apps/web/public/generated/exam/data_summary.json'),
+            'apps/web/public/generated/exam/data_summary.json'
         );
 
         assertManifestMatchesExams(manifest, exams);

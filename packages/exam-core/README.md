@@ -8,4 +8,4 @@ It owns:
 - class query routing and class/course search behavior;
 - `.ics` calendar/export generation.
 
-The current web app still imports through temporary `src` compatibility facades until the app is moved and split in later milestones.
+The web app imports this domain logic through `apps/web/src/features/exam-search`.

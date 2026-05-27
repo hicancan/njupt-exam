@@ -2,7 +2,7 @@
 
 ## Local Gate
 
-Use the current equivalent commands until target package/tool commands exist:
+Use these commands from the repository root:
 
 ```powershell
 npm test
@@ -12,14 +12,16 @@ npm run lint
 uv run python -m pytest
 ```
 
-Generated artifact and search quality checks currently use:
+Generated artifact and search quality checks use:
 
 ```powershell
-uv run python scripts\validate_sitegraph_index.py --sitegraph-index <path-to-njupt-site-graph-jwc-index> --skip-output
-uv run python scripts\build_sitegraph_index.py --sitegraph-index <path-to-njupt-site-graph-jwc-index>
-uv run python scripts\validate_sitegraph_index.py --sitegraph-index <path-to-njupt-site-graph-jwc-index>
-uv run python scripts\utils\validate_search_index.py
-uv run python scripts\eval\sitegraph_query_smoke_test.py
+uv run python -m njupt_search_indexer validate --source-package <path-to-njupt-site-graph-jwc-index> --skip-output
+uv run python -m njupt_search_indexer build --collection-id njupt-public --source-package <path-to-njupt-site-graph-jwc-index> --out apps\web\public\generated\collections\njupt-public
+uv run python -m njupt_search_indexer validate --source-package <path-to-njupt-site-graph-jwc-index> --collection apps\web\public\generated\collections\njupt-public
+uv run python tools\quality-gates\scripts\validate_search_index.py
+uv run python tools\quality-gates\scripts\check_no_obsolete_fields.py
+uv run python tools\quality-gates\scripts\check_public_artifact_sizes.py
+uv run python -m njupt_search_eval run-smoke-queries --collection apps\web\public\generated\collections\njupt-public
 ```
 
 ## Unit And Contract Tests
@@ -33,7 +35,7 @@ Current tests must remain passing as code migrates:
 - `.ics` calendar/export behavior;
 - URL-safe download filename behavior.
 
-When logic moves to `packages/search-core`, `packages/exam-core`, or `packages/contracts`, move or add tests with the logic. Keep temporary compatibility facades tested until consumers are migrated.
+When logic moves across `packages/*` or `tools/*`, move or add tests with the logic.
 
 ## Browser Acceptance
 
@@ -90,17 +92,16 @@ Browser Validation Report
 - Pass/fail:
 ```
 
-## Future Target Commands
+## Tool Commands
 
 ```powershell
-python -m njupt_search_indexer build --collection-id njupt-public --source-package <path> --out apps/web/public/generated/collections/njupt-public
-python -m njupt_search_indexer validate --collection apps/web/public/generated/collections/njupt-public
-python -m njupt_search_eval run-smoke-queries --collection apps/web/public/generated/collections/njupt-public
-python tools\quality-gates\scripts\check_no_legacy_fields.py
-python tools\quality-gates\scripts\check_public_artifact_sizes.py
+uv run python -m njupt_search_indexer build --collection-id njupt-public --source-package <path> --out apps\web\public\generated\collections\njupt-public
+uv run python -m njupt_search_indexer validate --collection apps\web\public\generated\collections\njupt-public
+uv run python -m njupt_search_eval run-smoke-queries --collection apps\web\public\generated\collections\njupt-public
+uv run python tools\quality-gates\scripts\check_no_obsolete_fields.py
+uv run python tools\quality-gates\scripts\check_public_artifact_sizes.py
 uv run python -m pytest
 npm test
 npm run typecheck
 npm run build
 ```
-

@@ -1,11 +1,10 @@
-# Integration Test Migration Target
+# Integration Tests
 
-This directory is the target for cross-package integration tests once packages and tools exist. It is README-only during Milestone 1 to avoid empty test structure.
+This directory is reserved for cross-package integration tests.
 
 Near-term migration purpose:
 
-- hold tests that verify package/tool boundaries, generated artifact contracts, and compatibility facades across layers;
-- complement existing root Python contract tests while production code is gradually moved.
+- verify package/tool boundaries and generated artifact contracts across layers;
+- complement root Python contract tests.
 
-Do not move current tests here until the milestone that changes the code boundary they cover.
-
+Add tests here when a change spans more than one package or tool boundary.

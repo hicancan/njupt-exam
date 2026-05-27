@@ -12,8 +12,8 @@ const loadPublicJson = (relativePath: string): unknown => {
 
 describe('exam data contract package', () => {
     it('accepts the committed public data file shapes', () => {
-        const exams = z.array(ExamSchema).parse(loadPublicJson('../../../public/data/all_exams.json'));
-        const manifest = ManifestSchema.parse(loadPublicJson('../../../public/data/data_summary.json'));
+        const exams = z.array(ExamSchema).parse(loadPublicJson('../../../apps/web/public/generated/exam/all_exams.json'));
+        const manifest = ManifestSchema.parse(loadPublicJson('../../../apps/web/public/generated/exam/data_summary.json'));
 
         expect(exams.length).toBeGreaterThan(0);
         expect(manifest.files_processed.length).toBeGreaterThan(0);

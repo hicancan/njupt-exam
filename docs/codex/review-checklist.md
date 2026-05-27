@@ -24,7 +24,7 @@ Use this checklist before reporting a milestone.
 - Required local commands were run or explicitly blocked with evidence.
 - Browser acceptance was run when the milestone touched browser behavior or public URLs.
 - GitHub Actions/cloud CI was checked when required, or exact human action needed was recorded.
-- The milestone report lists files changed, compatibility wrappers, risks, rollback notes, and next recommended milestone.
+- The milestone report lists files changed, risks, rollback notes, and next recommended milestone.
 
 ## Documentation
 
@@ -32,4 +32,3 @@ Use this checklist before reporting a milestone.
 - ADRs explain decisions and consequences.
 - Commands use explicit inputs and outputs where possible.
 - Canonical representative queries are referenced from the goal instead of duplicated into independent source lists.
-

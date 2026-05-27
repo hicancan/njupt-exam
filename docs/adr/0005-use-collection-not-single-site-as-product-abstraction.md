@@ -24,6 +24,5 @@ Keep source packages separate from product verticals. `exam` is a structured pro
 ## Consequences
 
 - The collection compiler replaces single-site mental models over time.
-- Current JWC behavior remains compatible while contracts prepare for additional sources.
+- Current JWC behavior is expressed through `collection_id: njupt-public` while contracts prepare for additional sources.
 - UI and docs should not hard-code the terminal architecture as JWC-only.
-

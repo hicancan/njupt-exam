@@ -12,7 +12,7 @@ const loadPublicJson = (relativePath: string): unknown => {
 describe('search index contracts package', () => {
     it('accepts the committed public search manifest', () => {
         const manifest = SitegraphSearchManifestSchema.parse(
-            loadPublicJson('../../../public/index/manifest.json')
+            loadPublicJson('../../../apps/web/public/generated/collections/njupt-public/manifest.json')
         );
 
         expect(manifest.strategy).toBe('progressive-verifiable-static-search');
@@ -42,4 +42,3 @@ describe('search index contracts package', () => {
         expect(SitegraphDocMetaSchema.safeParse({ ...docMeta, title: '' }).success).toBe(false);
     });
 });
-

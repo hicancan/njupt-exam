@@ -33,6 +33,7 @@ export const SitegraphSearchManifestSchema = z.object({
     producer_repo: z.string().min(1),
     producer_ref: z.string().min(1),
     site_id: z.literal('jwc'),
+    collection_id: z.literal('njupt-public'),
     artifact_path: z.string().min(1),
     upstream_generated_at: z.string().min(1),
     truth_counts: z.record(z.string(), z.number()),
