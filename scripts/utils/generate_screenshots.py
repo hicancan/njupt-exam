@@ -52,9 +52,9 @@ async def run():
             # Wait for main content animation to finish
             await page_desktop.wait_for_selector(".fade-in", state="visible")
             await asyncio.sleep(1.5) 
-            await page_desktop.screenshot(path=os.path.join(os.path.dirname(__file__), "../public/assets/desktop_demo_v2.png"))
+            await page_desktop.screenshot(path=os.path.join(os.path.dirname(__file__), "../public/assets/desktop_demo.png"))
             await page_desktop.close()
-            print("Desktop screenshot saved as desktop_demo_v2.png")
+            print("Desktop screenshot saved as desktop_demo.png")
             
             # 2. Mobile Screenshot
             print("Capturing Mobile screenshot (iPhone 13)...")
@@ -65,9 +65,9 @@ async def run():
             # Wait for main content animation to finish
             await page_mobile.wait_for_selector(".fade-in", state="visible")
             await asyncio.sleep(1.5)
-            await page_mobile.screenshot(path=os.path.join(os.path.dirname(__file__), "../public/assets/mobile_demo_v2.png"))
+            await page_mobile.screenshot(path=os.path.join(os.path.dirname(__file__), "../public/assets/mobile_demo.png"))
             await context.close()
-            print("Mobile screenshot saved as mobile_demo_v2.png")
+            print("Mobile screenshot saved as mobile_demo.png")
             
             await browser.close()
     finally:

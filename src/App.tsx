@@ -16,7 +16,7 @@ import { ResultsView } from '@/views/ResultsView';
 
 function App() {
     const { exams: allExams, loading: examLoading, error: examError, sourceUrl, sourceTitle, generatedAt, totalRecords } = useExamData();
-    const { worker: searchWorker, optionalUnavailable, loading: searchLoading, error: searchIndexError } = useSearchIndex();
+    const { worker: searchWorker, loading: searchLoading, error: searchIndexError } = useSearchIndex();
     const { newDataAvailable, reloadToUpdate } = useDataUpdateNotifier();
 
     const { classParam, qParam, navigate } = useUrlState();
@@ -29,7 +29,14 @@ function App() {
     const searchQuery = initialQuery;
     const manualSelection = classParam;
 
-    const { recalledResults, queryStats, searching, searchError: sitegraphSearchError } = useSearchEngine(searchWorker, searchQuery);
+    const {
+        recalledResults,
+        queryStats,
+        queryCoverage,
+        searchPhase,
+        searching,
+        searchError: sitegraphSearchError
+    } = useSearchEngine(searchWorker, searchQuery);
     const classSearchResult = useClassSearch(allExams, initialQuery, manualSelection);
     const currentClass = classSearchResult.mode === 'DETAIL' ? classSearchResult.classes[0] || null : null;
     const { selectedIds, toggleExamSelection } = useSelectedExamIds(currentClass, classSearchResult.exams);
@@ -86,7 +93,7 @@ function App() {
     };
 
     const searchError = searchIndexError || sitegraphSearchError;
-    const isLoading = examLoading || searchLoading || searching;
+    const isLoading = examLoading || searchLoading || (searching && recalledResults.length === 0);
 
     if (examError && searchError) {
         return (
@@ -114,15 +121,6 @@ function App() {
                 </div>
             ) : null}
 
-            {!searchError && optionalUnavailable.length > 0 ? (
-                <div className="max-w-6xl mx-auto w-full px-4 pt-4">
-                    <div className="border border-[#fad2cf] dark:border-[#5f2b26] bg-[#fef7e0] dark:bg-[#2d2412] text-[#8c4d00] dark:text-[#fde293] rounded-md p-3 text-sm flex gap-2">
-                        <AlertCircle className="w-4 h-4 shrink-0 mt-0.5" aria-hidden="true" />
-                        <span>部分增强索引不可用，已使用核心搜索降级运行：{optionalUnavailable.join('、')}</span>
-                    </div>
-                </div>
-            ) : null}
-
             {isHome ? (
                 <HomeView
                     inputValue={inputValue}
@@ -136,6 +134,9 @@ function App() {
                     query={searchQuery}
                     results={recalledResults}
                     queryStats={queryStats}
+                    queryCoverage={queryCoverage}
+                    searchPhase={searchPhase}
+                    searching={searching}
                     classMode={classSearchResult}
                     selectedIds={selectedIds}
                     reminders={reminders}

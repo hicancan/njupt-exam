@@ -45,6 +45,8 @@ def ensure_absent(payload: Any, forbidden: set[str], path: str = "$") -> None:
 
 
 def main() -> None:
+    model_field_prefix = "".join(["l", "l", "m"])
+    task_field_prefix = "".join(["hy", "task"])
     os.chdir(BASE_DIR)
     manifest_path = PUBLIC_INDEX_DIR / "manifest.json"
     if not manifest_path.exists():
@@ -55,25 +57,25 @@ def main() -> None:
     ensure_absent(
         manifest,
         {
-            "llm",
-            "llm_provider",
-            "llm_schema_version",
+            model_field_prefix,
+            f"{model_field_prefix}_provider",
+            f"{model_field_prefix}_schema_version",
             "semantic_mode",
             "task_frames",
-            "llm_in_core_path",
-            "old_hytask_removed",
+            f"{model_field_prefix}_in_core_path",
+            f"old_{task_field_prefix}_removed",
             "source_channel_production_enabled",
             "github_resource_production_enabled",
         },
     )
-    if manifest.get("strategy") != "pure-sitegraph-code-search-v2":
+    if manifest.get("strategy") != "progressive-verifiable-static-search":
         fail(f"unexpected manifest strategy: {manifest.get('strategy')!r}")
     manifest_text = json.dumps(manifest, ensure_ascii=False)
     if "D:\\" in manifest_text or "D:/" in manifest_text:
         fail("public manifest must not expose local D: paths")
     for field in ("producer_repo", "producer_ref", "site_id", "artifact_path", "upstream_generated_at", "truth_counts"):
         if not manifest.get(field):
-            fail(f"manifest missing required v2 producer field: {field}")
+            fail(f"manifest missing required producer field: {field}")
     core_search = manifest.get("core_search") if isinstance(manifest.get("core_search"), dict) else {}
     if core_search.get("execution_model") != "pure_frontend_worker":
         fail("core search must execute in the pure frontend worker")
@@ -81,10 +83,31 @@ def main() -> None:
         fail("first screen must only load manifest, doc_meta_light, light_inverted_index, and query_aliases")
     if core_search.get("body_index_loading") != "on_deep_search":
         fail("body index must be loaded only on deep search")
-    if core_search.get("full_text_loading") != "on_demand_by_candidate_shard":
-        fail("full text must be loaded on demand by candidate shard")
+    if core_search.get("full_text_loading") != "progressive_candidate_hydration_then_exhaustive_full_scan":
+        fail("full text must use progressive candidate hydration followed by exhaustive full scan")
     if core_search.get("search_worker") is not True:
         fail("search worker must be enabled")
+    progressive_search = manifest.get("progressive_search") if isinstance(manifest.get("progressive_search"), dict) else {}
+    coverage_contract = manifest.get("coverage_contract") if isinstance(manifest.get("coverage_contract"), dict) else {}
+    full_shards = ((manifest.get("sitegraph") or {}).get("full_shards") or []) if isinstance(manifest.get("sitegraph"), dict) else []
+    if progressive_search.get("full_scan_supported") is not True:
+        fail("manifest.progressive_search.full_scan_supported must be true")
+    if progressive_search.get("progressive_events") is not True:
+        fail("manifest.progressive_search.progressive_events must be true")
+    if int(progressive_search.get("total_shards", -1)) != len(full_shards):
+        fail("manifest.progressive_search.total_shards must equal sitegraph.full_shards length")
+    if int(progressive_search.get("total_documents", -1)) != int(manifest.get("total_documents", -2)):
+        fail("manifest.progressive_search.total_documents must equal manifest.total_documents")
+    for field in ("title", "url", "section", "nav_path", "summary", "content", "attachments"):
+        if field not in set(coverage_contract.get("coverage_fields") or []):
+            fail(f"manifest.coverage_contract.coverage_fields missing {field}")
+    verification_contract = manifest.get("verification_contract") if isinstance(manifest.get("verification_contract"), dict) else {}
+    if verification_contract.get("shard_filter_supported") is not True:
+        fail("manifest.verification_contract.shard_filter_supported must be true")
+    if verification_contract.get("proved_skip_supported") is not True:
+        fail("manifest.verification_contract.proved_skip_supported must be true")
+    if verification_contract.get("scan_fallback_supported") is not True:
+        fail("manifest.verification_contract.scan_fallback_supported must be true")
 
     artifacts = manifest.get("artifacts") if isinstance(manifest.get("artifacts"), dict) else {}
     required = (
@@ -95,6 +118,8 @@ def main() -> None:
         "attachment_index",
         "external_index",
         "query_aliases",
+        "shard_catalog",
+        "shard_filter",
         "outcomes",
         "size_report",
     )

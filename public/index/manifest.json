@@ -1,8 +1,8 @@
 {
-  "generated_at": "2026-05-27T09:33:14.908650+00:00",
-  "strategy": "pure-sitegraph-code-search-v2",
+  "generated_at": "2026-05-27T09:58:33.469927+00:00",
+  "strategy": "progressive-verifiable-static-search",
   "producer_repo": "hicancan/njupt-search",
-  "producer_ref": "6c5d42a9ad12c14d539820748ecdbf0c3fe7c768",
+  "producer_ref": "39d7c04e3b48",
   "site_id": "jwc",
   "artifact_path": "index",
   "upstream_generated_at": "2026-05-26T11:33:21.896047+00:00",
@@ -37,7 +37,7 @@
   },
   "exam_vertical_preserved": true,
   "core_search": {
-    "algorithm": "worker light inverted recall plus lazy body index and locality shard ranking",
+    "algorithm": "progressive exhaustive static search: light inverted recall, body inverted recall, candidate shard hydration, then complete full shard scan",
     "execution_model": "pure_frontend_worker",
     "light_first_screen": true,
     "first_screen_artifacts": [
@@ -46,22 +46,82 @@
       "query_aliases"
     ],
     "body_index_loading": "on_deep_search",
-    "full_text_loading": "on_demand_by_candidate_shard",
+    "full_text_loading": "progressive_candidate_hydration_then_exhaustive_full_scan",
     "search_worker": true
+  },
+  "progressive_search": {
+    "total_shards": 481,
+    "total_documents": 7534,
+    "full_scan_supported": true,
+    "progressive_events": true,
+    "artifact_roles": [
+      "manifest",
+      "doc_meta_light",
+      "light_inverted_index",
+      "query_aliases",
+      "body_inverted_index",
+      "shard_catalog",
+      "shard_filter",
+      "full_shards",
+      "size_report",
+      "outcomes"
+    ]
+  },
+  "coverage_contract": {
+    "coverage_fields": [
+      "title",
+      "section",
+      "nav_path",
+      "summary",
+      "content",
+      "attachments",
+      "url"
+    ],
+    "proof": {
+      "indexed_fields": [
+        "title",
+        "section",
+        "nav_path",
+        "tags",
+        "attachments",
+        "external",
+        "system",
+        "summary",
+        "content"
+      ],
+      "full_scan_fields": [
+        "title",
+        "section",
+        "nav_path",
+        "summary",
+        "content",
+        "attachments",
+        "url"
+      ]
+    },
+    "total_shards": 481,
+    "total_documents": 7534
+  },
+  "verification_contract": {
+    "shard_filter_supported": true,
+    "proved_skip_supported": true,
+    "scan_fallback_supported": true,
+    "filter_artifact": "shard_filter",
+    "catalog_artifact": "shard_catalog"
   },
   "artifacts": {
     "doc_meta_light": {
-      "path": "index/sitegraph/jwc/artifacts/doc_meta_light.f125bd0523915410.json",
-      "sha256": "f125bd0523915410746d8b6aeb8963ba633b2b2d4c9a674ea79cb4daba68514f",
+      "path": "index/sitegraph/jwc/artifacts/doc_meta_light.796b98568061c7f2.json",
+      "sha256": "796b98568061c7f2e3c9d62328e79f989d6ccd3978265b2e8058f468f65827f8",
       "bytes": 2663639,
       "role": "doc_meta_light",
       "load": "initial",
       "count": 7534
     },
     "light_inverted_index": {
-      "path": "index/sitegraph/jwc/artifacts/light_inverted_index.495a62d787e930e7.json",
-      "sha256": "495a62d787e930e75a0af8c7fae9142f15dbdcd3e826a8f0c082301d67793b0a",
-      "bytes": 8920371,
+      "path": "index/sitegraph/jwc/artifacts/light_inverted_index.81df1336624c6c8b.json",
+      "sha256": "81df1336624c6c8b960673f6b92eef4897852a9429e8a63128816fd830f2e000",
+      "bytes": 8920380,
       "role": "light_inverted_index",
       "load": "initial"
     },
@@ -74,9 +134,9 @@
       "count": 13
     },
     "body_inverted_index": {
-      "path": "index/sitegraph/jwc/artifacts/body_inverted_index.0b29fbcb41941a03.json",
-      "sha256": "0b29fbcb41941a0395723b26676d386fbef22b2506248141fd9f32c4790f7dc3",
-      "bytes": 12655428,
+      "path": "index/sitegraph/jwc/artifacts/body_inverted_index.d2d068c131d8dec2.json",
+      "sha256": "d2d068c131d8dec267d7839ac0c17de2cca26133b7dc1a48a0bd11125612e897",
+      "bytes": 12655437,
       "role": "body_inverted_index",
       "load": "deep_search"
     },
@@ -104,6 +164,22 @@
       "load": "on_demand",
       "count": 426
     },
+    "shard_catalog": {
+      "path": "index/sitegraph/jwc/artifacts/shard_catalog.d91056caf719f662.json",
+      "sha256": "d91056caf719f6620744fb6edf3e1e8e0755acb93eeb04d39a7037c773268530",
+      "bytes": 269286,
+      "role": "shard_catalog",
+      "load": "verify",
+      "count": 481
+    },
+    "shard_filter": {
+      "path": "index/sitegraph/jwc/artifacts/shard_filter.b30c6e9b59e47566.json",
+      "sha256": "b30c6e9b59e47566aac4d10ea1cb111c4fddb03cb724e600d7c9b83f08860487",
+      "bytes": 1449480,
+      "role": "shard_filter",
+      "load": "verify",
+      "count": 481
+    },
     "outcomes": {
       "path": "index/sitegraph/jwc/artifacts/outcomes.44e6d57281433421.json",
       "sha256": "44e6d57281433421e5a1160141f39f8c31c5be9df60abbf29b414750e4d7a2dc",
@@ -112,9 +188,9 @@
       "load": "audit"
     },
     "size_report": {
-      "path": "index/sitegraph/jwc/artifacts/size_report.780d2071f2856db5.json",
-      "sha256": "780d2071f2856db5807ea2281342deb75e3fcb9325d7ed42bc29e0fe4dcab4da",
-      "bytes": 791,
+      "path": "index/sitegraph/jwc/artifacts/size_report.58906b1b36484db9.json",
+      "sha256": "58906b1b36484db9a460e912c46626ad7407729f1d2e657fa3e8b1e6a0abea5d",
+      "bytes": 1353,
       "role": "size_report",
       "load": "audit"
     }
@@ -167,7 +243,9 @@
         "year_range": [
           "undated"
         ],
-        "hash_bucket": "b0"
+        "hash_bucket": "b0",
+        "filter_token_count": 468,
+        "filter_sha256": "5cc5c88566cbf2d156d52c08ffd153ab"
       },
       {
         "shard_id": "download__attachment__undated__常用下载__b1",
@@ -188,7 +266,9 @@
         "year_range": [
           "undated"
         ],
-        "hash_bucket": "b1"
+        "hash_bucket": "b1",
+        "filter_token_count": 348,
+        "filter_sha256": "8ff7ae001fe15f69a916dfd86f8c0853"
       },
       {
         "shard_id": "download__attachment__undated__常用下载__b2",
@@ -209,7 +289,9 @@
         "year_range": [
           "undated"
         ],
-        "hash_bucket": "b2"
+        "hash_bucket": "b2",
+        "filter_token_count": 402,
+        "filter_sha256": "369ee70fd0a2703ea968cd5928fb5aff"
       },
       {
         "shard_id": "download__attachment__undated__常用下载__b3",
@@ -230,7 +312,9 @@
         "year_range": [
           "undated"
         ],
-        "hash_bucket": "b3"
+        "hash_bucket": "b3",
+        "filter_token_count": 288,
+        "filter_sha256": "72edb19a94cec3f549986c20a3ad03e9"
       },
       {
         "shard_id": "download__attachment__undated__规章制度__b1",
@@ -251,7 +335,9 @@
         "year_range": [
           "undated"
         ],
-        "hash_bucket": "b1"
+        "hash_bucket": "b1",
+        "filter_token_count": 199,
+        "filter_sha256": "c72925f9daf255fecb428745ca953f4b"
       },
       {
         "shard_id": "download__attachment__undated__规章制度__b2",
@@ -272,7 +358,9 @@
         "year_range": [
           "undated"
         ],
-        "hash_bucket": "b2"
+        "hash_bucket": "b2",
+        "filter_token_count": 256,
+        "filter_sha256": "6dd7b58aa5df27634282fb5b114d58e3"
       },
       {
         "shard_id": "download__attachment__undated__首页__b0",
@@ -309,7 +397,9 @@
         "year_range": [
           "undated"
         ],
-        "hash_bucket": "b0"
+        "hash_bucket": "b0",
+        "filter_token_count": 2165,
+        "filter_sha256": "b191147d7264ba200ed41e506a8b1dbd"
       },
       {
         "shard_id": "download__attachment__undated__首页__b1",
@@ -345,7 +435,9 @@
         "year_range": [
           "undated"
         ],
-        "hash_bucket": "b1"
+        "hash_bucket": "b1",
+        "filter_token_count": 2108,
+        "filter_sha256": "d63a8a06caea1b57b55952f412d3e954"
       },
       {
         "shard_id": "download__attachment__undated__首页__b2",
@@ -380,7 +472,9 @@
         "year_range": [
           "undated"
         ],
-        "hash_bucket": "b2"
+        "hash_bucket": "b2",
+        "filter_token_count": 1897,
+        "filter_sha256": "3f941ad0230c6136027390e5e7525809"
       },
       {
         "shard_id": "download__attachment__undated__首页__b3",
@@ -417,7 +511,9 @@
         "year_range": [
           "undated"
         ],
-        "hash_bucket": "b3"
+        "hash_bucket": "b3",
+        "filter_token_count": 1668,
+        "filter_sha256": "9eef2acc55a37634056ab9a2e851d770"
       },
       {
         "shard_id": "download__detail__2009__首页__b0",
@@ -439,7 +535,9 @@
         "year_range": [
           "2009"
         ],
-        "hash_bucket": "b0"
+        "hash_bucket": "b0",
+        "filter_token_count": 3031,
+        "filter_sha256": "88f30d2fc5457661832ddbd10f37ccd3"
       },
       {
         "shard_id": "download__detail__2009__首页__b1",
@@ -461,7 +559,9 @@
         "year_range": [
           "2009"
         ],
-        "hash_bucket": "b1"
+        "hash_bucket": "b1",
+        "filter_token_count": 4473,
+        "filter_sha256": "c4a69b7687d3879aa7d3bee388d06698"
       },
       {
         "shard_id": "download__detail__2009__首页__b2",
@@ -483,7 +583,9 @@
         "year_range": [
           "2009"
         ],
-        "hash_bucket": "b2"
+        "hash_bucket": "b2",
+        "filter_token_count": 5120,
+        "filter_sha256": "528df70348b717bf02da35d5f20899d4"
       },
       {
         "shard_id": "download__detail__2009__首页__b3",
@@ -506,7 +608,9 @@
         "year_range": [
           "2009"
         ],
-        "hash_bucket": "b3"
+        "hash_bucket": "b3",
+        "filter_token_count": 3543,
+        "filter_sha256": "03be36fdf7c27854636ab23d4b35426a"
       },
       {
         "shard_id": "download__detail__2010__首页__b0",
@@ -528,7 +632,9 @@
         "year_range": [
           "2010"
         ],
-        "hash_bucket": "b0"
+        "hash_bucket": "b0",
+        "filter_token_count": 6072,
+        "filter_sha256": "bd126ca320c1bd0253ea65ef2cddbb67"
       },
       {
         "shard_id": "download__detail__2010__首页__b1",
@@ -550,7 +656,9 @@
         "year_range": [
           "2010"
         ],
-        "hash_bucket": "b1"
+        "hash_bucket": "b1",
+        "filter_token_count": 4769,
+        "filter_sha256": "d4a74789cadea5531b13fd9403eeca0a"
       },
       {
         "shard_id": "download__detail__2010__首页__b2",
@@ -572,7 +680,9 @@
         "year_range": [
           "2010"
         ],
-        "hash_bucket": "b2"
+        "hash_bucket": "b2",
+        "filter_token_count": 1031,
+        "filter_sha256": "befb6dfb7d999d8d69cd4963f6b93fd3"
       },
       {
         "shard_id": "download__detail__2010__首页__b3",
@@ -594,7 +704,9 @@
         "year_range": [
           "2010"
         ],
-        "hash_bucket": "b3"
+        "hash_bucket": "b3",
+        "filter_token_count": 4660,
+        "filter_sha256": "5c9ff517649cd40fb39829a777c3a1d1"
       },
       {
         "shard_id": "download__detail__2011__首页__b0",
@@ -617,7 +729,9 @@
         "year_range": [
           "2011"
         ],
-        "hash_bucket": "b0"
+        "hash_bucket": "b0",
+        "filter_token_count": 16430,
+        "filter_sha256": "c8c3075739e71433b952f025fc3e849a"
       },
       {
         "shard_id": "download__detail__2011__首页__b1",
@@ -639,7 +753,9 @@
         "year_range": [
           "2011"
         ],
-        "hash_bucket": "b1"
+        "hash_bucket": "b1",
+        "filter_token_count": 8834,
+        "filter_sha256": "47df6c045bb6ab03cbcd1b0099b51a15"
       },
       {
         "shard_id": "download__detail__2011__首页__b2",
@@ -662,7 +778,9 @@
         "year_range": [
           "2011"
         ],
-        "hash_bucket": "b2"
+        "hash_bucket": "b2",
+        "filter_token_count": 9023,
+        "filter_sha256": "d5ea16f0ddcf75a7fa0c30e26a61eb55"
       },
       {
         "shard_id": "download__detail__2011__首页__b3",
@@ -684,7 +802,9 @@
         "year_range": [
           "2011"
         ],
-        "hash_bucket": "b3"
+        "hash_bucket": "b3",
+        "filter_token_count": 8764,
+        "filter_sha256": "950dbda5442a3d7e6463ce52a070e7bc"
       },
       {
         "shard_id": "download__detail__2012__首页__b0",
@@ -707,7 +827,9 @@
         "year_range": [
           "2012"
         ],
-        "hash_bucket": "b0"
+        "hash_bucket": "b0",
+        "filter_token_count": 17281,
+        "filter_sha256": "af039ba78fef988350aded34320a8b23"
       },
       {
         "shard_id": "download__detail__2012__首页__b1",
@@ -731,7 +853,9 @@
         "year_range": [
           "2012"
         ],
-        "hash_bucket": "b1"
+        "hash_bucket": "b1",
+        "filter_token_count": 11646,
+        "filter_sha256": "6a9f71f5cbea2a36533bc4ee56fed631"
       },
       {
         "shard_id": "download__detail__2012__首页__b2",
@@ -754,7 +878,9 @@
         "year_range": [
           "2012"
         ],
-        "hash_bucket": "b2"
+        "hash_bucket": "b2",
+        "filter_token_count": 19056,
+        "filter_sha256": "522fa4eab851214ce09d57d0639258e2"
       },
       {
         "shard_id": "download__detail__2012__首页__b3",
@@ -776,7 +902,9 @@
         "year_range": [
           "2012"
         ],
-        "hash_bucket": "b3"
+        "hash_bucket": "b3",
+        "filter_token_count": 15295,
+        "filter_sha256": "809c88562ebae67f784a19c837ad1bc1"
       },
       {
         "shard_id": "download__detail__2013__常用下载__b0",
@@ -797,7 +925,9 @@
         "year_range": [
           "2013"
         ],
-        "hash_bucket": "b0"
+        "hash_bucket": "b0",
+        "filter_token_count": 482,
+        "filter_sha256": "3f3c54580317f79105963431481cc501"
       },
       {
         "shard_id": "download__detail__2013__常用下载__b1",
@@ -818,7 +948,9 @@
         "year_range": [
           "2013"
         ],
-        "hash_bucket": "b1"
+        "hash_bucket": "b1",
+        "filter_token_count": 300,
+        "filter_sha256": "98dadfeeb6fd158b62ee6fb01d5ae490"
       },
       {
         "shard_id": "download__detail__2013__常用下载__b2",
@@ -839,7 +971,9 @@
         "year_range": [
           "2013"
         ],
-        "hash_bucket": "b2"
+        "hash_bucket": "b2",
+        "filter_token_count": 186,
+        "filter_sha256": "075b395574d9eaa0f17df2b7b78f020a"
       },
       {
         "shard_id": "download__detail__2013__常用下载__b3",
@@ -860,7 +994,9 @@
         "year_range": [
           "2013"
         ],
-        "hash_bucket": "b3"
+        "hash_bucket": "b3",
+        "filter_token_count": 249,
+        "filter_sha256": "1ca24a8869bc16b3ea109b8ac87ce9cf"
       },
       {
         "shard_id": "download__detail__2013__首页__b0",
@@ -885,7 +1021,9 @@
         "year_range": [
           "2013"
         ],
-        "hash_bucket": "b0"
+        "hash_bucket": "b0",
+        "filter_token_count": 21266,
+        "filter_sha256": "56d7725bc98f4540ee1336c394610d16"
       },
       {
         "shard_id": "download__detail__2013__首页__b1",
@@ -908,7 +1046,9 @@
         "year_range": [
           "2013"
         ],
-        "hash_bucket": "b1"
+        "hash_bucket": "b1",
+        "filter_token_count": 11866,
+        "filter_sha256": "2a98f30b0bda453b2bff0decb60d5710"
       },
       {
         "shard_id": "download__detail__2013__首页__b2",
@@ -935,7 +1075,9 @@
         "year_range": [
           "2013"
         ],
-        "hash_bucket": "b2"
+        "hash_bucket": "b2",
+        "filter_token_count": 13451,
+        "filter_sha256": "7b08305d1cf959b54c0a2615cbad7665"
       },
       {
         "shard_id": "download__detail__2013__首页__b3",
@@ -961,7 +1103,9 @@
         "year_range": [
           "2013"
         ],
-        "hash_bucket": "b3"
+        "hash_bucket": "b3",
+        "filter_token_count": 16172,
+        "filter_sha256": "8ecaab4499dc63e23b9102f6f223b27c"
       },
       {
         "shard_id": "download__detail__2014__首页__b0",
@@ -982,7 +1126,9 @@
         "year_range": [
           "2014"
         ],
-        "hash_bucket": "b0"
+        "hash_bucket": "b0",
+        "filter_token_count": 7837,
+        "filter_sha256": "50b55bf50365771f1c880a0f084a3c21"
       },
       {
         "shard_id": "download__detail__2014__首页__b1",
@@ -1005,7 +1151,9 @@
         "year_range": [
           "2014"
         ],
-        "hash_bucket": "b1"
+        "hash_bucket": "b1",
+        "filter_token_count": 13967,
+        "filter_sha256": "48b717f26b6ad3574f66bafeaefd901f"
       },
       {
         "shard_id": "download__detail__2014__首页__b2",
@@ -1026,7 +1174,9 @@
         "year_range": [
           "2014"
         ],
-        "hash_bucket": "b2"
+        "hash_bucket": "b2",
+        "filter_token_count": 13899,
+        "filter_sha256": "ee98a43afa04c7e5432bdbd17f50007a"
       },
       {
         "shard_id": "download__detail__2014__首页__b3",
@@ -1047,7 +1197,9 @@
         "year_range": [
           "2014"
         ],
-        "hash_bucket": "b3"
+        "hash_bucket": "b3",
+        "filter_token_count": 12245,
+        "filter_sha256": "b71da88bcd10d9a3187277c3232f47a8"
       },
       {
         "shard_id": "download__detail__2015__首页__b0",
@@ -1069,7 +1221,9 @@
         "year_range": [
           "2015"
         ],
-        "hash_bucket": "b0"
+        "hash_bucket": "b0",
+        "filter_token_count": 9368,
+        "filter_sha256": "0d9145a273dd3524c6919eeaa3b257c8"
       },
       {
         "shard_id": "download__detail__2015__首页__b1",
@@ -1091,7 +1245,9 @@
         "year_range": [
           "2015"
         ],
-        "hash_bucket": "b1"
+        "hash_bucket": "b1",
+        "filter_token_count": 13559,
+        "filter_sha256": "e699fe2022d16d75c55c612f98fd1e92"
       },
       {
         "shard_id": "download__detail__2015__首页__b2",
@@ -1112,7 +1268,9 @@
         "year_range": [
           "2015"
         ],
-        "hash_bucket": "b2"
+        "hash_bucket": "b2",
+        "filter_token_count": 16792,
+        "filter_sha256": "7541064db994a3435d6c1b7ef00c13ac"
       },
       {
         "shard_id": "download__detail__2015__首页__b3",
@@ -1133,7 +1291,9 @@
         "year_range": [
           "2015"
         ],
-        "hash_bucket": "b3"
+        "hash_bucket": "b3",
+        "filter_token_count": 10776,
+        "filter_sha256": "a83c2ac49b8343bd08e1b378b08ae023"
       },
       {
         "shard_id": "download__detail__2016__常用下载__b3",
@@ -1154,7 +1314,9 @@
         "year_range": [
           "2016"
         ],
-        "hash_bucket": "b3"
+        "hash_bucket": "b3",
+        "filter_token_count": 106,
+        "filter_sha256": "31866bab57680b22e3d14251c3fbd34a"
       },
       {
         "shard_id": "download__detail__2016__首页__b0",
@@ -1176,7 +1338,9 @@
         "year_range": [
           "2016"
         ],
-        "hash_bucket": "b0"
+        "hash_bucket": "b0",
+        "filter_token_count": 7124,
+        "filter_sha256": "22f8fef73a24dbd8cac3c9497cca9b91"
       },
       {
         "shard_id": "download__detail__2016__首页__b1",
@@ -1197,7 +1361,9 @@
         "year_range": [
           "2016"
         ],
-        "hash_bucket": "b1"
+        "hash_bucket": "b1",
+        "filter_token_count": 8379,
+        "filter_sha256": "0367e3a0058eaf382c63d78f72772c59"
       },
       {
         "shard_id": "download__detail__2016__首页__b2",
@@ -1218,7 +1384,9 @@
         "year_range": [
           "2016"
         ],
-        "hash_bucket": "b2"
+        "hash_bucket": "b2",
+        "filter_token_count": 6765,
+        "filter_sha256": "44f79d1ec2ac834fe83a9422ac1d6815"
       },
       {
         "shard_id": "download__detail__2016__首页__b3",
@@ -1239,7 +1407,9 @@
         "year_range": [
           "2016"
         ],
-        "hash_bucket": "b3"
+        "hash_bucket": "b3",
+        "filter_token_count": 17158,
+        "filter_sha256": "437b5763358dbca65b0baa8dae035f39"
       },
       {
         "shard_id": "download__detail__2017__首页__b0",
@@ -1260,7 +1430,9 @@
         "year_range": [
           "2017"
         ],
-        "hash_bucket": "b0"
+        "hash_bucket": "b0",
+        "filter_token_count": 3609,
+        "filter_sha256": "374da3771731689e03807cdf4ae458cb"
       },
       {
         "shard_id": "download__detail__2017__首页__b1",
@@ -1281,7 +1453,9 @@
         "year_range": [
           "2017"
         ],
-        "hash_bucket": "b1"
+        "hash_bucket": "b1",
+        "filter_token_count": 5846,
+        "filter_sha256": "df62d438286c82a00d7957421163080d"
       },
       {
         "shard_id": "download__detail__2017__首页__b2",
@@ -1302,7 +1476,9 @@
         "year_range": [
           "2017"
         ],
-        "hash_bucket": "b2"
+        "hash_bucket": "b2",
+        "filter_token_count": 9005,
+        "filter_sha256": "4afa6fabc7b719379505ed89db6425fb"
       },
       {
         "shard_id": "download__detail__2017__首页__b3",
@@ -1323,7 +1499,9 @@
         "year_range": [
           "2017"
         ],
-        "hash_bucket": "b3"
+        "hash_bucket": "b3",
+        "filter_token_count": 15661,
+        "filter_sha256": "bfa7f2aa4670bb546552645939d83633"
       },
       {
         "shard_id": "download__detail__2018__首页__b0",
@@ -1346,7 +1524,9 @@
         "year_range": [
           "2018"
         ],
-        "hash_bucket": "b0"
+        "hash_bucket": "b0",
+        "filter_token_count": 10860,
+        "filter_sha256": "16224af464db0e2e0e0c6e8f8f706eff"
       },
       {
         "shard_id": "download__detail__2018__首页__b1",
@@ -1367,7 +1547,9 @@
         "year_range": [
           "2018"
         ],
-        "hash_bucket": "b1"
+        "hash_bucket": "b1",
+        "filter_token_count": 9714,
+        "filter_sha256": "3c05b4242dad5b3bcf2ef317f2e0a128"
       },
       {
         "shard_id": "download__detail__2018__首页__b2",
@@ -1388,7 +1570,9 @@
         "year_range": [
           "2018"
         ],
-        "hash_bucket": "b2"
+        "hash_bucket": "b2",
+        "filter_token_count": 8177,
+        "filter_sha256": "ab7dc58bebd6fd16da7d0cca17f5ec77"
       },
       {
         "shard_id": "download__detail__2018__首页__b3",
@@ -1409,7 +1593,9 @@
         "year_range": [
           "2018"
         ],
-        "hash_bucket": "b3"
+        "hash_bucket": "b3",
+        "filter_token_count": 10117,
+        "filter_sha256": "ed4ef8a1965255985b9b446c51941c99"
       },
       {
         "shard_id": "download__detail__2019__首页__b0",
@@ -1430,7 +1616,9 @@
         "year_range": [
           "2019"
         ],
-        "hash_bucket": "b0"
+        "hash_bucket": "b0",
+        "filter_token_count": 14959,
+        "filter_sha256": "c9bf5a49b0756aad0e55f0e0b74edbfa"
       },
       {
         "shard_id": "download__detail__2019__首页__b1",
@@ -1452,7 +1640,9 @@
         "year_range": [
           "2019"
         ],
-        "hash_bucket": "b1"
+        "hash_bucket": "b1",
+        "filter_token_count": 5953,
+        "filter_sha256": "c26bc9d865872ba94f03ff1178f8b4e6"
       },
       {
         "shard_id": "download__detail__2019__首页__b2",
@@ -1475,7 +1665,9 @@
         "year_range": [
           "2019"
         ],
-        "hash_bucket": "b2"
+        "hash_bucket": "b2",
+        "filter_token_count": 7104,
+        "filter_sha256": "6a9ddc135f3d200b7b7add3e538fb4a6"
       },
       {
         "shard_id": "download__detail__2019__首页__b3",
@@ -1497,7 +1689,9 @@
         "year_range": [
           "2019"
         ],
-        "hash_bucket": "b3"
+        "hash_bucket": "b3",
+        "filter_token_count": 13810,
+        "filter_sha256": "5d60914c3d28f4a302de901fc0d825b6"
       },
       {
         "shard_id": "download__detail__2020__首页__b0",
@@ -1518,7 +1712,9 @@
         "year_range": [
           "2020"
         ],
-        "hash_bucket": "b0"
+        "hash_bucket": "b0",
+        "filter_token_count": 10661,
+        "filter_sha256": "a17ca005d83129b9aac003f99068638d"
       },
       {
         "shard_id": "download__detail__2020__首页__b1",
@@ -1539,7 +1735,9 @@
         "year_range": [
           "2020"
         ],
-        "hash_bucket": "b1"
+        "hash_bucket": "b1",
+        "filter_token_count": 10510,
+        "filter_sha256": "aba95c9eca11fdf3542317b87243c89d"
       },
       {
         "shard_id": "download__detail__2020__首页__b2",
@@ -1560,7 +1758,9 @@
         "year_range": [
           "2020"
         ],
-        "hash_bucket": "b2"
+        "hash_bucket": "b2",
+        "filter_token_count": 4684,
+        "filter_sha256": "a65973a7ccb588200e90d12cb3ee4b16"
       },
       {
         "shard_id": "download__detail__2020__首页__b3",
@@ -1581,7 +1781,9 @@
         "year_range": [
           "2020"
         ],
-        "hash_bucket": "b3"
+        "hash_bucket": "b3",
+        "filter_token_count": 3936,
+        "filter_sha256": "f474c091534308fb62c2740789b4dceb"
       },
       {
         "shard_id": "download__detail__2021__首页__b0",
@@ -1602,7 +1804,9 @@
         "year_range": [
           "2021"
         ],
-        "hash_bucket": "b0"
+        "hash_bucket": "b0",
+        "filter_token_count": 16990,
+        "filter_sha256": "4d61a0783070a440ea4c6e64ea5f6afe"
       },
       {
         "shard_id": "download__detail__2021__首页__b1",
@@ -1623,7 +1827,9 @@
         "year_range": [
           "2021"
         ],
-        "hash_bucket": "b1"
+        "hash_bucket": "b1",
+        "filter_token_count": 3651,
+        "filter_sha256": "b3d39345ee50f5bf289de35fed692fd2"
       },
       {
         "shard_id": "download__detail__2021__首页__b2",
@@ -1644,7 +1850,9 @@
         "year_range": [
           "2021"
         ],
-        "hash_bucket": "b2"
+        "hash_bucket": "b2",
+        "filter_token_count": 12827,
+        "filter_sha256": "e660c275cabff4e8c80e45d90169b401"
       },
       {
         "shard_id": "download__detail__2021__首页__b3",
@@ -1666,7 +1874,9 @@
         "year_range": [
           "2021"
         ],
-        "hash_bucket": "b3"
+        "hash_bucket": "b3",
+        "filter_token_count": 4815,
+        "filter_sha256": "a9e39cf15f95642030c752b8aae575ab"
       },
       {
         "shard_id": "download__detail__2022__首页__b0",
@@ -1687,7 +1897,9 @@
         "year_range": [
           "2022"
         ],
-        "hash_bucket": "b0"
+        "hash_bucket": "b0",
+        "filter_token_count": 2445,
+        "filter_sha256": "15a4863e17bd999b6942062aa54f2ac9"
       },
       {
         "shard_id": "download__detail__2022__首页__b1",
@@ -1708,7 +1920,9 @@
         "year_range": [
           "2022"
         ],
-        "hash_bucket": "b1"
+        "hash_bucket": "b1",
+        "filter_token_count": 12294,
+        "filter_sha256": "8a58765e13f5b61b1d68677511798f29"
       },
       {
         "shard_id": "download__detail__2022__首页__b2",
@@ -1729,7 +1943,9 @@
         "year_range": [
           "2022"
         ],
-        "hash_bucket": "b2"
+        "hash_bucket": "b2",
+        "filter_token_count": 7904,
+        "filter_sha256": "505735b4dc5306c17f10854f0379423e"
       },
       {
         "shard_id": "download__detail__2022__首页__b3",
@@ -1750,7 +1966,9 @@
         "year_range": [
           "2022"
         ],
-        "hash_bucket": "b3"
+        "hash_bucket": "b3",
+        "filter_token_count": 7616,
+        "filter_sha256": "12da3741736958d1fd27571b1ad0a1cd"
       },
       {
         "shard_id": "download__detail__2023__首页__b0",
@@ -1771,7 +1989,9 @@
         "year_range": [
           "2023"
         ],
-        "hash_bucket": "b0"
+        "hash_bucket": "b0",
+        "filter_token_count": 4432,
+        "filter_sha256": "43bc173ed6f4280ccbea28e3e5781d0c"
       },
       {
         "shard_id": "download__detail__2023__首页__b1",
@@ -1792,7 +2012,9 @@
         "year_range": [
           "2023"
         ],
-        "hash_bucket": "b1"
+        "hash_bucket": "b1",
+        "filter_token_count": 9780,
+        "filter_sha256": "07d2fb0c795bf51d6103adcfaca726ec"
       },
       {
         "shard_id": "download__detail__2023__首页__b2",
@@ -1813,7 +2035,9 @@
         "year_range": [
           "2023"
         ],
-        "hash_bucket": "b2"
+        "hash_bucket": "b2",
+        "filter_token_count": 5689,
+        "filter_sha256": "f23dae75fbc0907b045522f090ebc9c2"
       },
       {
         "shard_id": "download__detail__2023__首页__b3",
@@ -1834,7 +2058,9 @@
         "year_range": [
           "2023"
         ],
-        "hash_bucket": "b3"
+        "hash_bucket": "b3",
+        "filter_token_count": 9419,
+        "filter_sha256": "df81568edcf3ab9dd975f14ec7d2fc3b"
       },
       {
         "shard_id": "download__detail__2024__首页__b0",
@@ -1855,7 +2081,9 @@
         "year_range": [
           "2024"
         ],
-        "hash_bucket": "b0"
+        "hash_bucket": "b0",
+        "filter_token_count": 7166,
+        "filter_sha256": "9ec8bfb8c36e2fa83adc0087fa959b8a"
       },
       {
         "shard_id": "download__detail__2024__首页__b1",
@@ -1876,7 +2104,9 @@
         "year_range": [
           "2024"
         ],
-        "hash_bucket": "b1"
+        "hash_bucket": "b1",
+        "filter_token_count": 5468,
+        "filter_sha256": "bde606ae4f0d3b6f428c583c7a4d8a17"
       },
       {
         "shard_id": "download__detail__2024__首页__b2",
@@ -1897,7 +2127,9 @@
         "year_range": [
           "2024"
         ],
-        "hash_bucket": "b2"
+        "hash_bucket": "b2",
+        "filter_token_count": 6821,
+        "filter_sha256": "0b37cf3add03702d17193f6a2386315d"
       },
       {
         "shard_id": "download__detail__2024__首页__b3",
@@ -1918,7 +2150,9 @@
         "year_range": [
           "2024"
         ],
-        "hash_bucket": "b3"
+        "hash_bucket": "b3",
+        "filter_token_count": 5610,
+        "filter_sha256": "16a52d0b4c6413fa2bac621bd1342f93"
       },
       {
         "shard_id": "download__detail__2025__首页__b0",
@@ -1939,7 +2173,9 @@
         "year_range": [
           "2025"
         ],
-        "hash_bucket": "b0"
+        "hash_bucket": "b0",
+        "filter_token_count": 774,
+        "filter_sha256": "374f79a973687b074a82fe40621ad972"
       },
       {
         "shard_id": "download__detail__2025__首页__b1",
@@ -1960,7 +2196,9 @@
         "year_range": [
           "2025"
         ],
-        "hash_bucket": "b1"
+        "hash_bucket": "b1",
+        "filter_token_count": 3206,
+        "filter_sha256": "c601dff2577430391655df49a06fb68b"
       },
       {
         "shard_id": "download__detail__2025__首页__b2",
@@ -1981,7 +2219,9 @@
         "year_range": [
           "2025"
         ],
-        "hash_bucket": "b2"
+        "hash_bucket": "b2",
+        "filter_token_count": 519,
+        "filter_sha256": "f3feb7812c97b1a98e46e89c8fa2bec3"
       },
       {
         "shard_id": "download__detail__2025__首页__b3",
@@ -2002,7 +2242,9 @@
         "year_range": [
           "2025"
         ],
-        "hash_bucket": "b3"
+        "hash_bucket": "b3",
+        "filter_token_count": 755,
+        "filter_sha256": "b1da409121a9d26e8611bfcd357209a6"
       },
       {
         "shard_id": "download__detail__2026__首页__b0",
@@ -2023,7 +2265,9 @@
         "year_range": [
           "2026"
         ],
-        "hash_bucket": "b0"
+        "hash_bucket": "b0",
+        "filter_token_count": 206,
+        "filter_sha256": "852f697ba6cdcff367706b11b61b6ea2"
       },
       {
         "shard_id": "download__detail__2026__首页__b1",
@@ -2044,7 +2288,9 @@
         "year_range": [
           "2026"
         ],
-        "hash_bucket": "b1"
+        "hash_bucket": "b1",
+        "filter_token_count": 773,
+        "filter_sha256": "e3693c7c2247cb727fdbf72a0b2ca157"
       },
       {
         "shard_id": "download__detail__2026__首页__b2",
@@ -2065,7 +2311,9 @@
         "year_range": [
           "2026"
         ],
-        "hash_bucket": "b2"
+        "hash_bucket": "b2",
+        "filter_token_count": 1876,
+        "filter_sha256": "7148af653547f8e9bf5c3722181d3879"
       },
       {
         "shard_id": "exam__detail__2009__首页__b0",
@@ -2087,7 +2335,9 @@
         "year_range": [
           "2009"
         ],
-        "hash_bucket": "b0"
+        "hash_bucket": "b0",
+        "filter_token_count": 20277,
+        "filter_sha256": "e33ffdb6e76ee2c39ff4336cf68b4bb7"
       },
       {
         "shard_id": "exam__detail__2009__首页__b1",
@@ -2108,7 +2358,9 @@
         "year_range": [
           "2009"
         ],
-        "hash_bucket": "b1"
+        "hash_bucket": "b1",
+        "filter_token_count": 9031,
+        "filter_sha256": "75580fde37e35443b4863566e0bc77b7"
       },
       {
         "shard_id": "exam__detail__2009__首页__b2",
@@ -2130,7 +2382,9 @@
         "year_range": [
           "2009"
         ],
-        "hash_bucket": "b2"
+        "hash_bucket": "b2",
+        "filter_token_count": 14518,
+        "filter_sha256": "cebb5bb49c8182bf92368145975fdfad"
       },
       {
         "shard_id": "exam__detail__2009__首页__b3",
@@ -2152,7 +2406,9 @@
         "year_range": [
           "2009"
         ],
-        "hash_bucket": "b3"
+        "hash_bucket": "b3",
+        "filter_token_count": 8076,
+        "filter_sha256": "69a9f63023e38dc91b81c02ae1205535"
       },
       {
         "shard_id": "exam__detail__2010__首页__b0",
@@ -2174,7 +2430,9 @@
         "year_range": [
           "2010"
         ],
-        "hash_bucket": "b0"
+        "hash_bucket": "b0",
+        "filter_token_count": 22652,
+        "filter_sha256": "41c9ca7a44c56b85dc7a907a3122ca60"
       },
       {
         "shard_id": "exam__detail__2010__首页__b1",
@@ -2196,7 +2454,9 @@
         "year_range": [
           "2010"
         ],
-        "hash_bucket": "b1"
+        "hash_bucket": "b1",
+        "filter_token_count": 17580,
+        "filter_sha256": "e3f6592a20ae713b19a1305fe0d5d2c3"
       },
       {
         "shard_id": "exam__detail__2010__首页__b2",
@@ -2217,7 +2477,9 @@
         "year_range": [
           "2010"
         ],
-        "hash_bucket": "b2"
+        "hash_bucket": "b2",
+        "filter_token_count": 24208,
+        "filter_sha256": "b13bb9d53d0aa0502fc0f0a3ec55e6c6"
       },
       {
         "shard_id": "exam__detail__2010__首页__b3",
@@ -2239,7 +2501,9 @@
         "year_range": [
           "2010"
         ],
-        "hash_bucket": "b3"
+        "hash_bucket": "b3",
+        "filter_token_count": 18603,
+        "filter_sha256": "8fca5cd92df045de29ac7f9a0f89b0bf"
       },
       {
         "shard_id": "exam__detail__2011__首页__b0",
@@ -2262,7 +2526,9 @@
         "year_range": [
           "2011"
         ],
-        "hash_bucket": "b0"
+        "hash_bucket": "b0",
+        "filter_token_count": 48824,
+        "filter_sha256": "2709466f7c4106a58baebb51c6a1d38f"
       },
       {
         "shard_id": "exam__detail__2011__首页__b1",
@@ -2284,7 +2550,9 @@
         "year_range": [
           "2011"
         ],
-        "hash_bucket": "b1"
+        "hash_bucket": "b1",
+        "filter_token_count": 66028,
+        "filter_sha256": "0c6afe9ae2b8aebd6ae4b2fff100a35d"
       },
       {
         "shard_id": "exam__detail__2011__首页__b2",
@@ -2306,7 +2574,9 @@
         "year_range": [
           "2011"
         ],
-        "hash_bucket": "b2"
+        "hash_bucket": "b2",
+        "filter_token_count": 57585,
+        "filter_sha256": "4f60309a8e507b1773e99fb2e3f2add2"
       },
       {
         "shard_id": "exam__detail__2011__首页__b3",
@@ -2328,7 +2598,9 @@
         "year_range": [
           "2011"
         ],
-        "hash_bucket": "b3"
+        "hash_bucket": "b3",
+        "filter_token_count": 77739,
+        "filter_sha256": "0c6afe9ae2b8aebd6ae4b2fff100a35d"
       },
       {
         "shard_id": "exam__detail__2012__首页__b0",
@@ -2351,7 +2623,9 @@
         "year_range": [
           "2012"
         ],
-        "hash_bucket": "b0"
+        "hash_bucket": "b0",
+        "filter_token_count": 67792,
+        "filter_sha256": "0c6afe9ae2b8aebd6ae4b2fff100a35d"
       },
       {
         "shard_id": "exam__detail__2012__首页__b1",
@@ -2374,7 +2648,9 @@
         "year_range": [
           "2012"
         ],
-        "hash_bucket": "b1"
+        "hash_bucket": "b1",
+        "filter_token_count": 44235,
+        "filter_sha256": "d5f8fa0dcbb6dc29e6bdb570048c1bee"
       },
       {
         "shard_id": "exam__detail__2012__首页__b2",
@@ -2397,7 +2673,9 @@
         "year_range": [
           "2012"
         ],
-        "hash_bucket": "b2"
+        "hash_bucket": "b2",
+        "filter_token_count": 41309,
+        "filter_sha256": "9bcff4ae7fee77c7f2ac3f54b4720eee"
       },
       {
         "shard_id": "exam__detail__2012__首页__b3",
@@ -2420,7 +2698,9 @@
         "year_range": [
           "2012"
         ],
-        "hash_bucket": "b3"
+        "hash_bucket": "b3",
+        "filter_token_count": 67408,
+        "filter_sha256": "0c6afe9ae2b8aebd6ae4b2fff100a35d"
       },
       {
         "shard_id": "exam__detail__2013__规章制度__b2",
@@ -2441,7 +2721,9 @@
         "year_range": [
           "2013"
         ],
-        "hash_bucket": "b2"
+        "hash_bucket": "b2",
+        "filter_token_count": 6429,
+        "filter_sha256": "f22b197c658385e2462a4297497cbbe7"
       },
       {
         "shard_id": "exam__detail__2013__首页__b0",
@@ -2469,7 +2751,9 @@
         "year_range": [
           "2013"
         ],
-        "hash_bucket": "b0"
+        "hash_bucket": "b0",
+        "filter_token_count": 80479,
+        "filter_sha256": "0c6afe9ae2b8aebd6ae4b2fff100a35d"
       },
       {
         "shard_id": "exam__detail__2013__首页__b1",
@@ -2498,7 +2782,9 @@
         "year_range": [
           "2013"
         ],
-        "hash_bucket": "b1"
+        "hash_bucket": "b1",
+        "filter_token_count": 53451,
+        "filter_sha256": "07cff3a37a4aa790b655b769796e5aae"
       },
       {
         "shard_id": "exam__detail__2013__首页__b2",
@@ -2524,7 +2810,9 @@
         "year_range": [
           "2013"
         ],
-        "hash_bucket": "b2"
+        "hash_bucket": "b2",
+        "filter_token_count": 40726,
+        "filter_sha256": "973c0b213d056bacd27a1a0a14e7bdbf"
       },
       {
         "shard_id": "exam__detail__2013__首页__b3",
@@ -2555,7 +2843,9 @@
         "year_range": [
           "2013"
         ],
-        "hash_bucket": "b3"
+        "hash_bucket": "b3",
+        "filter_token_count": 111156,
+        "filter_sha256": "0c6afe9ae2b8aebd6ae4b2fff100a35d"
       },
       {
         "shard_id": "exam__detail__2014__首页__b0",
@@ -2581,7 +2871,9 @@
         "year_range": [
           "2014"
         ],
-        "hash_bucket": "b0"
+        "hash_bucket": "b0",
+        "filter_token_count": 85910,
+        "filter_sha256": "0c6afe9ae2b8aebd6ae4b2fff100a35d"
       },
       {
         "shard_id": "exam__detail__2014__首页__b1",
@@ -2604,7 +2896,9 @@
         "year_range": [
           "2014"
         ],
-        "hash_bucket": "b1"
+        "hash_bucket": "b1",
+        "filter_token_count": 46306,
+        "filter_sha256": "08189a4e7f7875e0472eda43348d901c"
       },
       {
         "shard_id": "exam__detail__2014__首页__b2",
@@ -2630,7 +2924,9 @@
         "year_range": [
           "2014"
         ],
-        "hash_bucket": "b2"
+        "hash_bucket": "b2",
+        "filter_token_count": 57129,
+        "filter_sha256": "0c6afe9ae2b8aebd6ae4b2fff100a35d"
       },
       {
         "shard_id": "exam__detail__2014__首页__b3",
@@ -2657,7 +2953,9 @@
         "year_range": [
           "2014"
         ],
-        "hash_bucket": "b3"
+        "hash_bucket": "b3",
+        "filter_token_count": 58615,
+        "filter_sha256": "0c6afe9ae2b8aebd6ae4b2fff100a35d"
       },
       {
         "shard_id": "exam__detail__2015__首页__b0",
@@ -2681,7 +2979,9 @@
         "year_range": [
           "2015"
         ],
-        "hash_bucket": "b0"
+        "hash_bucket": "b0",
+        "filter_token_count": 48822,
+        "filter_sha256": "067e0358c895d3ad3a28eb180d7b50c7"
       },
       {
         "shard_id": "exam__detail__2015__首页__b1",
@@ -2704,7 +3004,9 @@
         "year_range": [
           "2015"
         ],
-        "hash_bucket": "b1"
+        "hash_bucket": "b1",
+        "filter_token_count": 44941,
+        "filter_sha256": "c1dd0376327b60fa5f8441c804fd5f4d"
       },
       {
         "shard_id": "exam__detail__2015__首页__b2",
@@ -2728,7 +3030,9 @@
         "year_range": [
           "2015"
         ],
-        "hash_bucket": "b2"
+        "hash_bucket": "b2",
+        "filter_token_count": 58115,
+        "filter_sha256": "0c6afe9ae2b8aebd6ae4b2fff100a35d"
       },
       {
         "shard_id": "exam__detail__2015__首页__b3",
@@ -2751,7 +3055,9 @@
         "year_range": [
           "2015"
         ],
-        "hash_bucket": "b3"
+        "hash_bucket": "b3",
+        "filter_token_count": 61143,
+        "filter_sha256": "0c6afe9ae2b8aebd6ae4b2fff100a35d"
       },
       {
         "shard_id": "exam__detail__2016__规章制度__b0",
@@ -2772,7 +3078,9 @@
         "year_range": [
           "2016"
         ],
-        "hash_bucket": "b0"
+        "hash_bucket": "b0",
+        "filter_token_count": 3938,
+        "filter_sha256": "efff79a9b8f84087398f32fc4677617a"
       },
       {
         "shard_id": "exam__detail__2016__首页__b0",
@@ -2799,7 +3107,9 @@
         "year_range": [
           "2016"
         ],
-        "hash_bucket": "b0"
+        "hash_bucket": "b0",
+        "filter_token_count": 74674,
+        "filter_sha256": "0c6afe9ae2b8aebd6ae4b2fff100a35d"
       },
       {
         "shard_id": "exam__detail__2016__首页__b1",
@@ -2825,7 +3135,9 @@
         "year_range": [
           "2016"
         ],
-        "hash_bucket": "b1"
+        "hash_bucket": "b1",
+        "filter_token_count": 53119,
+        "filter_sha256": "0c6afe9ae2b8aebd6ae4b2fff100a35d"
       },
       {
         "shard_id": "exam__detail__2016__首页__b2",
@@ -2852,7 +3164,9 @@
         "year_range": [
           "2016"
         ],
-        "hash_bucket": "b2"
+        "hash_bucket": "b2",
+        "filter_token_count": 80987,
+        "filter_sha256": "0c6afe9ae2b8aebd6ae4b2fff100a35d"
       },
       {
         "shard_id": "exam__detail__2016__首页__b3",
@@ -2878,7 +3192,9 @@
         "year_range": [
           "2016"
         ],
-        "hash_bucket": "b3"
+        "hash_bucket": "b3",
+        "filter_token_count": 64539,
+        "filter_sha256": "0c6afe9ae2b8aebd6ae4b2fff100a35d"
       },
       {
         "shard_id": "exam__detail__2017__首页__b0",
@@ -2903,7 +3219,9 @@
         "year_range": [
           "2017"
         ],
-        "hash_bucket": "b0"
+        "hash_bucket": "b0",
+        "filter_token_count": 58998,
+        "filter_sha256": "105f1c131ed0c323766f4bcf5e5ad129"
       },
       {
         "shard_id": "exam__detail__2017__首页__b1",
@@ -2927,7 +3245,9 @@
         "year_range": [
           "2017"
         ],
-        "hash_bucket": "b1"
+        "hash_bucket": "b1",
+        "filter_token_count": 47768,
+        "filter_sha256": "9b51f3ed2e4f489bba2d68b51ba84336"
       },
       {
         "shard_id": "exam__detail__2017__首页__b2",
@@ -2953,7 +3273,9 @@
         "year_range": [
           "2017"
         ],
-        "hash_bucket": "b2"
+        "hash_bucket": "b2",
+        "filter_token_count": 45367,
+        "filter_sha256": "2d9212ab559a861215d63ce39180ae86"
       },
       {
         "shard_id": "exam__detail__2017__首页__b3",
@@ -2977,7 +3299,9 @@
         "year_range": [
           "2017"
         ],
-        "hash_bucket": "b3"
+        "hash_bucket": "b3",
+        "filter_token_count": 36980,
+        "filter_sha256": "1d34082950b84c7e9ec045c02dc5b845"
       },
       {
         "shard_id": "exam__detail__2018__首页__b0",
@@ -3003,7 +3327,9 @@
         "year_range": [
           "2018"
         ],
-        "hash_bucket": "b0"
+        "hash_bucket": "b0",
+        "filter_token_count": 55151,
+        "filter_sha256": "43780effad1069f1d513f1708c8294ff"
       },
       {
         "shard_id": "exam__detail__2018__首页__b1",
@@ -3027,7 +3353,9 @@
         "year_range": [
           "2018"
         ],
-        "hash_bucket": "b1"
+        "hash_bucket": "b1",
+        "filter_token_count": 61534,
+        "filter_sha256": "0c6afe9ae2b8aebd6ae4b2fff100a35d"
       },
       {
         "shard_id": "exam__detail__2018__首页__b2",
@@ -3052,7 +3380,9 @@
         "year_range": [
           "2018"
         ],
-        "hash_bucket": "b2"
+        "hash_bucket": "b2",
+        "filter_token_count": 81251,
+        "filter_sha256": "0c6afe9ae2b8aebd6ae4b2fff100a35d"
       },
       {
         "shard_id": "exam__detail__2018__首页__b3",
@@ -3078,7 +3408,9 @@
         "year_range": [
           "2018"
         ],
-        "hash_bucket": "b3"
+        "hash_bucket": "b3",
+        "filter_token_count": 55246,
+        "filter_sha256": "bc401ba93921f347ca76365bdd8023f6"
       },
       {
         "shard_id": "exam__detail__2019__规章制度__b1",
@@ -3099,7 +3431,9 @@
         "year_range": [
           "2019"
         ],
-        "hash_bucket": "b1"
+        "hash_bucket": "b1",
+        "filter_token_count": 3492,
+        "filter_sha256": "d02c53fcb14b254b6d85c4ecc7819bdc"
       },
       {
         "shard_id": "exam__detail__2019__规章制度__b3",
@@ -3120,7 +3454,9 @@
         "year_range": [
           "2019"
         ],
-        "hash_bucket": "b3"
+        "hash_bucket": "b3",
+        "filter_token_count": 1837,
+        "filter_sha256": "317a3918a0ec392d89f02638f21bd1e3"
       },
       {
         "shard_id": "exam__detail__2019__首页__b0",
@@ -3147,7 +3483,9 @@
         "year_range": [
           "2019"
         ],
-        "hash_bucket": "b0"
+        "hash_bucket": "b0",
+        "filter_token_count": 74234,
+        "filter_sha256": "0c6afe9ae2b8aebd6ae4b2fff100a35d"
       },
       {
         "shard_id": "exam__detail__2019__首页__b1",
@@ -3173,7 +3511,9 @@
         "year_range": [
           "2019"
         ],
-        "hash_bucket": "b1"
+        "hash_bucket": "b1",
+        "filter_token_count": 55708,
+        "filter_sha256": "b86845eebf3af78aa2bacfc5b33c0a7b"
       },
       {
         "shard_id": "exam__detail__2019__首页__b2",
@@ -3200,7 +3540,9 @@
         "year_range": [
           "2019"
         ],
-        "hash_bucket": "b2"
+        "hash_bucket": "b2",
+        "filter_token_count": 64821,
+        "filter_sha256": "e19702bbd33d4a17b939c0bf2f4c03c6"
       },
       {
         "shard_id": "exam__detail__2019__首页__b3",
@@ -3226,7 +3568,9 @@
         "year_range": [
           "2019"
         ],
-        "hash_bucket": "b3"
+        "hash_bucket": "b3",
+        "filter_token_count": 44598,
+        "filter_sha256": "5a630e598f065c5aaf721518709e819f"
       },
       {
         "shard_id": "exam__detail__2020__规章制度__b2",
@@ -3247,7 +3591,9 @@
         "year_range": [
           "2020"
         ],
-        "hash_bucket": "b2"
+        "hash_bucket": "b2",
+        "filter_token_count": 14597,
+        "filter_sha256": "4fc4895e53ee12d2c67f82101b64c354"
       },
       {
         "shard_id": "exam__detail__2020__规章制度__b3",
@@ -3268,7 +3614,9 @@
         "year_range": [
           "2020"
         ],
-        "hash_bucket": "b3"
+        "hash_bucket": "b3",
+        "filter_token_count": 4590,
+        "filter_sha256": "fb488e404889fbf6579b7175763d0e86"
       },
       {
         "shard_id": "exam__detail__2020__首页__b0",
@@ -3293,7 +3641,9 @@
         "year_range": [
           "2020"
         ],
-        "hash_bucket": "b0"
+        "hash_bucket": "b0",
+        "filter_token_count": 40077,
+        "filter_sha256": "65024f908e6dec80f52acc0dbdf11892"
       },
       {
         "shard_id": "exam__detail__2020__首页__b1",
@@ -3319,7 +3669,9 @@
         "year_range": [
           "2020"
         ],
-        "hash_bucket": "b1"
+        "hash_bucket": "b1",
+        "filter_token_count": 53353,
+        "filter_sha256": "19c6f8c5354f838c476c5bf3ab344ed4"
       },
       {
         "shard_id": "exam__detail__2020__首页__b2",
@@ -3345,7 +3697,9 @@
         "year_range": [
           "2020"
         ],
-        "hash_bucket": "b2"
+        "hash_bucket": "b2",
+        "filter_token_count": 53215,
+        "filter_sha256": "0b3d1f356235dd4fa86e361e28ffc999"
       },
       {
         "shard_id": "exam__detail__2020__首页__b3",
@@ -3370,7 +3724,9 @@
         "year_range": [
           "2020"
         ],
-        "hash_bucket": "b3"
+        "hash_bucket": "b3",
+        "filter_token_count": 28537,
+        "filter_sha256": "f8d33ba6d47ad527a9488ff020bcb850"
       },
       {
         "shard_id": "exam__detail__2021__首页__b0",
@@ -3395,7 +3751,9 @@
         "year_range": [
           "2021"
         ],
-        "hash_bucket": "b0"
+        "hash_bucket": "b0",
+        "filter_token_count": 23260,
+        "filter_sha256": "e329e8b0fa3567731332c48223e56c41"
       },
       {
         "shard_id": "exam__detail__2021__首页__b1",
@@ -3420,7 +3778,9 @@
         "year_range": [
           "2021"
         ],
-        "hash_bucket": "b1"
+        "hash_bucket": "b1",
+        "filter_token_count": 19096,
+        "filter_sha256": "d577e98957cfc4196fa6021a37f6e646"
       },
       {
         "shard_id": "exam__detail__2021__首页__b2",
@@ -3445,7 +3805,9 @@
         "year_range": [
           "2021"
         ],
-        "hash_bucket": "b2"
+        "hash_bucket": "b2",
+        "filter_token_count": 36490,
+        "filter_sha256": "d9b5ff4e788976a300d6dcd6162112e0"
       },
       {
         "shard_id": "exam__detail__2021__首页__b3",
@@ -3470,7 +3832,9 @@
         "year_range": [
           "2021"
         ],
-        "hash_bucket": "b3"
+        "hash_bucket": "b3",
+        "filter_token_count": 76916,
+        "filter_sha256": "0c6afe9ae2b8aebd6ae4b2fff100a35d"
       },
       {
         "shard_id": "exam__detail__2022__首页__b0",
@@ -3493,7 +3857,9 @@
         "year_range": [
           "2022"
         ],
-        "hash_bucket": "b0"
+        "hash_bucket": "b0",
+        "filter_token_count": 27480,
+        "filter_sha256": "faea7471b3cd5a37d32521f2218970e6"
       },
       {
         "shard_id": "exam__detail__2022__首页__b1",
@@ -3516,7 +3882,9 @@
         "year_range": [
           "2022"
         ],
-        "hash_bucket": "b1"
+        "hash_bucket": "b1",
+        "filter_token_count": 33635,
+        "filter_sha256": "40aa08879603c57367d2b8261a339be4"
       },
       {
         "shard_id": "exam__detail__2022__首页__b2",
@@ -3540,7 +3908,9 @@
         "year_range": [
           "2022"
         ],
-        "hash_bucket": "b2"
+        "hash_bucket": "b2",
+        "filter_token_count": 30509,
+        "filter_sha256": "34eb08d544b7a81ac80ed15bf8729439"
       },
       {
         "shard_id": "exam__detail__2022__首页__b3",
@@ -3563,7 +3933,9 @@
         "year_range": [
           "2022"
         ],
-        "hash_bucket": "b3"
+        "hash_bucket": "b3",
+        "filter_token_count": 37207,
+        "filter_sha256": "191218b1e25f8a038e4992eeb226e46c"
       },
       {
         "shard_id": "exam__detail__2023__首页__b0",
@@ -3585,7 +3957,9 @@
         "year_range": [
           "2023"
         ],
-        "hash_bucket": "b0"
+        "hash_bucket": "b0",
+        "filter_token_count": 12710,
+        "filter_sha256": "e0dce8d0edaa5a2ecea90ab3daaa7cc1"
       },
       {
         "shard_id": "exam__detail__2023__首页__b1",
@@ -3606,7 +3980,9 @@
         "year_range": [
           "2023"
         ],
-        "hash_bucket": "b1"
+        "hash_bucket": "b1",
+        "filter_token_count": 15919,
+        "filter_sha256": "18332630fead34f6f8d454d2f3f5f1a4"
       },
       {
         "shard_id": "exam__detail__2023__首页__b2",
@@ -3629,7 +4005,9 @@
         "year_range": [
           "2023"
         ],
-        "hash_bucket": "b2"
+        "hash_bucket": "b2",
+        "filter_token_count": 27232,
+        "filter_sha256": "adce3de2dfe1c8de8ba91f23bec623ba"
       },
       {
         "shard_id": "exam__detail__2023__首页__b3",
@@ -3652,7 +4030,9 @@
         "year_range": [
           "2023"
         ],
-        "hash_bucket": "b3"
+        "hash_bucket": "b3",
+        "filter_token_count": 30110,
+        "filter_sha256": "c9b2e83dca799c2d82d3e084ffa6bbaf"
       },
       {
         "shard_id": "exam__detail__2024__规章制度__b1",
@@ -3673,7 +4053,9 @@
         "year_range": [
           "2024"
         ],
-        "hash_bucket": "b1"
+        "hash_bucket": "b1",
+        "filter_token_count": 2882,
+        "filter_sha256": "b99f38d9e3112e6093527a507e086927"
       },
       {
         "shard_id": "exam__detail__2024__规章制度__b2",
@@ -3694,7 +4076,9 @@
         "year_range": [
           "2024"
         ],
-        "hash_bucket": "b2"
+        "hash_bucket": "b2",
+        "filter_token_count": 58,
+        "filter_sha256": "53ef3f415086c1dc12c4bc7eda84ccf1"
       },
       {
         "shard_id": "exam__detail__2024__首页__b0",
@@ -3720,7 +4104,9 @@
         "year_range": [
           "2024"
         ],
-        "hash_bucket": "b0"
+        "hash_bucket": "b0",
+        "filter_token_count": 24460,
+        "filter_sha256": "84b7ba9b8eb7a99aab2e3804c2b7c320"
       },
       {
         "shard_id": "exam__detail__2024__首页__b1",
@@ -3746,7 +4132,9 @@
         "year_range": [
           "2024"
         ],
-        "hash_bucket": "b1"
+        "hash_bucket": "b1",
+        "filter_token_count": 22150,
+        "filter_sha256": "cf5f30c59d519a7d036ef77de0bb6841"
       },
       {
         "shard_id": "exam__detail__2024__首页__b2",
@@ -3772,7 +4160,9 @@
         "year_range": [
           "2024"
         ],
-        "hash_bucket": "b2"
+        "hash_bucket": "b2",
+        "filter_token_count": 39741,
+        "filter_sha256": "dfe93e619aa07ae81493ca3348431ab0"
       },
       {
         "shard_id": "exam__detail__2024__首页__b3",
@@ -3799,7 +4189,9 @@
         "year_range": [
           "2024"
         ],
-        "hash_bucket": "b3"
+        "hash_bucket": "b3",
+        "filter_token_count": 39132,
+        "filter_sha256": "058ea3f728f2440764602f9ab8854064"
       },
       {
         "shard_id": "exam__detail__2025__规章制度__b1",
@@ -3820,7 +4212,9 @@
         "year_range": [
           "2025"
         ],
-        "hash_bucket": "b1"
+        "hash_bucket": "b1",
+        "filter_token_count": 4232,
+        "filter_sha256": "c8c1625e1c076bc2842fd62f113cdcd9"
       },
       {
         "shard_id": "exam__detail__2025__规章制度__b2",
@@ -3841,7 +4235,9 @@
         "year_range": [
           "2025"
         ],
-        "hash_bucket": "b2"
+        "hash_bucket": "b2",
+        "filter_token_count": 3892,
+        "filter_sha256": "60c46f8a1fb59d692a1dc69fdc16ffd9"
       },
       {
         "shard_id": "exam__detail__2025__首页__b0",
@@ -3864,7 +4260,9 @@
         "year_range": [
           "2025"
         ],
-        "hash_bucket": "b0"
+        "hash_bucket": "b0",
+        "filter_token_count": 13777,
+        "filter_sha256": "cd7d7c2ddfa6f04f736349da8f19f90f"
       },
       {
         "shard_id": "exam__detail__2025__首页__b1",
@@ -3888,7 +4286,9 @@
         "year_range": [
           "2025"
         ],
-        "hash_bucket": "b1"
+        "hash_bucket": "b1",
+        "filter_token_count": 36232,
+        "filter_sha256": "31b1d6204d585e0ab9ca649af86e1445"
       },
       {
         "shard_id": "exam__detail__2025__首页__b2",
@@ -3913,7 +4313,9 @@
         "year_range": [
           "2025"
         ],
-        "hash_bucket": "b2"
+        "hash_bucket": "b2",
+        "filter_token_count": 32601,
+        "filter_sha256": "2dafbe0d603166882993c38f503f1f93"
       },
       {
         "shard_id": "exam__detail__2025__首页__b3",
@@ -3935,7 +4337,9 @@
         "year_range": [
           "2025"
         ],
-        "hash_bucket": "b3"
+        "hash_bucket": "b3",
+        "filter_token_count": 28944,
+        "filter_sha256": "cd3ad1773f69d6984306dbd1a967c9b0"
       },
       {
         "shard_id": "exam__detail__2026__首页__b0",
@@ -3956,7 +4360,9 @@
         "year_range": [
           "2026"
         ],
-        "hash_bucket": "b0"
+        "hash_bucket": "b0",
+        "filter_token_count": 3398,
+        "filter_sha256": "92443a9aa1bfcadcddb51df059d0ac26"
       },
       {
         "shard_id": "exam__detail__2026__首页__b1",
@@ -3977,7 +4383,9 @@
         "year_range": [
           "2026"
         ],
-        "hash_bucket": "b1"
+        "hash_bucket": "b1",
+        "filter_token_count": 4913,
+        "filter_sha256": "a43a40a7fd46f49a8f11bc31fad03818"
       },
       {
         "shard_id": "exam__detail__2026__首页__b2",
@@ -3998,7 +4406,9 @@
         "year_range": [
           "2026"
         ],
-        "hash_bucket": "b2"
+        "hash_bucket": "b2",
+        "filter_token_count": 1193,
+        "filter_sha256": "ef9859b9d7e1ad98f6affbbdfa525e12"
       },
       {
         "shard_id": "exam__detail__2026__首页__b3",
@@ -4019,7 +4429,9 @@
         "year_range": [
           "2026"
         ],
-        "hash_bucket": "b3"
+        "hash_bucket": "b3",
+        "filter_token_count": 11568,
+        "filter_sha256": "6cdb6e2fa075002014b48bc7c90b8f8a"
       },
       {
         "shard_id": "exam__utility__undated__首页__b1",
@@ -4040,7 +4452,9 @@
         "year_range": [
           "undated"
         ],
-        "hash_bucket": "b1"
+        "hash_bucket": "b1",
+        "filter_token_count": 89,
+        "filter_sha256": "97d46ad44c8677277fe7a144a5f626a6"
       },
       {
         "shard_id": "external__external__2026__首页__b0",
@@ -4072,7 +4486,9 @@
         "year_range": [
           "2026"
         ],
-        "hash_bucket": "b0"
+        "hash_bucket": "b0",
+        "filter_token_count": 2277,
+        "filter_sha256": "7816b93179e0b260c7edab7ffed977ab"
       },
       {
         "shard_id": "external__external__2026__首页__b1",
@@ -4103,7 +4519,9 @@
         "year_range": [
           "2026"
         ],
-        "hash_bucket": "b1"
+        "hash_bucket": "b1",
+        "filter_token_count": 2367,
+        "filter_sha256": "8569b1236759c25382b98265d2263cff"
       },
       {
         "shard_id": "external__external__2026__首页__b2",
@@ -4134,7 +4552,9 @@
         "year_range": [
           "2026"
         ],
-        "hash_bucket": "b2"
+        "hash_bucket": "b2",
+        "filter_token_count": 2592,
+        "filter_sha256": "5bdc91270f528c356c04e480c912ce8e"
       },
       {
         "shard_id": "external__external__2026__首页__b3",
@@ -4165,7 +4585,9 @@
         "year_range": [
           "2026"
         ],
-        "hash_bucket": "b3"
+        "hash_bucket": "b3",
+        "filter_token_count": 2387,
+        "filter_sha256": "84d0053747bec965a974f8d688a17614"
       },
       {
         "shard_id": "news__detail__2009__首页__b0",
@@ -4186,7 +4608,9 @@
         "year_range": [
           "2009"
         ],
-        "hash_bucket": "b0"
+        "hash_bucket": "b0",
+        "filter_token_count": 3916,
+        "filter_sha256": "8428df67496283b268d9eca39a789748"
       },
       {
         "shard_id": "news__detail__2009__首页__b1",
@@ -4207,7 +4631,9 @@
         "year_range": [
           "2009"
         ],
-        "hash_bucket": "b1"
+        "hash_bucket": "b1",
+        "filter_token_count": 2461,
+        "filter_sha256": "8b3a9e8d3321cee9357ec08d09bc9e8a"
       },
       {
         "shard_id": "news__detail__2009__首页__b2",
@@ -4228,7 +4654,9 @@
         "year_range": [
           "2009"
         ],
-        "hash_bucket": "b2"
+        "hash_bucket": "b2",
+        "filter_token_count": 466,
+        "filter_sha256": "cd5c940b720fc9d7b66d2af1d46b19f1"
       },
       {
         "shard_id": "news__detail__2010__首页__b0",
@@ -4249,7 +4677,9 @@
         "year_range": [
           "2010"
         ],
-        "hash_bucket": "b0"
+        "hash_bucket": "b0",
+        "filter_token_count": 2221,
+        "filter_sha256": "6b514dab0baa4038ad6d268292dff280"
       },
       {
         "shard_id": "news__detail__2010__首页__b1",
@@ -4270,7 +4700,9 @@
         "year_range": [
           "2010"
         ],
-        "hash_bucket": "b1"
+        "hash_bucket": "b1",
+        "filter_token_count": 3952,
+        "filter_sha256": "35c3772a18ba0f199a6d7914a8ee179f"
       },
       {
         "shard_id": "news__detail__2010__首页__b2",
@@ -4291,7 +4723,9 @@
         "year_range": [
           "2010"
         ],
-        "hash_bucket": "b2"
+        "hash_bucket": "b2",
+        "filter_token_count": 2524,
+        "filter_sha256": "4414a3ba0752f4d2404a55914bc6a38d"
       },
       {
         "shard_id": "news__detail__2010__首页__b3",
@@ -4312,7 +4746,9 @@
         "year_range": [
           "2010"
         ],
-        "hash_bucket": "b3"
+        "hash_bucket": "b3",
+        "filter_token_count": 3158,
+        "filter_sha256": "fff02cba87272e8dba345e05df8641cc"
       },
       {
         "shard_id": "news__detail__2011__首页__b0",
@@ -4333,7 +4769,9 @@
         "year_range": [
           "2011"
         ],
-        "hash_bucket": "b0"
+        "hash_bucket": "b0",
+        "filter_token_count": 52372,
+        "filter_sha256": "3aff9ff97ad6d4ba8a288187c57125f2"
       },
       {
         "shard_id": "news__detail__2011__首页__b1",
@@ -4354,7 +4792,9 @@
         "year_range": [
           "2011"
         ],
-        "hash_bucket": "b1"
+        "hash_bucket": "b1",
+        "filter_token_count": 53926,
+        "filter_sha256": "0c6afe9ae2b8aebd6ae4b2fff100a35d"
       },
       {
         "shard_id": "news__detail__2011__首页__b2",
@@ -4375,7 +4815,9 @@
         "year_range": [
           "2011"
         ],
-        "hash_bucket": "b2"
+        "hash_bucket": "b2",
+        "filter_token_count": 41337,
+        "filter_sha256": "211918c3cd61dfa93fff455c60ea121e"
       },
       {
         "shard_id": "news__detail__2011__首页__b3",
@@ -4396,7 +4838,9 @@
         "year_range": [
           "2011"
         ],
-        "hash_bucket": "b3"
+        "hash_bucket": "b3",
+        "filter_token_count": 37866,
+        "filter_sha256": "ea6dec3e7790329c28bde6e14863cd87"
       },
       {
         "shard_id": "news__detail__2012__首页__b0",
@@ -4420,7 +4864,9 @@
         "year_range": [
           "2012"
         ],
-        "hash_bucket": "b0"
+        "hash_bucket": "b0",
+        "filter_token_count": 29444,
+        "filter_sha256": "fbd04a4661fda86f3bbfe26c63532a60"
       },
       {
         "shard_id": "news__detail__2012__首页__b1",
@@ -4442,7 +4888,9 @@
         "year_range": [
           "2012"
         ],
-        "hash_bucket": "b1"
+        "hash_bucket": "b1",
+        "filter_token_count": 18183,
+        "filter_sha256": "2a3ba43b078c8734ce589d944dada654"
       },
       {
         "shard_id": "news__detail__2012__首页__b2",
@@ -4465,7 +4913,9 @@
         "year_range": [
           "2012"
         ],
-        "hash_bucket": "b2"
+        "hash_bucket": "b2",
+        "filter_token_count": 21868,
+        "filter_sha256": "e2ef140c52755ddba6c726e1f3fe28bb"
       },
       {
         "shard_id": "news__detail__2012__首页__b3",
@@ -4488,7 +4938,9 @@
         "year_range": [
           "2012"
         ],
-        "hash_bucket": "b3"
+        "hash_bucket": "b3",
+        "filter_token_count": 30198,
+        "filter_sha256": "0095089876b34eef69fadfb412bf7c73"
       },
       {
         "shard_id": "news__detail__2013__首页__b0",
@@ -4510,7 +4962,9 @@
         "year_range": [
           "2013"
         ],
-        "hash_bucket": "b0"
+        "hash_bucket": "b0",
+        "filter_token_count": 24985,
+        "filter_sha256": "7b94ab2af07bee2d926b9945aa2f9a4a"
       },
       {
         "shard_id": "news__detail__2013__首页__b1",
@@ -4532,7 +4986,9 @@
         "year_range": [
           "2013"
         ],
-        "hash_bucket": "b1"
+        "hash_bucket": "b1",
+        "filter_token_count": 23146,
+        "filter_sha256": "2e2e47830a7e8a0882c24507ada6caa6"
       },
       {
         "shard_id": "news__detail__2013__首页__b2",
@@ -4555,7 +5011,9 @@
         "year_range": [
           "2013"
         ],
-        "hash_bucket": "b2"
+        "hash_bucket": "b2",
+        "filter_token_count": 26736,
+        "filter_sha256": "1b22f07d4cf0bed4cafe436763640727"
       },
       {
         "shard_id": "news__detail__2013__首页__b3",
@@ -4578,7 +5036,9 @@
         "year_range": [
           "2013"
         ],
-        "hash_bucket": "b3"
+        "hash_bucket": "b3",
+        "filter_token_count": 23181,
+        "filter_sha256": "b80961e22eb7d8c383f3e7844302e0fe"
       },
       {
         "shard_id": "news__detail__2014__首页__b0",
@@ -4601,7 +5061,9 @@
         "year_range": [
           "2014"
         ],
-        "hash_bucket": "b0"
+        "hash_bucket": "b0",
+        "filter_token_count": 35335,
+        "filter_sha256": "26f7d79c5c948161d222bf05e6800784"
       },
       {
         "shard_id": "news__detail__2014__首页__b1",
@@ -4624,7 +5086,9 @@
         "year_range": [
           "2014"
         ],
-        "hash_bucket": "b1"
+        "hash_bucket": "b1",
+        "filter_token_count": 26538,
+        "filter_sha256": "ae8be65c92f1239b6477981574412695"
       },
       {
         "shard_id": "news__detail__2014__首页__b2",
@@ -4646,7 +5110,9 @@
         "year_range": [
           "2014"
         ],
-        "hash_bucket": "b2"
+        "hash_bucket": "b2",
+        "filter_token_count": 30236,
+        "filter_sha256": "3f4a0a0d8c4af9bc8cbb05f5f4bae898"
       },
       {
         "shard_id": "news__detail__2014__首页__b3",
@@ -4668,7 +5134,9 @@
         "year_range": [
           "2014"
         ],
-        "hash_bucket": "b3"
+        "hash_bucket": "b3",
+        "filter_token_count": 36929,
+        "filter_sha256": "280d49d478cf963d2620d57a76556e6c"
       },
       {
         "shard_id": "news__detail__2015__首页__b0",
@@ -4690,7 +5158,9 @@
         "year_range": [
           "2015"
         ],
-        "hash_bucket": "b0"
+        "hash_bucket": "b0",
+        "filter_token_count": 20934,
+        "filter_sha256": "9be5f2cfa9171e9bdbcdafa12d76cfb9"
       },
       {
         "shard_id": "news__detail__2015__首页__b1",
@@ -4712,7 +5182,9 @@
         "year_range": [
           "2015"
         ],
-        "hash_bucket": "b1"
+        "hash_bucket": "b1",
+        "filter_token_count": 21159,
+        "filter_sha256": "6d790f6257b7be8a91ea6bdd2cbf7b7b"
       },
       {
         "shard_id": "news__detail__2015__首页__b2",
@@ -4734,7 +5206,9 @@
         "year_range": [
           "2015"
         ],
-        "hash_bucket": "b2"
+        "hash_bucket": "b2",
+        "filter_token_count": 22763,
+        "filter_sha256": "4a888a9d26b73375d16ddb2ab98c4f6b"
       },
       {
         "shard_id": "news__detail__2015__首页__b3",
@@ -4755,7 +5229,9 @@
         "year_range": [
           "2015"
         ],
-        "hash_bucket": "b3"
+        "hash_bucket": "b3",
+        "filter_token_count": 25025,
+        "filter_sha256": "6d5a2b06c3e3c464950e417651d8983e"
       },
       {
         "shard_id": "news__detail__2016__首页__b0",
@@ -4777,7 +5253,9 @@
         "year_range": [
           "2016"
         ],
-        "hash_bucket": "b0"
+        "hash_bucket": "b0",
+        "filter_token_count": 20186,
+        "filter_sha256": "e76dde12307a56631a09520f63ecbd81"
       },
       {
         "shard_id": "news__detail__2016__首页__b1",
@@ -4799,7 +5277,9 @@
         "year_range": [
           "2016"
         ],
-        "hash_bucket": "b1"
+        "hash_bucket": "b1",
+        "filter_token_count": 17889,
+        "filter_sha256": "1f9923cd26db42f22a2ca0d408171986"
       },
       {
         "shard_id": "news__detail__2016__首页__b2",
@@ -4821,7 +5301,9 @@
         "year_range": [
           "2016"
         ],
-        "hash_bucket": "b2"
+        "hash_bucket": "b2",
+        "filter_token_count": 25826,
+        "filter_sha256": "f17436a82901c9d0f55fc9cd2cabfdc7"
       },
       {
         "shard_id": "news__detail__2016__首页__b3",
@@ -4844,7 +5326,9 @@
         "year_range": [
           "2016"
         ],
-        "hash_bucket": "b3"
+        "hash_bucket": "b3",
+        "filter_token_count": 27228,
+        "filter_sha256": "9e6b46c75a696e7b785e6a677af0e888"
       },
       {
         "shard_id": "news__detail__2017__首页__b0",
@@ -4866,7 +5350,9 @@
         "year_range": [
           "2017"
         ],
-        "hash_bucket": "b0"
+        "hash_bucket": "b0",
+        "filter_token_count": 33070,
+        "filter_sha256": "2f5a059d2ab37dfa45f5e72c2659efc7"
       },
       {
         "shard_id": "news__detail__2017__首页__b1",
@@ -4888,7 +5374,9 @@
         "year_range": [
           "2017"
         ],
-        "hash_bucket": "b1"
+        "hash_bucket": "b1",
+        "filter_token_count": 17114,
+        "filter_sha256": "30113d0cc73540b090b1f03e5fea9a1e"
       },
       {
         "shard_id": "news__detail__2017__首页__b2",
@@ -4910,7 +5398,9 @@
         "year_range": [
           "2017"
         ],
-        "hash_bucket": "b2"
+        "hash_bucket": "b2",
+        "filter_token_count": 24885,
+        "filter_sha256": "8889b96a3d950205d29e34dfa155847e"
       },
       {
         "shard_id": "news__detail__2017__首页__b3",
@@ -4934,7 +5424,9 @@
         "year_range": [
           "2017"
         ],
-        "hash_bucket": "b3"
+        "hash_bucket": "b3",
+        "filter_token_count": 17831,
+        "filter_sha256": "0804c435ba9743a56062573274e6ff2a"
       },
       {
         "shard_id": "news__detail__2018__首页__b0",
@@ -4956,7 +5448,9 @@
         "year_range": [
           "2018"
         ],
-        "hash_bucket": "b0"
+        "hash_bucket": "b0",
+        "filter_token_count": 30100,
+        "filter_sha256": "f40faae05719311e0a8ea1f72c380409"
       },
       {
         "shard_id": "news__detail__2018__首页__b1",
@@ -4978,7 +5472,9 @@
         "year_range": [
           "2018"
         ],
-        "hash_bucket": "b1"
+        "hash_bucket": "b1",
+        "filter_token_count": 22695,
+        "filter_sha256": "432050ed4bbd6e2045e2ae055dfdfb22"
       },
       {
         "shard_id": "news__detail__2018__首页__b2",
@@ -5000,7 +5496,9 @@
         "year_range": [
           "2018"
         ],
-        "hash_bucket": "b2"
+        "hash_bucket": "b2",
+        "filter_token_count": 19630,
+        "filter_sha256": "68b1d4ff94935ca943919f4a11fcaf12"
       },
       {
         "shard_id": "news__detail__2018__首页__b3",
@@ -5023,7 +5521,9 @@
         "year_range": [
           "2018"
         ],
-        "hash_bucket": "b3"
+        "hash_bucket": "b3",
+        "filter_token_count": 20260,
+        "filter_sha256": "28290d52f997c21ba216c3ba73653ec7"
       },
       {
         "shard_id": "news__detail__2019__首页__b0",
@@ -5045,7 +5545,9 @@
         "year_range": [
           "2019"
         ],
-        "hash_bucket": "b0"
+        "hash_bucket": "b0",
+        "filter_token_count": 21460,
+        "filter_sha256": "fe019017b0bc168a9cbe3397023ee388"
       },
       {
         "shard_id": "news__detail__2019__首页__b1",
@@ -5067,7 +5569,9 @@
         "year_range": [
           "2019"
         ],
-        "hash_bucket": "b1"
+        "hash_bucket": "b1",
+        "filter_token_count": 18671,
+        "filter_sha256": "304303b57246da64b26bf30576354507"
       },
       {
         "shard_id": "news__detail__2019__首页__b2",
@@ -5089,7 +5593,9 @@
         "year_range": [
           "2019"
         ],
-        "hash_bucket": "b2"
+        "hash_bucket": "b2",
+        "filter_token_count": 21100,
+        "filter_sha256": "003414a3df03dd303ac5cb76f7406b70"
       },
       {
         "shard_id": "news__detail__2019__首页__b3",
@@ -5111,7 +5617,9 @@
         "year_range": [
           "2019"
         ],
-        "hash_bucket": "b3"
+        "hash_bucket": "b3",
+        "filter_token_count": 14015,
+        "filter_sha256": "d31b12eb6db87888c50958c11af259cd"
       },
       {
         "shard_id": "news__detail__2020__首页__b0",
@@ -5133,7 +5641,9 @@
         "year_range": [
           "2020"
         ],
-        "hash_bucket": "b0"
+        "hash_bucket": "b0",
+        "filter_token_count": 13433,
+        "filter_sha256": "39c3caf34413586a73ab981faeab4d71"
       },
       {
         "shard_id": "news__detail__2020__首页__b1",
@@ -5154,7 +5664,9 @@
         "year_range": [
           "2020"
         ],
-        "hash_bucket": "b1"
+        "hash_bucket": "b1",
+        "filter_token_count": 6865,
+        "filter_sha256": "0544b5e5818f9f1f3b7a8c490718ae2c"
       },
       {
         "shard_id": "news__detail__2020__首页__b2",
@@ -5176,7 +5688,9 @@
         "year_range": [
           "2020"
         ],
-        "hash_bucket": "b2"
+        "hash_bucket": "b2",
+        "filter_token_count": 13839,
+        "filter_sha256": "6e370cdebeb0ac5ea37dcb9ac7d251d4"
       },
       {
         "shard_id": "news__detail__2020__首页__b3",
@@ -5197,7 +5711,9 @@
         "year_range": [
           "2020"
         ],
-        "hash_bucket": "b3"
+        "hash_bucket": "b3",
+        "filter_token_count": 11935,
+        "filter_sha256": "f33208b23b64d974593e9ff7947897ea"
       },
       {
         "shard_id": "news__detail__2021__首页__b0",
@@ -5218,7 +5734,9 @@
         "year_range": [
           "2021"
         ],
-        "hash_bucket": "b0"
+        "hash_bucket": "b0",
+        "filter_token_count": 11244,
+        "filter_sha256": "8fc44e1357b57104df523311270a03fb"
       },
       {
         "shard_id": "news__detail__2021__首页__b1",
@@ -5240,7 +5758,9 @@
         "year_range": [
           "2021"
         ],
-        "hash_bucket": "b1"
+        "hash_bucket": "b1",
+        "filter_token_count": 14237,
+        "filter_sha256": "cd0f92c3ddae96526953b609c245f520"
       },
       {
         "shard_id": "news__detail__2021__首页__b2",
@@ -5262,7 +5782,9 @@
         "year_range": [
           "2021"
         ],
-        "hash_bucket": "b2"
+        "hash_bucket": "b2",
+        "filter_token_count": 13961,
+        "filter_sha256": "b0fe4765211cd1af4aa6ce16b3228317"
       },
       {
         "shard_id": "news__detail__2021__首页__b3",
@@ -5284,7 +5806,9 @@
         "year_range": [
           "2021"
         ],
-        "hash_bucket": "b3"
+        "hash_bucket": "b3",
+        "filter_token_count": 13641,
+        "filter_sha256": "a4c53656d55004ad06976eaa13f5cf07"
       },
       {
         "shard_id": "news__detail__2022__首页__b0",
@@ -5305,7 +5829,9 @@
         "year_range": [
           "2022"
         ],
-        "hash_bucket": "b0"
+        "hash_bucket": "b0",
+        "filter_token_count": 1339,
+        "filter_sha256": "2159c1ad0397436f3d9cf3ae5408fdf9"
       },
       {
         "shard_id": "news__detail__2022__首页__b1",
@@ -5328,7 +5854,9 @@
         "year_range": [
           "2022"
         ],
-        "hash_bucket": "b1"
+        "hash_bucket": "b1",
+        "filter_token_count": 12402,
+        "filter_sha256": "5899d8aa02f2486482e2c77ee78a6d41"
       },
       {
         "shard_id": "news__detail__2022__首页__b2",
@@ -5350,7 +5878,9 @@
         "year_range": [
           "2022"
         ],
-        "hash_bucket": "b2"
+        "hash_bucket": "b2",
+        "filter_token_count": 6019,
+        "filter_sha256": "33a671ed4ad4fe25b2f9293085332e5e"
       },
       {
         "shard_id": "news__detail__2022__首页__b3",
@@ -5371,7 +5901,9 @@
         "year_range": [
           "2022"
         ],
-        "hash_bucket": "b3"
+        "hash_bucket": "b3",
+        "filter_token_count": 3140,
+        "filter_sha256": "f972430c789826aa593d9668b3235709"
       },
       {
         "shard_id": "news__detail__2023__首页__b0",
@@ -5392,7 +5924,9 @@
         "year_range": [
           "2023"
         ],
-        "hash_bucket": "b0"
+        "hash_bucket": "b0",
+        "filter_token_count": 7961,
+        "filter_sha256": "344691645d64a70a631ce96df0a20c67"
       },
       {
         "shard_id": "news__detail__2023__首页__b1",
@@ -5415,7 +5949,9 @@
         "year_range": [
           "2023"
         ],
-        "hash_bucket": "b1"
+        "hash_bucket": "b1",
+        "filter_token_count": 11395,
+        "filter_sha256": "aff1ac84d5f7083b0c3b7f1b4580c85e"
       },
       {
         "shard_id": "news__detail__2023__首页__b2",
@@ -5437,7 +5973,9 @@
         "year_range": [
           "2023"
         ],
-        "hash_bucket": "b2"
+        "hash_bucket": "b2",
+        "filter_token_count": 7390,
+        "filter_sha256": "d267953a87bc30535b247f401b865251"
       },
       {
         "shard_id": "news__detail__2023__首页__b3",
@@ -5458,7 +5996,9 @@
         "year_range": [
           "2023"
         ],
-        "hash_bucket": "b3"
+        "hash_bucket": "b3",
+        "filter_token_count": 11358,
+        "filter_sha256": "9cae3b23beae4f390be96e0e13bc5259"
       },
       {
         "shard_id": "news__detail__2024__首页__b0",
@@ -5481,7 +6021,9 @@
         "year_range": [
           "2024"
         ],
-        "hash_bucket": "b0"
+        "hash_bucket": "b0",
+        "filter_token_count": 30555,
+        "filter_sha256": "c05c6e4af55f437f1a9b926a677bcc45"
       },
       {
         "shard_id": "news__detail__2024__首页__b1",
@@ -5504,7 +6046,9 @@
         "year_range": [
           "2024"
         ],
-        "hash_bucket": "b1"
+        "hash_bucket": "b1",
+        "filter_token_count": 27575,
+        "filter_sha256": "fa28e41bd42e0d24440f0d01fcc2f5d0"
       },
       {
         "shard_id": "news__detail__2024__首页__b2",
@@ -5527,7 +6071,9 @@
         "year_range": [
           "2024"
         ],
-        "hash_bucket": "b2"
+        "hash_bucket": "b2",
+        "filter_token_count": 22196,
+        "filter_sha256": "7d90bf1677a2d017e472e23dc4793328"
       },
       {
         "shard_id": "news__detail__2024__首页__b3",
@@ -5550,7 +6096,9 @@
         "year_range": [
           "2024"
         ],
-        "hash_bucket": "b3"
+        "hash_bucket": "b3",
+        "filter_token_count": 30445,
+        "filter_sha256": "805dba6da25d9e39d28b27f67ad9de53"
       },
       {
         "shard_id": "news__detail__2025__首页__b0",
@@ -5573,7 +6121,9 @@
         "year_range": [
           "2025"
         ],
-        "hash_bucket": "b0"
+        "hash_bucket": "b0",
+        "filter_token_count": 24031,
+        "filter_sha256": "b63e5ae39b065081d836001773ac065d"
       },
       {
         "shard_id": "news__detail__2025__首页__b1",
@@ -5597,7 +6147,9 @@
         "year_range": [
           "2025"
         ],
-        "hash_bucket": "b1"
+        "hash_bucket": "b1",
+        "filter_token_count": 20206,
+        "filter_sha256": "88a843bc07976b284f59b799cabd03c9"
       },
       {
         "shard_id": "news__detail__2025__首页__b2",
@@ -5621,7 +6173,9 @@
         "year_range": [
           "2025"
         ],
-        "hash_bucket": "b2"
+        "hash_bucket": "b2",
+        "filter_token_count": 23472,
+        "filter_sha256": "6a9ebd4f3b6733f3157438d3e43f9704"
       },
       {
         "shard_id": "news__detail__2025__首页__b3",
@@ -5644,7 +6198,9 @@
         "year_range": [
           "2025"
         ],
-        "hash_bucket": "b3"
+        "hash_bucket": "b3",
+        "filter_token_count": 26261,
+        "filter_sha256": "e81ce96896ccb0f81e6ca34d6734703c"
       },
       {
         "shard_id": "news__detail__2026__首页__b0",
@@ -5665,7 +6221,9 @@
         "year_range": [
           "2026"
         ],
-        "hash_bucket": "b0"
+        "hash_bucket": "b0",
+        "filter_token_count": 4233,
+        "filter_sha256": "e772b176d0ea76e28f2600ceac44e686"
       },
       {
         "shard_id": "news__detail__2026__首页__b1",
@@ -5687,7 +6245,9 @@
         "year_range": [
           "2026"
         ],
-        "hash_bucket": "b1"
+        "hash_bucket": "b1",
+        "filter_token_count": 16063,
+        "filter_sha256": "0d87773abe003dac13f78eaffe97cf3b"
       },
       {
         "shard_id": "news__detail__2026__首页__b2",
@@ -5710,7 +6270,9 @@
         "year_range": [
           "2026"
         ],
-        "hash_bucket": "b2"
+        "hash_bucket": "b2",
+        "filter_token_count": 10570,
+        "filter_sha256": "7e1b2078a4108ee599a4bbcc11c3d879"
       },
       {
         "shard_id": "news__detail__2026__首页__b3",
@@ -5731,7 +6293,9 @@
         "year_range": [
           "2026"
         ],
-        "hash_bucket": "b3"
+        "hash_bucket": "b3",
+        "filter_token_count": 2862,
+        "filter_sha256": "c9919e374aad57ba2b84676be5e697ee"
       },
       {
         "shard_id": "notice_article__detail__2009__首页__b0",
@@ -5752,7 +6316,9 @@
         "year_range": [
           "2009"
         ],
-        "hash_bucket": "b0"
+        "hash_bucket": "b0",
+        "filter_token_count": 2119,
+        "filter_sha256": "c39dfd01798b78e78d27bd7492e63c6a"
       },
       {
         "shard_id": "notice_article__detail__2009__首页__b1",
@@ -5773,7 +6339,9 @@
         "year_range": [
           "2009"
         ],
-        "hash_bucket": "b1"
+        "hash_bucket": "b1",
+        "filter_token_count": 2725,
+        "filter_sha256": "85601b0c8136d21b8fe76e8d543f44e5"
       },
       {
         "shard_id": "notice_article__detail__2009__首页__b2",
@@ -5794,7 +6362,9 @@
         "year_range": [
           "2009"
         ],
-        "hash_bucket": "b2"
+        "hash_bucket": "b2",
+        "filter_token_count": 2007,
+        "filter_sha256": "a8e1b7f6f0001423bbda779890cff06c"
       },
       {
         "shard_id": "notice_article__detail__2009__首页__b3",
@@ -5815,7 +6385,9 @@
         "year_range": [
           "2009"
         ],
-        "hash_bucket": "b3"
+        "hash_bucket": "b3",
+        "filter_token_count": 2004,
+        "filter_sha256": "4121a9ade46b4b0702059487e6fe9714"
       },
       {
         "shard_id": "notice_article__detail__2010__首页__b0",
@@ -5836,7 +6408,9 @@
         "year_range": [
           "2010"
         ],
-        "hash_bucket": "b0"
+        "hash_bucket": "b0",
+        "filter_token_count": 2696,
+        "filter_sha256": "aabcf43e3807388db54c979cac11d7fd"
       },
       {
         "shard_id": "notice_article__detail__2010__首页__b1",
@@ -5857,7 +6431,9 @@
         "year_range": [
           "2010"
         ],
-        "hash_bucket": "b1"
+        "hash_bucket": "b1",
+        "filter_token_count": 8106,
+        "filter_sha256": "3cbb91b2398099518fb5d20358f8daba"
       },
       {
         "shard_id": "notice_article__detail__2010__首页__b2",
@@ -5878,7 +6454,9 @@
         "year_range": [
           "2010"
         ],
-        "hash_bucket": "b2"
+        "hash_bucket": "b2",
+        "filter_token_count": 3221,
+        "filter_sha256": "688beec9f3130a75b9aa49dffa92a6b1"
       },
       {
         "shard_id": "notice_article__detail__2010__首页__b3",
@@ -5900,7 +6478,9 @@
         "year_range": [
           "2010"
         ],
-        "hash_bucket": "b3"
+        "hash_bucket": "b3",
+        "filter_token_count": 9876,
+        "filter_sha256": "fa0f9695b210a675ea643ed9d9a890c0"
       },
       {
         "shard_id": "notice_article__detail__2011__首页__b0",
@@ -5921,7 +6501,9 @@
         "year_range": [
           "2011"
         ],
-        "hash_bucket": "b0"
+        "hash_bucket": "b0",
+        "filter_token_count": 4965,
+        "filter_sha256": "1f6728d5ecc066bd9e7ac9c5ff5a1d34"
       },
       {
         "shard_id": "notice_article__detail__2011__首页__b1",
@@ -5942,7 +6524,9 @@
         "year_range": [
           "2011"
         ],
-        "hash_bucket": "b1"
+        "hash_bucket": "b1",
+        "filter_token_count": 12170,
+        "filter_sha256": "6ee5104af50b37b3567e4790a0c02281"
       },
       {
         "shard_id": "notice_article__detail__2011__首页__b2",
@@ -5964,7 +6548,9 @@
         "year_range": [
           "2011"
         ],
-        "hash_bucket": "b2"
+        "hash_bucket": "b2",
+        "filter_token_count": 5185,
+        "filter_sha256": "113cc233f510fe86f621b89246020dc6"
       },
       {
         "shard_id": "notice_article__detail__2011__首页__b3",
@@ -5985,7 +6571,9 @@
         "year_range": [
           "2011"
         ],
-        "hash_bucket": "b3"
+        "hash_bucket": "b3",
+        "filter_token_count": 8718,
+        "filter_sha256": "200576d49393d5c8653a0fd1911e21dc"
       },
       {
         "shard_id": "notice_article__detail__2012__首页__b0",
@@ -6009,7 +6597,9 @@
         "year_range": [
           "2012"
         ],
-        "hash_bucket": "b0"
+        "hash_bucket": "b0",
+        "filter_token_count": 5635,
+        "filter_sha256": "20b95f32abdf892132cf4d44092a9dff"
       },
       {
         "shard_id": "notice_article__detail__2012__首页__b1",
@@ -6033,7 +6623,9 @@
         "year_range": [
           "2012"
         ],
-        "hash_bucket": "b1"
+        "hash_bucket": "b1",
+        "filter_token_count": 12045,
+        "filter_sha256": "dc2b8e0b0a9931ed5d73c09d44e0ec3c"
       },
       {
         "shard_id": "notice_article__detail__2012__首页__b2",
@@ -6055,7 +6647,9 @@
         "year_range": [
           "2012"
         ],
-        "hash_bucket": "b2"
+        "hash_bucket": "b2",
+        "filter_token_count": 8152,
+        "filter_sha256": "f7616f3db0e937a9fa04e8014739f72d"
       },
       {
         "shard_id": "notice_article__detail__2012__首页__b3",
@@ -6078,7 +6672,9 @@
         "year_range": [
           "2012"
         ],
-        "hash_bucket": "b3"
+        "hash_bucket": "b3",
+        "filter_token_count": 17656,
+        "filter_sha256": "b440cdd973c2418d94109be4dc8ca90c"
       },
       {
         "shard_id": "notice_article__detail__2013__首页__b0",
@@ -6110,7 +6706,9 @@
         "year_range": [
           "2013"
         ],
-        "hash_bucket": "b0"
+        "hash_bucket": "b0",
+        "filter_token_count": 12098,
+        "filter_sha256": "6ad8995fb8eb771ddfdf1369199464ef"
       },
       {
         "shard_id": "notice_article__detail__2013__首页__b1",
@@ -6146,7 +6744,9 @@
         "year_range": [
           "2013"
         ],
-        "hash_bucket": "b1"
+        "hash_bucket": "b1",
+        "filter_token_count": 16072,
+        "filter_sha256": "ea4a2a29018c8e4e0431deb47f998e91"
       },
       {
         "shard_id": "notice_article__detail__2013__首页__b2",
@@ -6180,7 +6780,9 @@
         "year_range": [
           "2013"
         ],
-        "hash_bucket": "b2"
+        "hash_bucket": "b2",
+        "filter_token_count": 17977,
+        "filter_sha256": "6a9342d736eaa155eb53f3e3f3d32ca0"
       },
       {
         "shard_id": "notice_article__detail__2013__首页__b3",
@@ -6214,7 +6816,9 @@
         "year_range": [
           "2013"
         ],
-        "hash_bucket": "b3"
+        "hash_bucket": "b3",
+        "filter_token_count": 18351,
+        "filter_sha256": "31a411e46f7b6afcc6e6e710bc75c5c1"
       },
       {
         "shard_id": "notice_article__detail__2014__首页__b0",
@@ -6238,7 +6842,9 @@
         "year_range": [
           "2014"
         ],
-        "hash_bucket": "b0"
+        "hash_bucket": "b0",
+        "filter_token_count": 17120,
+        "filter_sha256": "78b9e56e7e6de4068406d24a6f6b3153"
       },
       {
         "shard_id": "notice_article__detail__2014__首页__b1",
@@ -6261,7 +6867,9 @@
         "year_range": [
           "2014"
         ],
-        "hash_bucket": "b1"
+        "hash_bucket": "b1",
+        "filter_token_count": 20025,
+        "filter_sha256": "6309d090f91a4b54ed2ffdb40ef59775"
       },
       {
         "shard_id": "notice_article__detail__2014__首页__b2",
@@ -6286,7 +6894,9 @@
         "year_range": [
           "2014"
         ],
-        "hash_bucket": "b2"
+        "hash_bucket": "b2",
+        "filter_token_count": 14255,
+        "filter_sha256": "21626515c3bb3b18a73698525a8ca598"
       },
       {
         "shard_id": "notice_article__detail__2014__首页__b3",
@@ -6309,7 +6919,9 @@
         "year_range": [
           "2014"
         ],
-        "hash_bucket": "b3"
+        "hash_bucket": "b3",
+        "filter_token_count": 15476,
+        "filter_sha256": "f28e43f9a6922b462ac97ccfaf650ed6"
       },
       {
         "shard_id": "notice_article__detail__2015__首页__b0",
@@ -6334,7 +6946,9 @@
         "year_range": [
           "2015"
         ],
-        "hash_bucket": "b0"
+        "hash_bucket": "b0",
+        "filter_token_count": 20235,
+        "filter_sha256": "567b4d44a4f8f22cd305155f3553a15d"
       },
       {
         "shard_id": "notice_article__detail__2015__首页__b1",
@@ -6356,7 +6970,9 @@
         "year_range": [
           "2015"
         ],
-        "hash_bucket": "b1"
+        "hash_bucket": "b1",
+        "filter_token_count": 9993,
+        "filter_sha256": "8286ae1261e417c35ce4166331b1f65b"
       },
       {
         "shard_id": "notice_article__detail__2015__首页__b2",
@@ -6378,7 +6994,9 @@
         "year_range": [
           "2015"
         ],
-        "hash_bucket": "b2"
+        "hash_bucket": "b2",
+        "filter_token_count": 11812,
+        "filter_sha256": "a3409c1a7fdc894bee0a025ce84d7086"
       },
       {
         "shard_id": "notice_article__detail__2015__首页__b3",
@@ -6400,7 +7018,9 @@
         "year_range": [
           "2015"
         ],
-        "hash_bucket": "b3"
+        "hash_bucket": "b3",
+        "filter_token_count": 16148,
+        "filter_sha256": "a378e8f62777dfd373d5593e87aba7a6"
       },
       {
         "shard_id": "notice_article__detail__2016__首页__b0",
@@ -6422,7 +7042,9 @@
         "year_range": [
           "2016"
         ],
-        "hash_bucket": "b0"
+        "hash_bucket": "b0",
+        "filter_token_count": 5066,
+        "filter_sha256": "84b392b308f61b2925bffb87e5138229"
       },
       {
         "shard_id": "notice_article__detail__2016__首页__b1",
@@ -6444,7 +7066,9 @@
         "year_range": [
           "2016"
         ],
-        "hash_bucket": "b1"
+        "hash_bucket": "b1",
+        "filter_token_count": 3907,
+        "filter_sha256": "fedc5c9cd2efbd952dfd4b99d390861a"
       },
       {
         "shard_id": "notice_article__detail__2016__首页__b2",
@@ -6466,7 +7090,9 @@
         "year_range": [
           "2016"
         ],
-        "hash_bucket": "b2"
+        "hash_bucket": "b2",
+        "filter_token_count": 22204,
+        "filter_sha256": "020688d569a53277eef1d7f1acb05c3b"
       },
       {
         "shard_id": "notice_article__detail__2016__首页__b3",
@@ -6489,7 +7115,9 @@
         "year_range": [
           "2016"
         ],
-        "hash_bucket": "b3"
+        "hash_bucket": "b3",
+        "filter_token_count": 7544,
+        "filter_sha256": "4a397e78801c0a7bb7bdcf46d6eb4f5d"
       },
       {
         "shard_id": "notice_article__detail__2017__首页__b0",
@@ -6511,7 +7139,9 @@
         "year_range": [
           "2017"
         ],
-        "hash_bucket": "b0"
+        "hash_bucket": "b0",
+        "filter_token_count": 7235,
+        "filter_sha256": "c838d1cdcfb754f8555eb47802ec8a01"
       },
       {
         "shard_id": "notice_article__detail__2017__首页__b1",
@@ -6534,7 +7164,9 @@
         "year_range": [
           "2017"
         ],
-        "hash_bucket": "b1"
+        "hash_bucket": "b1",
+        "filter_token_count": 18748,
+        "filter_sha256": "d9a922df0d6b1136c314826d6c64c257"
       },
       {
         "shard_id": "notice_article__detail__2017__首页__b2",
@@ -6557,7 +7189,9 @@
         "year_range": [
           "2017"
         ],
-        "hash_bucket": "b2"
+        "hash_bucket": "b2",
+        "filter_token_count": 15619,
+        "filter_sha256": "6c76913635f497332cd8eba5159f10a8"
       },
       {
         "shard_id": "notice_article__detail__2017__首页__b3",
@@ -6580,7 +7214,9 @@
         "year_range": [
           "2017"
         ],
-        "hash_bucket": "b3"
+        "hash_bucket": "b3",
+        "filter_token_count": 11540,
+        "filter_sha256": "0e88a322f41bcba2b6fa0263d6c21567"
       },
       {
         "shard_id": "notice_article__detail__2018__首页__b0",
@@ -6602,7 +7238,9 @@
         "year_range": [
           "2018"
         ],
-        "hash_bucket": "b0"
+        "hash_bucket": "b0",
+        "filter_token_count": 9344,
+        "filter_sha256": "6717098e5905597bf067d52452031d28"
       },
       {
         "shard_id": "notice_article__detail__2018__首页__b1",
@@ -6625,7 +7263,9 @@
         "year_range": [
           "2018"
         ],
-        "hash_bucket": "b1"
+        "hash_bucket": "b1",
+        "filter_token_count": 10058,
+        "filter_sha256": "7bcae1e50582f674c46577bf14017dab"
       },
       {
         "shard_id": "notice_article__detail__2018__首页__b2",
@@ -6648,7 +7288,9 @@
         "year_range": [
           "2018"
         ],
-        "hash_bucket": "b2"
+        "hash_bucket": "b2",
+        "filter_token_count": 11488,
+        "filter_sha256": "f2143f528f9f234c7649aa0eadb0a8c8"
       },
       {
         "shard_id": "notice_article__detail__2018__首页__b3",
@@ -6671,7 +7313,9 @@
         "year_range": [
           "2018"
         ],
-        "hash_bucket": "b3"
+        "hash_bucket": "b3",
+        "filter_token_count": 12142,
+        "filter_sha256": "2eaca36d410a1eda474459bc9c76f4aa"
       },
       {
         "shard_id": "notice_article__detail__2019__首页__b0",
@@ -6692,7 +7336,9 @@
         "year_range": [
           "2019"
         ],
-        "hash_bucket": "b0"
+        "hash_bucket": "b0",
+        "filter_token_count": 4896,
+        "filter_sha256": "f5da32c5cea71298ab5039bee03b72f3"
       },
       {
         "shard_id": "notice_article__detail__2019__首页__b1",
@@ -6714,7 +7360,9 @@
         "year_range": [
           "2019"
         ],
-        "hash_bucket": "b1"
+        "hash_bucket": "b1",
+        "filter_token_count": 10001,
+        "filter_sha256": "7d63dc44aea6b13fb365adc550722743"
       },
       {
         "shard_id": "notice_article__detail__2019__首页__b2",
@@ -6735,7 +7383,9 @@
         "year_range": [
           "2019"
         ],
-        "hash_bucket": "b2"
+        "hash_bucket": "b2",
+        "filter_token_count": 6069,
+        "filter_sha256": "e8478114db32ab9076958984452df749"
       },
       {
         "shard_id": "notice_article__detail__2019__首页__b3",
@@ -6756,7 +7406,9 @@
         "year_range": [
           "2019"
         ],
-        "hash_bucket": "b3"
+        "hash_bucket": "b3",
+        "filter_token_count": 7931,
+        "filter_sha256": "0baf4db171515cdf72141e0ad6d2c5c6"
       },
       {
         "shard_id": "notice_article__detail__2020__首页__b0",
@@ -6779,7 +7431,9 @@
         "year_range": [
           "2020"
         ],
-        "hash_bucket": "b0"
+        "hash_bucket": "b0",
+        "filter_token_count": 11046,
+        "filter_sha256": "f65cf40bc2d125e41c19ae8493aee201"
       },
       {
         "shard_id": "notice_article__detail__2020__首页__b1",
@@ -6801,7 +7455,9 @@
         "year_range": [
           "2020"
         ],
-        "hash_bucket": "b1"
+        "hash_bucket": "b1",
+        "filter_token_count": 4852,
+        "filter_sha256": "1f66eff853268aca762f4a87ed328883"
       },
       {
         "shard_id": "notice_article__detail__2020__首页__b2",
@@ -6823,7 +7479,9 @@
         "year_range": [
           "2020"
         ],
-        "hash_bucket": "b2"
+        "hash_bucket": "b2",
+        "filter_token_count": 9077,
+        "filter_sha256": "fb8f46a7a0e79d48299505d60cde9763"
       },
       {
         "shard_id": "notice_article__detail__2020__首页__b3",
@@ -6846,7 +7504,9 @@
         "year_range": [
           "2020"
         ],
-        "hash_bucket": "b3"
+        "hash_bucket": "b3",
+        "filter_token_count": 7440,
+        "filter_sha256": "e7f7b3e97844c21db4fd8ab92300fd04"
       },
       {
         "shard_id": "notice_article__detail__2021__首页__b0",
@@ -6868,7 +7528,9 @@
         "year_range": [
           "2021"
         ],
-        "hash_bucket": "b0"
+        "hash_bucket": "b0",
+        "filter_token_count": 9226,
+        "filter_sha256": "e603af2553d694bea7ccc3820e8dbd4d"
       },
       {
         "shard_id": "notice_article__detail__2021__首页__b1",
@@ -6890,7 +7552,9 @@
         "year_range": [
           "2021"
         ],
-        "hash_bucket": "b1"
+        "hash_bucket": "b1",
+        "filter_token_count": 14005,
+        "filter_sha256": "321854dea0dc73fde20557d587a27e62"
       },
       {
         "shard_id": "notice_article__detail__2021__首页__b2",
@@ -6912,7 +7576,9 @@
         "year_range": [
           "2021"
         ],
-        "hash_bucket": "b2"
+        "hash_bucket": "b2",
+        "filter_token_count": 18474,
+        "filter_sha256": "30d2235db37f1dc69ecac7c637dc4b22"
       },
       {
         "shard_id": "notice_article__detail__2021__首页__b3",
@@ -6934,7 +7600,9 @@
         "year_range": [
           "2021"
         ],
-        "hash_bucket": "b3"
+        "hash_bucket": "b3",
+        "filter_token_count": 13059,
+        "filter_sha256": "820a2b38062dc689d9505b3a1cbcd404"
       },
       {
         "shard_id": "notice_article__detail__2022__首页__b0",
@@ -6956,7 +7624,9 @@
         "year_range": [
           "2022"
         ],
-        "hash_bucket": "b0"
+        "hash_bucket": "b0",
+        "filter_token_count": 10822,
+        "filter_sha256": "0876504e78690af5cdecc67557f3363e"
       },
       {
         "shard_id": "notice_article__detail__2022__首页__b1",
@@ -6978,7 +7648,9 @@
         "year_range": [
           "2022"
         ],
-        "hash_bucket": "b1"
+        "hash_bucket": "b1",
+        "filter_token_count": 7204,
+        "filter_sha256": "997e2cd026fbd2a8ea024d66d5819cf5"
       },
       {
         "shard_id": "notice_article__detail__2022__首页__b2",
@@ -7001,7 +7673,9 @@
         "year_range": [
           "2022"
         ],
-        "hash_bucket": "b2"
+        "hash_bucket": "b2",
+        "filter_token_count": 10758,
+        "filter_sha256": "d00c2146aea56323cfd2839f8c2a23c0"
       },
       {
         "shard_id": "notice_article__detail__2022__首页__b3",
@@ -7024,7 +7698,9 @@
         "year_range": [
           "2022"
         ],
-        "hash_bucket": "b3"
+        "hash_bucket": "b3",
+        "filter_token_count": 14271,
+        "filter_sha256": "2ae2c9909474600edd6aa773042d7654"
       },
       {
         "shard_id": "notice_article__detail__2023__首页__b0",
@@ -7047,7 +7723,9 @@
         "year_range": [
           "2023"
         ],
-        "hash_bucket": "b0"
+        "hash_bucket": "b0",
+        "filter_token_count": 13097,
+        "filter_sha256": "1e8fbd6d2b953a8d02978451bba989ae"
       },
       {
         "shard_id": "notice_article__detail__2023__首页__b1",
@@ -7069,7 +7747,9 @@
         "year_range": [
           "2023"
         ],
-        "hash_bucket": "b1"
+        "hash_bucket": "b1",
+        "filter_token_count": 10976,
+        "filter_sha256": "3440f45c211509ae6004feac794c30b2"
       },
       {
         "shard_id": "notice_article__detail__2023__首页__b2",
@@ -7092,7 +7772,9 @@
         "year_range": [
           "2023"
         ],
-        "hash_bucket": "b2"
+        "hash_bucket": "b2",
+        "filter_token_count": 23248,
+        "filter_sha256": "e1cf9e666b34a277df684ea30df80677"
       },
       {
         "shard_id": "notice_article__detail__2023__首页__b3",
@@ -7115,7 +7797,9 @@
         "year_range": [
           "2023"
         ],
-        "hash_bucket": "b3"
+        "hash_bucket": "b3",
+        "filter_token_count": 9644,
+        "filter_sha256": "34cd99df0bea360ac487f0a47fb69cbd"
       },
       {
         "shard_id": "notice_article__detail__2024__首页__b0",
@@ -7138,7 +7822,9 @@
         "year_range": [
           "2024"
         ],
-        "hash_bucket": "b0"
+        "hash_bucket": "b0",
+        "filter_token_count": 19625,
+        "filter_sha256": "ece2ddd2b02175aab794ff1f1c75b9d0"
       },
       {
         "shard_id": "notice_article__detail__2024__首页__b1",
@@ -7161,7 +7847,9 @@
         "year_range": [
           "2024"
         ],
-        "hash_bucket": "b1"
+        "hash_bucket": "b1",
+        "filter_token_count": 18337,
+        "filter_sha256": "733d737dbaec9d744b5a73b4182a905a"
       },
       {
         "shard_id": "notice_article__detail__2024__首页__b2",
@@ -7183,7 +7871,9 @@
         "year_range": [
           "2024"
         ],
-        "hash_bucket": "b2"
+        "hash_bucket": "b2",
+        "filter_token_count": 14748,
+        "filter_sha256": "5c171f2ca5f745b6a88c3ff8af4c8f4a"
       },
       {
         "shard_id": "notice_article__detail__2024__首页__b3",
@@ -7207,7 +7897,9 @@
         "year_range": [
           "2024"
         ],
-        "hash_bucket": "b3"
+        "hash_bucket": "b3",
+        "filter_token_count": 22156,
+        "filter_sha256": "de7cf5f9680f9640d359b390a0dfe2ee"
       },
       {
         "shard_id": "notice_article__detail__2025__首页__b0",
@@ -7231,7 +7923,9 @@
         "year_range": [
           "2025"
         ],
-        "hash_bucket": "b0"
+        "hash_bucket": "b0",
+        "filter_token_count": 19139,
+        "filter_sha256": "19ec1b6387db71ddf3ef46e14143101a"
       },
       {
         "shard_id": "notice_article__detail__2025__首页__b1",
@@ -7255,7 +7949,9 @@
         "year_range": [
           "2025"
         ],
-        "hash_bucket": "b1"
+        "hash_bucket": "b1",
+        "filter_token_count": 15084,
+        "filter_sha256": "04df0cdee3b46509ecebbbe7d2c9aaaf"
       },
       {
         "shard_id": "notice_article__detail__2025__首页__b2",
@@ -7278,7 +7974,9 @@
         "year_range": [
           "2025"
         ],
-        "hash_bucket": "b2"
+        "hash_bucket": "b2",
+        "filter_token_count": 7351,
+        "filter_sha256": "2cd0e060acc905e1ff2118b79ed6cec3"
       },
       {
         "shard_id": "notice_article__detail__2025__首页__b3",
@@ -7301,7 +7999,9 @@
         "year_range": [
           "2025"
         ],
-        "hash_bucket": "b3"
+        "hash_bucket": "b3",
+        "filter_token_count": 13649,
+        "filter_sha256": "d460bc0ff377ab045a1c440739f320af"
       },
       {
         "shard_id": "notice_article__detail__2026__首页__b0",
@@ -7323,7 +8023,9 @@
         "year_range": [
           "2026"
         ],
-        "hash_bucket": "b0"
+        "hash_bucket": "b0",
+        "filter_token_count": 1677,
+        "filter_sha256": "63f59a97dc1c7015a2a85c49b59c8ac2"
       },
       {
         "shard_id": "notice_article__detail__2026__首页__b1",
@@ -7344,7 +8046,9 @@
         "year_range": [
           "2026"
         ],
-        "hash_bucket": "b1"
+        "hash_bucket": "b1",
+        "filter_token_count": 2544,
+        "filter_sha256": "9692c753f64ce2b5dceab2d39a1dd717"
       },
       {
         "shard_id": "notice_article__detail__2026__首页__b2",
@@ -7366,7 +8070,9 @@
         "year_range": [
           "2026"
         ],
-        "hash_bucket": "b2"
+        "hash_bucket": "b2",
+        "filter_token_count": 1865,
+        "filter_sha256": "aad38b4ddfcf9d6eab6e5cbf8c738584"
       },
       {
         "shard_id": "notice_article__detail__2026__首页__b3",
@@ -7389,7 +8095,9 @@
         "year_range": [
           "2026"
         ],
-        "hash_bucket": "b3"
+        "hash_bucket": "b3",
+        "filter_token_count": 8959,
+        "filter_sha256": "397056647d706918404aba324627c825"
       },
       {
         "shard_id": "notice_article__detail__undated__首页__b1",
@@ -7412,7 +8120,9 @@
         "year_range": [
           "undated"
         ],
-        "hash_bucket": "b1"
+        "hash_bucket": "b1",
+        "filter_token_count": 163,
+        "filter_sha256": "6f0bdb473a1095fba057c9d6792ed682"
       },
       {
         "shard_id": "policy__detail__2009__首页__b0",
@@ -7433,7 +8143,9 @@
         "year_range": [
           "2009"
         ],
-        "hash_bucket": "b0"
+        "hash_bucket": "b0",
+        "filter_token_count": 1356,
+        "filter_sha256": "226d220f3b37b6ae8e57514dfae03ec2"
       },
       {
         "shard_id": "policy__detail__2009__首页__b1",
@@ -7455,7 +8167,9 @@
         "year_range": [
           "2009"
         ],
-        "hash_bucket": "b1"
+        "hash_bucket": "b1",
+        "filter_token_count": 4788,
+        "filter_sha256": "c6148470b7d8686e2293b63f2433d78a"
       },
       {
         "shard_id": "policy__detail__2009__首页__b2",
@@ -7477,7 +8191,9 @@
         "year_range": [
           "2009"
         ],
-        "hash_bucket": "b2"
+        "hash_bucket": "b2",
+        "filter_token_count": 4857,
+        "filter_sha256": "4570fe6a55b6b19a97be89cdd6fc7f25"
       },
       {
         "shard_id": "policy__detail__2009__首页__b3",
@@ -7498,7 +8214,9 @@
         "year_range": [
           "2009"
         ],
-        "hash_bucket": "b3"
+        "hash_bucket": "b3",
+        "filter_token_count": 3111,
+        "filter_sha256": "baae6a4558150d73545b3d4636331943"
       },
       {
         "shard_id": "policy__detail__2010__首页__b0",
@@ -7521,7 +8239,9 @@
         "year_range": [
           "2010"
         ],
-        "hash_bucket": "b0"
+        "hash_bucket": "b0",
+        "filter_token_count": 7194,
+        "filter_sha256": "f483ef20ed11fd0a00033c9a95621e84"
       },
       {
         "shard_id": "policy__detail__2010__首页__b1",
@@ -7544,7 +8264,9 @@
         "year_range": [
           "2010"
         ],
-        "hash_bucket": "b1"
+        "hash_bucket": "b1",
+        "filter_token_count": 8046,
+        "filter_sha256": "b45aaac2201291ee9fffc5ac06f941e4"
       },
       {
         "shard_id": "policy__detail__2010__首页__b2",
@@ -7567,7 +8289,9 @@
         "year_range": [
           "2010"
         ],
-        "hash_bucket": "b2"
+        "hash_bucket": "b2",
+        "filter_token_count": 10848,
+        "filter_sha256": "767ac97f5d8fa68378ed0e191682da9a"
       },
       {
         "shard_id": "policy__detail__2010__首页__b3",
@@ -7590,7 +8314,9 @@
         "year_range": [
           "2010"
         ],
-        "hash_bucket": "b3"
+        "hash_bucket": "b3",
+        "filter_token_count": 13944,
+        "filter_sha256": "cc60d9934695b4009893fa647515736f"
       },
       {
         "shard_id": "policy__detail__2011__首页__b0",
@@ -7613,7 +8339,9 @@
         "year_range": [
           "2011"
         ],
-        "hash_bucket": "b0"
+        "hash_bucket": "b0",
+        "filter_token_count": 31228,
+        "filter_sha256": "7ea4540794d8587d9ede703d303d1b34"
       },
       {
         "shard_id": "policy__detail__2011__首页__b1",
@@ -7635,7 +8363,9 @@
         "year_range": [
           "2011"
         ],
-        "hash_bucket": "b1"
+        "hash_bucket": "b1",
+        "filter_token_count": 46410,
+        "filter_sha256": "e94444f89f5312109ac8c6173bc66f12"
       },
       {
         "shard_id": "policy__detail__2011__首页__b2",
@@ -7658,7 +8388,9 @@
         "year_range": [
           "2011"
         ],
-        "hash_bucket": "b2"
+        "hash_bucket": "b2",
+        "filter_token_count": 52591,
+        "filter_sha256": "8705c3d0c0478d8389809abe08639a66"
       },
       {
         "shard_id": "policy__detail__2011__首页__b3",
@@ -7682,7 +8414,9 @@
         "year_range": [
           "2011"
         ],
-        "hash_bucket": "b3"
+        "hash_bucket": "b3",
+        "filter_token_count": 80255,
+        "filter_sha256": "0c6afe9ae2b8aebd6ae4b2fff100a35d"
       },
       {
         "shard_id": "policy__detail__2012__规章制度__b3",
@@ -7703,7 +8437,9 @@
         "year_range": [
           "2012"
         ],
-        "hash_bucket": "b3"
+        "hash_bucket": "b3",
+        "filter_token_count": 1472,
+        "filter_sha256": "8ef4ca858866e77d86cc3631773b97c5"
       },
       {
         "shard_id": "policy__detail__2012__首页__b0",
@@ -7729,7 +8465,9 @@
         "year_range": [
           "2012"
         ],
-        "hash_bucket": "b0"
+        "hash_bucket": "b0",
+        "filter_token_count": 49634,
+        "filter_sha256": "f192636d9a1212c960bb60c615c85c44"
       },
       {
         "shard_id": "policy__detail__2012__首页__b1",
@@ -7754,7 +8492,9 @@
         "year_range": [
           "2012"
         ],
-        "hash_bucket": "b1"
+        "hash_bucket": "b1",
+        "filter_token_count": 78967,
+        "filter_sha256": "0c6afe9ae2b8aebd6ae4b2fff100a35d"
       },
       {
         "shard_id": "policy__detail__2012__首页__b2",
@@ -7777,7 +8517,9 @@
         "year_range": [
           "2012"
         ],
-        "hash_bucket": "b2"
+        "hash_bucket": "b2",
+        "filter_token_count": 64024,
+        "filter_sha256": "0c6afe9ae2b8aebd6ae4b2fff100a35d"
       },
       {
         "shard_id": "policy__detail__2012__首页__b3",
@@ -7803,7 +8545,9 @@
         "year_range": [
           "2012"
         ],
-        "hash_bucket": "b3"
+        "hash_bucket": "b3",
+        "filter_token_count": 65016,
+        "filter_sha256": "7a3af13379626256dfc47e3c25b14770"
       },
       {
         "shard_id": "policy__detail__2013__规章制度__b0",
@@ -7824,7 +8568,9 @@
         "year_range": [
           "2013"
         ],
-        "hash_bucket": "b0"
+        "hash_bucket": "b0",
+        "filter_token_count": 1762,
+        "filter_sha256": "a0068eed0f2e0f4b796fd04c6c335158"
       },
       {
         "shard_id": "policy__detail__2013__规章制度__b1",
@@ -7845,7 +8591,9 @@
         "year_range": [
           "2013"
         ],
-        "hash_bucket": "b1"
+        "hash_bucket": "b1",
+        "filter_token_count": 3768,
+        "filter_sha256": "17f0937ba0889b9e3a1f16f5ef4ba5c6"
       },
       {
         "shard_id": "policy__detail__2013__规章制度__b3",
@@ -7866,7 +8614,9 @@
         "year_range": [
           "2013"
         ],
-        "hash_bucket": "b3"
+        "hash_bucket": "b3",
+        "filter_token_count": 6793,
+        "filter_sha256": "58e5a43697e107ca9deb3e7365c908ed"
       },
       {
         "shard_id": "policy__detail__2013__首页__b0",
@@ -7892,7 +8642,9 @@
         "year_range": [
           "2013"
         ],
-        "hash_bucket": "b0"
+        "hash_bucket": "b0",
+        "filter_token_count": 28003,
+        "filter_sha256": "2b124d168ebf0d4d9757b25559d3bf36"
       },
       {
         "shard_id": "policy__detail__2013__首页__b1",
@@ -7918,7 +8670,9 @@
         "year_range": [
           "2013"
         ],
-        "hash_bucket": "b1"
+        "hash_bucket": "b1",
+        "filter_token_count": 31043,
+        "filter_sha256": "7b2c1e243f903dcf3a48ccc45f10724c"
       },
       {
         "shard_id": "policy__detail__2013__首页__b2",
@@ -7941,7 +8695,9 @@
         "year_range": [
           "2013"
         ],
-        "hash_bucket": "b2"
+        "hash_bucket": "b2",
+        "filter_token_count": 20713,
+        "filter_sha256": "795643194afe0d4b35715f29fe37a6b0"
       },
       {
         "shard_id": "policy__detail__2013__首页__b3",
@@ -7968,7 +8724,9 @@
         "year_range": [
           "2013"
         ],
-        "hash_bucket": "b3"
+        "hash_bucket": "b3",
+        "filter_token_count": 44669,
+        "filter_sha256": "da7fef5e562a2af90895253f96e5ff08"
       },
       {
         "shard_id": "policy__detail__2014__首页__b0",
@@ -7993,7 +8751,9 @@
         "year_range": [
           "2014"
         ],
-        "hash_bucket": "b0"
+        "hash_bucket": "b0",
+        "filter_token_count": 23833,
+        "filter_sha256": "264335e39d6fb298e58bd2f948010cfb"
       },
       {
         "shard_id": "policy__detail__2014__首页__b1",
@@ -8016,7 +8776,9 @@
         "year_range": [
           "2014"
         ],
-        "hash_bucket": "b1"
+        "hash_bucket": "b1",
+        "filter_token_count": 32016,
+        "filter_sha256": "511fab711d534d01b21c3e376d5cf848"
       },
       {
         "shard_id": "policy__detail__2014__首页__b2",
@@ -8039,7 +8801,9 @@
         "year_range": [
           "2014"
         ],
-        "hash_bucket": "b2"
+        "hash_bucket": "b2",
+        "filter_token_count": 21501,
+        "filter_sha256": "ecf346f07599d1d4202c9f87e41c060f"
       },
       {
         "shard_id": "policy__detail__2014__首页__b3",
@@ -8063,7 +8827,9 @@
         "year_range": [
           "2014"
         ],
-        "hash_bucket": "b3"
+        "hash_bucket": "b3",
+        "filter_token_count": 31475,
+        "filter_sha256": "cfb463f2f7df997b24999ed87e4a2966"
       },
       {
         "shard_id": "policy__detail__2015__首页__b0",
@@ -8087,7 +8853,9 @@
         "year_range": [
           "2015"
         ],
-        "hash_bucket": "b0"
+        "hash_bucket": "b0",
+        "filter_token_count": 16190,
+        "filter_sha256": "e317427811db77d5e8c9ef1f53ff8616"
       },
       {
         "shard_id": "policy__detail__2015__首页__b1",
@@ -8111,7 +8879,9 @@
         "year_range": [
           "2015"
         ],
-        "hash_bucket": "b1"
+        "hash_bucket": "b1",
+        "filter_token_count": 20674,
+        "filter_sha256": "95bd30d23d5d30af9c1902eed566d3c9"
       },
       {
         "shard_id": "policy__detail__2015__首页__b2",
@@ -8134,7 +8904,9 @@
         "year_range": [
           "2015"
         ],
-        "hash_bucket": "b2"
+        "hash_bucket": "b2",
+        "filter_token_count": 12716,
+        "filter_sha256": "d1427e649421b2147690b663e7d5a3f9"
       },
       {
         "shard_id": "policy__detail__2015__首页__b3",
@@ -8158,7 +8930,9 @@
         "year_range": [
           "2015"
         ],
-        "hash_bucket": "b3"
+        "hash_bucket": "b3",
+        "filter_token_count": 38533,
+        "filter_sha256": "6a8f05694d4a54b807824bb384cdc7a2"
       },
       {
         "shard_id": "policy__detail__2016__规章制度__b0",
@@ -8179,7 +8953,9 @@
         "year_range": [
           "2016"
         ],
-        "hash_bucket": "b0"
+        "hash_bucket": "b0",
+        "filter_token_count": 5055,
+        "filter_sha256": "30ca1efbe4b23095c0354014dfed31be"
       },
       {
         "shard_id": "policy__detail__2016__首页__b0",
@@ -8203,7 +8979,9 @@
         "year_range": [
           "2016"
         ],
-        "hash_bucket": "b0"
+        "hash_bucket": "b0",
+        "filter_token_count": 14284,
+        "filter_sha256": "48f4105f1f34d45a92c0ba211b0a3e3f"
       },
       {
         "shard_id": "policy__detail__2016__首页__b1",
@@ -8228,7 +9006,9 @@
         "year_range": [
           "2016"
         ],
-        "hash_bucket": "b1"
+        "hash_bucket": "b1",
+        "filter_token_count": 24177,
+        "filter_sha256": "17a3804b60d81b218fb73c6e7ada7ee8"
       },
       {
         "shard_id": "policy__detail__2016__首页__b2",
@@ -8253,7 +9033,9 @@
         "year_range": [
           "2016"
         ],
-        "hash_bucket": "b2"
+        "hash_bucket": "b2",
+        "filter_token_count": 16173,
+        "filter_sha256": "4775b5f9298995380c17256678e0613c"
       },
       {
         "shard_id": "policy__detail__2016__首页__b3",
@@ -8277,7 +9059,9 @@
         "year_range": [
           "2016"
         ],
-        "hash_bucket": "b3"
+        "hash_bucket": "b3",
+        "filter_token_count": 36445,
+        "filter_sha256": "22adda9eae1fafd6a1462e75e2d5b100"
       },
       {
         "shard_id": "policy__detail__2017__规章制度__b2",
@@ -8298,7 +9082,9 @@
         "year_range": [
           "2017"
         ],
-        "hash_bucket": "b2"
+        "hash_bucket": "b2",
+        "filter_token_count": 101,
+        "filter_sha256": "6e6a86d4a45656b670e34135e490bac6"
       },
       {
         "shard_id": "policy__detail__2017__规章制度__b3",
@@ -8319,7 +9105,9 @@
         "year_range": [
           "2017"
         ],
-        "hash_bucket": "b3"
+        "hash_bucket": "b3",
+        "filter_token_count": 91,
+        "filter_sha256": "43a073920b9b1bede91ba557ce9d02e4"
       },
       {
         "shard_id": "policy__detail__2017__首页__b0",
@@ -8342,7 +9130,9 @@
         "year_range": [
           "2017"
         ],
-        "hash_bucket": "b0"
+        "hash_bucket": "b0",
+        "filter_token_count": 9873,
+        "filter_sha256": "0e04f93d69d201cc4eb8e781a1884736"
       },
       {
         "shard_id": "policy__detail__2017__首页__b1",
@@ -8366,7 +9156,9 @@
         "year_range": [
           "2017"
         ],
-        "hash_bucket": "b1"
+        "hash_bucket": "b1",
+        "filter_token_count": 15704,
+        "filter_sha256": "c6e3cbf5d5591ea2cb6d6d2acf02bb44"
       },
       {
         "shard_id": "policy__detail__2017__首页__b2",
@@ -8391,7 +9183,9 @@
         "year_range": [
           "2017"
         ],
-        "hash_bucket": "b2"
+        "hash_bucket": "b2",
+        "filter_token_count": 17770,
+        "filter_sha256": "52c24cc934536ab32b2a24531d3723c4"
       },
       {
         "shard_id": "policy__detail__2017__首页__b3",
@@ -8414,7 +9208,9 @@
         "year_range": [
           "2017"
         ],
-        "hash_bucket": "b3"
+        "hash_bucket": "b3",
+        "filter_token_count": 12622,
+        "filter_sha256": "30008e1f8c37b238a671ae5e6853300f"
       },
       {
         "shard_id": "policy__detail__2018__首页__b0",
@@ -8437,7 +9233,9 @@
         "year_range": [
           "2018"
         ],
-        "hash_bucket": "b0"
+        "hash_bucket": "b0",
+        "filter_token_count": 28299,
+        "filter_sha256": "6279cf9b4b261313921527120b16951b"
       },
       {
         "shard_id": "policy__detail__2018__首页__b1",
@@ -8461,7 +9259,9 @@
         "year_range": [
           "2018"
         ],
-        "hash_bucket": "b1"
+        "hash_bucket": "b1",
+        "filter_token_count": 32310,
+        "filter_sha256": "dc372e5abe436e1a37354a00264a3429"
       },
       {
         "shard_id": "policy__detail__2018__首页__b2",
@@ -8484,7 +9284,9 @@
         "year_range": [
           "2018"
         ],
-        "hash_bucket": "b2"
+        "hash_bucket": "b2",
+        "filter_token_count": 14080,
+        "filter_sha256": "a20490b81a843d80a833e1a76dbf70bc"
       },
       {
         "shard_id": "policy__detail__2018__首页__b3",
@@ -8507,7 +9309,9 @@
         "year_range": [
           "2018"
         ],
-        "hash_bucket": "b3"
+        "hash_bucket": "b3",
+        "filter_token_count": 30665,
+        "filter_sha256": "d9cbf66c8717ebc255a1adc4d06d0043"
       },
       {
         "shard_id": "policy__detail__2019__规章制度__b1",
@@ -8528,7 +9332,9 @@
         "year_range": [
           "2019"
         ],
-        "hash_bucket": "b1"
+        "hash_bucket": "b1",
+        "filter_token_count": 6425,
+        "filter_sha256": "60f8ce566b746ae09e14453e9e93dbdb"
       },
       {
         "shard_id": "policy__detail__2019__规章制度__b3",
@@ -8549,7 +9355,9 @@
         "year_range": [
           "2019"
         ],
-        "hash_bucket": "b3"
+        "hash_bucket": "b3",
+        "filter_token_count": 399,
+        "filter_sha256": "38969320cffb04ec3673f42d94f1a7d1"
       },
       {
         "shard_id": "policy__detail__2019__首页__b0",
@@ -8573,7 +9381,9 @@
         "year_range": [
           "2019"
         ],
-        "hash_bucket": "b0"
+        "hash_bucket": "b0",
+        "filter_token_count": 19942,
+        "filter_sha256": "8a22f1ccfb6df0072b2f64c91994192e"
       },
       {
         "shard_id": "policy__detail__2019__首页__b1",
@@ -8597,7 +9407,9 @@
         "year_range": [
           "2019"
         ],
-        "hash_bucket": "b1"
+        "hash_bucket": "b1",
+        "filter_token_count": 22020,
+        "filter_sha256": "c04a8a2e9c45ab5935a8becf7d9adb38"
       },
       {
         "shard_id": "policy__detail__2019__首页__b2",
@@ -8622,7 +9434,9 @@
         "year_range": [
           "2019"
         ],
-        "hash_bucket": "b2"
+        "hash_bucket": "b2",
+        "filter_token_count": 29959,
+        "filter_sha256": "5cc5be77e82faac8c301d7c0928278ac"
       },
       {
         "shard_id": "policy__detail__2019__首页__b3",
@@ -8646,7 +9460,9 @@
         "year_range": [
           "2019"
         ],
-        "hash_bucket": "b3"
+        "hash_bucket": "b3",
+        "filter_token_count": 31698,
+        "filter_sha256": "a5c6f3f188b8e1aee8a96d8c490ab253"
       },
       {
         "shard_id": "policy__detail__2020__规章制度__b1",
@@ -8667,7 +9483,9 @@
         "year_range": [
           "2020"
         ],
-        "hash_bucket": "b1"
+        "hash_bucket": "b1",
+        "filter_token_count": 8559,
+        "filter_sha256": "460d96e07832b866f8cf6d86db4f4a40"
       },
       {
         "shard_id": "policy__detail__2020__规章制度__b2",
@@ -8688,7 +9506,9 @@
         "year_range": [
           "2020"
         ],
-        "hash_bucket": "b2"
+        "hash_bucket": "b2",
+        "filter_token_count": 4457,
+        "filter_sha256": "08c32a94fadd879cb4164c6ebccfc127"
       },
       {
         "shard_id": "policy__detail__2020__首页__b0",
@@ -8712,7 +9532,9 @@
         "year_range": [
           "2020"
         ],
-        "hash_bucket": "b0"
+        "hash_bucket": "b0",
+        "filter_token_count": 23200,
+        "filter_sha256": "b5719fd5ed2473cc351782a70e01c851"
       },
       {
         "shard_id": "policy__detail__2020__首页__b1",
@@ -8736,7 +9558,9 @@
         "year_range": [
           "2020"
         ],
-        "hash_bucket": "b1"
+        "hash_bucket": "b1",
+        "filter_token_count": 25969,
+        "filter_sha256": "6d9f4b3e89ec43d55365bc547574d3ed"
       },
       {
         "shard_id": "policy__detail__2020__首页__b2",
@@ -8759,7 +9583,9 @@
         "year_range": [
           "2020"
         ],
-        "hash_bucket": "b2"
+        "hash_bucket": "b2",
+        "filter_token_count": 16893,
+        "filter_sha256": "1e126aae18dc2ac964eb600a2f33618f"
       },
       {
         "shard_id": "policy__detail__2020__首页__b3",
@@ -8782,7 +9608,9 @@
         "year_range": [
           "2020"
         ],
-        "hash_bucket": "b3"
+        "hash_bucket": "b3",
+        "filter_token_count": 7242,
+        "filter_sha256": "01b8611464bfde8c29b8b94526aa7264"
       },
       {
         "shard_id": "policy__detail__2021__规章制度__b1",
@@ -8803,7 +9631,9 @@
         "year_range": [
           "2021"
         ],
-        "hash_bucket": "b1"
+        "hash_bucket": "b1",
+        "filter_token_count": 1801,
+        "filter_sha256": "76f6d2a5e416e65d9188d4507b1cdcaf"
       },
       {
         "shard_id": "policy__detail__2021__首页__b0",
@@ -8827,7 +9657,9 @@
         "year_range": [
           "2021"
         ],
-        "hash_bucket": "b0"
+        "hash_bucket": "b0",
+        "filter_token_count": 15112,
+        "filter_sha256": "4d0c6a15014d27fa49c30db8f7ed7624"
       },
       {
         "shard_id": "policy__detail__2021__首页__b1",
@@ -8848,7 +9680,9 @@
         "year_range": [
           "2021"
         ],
-        "hash_bucket": "b1"
+        "hash_bucket": "b1",
+        "filter_token_count": 14915,
+        "filter_sha256": "83e021ac371685d8679be2dae01c06ec"
       },
       {
         "shard_id": "policy__detail__2021__首页__b2",
@@ -8871,7 +9705,9 @@
         "year_range": [
           "2021"
         ],
-        "hash_bucket": "b2"
+        "hash_bucket": "b2",
+        "filter_token_count": 9901,
+        "filter_sha256": "bec21481f9ceb0f1211b00f5ce5446ef"
       },
       {
         "shard_id": "policy__detail__2021__首页__b3",
@@ -8894,7 +9730,9 @@
         "year_range": [
           "2021"
         ],
-        "hash_bucket": "b3"
+        "hash_bucket": "b3",
+        "filter_token_count": 19915,
+        "filter_sha256": "4f4931d7bf2b0a013d301efa6d5783fe"
       },
       {
         "shard_id": "policy__detail__2022__首页__b0",
@@ -8917,7 +9755,9 @@
         "year_range": [
           "2022"
         ],
-        "hash_bucket": "b0"
+        "hash_bucket": "b0",
+        "filter_token_count": 14103,
+        "filter_sha256": "9e7348fa72ec39bbf376aadb5315e65d"
       },
       {
         "shard_id": "policy__detail__2022__首页__b1",
@@ -8940,7 +9780,9 @@
         "year_range": [
           "2022"
         ],
-        "hash_bucket": "b1"
+        "hash_bucket": "b1",
+        "filter_token_count": 14724,
+        "filter_sha256": "12c68aaa65313ea16d6456a6bf4abec0"
       },
       {
         "shard_id": "policy__detail__2022__首页__b2",
@@ -8961,7 +9803,9 @@
         "year_range": [
           "2022"
         ],
-        "hash_bucket": "b2"
+        "hash_bucket": "b2",
+        "filter_token_count": 7259,
+        "filter_sha256": "88e13ba0b14e706dd978be7da5d9e668"
       },
       {
         "shard_id": "policy__detail__2022__首页__b3",
@@ -8985,7 +9829,9 @@
         "year_range": [
           "2022"
         ],
-        "hash_bucket": "b3"
+        "hash_bucket": "b3",
+        "filter_token_count": 12528,
+        "filter_sha256": "3dca747269443cf2ac7ce502ded5c225"
       },
       {
         "shard_id": "policy__detail__2023__首页__b0",
@@ -9008,7 +9854,9 @@
         "year_range": [
           "2023"
         ],
-        "hash_bucket": "b0"
+        "hash_bucket": "b0",
+        "filter_token_count": 13874,
+        "filter_sha256": "18b0f40d10dff50658f2383273f40a1d"
       },
       {
         "shard_id": "policy__detail__2023__首页__b1",
@@ -9032,7 +9880,9 @@
         "year_range": [
           "2023"
         ],
-        "hash_bucket": "b1"
+        "hash_bucket": "b1",
+        "filter_token_count": 19077,
+        "filter_sha256": "8c370ae5a85e1ea4e53deaf5b7cec05c"
       },
       {
         "shard_id": "policy__detail__2023__首页__b2",
@@ -9054,7 +9904,9 @@
         "year_range": [
           "2023"
         ],
-        "hash_bucket": "b2"
+        "hash_bucket": "b2",
+        "filter_token_count": 11663,
+        "filter_sha256": "75dfb419cf57deeb769b712bf6593313"
       },
       {
         "shard_id": "policy__detail__2023__首页__b3",
@@ -9075,7 +9927,9 @@
         "year_range": [
           "2023"
         ],
-        "hash_bucket": "b3"
+        "hash_bucket": "b3",
+        "filter_token_count": 2601,
+        "filter_sha256": "04ad72e7412e5a8bb28527d0ac2f3025"
       },
       {
         "shard_id": "policy__detail__2024__首页__b0",
@@ -9097,7 +9951,9 @@
         "year_range": [
           "2024"
         ],
-        "hash_bucket": "b0"
+        "hash_bucket": "b0",
+        "filter_token_count": 7457,
+        "filter_sha256": "1c323d78831f0eb3f85c1211be65272a"
       },
       {
         "shard_id": "policy__detail__2024__首页__b1",
@@ -9120,7 +9976,9 @@
         "year_range": [
           "2024"
         ],
-        "hash_bucket": "b1"
+        "hash_bucket": "b1",
+        "filter_token_count": 18192,
+        "filter_sha256": "4f203938bb229fc67f35d852899ce650"
       },
       {
         "shard_id": "policy__detail__2024__首页__b2",
@@ -9143,7 +10001,9 @@
         "year_range": [
           "2024"
         ],
-        "hash_bucket": "b2"
+        "hash_bucket": "b2",
+        "filter_token_count": 8167,
+        "filter_sha256": "710aebacfeb8fddbc8e9c5c40754edc5"
       },
       {
         "shard_id": "policy__detail__2024__首页__b3",
@@ -9165,7 +10025,9 @@
         "year_range": [
           "2024"
         ],
-        "hash_bucket": "b3"
+        "hash_bucket": "b3",
+        "filter_token_count": 9364,
+        "filter_sha256": "3d32f542b7f11eebc6bf2aa36b44a6f4"
       },
       {
         "shard_id": "policy__detail__2025__规章制度__b3",
@@ -9186,7 +10048,9 @@
         "year_range": [
           "2025"
         ],
-        "hash_bucket": "b3"
+        "hash_bucket": "b3",
+        "filter_token_count": 5784,
+        "filter_sha256": "97567c2f3549e7c38b47e301a79defbc"
       },
       {
         "shard_id": "policy__detail__2025__首页__b0",
@@ -9207,7 +10071,9 @@
         "year_range": [
           "2025"
         ],
-        "hash_bucket": "b0"
+        "hash_bucket": "b0",
+        "filter_token_count": 1565,
+        "filter_sha256": "f270876a4eefe8d4e1f21ccf8bae5b99"
       },
       {
         "shard_id": "policy__detail__2025__首页__b1",
@@ -9230,7 +10096,9 @@
         "year_range": [
           "2025"
         ],
-        "hash_bucket": "b1"
+        "hash_bucket": "b1",
+        "filter_token_count": 12464,
+        "filter_sha256": "fa760ca4855b582997891baa7afd128c"
       },
       {
         "shard_id": "policy__detail__2025__首页__b2",
@@ -9253,7 +10121,9 @@
         "year_range": [
           "2025"
         ],
-        "hash_bucket": "b2"
+        "hash_bucket": "b2",
+        "filter_token_count": 9488,
+        "filter_sha256": "68966b408b2a51efdd19f6e734b4b09c"
       },
       {
         "shard_id": "policy__detail__2025__首页__b3",
@@ -9278,7 +10148,9 @@
         "year_range": [
           "2025"
         ],
-        "hash_bucket": "b3"
+        "hash_bucket": "b3",
+        "filter_token_count": 21530,
+        "filter_sha256": "e6c5df066fbb0566a2837d6409a4cab6"
       },
       {
         "shard_id": "policy__detail__2026__首页__b0",
@@ -9299,7 +10171,9 @@
         "year_range": [
           "2026"
         ],
-        "hash_bucket": "b0"
+        "hash_bucket": "b0",
+        "filter_token_count": 2355,
+        "filter_sha256": "60a25fcd8e07c2c1e8c5cfbd8048c08f"
       },
       {
         "shard_id": "policy__detail__2026__首页__b1",
@@ -9320,7 +10194,9 @@
         "year_range": [
           "2026"
         ],
-        "hash_bucket": "b1"
+        "hash_bucket": "b1",
+        "filter_token_count": 8683,
+        "filter_sha256": "2ceebbe05e3ef5a8346fbb58a4bbdc7e"
       },
       {
         "shard_id": "policy__detail__2026__首页__b2",
@@ -9341,7 +10217,9 @@
         "year_range": [
           "2026"
         ],
-        "hash_bucket": "b2"
+        "hash_bucket": "b2",
+        "filter_token_count": 1792,
+        "filter_sha256": "451c36aacb4cec063e47e4d123994353"
       },
       {
         "shard_id": "policy__detail__2026__首页__b3",
@@ -9362,7 +10240,9 @@
         "year_range": [
           "2026"
         ],
-        "hash_bucket": "b3"
+        "hash_bucket": "b3",
+        "filter_token_count": 1290,
+        "filter_sha256": "d2c9fb90434df26a57bc8209e2b484af"
       },
       {
         "shard_id": "system__external__2026__首页__b0",
@@ -9383,7 +10263,9 @@
         "year_range": [
           "2026"
         ],
-        "hash_bucket": "b0"
+        "hash_bucket": "b0",
+        "filter_token_count": 108,
+        "filter_sha256": "8f61b52589e11fbdc68e9fdebbcc2411"
       },
       {
         "shard_id": "system__external__2026__首页__b1",
@@ -9404,7 +10286,9 @@
         "year_range": [
           "2026"
         ],
-        "hash_bucket": "b1"
+        "hash_bucket": "b1",
+        "filter_token_count": 103,
+        "filter_sha256": "b0cb88a0fdaacf9b42c1e7320630be63"
       },
       {
         "shard_id": "system__external__2026__首页__b2",
@@ -9425,7 +10309,9 @@
         "year_range": [
           "2026"
         ],
-        "hash_bucket": "b2"
+        "hash_bucket": "b2",
+        "filter_token_count": 90,
+        "filter_sha256": "d1b000185c46b58828109e49c83b3278"
       },
       {
         "shard_id": "system__external__2026__首页__b3",
@@ -9446,7 +10332,9 @@
         "year_range": [
           "2026"
         ],
-        "hash_bucket": "b3"
+        "hash_bucket": "b3",
+        "filter_token_count": 90,
+        "filter_sha256": "08709dfda72b57bffe25c0effc33c707"
       },
       {
         "shard_id": "workflow__detail__2009__首页__b0",
@@ -9467,7 +10355,9 @@
         "year_range": [
           "2009"
         ],
-        "hash_bucket": "b0"
+        "hash_bucket": "b0",
+        "filter_token_count": 543,
+        "filter_sha256": "55ba5fa5812ae8a89d29ab84c3c45453"
       },
       {
         "shard_id": "workflow__detail__2009__首页__b1",
@@ -9488,7 +10378,9 @@
         "year_range": [
           "2009"
         ],
-        "hash_bucket": "b1"
+        "hash_bucket": "b1",
+        "filter_token_count": 1787,
+        "filter_sha256": "26a0dc18be5b690b04aa875b98ae0ac5"
       },
       {
         "shard_id": "workflow__detail__2009__首页__b2",
@@ -9509,7 +10401,9 @@
         "year_range": [
           "2009"
         ],
-        "hash_bucket": "b2"
+        "hash_bucket": "b2",
+        "filter_token_count": 3064,
+        "filter_sha256": "f675958de0625b929ce92aa0c1e30f8f"
       },
       {
         "shard_id": "workflow__detail__2010__首页__b0",
@@ -9530,7 +10424,9 @@
         "year_range": [
           "2010"
         ],
-        "hash_bucket": "b0"
+        "hash_bucket": "b0",
+        "filter_token_count": 7302,
+        "filter_sha256": "b055c9dd780faccbde6562854d7d31f2"
       },
       {
         "shard_id": "workflow__detail__2010__首页__b1",
@@ -9551,7 +10447,9 @@
         "year_range": [
           "2010"
         ],
-        "hash_bucket": "b1"
+        "hash_bucket": "b1",
+        "filter_token_count": 6199,
+        "filter_sha256": "6df6087faa5445ce8f4e46fcae351f87"
       },
       {
         "shard_id": "workflow__detail__2010__首页__b2",
@@ -9573,7 +10471,9 @@
         "year_range": [
           "2010"
         ],
-        "hash_bucket": "b2"
+        "hash_bucket": "b2",
+        "filter_token_count": 5605,
+        "filter_sha256": "e80a93179432126522f039324730f926"
       },
       {
         "shard_id": "workflow__detail__2010__首页__b3",
@@ -9594,7 +10494,9 @@
         "year_range": [
           "2010"
         ],
-        "hash_bucket": "b3"
+        "hash_bucket": "b3",
+        "filter_token_count": 6111,
+        "filter_sha256": "e585edf5525e7e718e420a0b01b25943"
       },
       {
         "shard_id": "workflow__detail__2011__首页__b0",
@@ -9616,7 +10518,9 @@
         "year_range": [
           "2011"
         ],
-        "hash_bucket": "b0"
+        "hash_bucket": "b0",
+        "filter_token_count": 18450,
+        "filter_sha256": "c759f95397a91a1479f1e956e18f4f3a"
       },
       {
         "shard_id": "workflow__detail__2011__首页__b1",
@@ -9638,7 +10542,9 @@
         "year_range": [
           "2011"
         ],
-        "hash_bucket": "b1"
+        "hash_bucket": "b1",
+        "filter_token_count": 28536,
+        "filter_sha256": "fa65ede269ce0d8973d712c2070b2012"
       },
       {
         "shard_id": "workflow__detail__2011__首页__b2",
@@ -9660,7 +10566,9 @@
         "year_range": [
           "2011"
         ],
-        "hash_bucket": "b2"
+        "hash_bucket": "b2",
+        "filter_token_count": 23239,
+        "filter_sha256": "160e5b793f5aaa599904f090b146116e"
       },
       {
         "shard_id": "workflow__detail__2011__首页__b3",
@@ -9683,7 +10591,9 @@
         "year_range": [
           "2011"
         ],
-        "hash_bucket": "b3"
+        "hash_bucket": "b3",
+        "filter_token_count": 20034,
+        "filter_sha256": "a529a808c9ac8b75fb7ecef00fa73c35"
       },
       {
         "shard_id": "workflow__detail__2012__首页__b0",
@@ -9706,7 +10616,9 @@
         "year_range": [
           "2012"
         ],
-        "hash_bucket": "b0"
+        "hash_bucket": "b0",
+        "filter_token_count": 27387,
+        "filter_sha256": "a74e36a0e9a9cace5c2c80cc4d6b55ee"
       },
       {
         "shard_id": "workflow__detail__2012__首页__b1",
@@ -9730,7 +10642,9 @@
         "year_range": [
           "2012"
         ],
-        "hash_bucket": "b1"
+        "hash_bucket": "b1",
+        "filter_token_count": 17838,
+        "filter_sha256": "f8a31edd9d3cb38ffc2a1affb1b1213b"
       },
       {
         "shard_id": "workflow__detail__2012__首页__b2",
@@ -9753,7 +10667,9 @@
         "year_range": [
           "2012"
         ],
-        "hash_bucket": "b2"
+        "hash_bucket": "b2",
+        "filter_token_count": 14070,
+        "filter_sha256": "037c4f6b9d90e4b972596dbfe656ff0b"
       },
       {
         "shard_id": "workflow__detail__2012__首页__b3",
@@ -9776,7 +10692,9 @@
         "year_range": [
           "2012"
         ],
-        "hash_bucket": "b3"
+        "hash_bucket": "b3",
+        "filter_token_count": 23770,
+        "filter_sha256": "65ddc73fed121c07ef038bdf534ae11e"
       },
       {
         "shard_id": "workflow__detail__2013__常用下载__b1",
@@ -9797,7 +10715,9 @@
         "year_range": [
           "2013"
         ],
-        "hash_bucket": "b1"
+        "hash_bucket": "b1",
+        "filter_token_count": 265,
+        "filter_sha256": "174824971f38efec24f3d1317a5956a6"
       },
       {
         "shard_id": "workflow__detail__2013__常用下载__b3",
@@ -9818,7 +10738,9 @@
         "year_range": [
           "2013"
         ],
-        "hash_bucket": "b3"
+        "hash_bucket": "b3",
+        "filter_token_count": 242,
+        "filter_sha256": "b2d76e4d61edbe178c2f4a9ea6438a19"
       },
       {
         "shard_id": "workflow__detail__2013__首页__b0",
@@ -9851,7 +10773,9 @@
         "year_range": [
           "2013"
         ],
-        "hash_bucket": "b0"
+        "hash_bucket": "b0",
+        "filter_token_count": 30109,
+        "filter_sha256": "104b9e50c9a1c277a64dc527d394034b"
       },
       {
         "shard_id": "workflow__detail__2013__首页__b1",
@@ -9889,7 +10813,9 @@
         "year_range": [
           "2013"
         ],
-        "hash_bucket": "b1"
+        "hash_bucket": "b1",
+        "filter_token_count": 15118,
+        "filter_sha256": "ac33ed1e7d926fe4ae3270511d6d6b04"
       },
       {
         "shard_id": "workflow__detail__2013__首页__b2",
@@ -9928,7 +10854,9 @@
         "year_range": [
           "2013"
         ],
-        "hash_bucket": "b2"
+        "hash_bucket": "b2",
+        "filter_token_count": 16179,
+        "filter_sha256": "5da70961a7d11e23e8b0f35255d2d79e"
       },
       {
         "shard_id": "workflow__detail__2013__首页__b3",
@@ -9966,7 +10894,9 @@
         "year_range": [
           "2013"
         ],
-        "hash_bucket": "b3"
+        "hash_bucket": "b3",
+        "filter_token_count": 17744,
+        "filter_sha256": "6cdf1627cdaa899b411dc5917e9c943d"
       },
       {
         "shard_id": "workflow__detail__2014__首页__b0",
@@ -9987,7 +10917,9 @@
         "year_range": [
           "2014"
         ],
-        "hash_bucket": "b0"
+        "hash_bucket": "b0",
+        "filter_token_count": 13297,
+        "filter_sha256": "f9d7413b841f49930d46a614861833d8"
       },
       {
         "shard_id": "workflow__detail__2014__首页__b1",
@@ -10009,7 +10941,9 @@
         "year_range": [
           "2014"
         ],
-        "hash_bucket": "b1"
+        "hash_bucket": "b1",
+        "filter_token_count": 18190,
+        "filter_sha256": "7cf50d5622cc9a0c91b7994040101f27"
       },
       {
         "shard_id": "workflow__detail__2014__首页__b2",
@@ -10032,7 +10966,9 @@
         "year_range": [
           "2014"
         ],
-        "hash_bucket": "b2"
+        "hash_bucket": "b2",
+        "filter_token_count": 18797,
+        "filter_sha256": "aa4a655bcfa7846d5c3e4faaee68da30"
       },
       {
         "shard_id": "workflow__detail__2014__首页__b3",
@@ -10054,7 +10990,9 @@
         "year_range": [
           "2014"
         ],
-        "hash_bucket": "b3"
+        "hash_bucket": "b3",
+        "filter_token_count": 13907,
+        "filter_sha256": "ce30c0f2c7c2e009c55d82772112ebe4"
       },
       {
         "shard_id": "workflow__detail__2015__首页__b0",
@@ -10076,7 +11014,9 @@
         "year_range": [
           "2015"
         ],
-        "hash_bucket": "b0"
+        "hash_bucket": "b0",
+        "filter_token_count": 13339,
+        "filter_sha256": "86b2f67e3fbe304123845d9bacbc0d25"
       },
       {
         "shard_id": "workflow__detail__2015__首页__b1",
@@ -10099,7 +11039,9 @@
         "year_range": [
           "2015"
         ],
-        "hash_bucket": "b1"
+        "hash_bucket": "b1",
+        "filter_token_count": 23633,
+        "filter_sha256": "11e0811f1f034c7a3225c31e5cbb1630"
       },
       {
         "shard_id": "workflow__detail__2015__首页__b2",
@@ -10122,7 +11064,9 @@
         "year_range": [
           "2015"
         ],
-        "hash_bucket": "b2"
+        "hash_bucket": "b2",
+        "filter_token_count": 13954,
+        "filter_sha256": "aeed5df1d585edd39857cca13cec77f7"
       },
       {
         "shard_id": "workflow__detail__2015__首页__b3",
@@ -10145,7 +11089,9 @@
         "year_range": [
           "2015"
         ],
-        "hash_bucket": "b3"
+        "hash_bucket": "b3",
+        "filter_token_count": 19509,
+        "filter_sha256": "73f992373b76ee237e59b9f9cf9eeb67"
       },
       {
         "shard_id": "workflow__detail__2016__常用下载__b3",
@@ -10166,7 +11112,9 @@
         "year_range": [
           "2016"
         ],
-        "hash_bucket": "b3"
+        "hash_bucket": "b3",
+        "filter_token_count": 155,
+        "filter_sha256": "19a3730e90946e40e4de08cdcdcd7c9e"
       },
       {
         "shard_id": "workflow__detail__2016__首页__b0",
@@ -10190,7 +11138,9 @@
         "year_range": [
           "2016"
         ],
-        "hash_bucket": "b0"
+        "hash_bucket": "b0",
+        "filter_token_count": 20246,
+        "filter_sha256": "5174af367a64b92efc2225d46fdf262a"
       },
       {
         "shard_id": "workflow__detail__2016__首页__b1",
@@ -10212,7 +11162,9 @@
         "year_range": [
           "2016"
         ],
-        "hash_bucket": "b1"
+        "hash_bucket": "b1",
+        "filter_token_count": 15140,
+        "filter_sha256": "624e40346b6d650967b09e243e7abef3"
       },
       {
         "shard_id": "workflow__detail__2016__首页__b2",
@@ -10238,7 +11190,9 @@
         "year_range": [
           "2016"
         ],
-        "hash_bucket": "b2"
+        "hash_bucket": "b2",
+        "filter_token_count": 21316,
+        "filter_sha256": "4c86a180071cf35f92be2b1912e80cd7"
       },
       {
         "shard_id": "workflow__detail__2016__首页__b3",
@@ -10260,7 +11214,9 @@
         "year_range": [
           "2016"
         ],
-        "hash_bucket": "b3"
+        "hash_bucket": "b3",
+        "filter_token_count": 16767,
+        "filter_sha256": "ec9fd7d6f947ededeab12f1cc6739001"
       },
       {
         "shard_id": "workflow__detail__2017__首页__b0",
@@ -10282,7 +11238,9 @@
         "year_range": [
           "2017"
         ],
-        "hash_bucket": "b0"
+        "hash_bucket": "b0",
+        "filter_token_count": 14037,
+        "filter_sha256": "01b8b548000db45c04e79188ce93e465"
       },
       {
         "shard_id": "workflow__detail__2017__首页__b1",
@@ -10305,7 +11263,9 @@
         "year_range": [
           "2017"
         ],
-        "hash_bucket": "b1"
+        "hash_bucket": "b1",
+        "filter_token_count": 26183,
+        "filter_sha256": "5273569b5fd44aac86f83d243475b4b6"
       },
       {
         "shard_id": "workflow__detail__2017__首页__b2",
@@ -10327,7 +11287,9 @@
         "year_range": [
           "2017"
         ],
-        "hash_bucket": "b2"
+        "hash_bucket": "b2",
+        "filter_token_count": 19251,
+        "filter_sha256": "fdbbabb6d61eedf62eacaa1dd9fe1ec7"
       },
       {
         "shard_id": "workflow__detail__2017__首页__b3",
@@ -10348,7 +11310,9 @@
         "year_range": [
           "2017"
         ],
-        "hash_bucket": "b3"
+        "hash_bucket": "b3",
+        "filter_token_count": 12231,
+        "filter_sha256": "34204acee20bc450411d25d648c1300d"
       },
       {
         "shard_id": "workflow__detail__2018__首页__b0",
@@ -10372,7 +11336,9 @@
         "year_range": [
           "2018"
         ],
-        "hash_bucket": "b0"
+        "hash_bucket": "b0",
+        "filter_token_count": 27145,
+        "filter_sha256": "b96265a298275a4c3b294efa7bb32d06"
       },
       {
         "shard_id": "workflow__detail__2018__首页__b1",
@@ -10394,7 +11360,9 @@
         "year_range": [
           "2018"
         ],
-        "hash_bucket": "b1"
+        "hash_bucket": "b1",
+        "filter_token_count": 17158,
+        "filter_sha256": "3c3f4ccb346ce6a1d6a47b5c609844bf"
       },
       {
         "shard_id": "workflow__detail__2018__首页__b2",
@@ -10417,7 +11385,9 @@
         "year_range": [
           "2018"
         ],
-        "hash_bucket": "b2"
+        "hash_bucket": "b2",
+        "filter_token_count": 24778,
+        "filter_sha256": "fa4237118afbc52a497ccb2f2bb8b3d9"
       },
       {
         "shard_id": "workflow__detail__2018__首页__b3",
@@ -10439,7 +11409,9 @@
         "year_range": [
           "2018"
         ],
-        "hash_bucket": "b3"
+        "hash_bucket": "b3",
+        "filter_token_count": 18150,
+        "filter_sha256": "29c9d31a473d61bab2dd1c16e625de88"
       },
       {
         "shard_id": "workflow__detail__2019__首页__b0",
@@ -10462,7 +11434,9 @@
         "year_range": [
           "2019"
         ],
-        "hash_bucket": "b0"
+        "hash_bucket": "b0",
+        "filter_token_count": 28157,
+        "filter_sha256": "3a18c3178149dc84af35eb03ea1a5751"
       },
       {
         "shard_id": "workflow__detail__2019__首页__b1",
@@ -10483,7 +11457,9 @@
         "year_range": [
           "2019"
         ],
-        "hash_bucket": "b1"
+        "hash_bucket": "b1",
+        "filter_token_count": 23248,
+        "filter_sha256": "df1d08978431b978a2d7392bf5e5ccb6"
       },
       {
         "shard_id": "workflow__detail__2019__首页__b2",
@@ -10505,7 +11481,9 @@
         "year_range": [
           "2019"
         ],
-        "hash_bucket": "b2"
+        "hash_bucket": "b2",
+        "filter_token_count": 19782,
+        "filter_sha256": "3657ae3e710284c48c3b3bb3095005f0"
       },
       {
         "shard_id": "workflow__detail__2019__首页__b3",
@@ -10526,7 +11504,9 @@
         "year_range": [
           "2019"
         ],
-        "hash_bucket": "b3"
+        "hash_bucket": "b3",
+        "filter_token_count": 10737,
+        "filter_sha256": "f4ec1e57dcdc9c0abd6e26a80de773b0"
       },
       {
         "shard_id": "workflow__detail__2020__首页__b0",
@@ -10548,7 +11528,9 @@
         "year_range": [
           "2020"
         ],
-        "hash_bucket": "b0"
+        "hash_bucket": "b0",
+        "filter_token_count": 4950,
+        "filter_sha256": "2198335eb2d964086af95dc9deaece45"
       },
       {
         "shard_id": "workflow__detail__2020__首页__b1",
@@ -10569,7 +11551,9 @@
         "year_range": [
           "2020"
         ],
-        "hash_bucket": "b1"
+        "hash_bucket": "b1",
+        "filter_token_count": 11236,
+        "filter_sha256": "4b3239856dbf4b9aacc456b7aec0ad8d"
       },
       {
         "shard_id": "workflow__detail__2020__首页__b2",
@@ -10590,7 +11574,9 @@
         "year_range": [
           "2020"
         ],
-        "hash_bucket": "b2"
+        "hash_bucket": "b2",
+        "filter_token_count": 4722,
+        "filter_sha256": "f85dcae8afbd9731e87cc4b57826fbd4"
       },
       {
         "shard_id": "workflow__detail__2020__首页__b3",
@@ -10612,7 +11598,9 @@
         "year_range": [
           "2020"
         ],
-        "hash_bucket": "b3"
+        "hash_bucket": "b3",
+        "filter_token_count": 12148,
+        "filter_sha256": "e7dfe515439ebe3ddbbc759180d2ff5b"
       },
       {
         "shard_id": "workflow__detail__2021__常用下载__b2",
@@ -10633,7 +11621,9 @@
         "year_range": [
           "2021"
         ],
-        "hash_bucket": "b2"
+        "hash_bucket": "b2",
+        "filter_token_count": 2081,
+        "filter_sha256": "ed9b312c42e1c3146ad0cb9ff748cbcc"
       },
       {
         "shard_id": "workflow__detail__2021__首页__b0",
@@ -10656,7 +11646,9 @@
         "year_range": [
           "2021"
         ],
-        "hash_bucket": "b0"
+        "hash_bucket": "b0",
+        "filter_token_count": 23493,
+        "filter_sha256": "f2b5423aa186fde9a138aca19c639895"
       },
       {
         "shard_id": "workflow__detail__2021__首页__b1",
@@ -10679,7 +11671,9 @@
         "year_range": [
           "2021"
         ],
-        "hash_bucket": "b1"
+        "hash_bucket": "b1",
+        "filter_token_count": 14598,
+        "filter_sha256": "2c97021f5384b8d68c281a814259f568"
       },
       {
         "shard_id": "workflow__detail__2021__首页__b2",
@@ -10703,7 +11697,9 @@
         "year_range": [
           "2021"
         ],
-        "hash_bucket": "b2"
+        "hash_bucket": "b2",
+        "filter_token_count": 17830,
+        "filter_sha256": "a1da1d894ef9700339ebdb9bca01d320"
       },
       {
         "shard_id": "workflow__detail__2021__首页__b3",
@@ -10726,7 +11722,9 @@
         "year_range": [
           "2021"
         ],
-        "hash_bucket": "b3"
+        "hash_bucket": "b3",
+        "filter_token_count": 18915,
+        "filter_sha256": "7b04c9e661b5a735a808983a8daf2218"
       },
       {
         "shard_id": "workflow__detail__2022__首页__b0",
@@ -10748,7 +11746,9 @@
         "year_range": [
           "2022"
         ],
-        "hash_bucket": "b0"
+        "hash_bucket": "b0",
+        "filter_token_count": 31135,
+        "filter_sha256": "fb8f13318e920731375721f684fbc66b"
       },
       {
         "shard_id": "workflow__detail__2022__首页__b1",
@@ -10769,7 +11769,9 @@
         "year_range": [
           "2022"
         ],
-        "hash_bucket": "b1"
+        "hash_bucket": "b1",
+        "filter_token_count": 7770,
+        "filter_sha256": "18022fcd89838e87da4aa6a682068239"
       },
       {
         "shard_id": "workflow__detail__2022__首页__b2",
@@ -10791,7 +11793,9 @@
         "year_range": [
           "2022"
         ],
-        "hash_bucket": "b2"
+        "hash_bucket": "b2",
+        "filter_token_count": 13681,
+        "filter_sha256": "ecb721102414d230eb1e6debde2f31b7"
       },
       {
         "shard_id": "workflow__detail__2022__首页__b3",
@@ -10812,7 +11816,9 @@
         "year_range": [
           "2022"
         ],
-        "hash_bucket": "b3"
+        "hash_bucket": "b3",
+        "filter_token_count": 5308,
+        "filter_sha256": "6ffdbdb785b86d952c3058adcfcc186f"
       },
       {
         "shard_id": "workflow__detail__2023__首页__b0",
@@ -10836,7 +11842,9 @@
         "year_range": [
           "2023"
         ],
-        "hash_bucket": "b0"
+        "hash_bucket": "b0",
+        "filter_token_count": 24429,
+        "filter_sha256": "85d4207e54e443b6394ddfe0fba158dd"
       },
       {
         "shard_id": "workflow__detail__2023__首页__b1",
@@ -10857,7 +11865,9 @@
         "year_range": [
           "2023"
         ],
-        "hash_bucket": "b1"
+        "hash_bucket": "b1",
+        "filter_token_count": 4503,
+        "filter_sha256": "cbaaec3828f0bd4cbf8b9f18f8c571c1"
       },
       {
         "shard_id": "workflow__detail__2023__首页__b2",
@@ -10881,7 +11891,9 @@
         "year_range": [
           "2023"
         ],
-        "hash_bucket": "b2"
+        "hash_bucket": "b2",
+        "filter_token_count": 14605,
+        "filter_sha256": "6b833355cdb01f04a011ff16e600b8e2"
       },
       {
         "shard_id": "workflow__detail__2023__首页__b3",
@@ -10903,7 +11915,9 @@
         "year_range": [
           "2023"
         ],
-        "hash_bucket": "b3"
+        "hash_bucket": "b3",
+        "filter_token_count": 13539,
+        "filter_sha256": "c8ec51584464de34b0567c63ba6ed1e1"
       },
       {
         "shard_id": "workflow__detail__2024__首页__b0",
@@ -10927,7 +11941,9 @@
         "year_range": [
           "2024"
         ],
-        "hash_bucket": "b0"
+        "hash_bucket": "b0",
+        "filter_token_count": 24860,
+        "filter_sha256": "1a572cdd32ebc574550b05a2011fe077"
       },
       {
         "shard_id": "workflow__detail__2024__首页__b1",
@@ -10948,7 +11964,9 @@
         "year_range": [
           "2024"
         ],
-        "hash_bucket": "b1"
+        "hash_bucket": "b1",
+        "filter_token_count": 15338,
+        "filter_sha256": "323f9de53fa71efee387b828480c45fa"
       },
       {
         "shard_id": "workflow__detail__2024__首页__b2",
@@ -10972,7 +11990,9 @@
         "year_range": [
           "2024"
         ],
-        "hash_bucket": "b2"
+        "hash_bucket": "b2",
+        "filter_token_count": 21012,
+        "filter_sha256": "aa46a1df973bb3aeddcd18f208928fe9"
       },
       {
         "shard_id": "workflow__detail__2024__首页__b3",
@@ -10994,7 +12014,9 @@
         "year_range": [
           "2024"
         ],
-        "hash_bucket": "b3"
+        "hash_bucket": "b3",
+        "filter_token_count": 9527,
+        "filter_sha256": "69524f71e6428a0a84c11ae5d845fc86"
       },
       {
         "shard_id": "workflow__detail__2025__首页__b0",
@@ -11017,7 +12039,9 @@
         "year_range": [
           "2025"
         ],
-        "hash_bucket": "b0"
+        "hash_bucket": "b0",
+        "filter_token_count": 17989,
+        "filter_sha256": "1227679e9518f08f5e8799d76e5a6409"
       },
       {
         "shard_id": "workflow__detail__2025__首页__b1",
@@ -11043,7 +12067,9 @@
         "year_range": [
           "2025"
         ],
-        "hash_bucket": "b1"
+        "hash_bucket": "b1",
+        "filter_token_count": 18414,
+        "filter_sha256": "e771bb6ed65e9514c77045db0d2001ae"
       },
       {
         "shard_id": "workflow__detail__2025__首页__b2",
@@ -11066,7 +12092,9 @@
         "year_range": [
           "2025"
         ],
-        "hash_bucket": "b2"
+        "hash_bucket": "b2",
+        "filter_token_count": 20257,
+        "filter_sha256": "8b24a02a9be0e52c3449fd16bc817a54"
       },
       {
         "shard_id": "workflow__detail__2025__首页__b3",
@@ -11090,7 +12118,9 @@
         "year_range": [
           "2025"
         ],
-        "hash_bucket": "b3"
+        "hash_bucket": "b3",
+        "filter_token_count": 13067,
+        "filter_sha256": "fe193a38d98cac1fe1c404866c4c94d1"
       },
       {
         "shard_id": "workflow__detail__2026__首页__b0",
@@ -11112,7 +12142,9 @@
         "year_range": [
           "2026"
         ],
-        "hash_bucket": "b0"
+        "hash_bucket": "b0",
+        "filter_token_count": 394,
+        "filter_sha256": "09fcd62ebf4eb3f8203ae45b9b1bccf2"
       },
       {
         "shard_id": "workflow__detail__2026__首页__b1",
@@ -11134,7 +12166,9 @@
         "year_range": [
           "2026"
         ],
-        "hash_bucket": "b1"
+        "hash_bucket": "b1",
+        "filter_token_count": 7987,
+        "filter_sha256": "315daf2fd050b40c35a6de728cd37956"
       },
       {
         "shard_id": "workflow__detail__2026__首页__b2",
@@ -11157,7 +12191,9 @@
         "year_range": [
           "2026"
         ],
-        "hash_bucket": "b2"
+        "hash_bucket": "b2",
+        "filter_token_count": 12972,
+        "filter_sha256": "303a7ea6be3d8c30fa0ff965f7d4c30f"
       },
       {
         "shard_id": "workflow__detail__2026__首页__b3",
@@ -11181,11 +12217,13 @@
         "year_range": [
           "2026"
         ],
-        "hash_bucket": "b3"
+        "hash_bucket": "b3",
+        "filter_token_count": 12112,
+        "filter_sha256": "95125ecf2f5f7a442d779b3cdbb1a070"
       }
     ],
     "shard_strategy": {
-      "version": "locality-facet-record-year-section-hash-v1",
+      "version": "locality-facet-record-year-section-hash-progressive",
       "dimensions": [
         "facet",
         "record_type",
@@ -11198,17 +12236,17 @@
     },
     "indexes": {
       "doc_meta_light": {
-        "path": "index/sitegraph/jwc/artifacts/doc_meta_light.f125bd0523915410.json",
-        "sha256": "f125bd0523915410746d8b6aeb8963ba633b2b2d4c9a674ea79cb4daba68514f",
+        "path": "index/sitegraph/jwc/artifacts/doc_meta_light.796b98568061c7f2.json",
+        "sha256": "796b98568061c7f2e3c9d62328e79f989d6ccd3978265b2e8058f468f65827f8",
         "bytes": 2663639,
         "role": "doc_meta_light",
         "load": "initial",
         "count": 7534
       },
       "light_inverted_index": {
-        "path": "index/sitegraph/jwc/artifacts/light_inverted_index.495a62d787e930e7.json",
-        "sha256": "495a62d787e930e75a0af8c7fae9142f15dbdcd3e826a8f0c082301d67793b0a",
-        "bytes": 8920371,
+        "path": "index/sitegraph/jwc/artifacts/light_inverted_index.81df1336624c6c8b.json",
+        "sha256": "81df1336624c6c8b960673f6b92eef4897852a9429e8a63128816fd830f2e000",
+        "bytes": 8920380,
         "role": "light_inverted_index",
         "load": "initial"
       },
@@ -11221,9 +12259,9 @@
         "count": 13
       },
       "body_inverted_index": {
-        "path": "index/sitegraph/jwc/artifacts/body_inverted_index.0b29fbcb41941a03.json",
-        "sha256": "0b29fbcb41941a0395723b26676d386fbef22b2506248141fd9f32c4790f7dc3",
-        "bytes": 12655428,
+        "path": "index/sitegraph/jwc/artifacts/body_inverted_index.d2d068c131d8dec2.json",
+        "sha256": "d2d068c131d8dec267d7839ac0c17de2cca26133b7dc1a48a0bd11125612e897",
+        "bytes": 12655437,
         "role": "body_inverted_index",
         "load": "deep_search"
       },
@@ -11251,6 +12289,22 @@
         "load": "on_demand",
         "count": 426
       },
+      "shard_catalog": {
+        "path": "index/sitegraph/jwc/artifacts/shard_catalog.d91056caf719f662.json",
+        "sha256": "d91056caf719f6620744fb6edf3e1e8e0755acb93eeb04d39a7037c773268530",
+        "bytes": 269286,
+        "role": "shard_catalog",
+        "load": "verify",
+        "count": 481
+      },
+      "shard_filter": {
+        "path": "index/sitegraph/jwc/artifacts/shard_filter.b30c6e9b59e47566.json",
+        "sha256": "b30c6e9b59e47566aac4d10ea1cb111c4fddb03cb724e600d7c9b83f08860487",
+        "bytes": 1449480,
+        "role": "shard_filter",
+        "load": "verify",
+        "count": 481
+      },
       "outcomes": {
         "path": "index/sitegraph/jwc/artifacts/outcomes.44e6d57281433421.json",
         "sha256": "44e6d57281433421e5a1160141f39f8c31c5be9df60abbf29b414750e4d7a2dc",
@@ -11259,9 +12313,9 @@
         "load": "audit"
       },
       "size_report": {
-        "path": "index/sitegraph/jwc/artifacts/size_report.780d2071f2856db5.json",
-        "sha256": "780d2071f2856db5807ea2281342deb75e3fcb9325d7ed42bc29e0fe4dcab4da",
-        "bytes": 791,
+        "path": "index/sitegraph/jwc/artifacts/size_report.58906b1b36484db9.json",
+        "sha256": "58906b1b36484db9a460e912c46626ad7407729f1d2e657fa3e8b1e6a0abea5d",
+        "bytes": 1353,
         "role": "size_report",
         "load": "audit"
       }

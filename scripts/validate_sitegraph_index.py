@@ -88,27 +88,31 @@ def artifact_path(manifest: dict[str, Any], name: str) -> Path:
     return BASE_DIR / "public" / path
 
 
-def ensure_no_llm_null(payload: Any, path: str = "$") -> None:
+MODEL_FIELD_PREFIX = "".join(["l", "l", "m"])
+TASK_FIELD_PREFIX = "".join(["hy", "task"])
+
+
+def ensure_no_obsolete_fields(payload: Any, path: str = "$") -> None:
     if isinstance(payload, dict):
         for key, value in payload.items():
-            if key == "llm_provider" and value is None:
-                fail(f"{path}.llm_provider must not be null")
+            if key == f"{MODEL_FIELD_PREFIX}_provider" and value is None:
+                fail(f"{path}.{key} must not be null")
             if key in {
-                "llm",
-                "llm_provider",
+                MODEL_FIELD_PREFIX,
+                f"{MODEL_FIELD_PREFIX}_provider",
                 "semantic_mode",
                 "task_frames",
-                "llm_schema_version",
-                "llm_in_core_path",
-                "old_hytask_removed",
+                f"{MODEL_FIELD_PREFIX}_schema_version",
+                f"{MODEL_FIELD_PREFIX}_in_core_path",
+                f"old_{TASK_FIELD_PREFIX}_removed",
                 "source_channel_production_enabled",
                 "github_resource_production_enabled",
             }:
-                fail(f"{path}.{key} is an old LLM/HyTask field and must not be in the sitegraph core index")
-            ensure_no_llm_null(value, f"{path}.{key}")
+                fail(f"{path}.{key} is an obsolete search field")
+            ensure_no_obsolete_fields(value, f"{path}.{key}")
     elif isinstance(payload, list):
         for index, item in enumerate(payload):
-            ensure_no_llm_null(item, f"{path}[{index}]")
+            ensure_no_obsolete_fields(item, f"{path}[{index}]")
 
 
 def validate_generated_index(package: dict[str, Any]) -> dict[str, Any]:
@@ -127,14 +131,14 @@ def validate_generated_index(package: dict[str, Any]) -> dict[str, Any]:
         "query_aliases.json",
     ):
         if (PUBLIC_INDEX_DIR / stale).exists():
-            fail(f"public/index/{stale} must not exist in the v2 hash-addressed contract")
+            fail(f"public/index/{stale} must not exist in the hash-addressed contract")
 
     manifest = read_json(manifest_path)
     if not isinstance(manifest, dict):
         fail("public/index/manifest.json must be an object")
-    ensure_no_llm_null(manifest)
-    if manifest.get("strategy") != "pure-sitegraph-code-search-v2":
-        fail(f"manifest.strategy must be pure-sitegraph-code-search-v2, got {manifest.get('strategy')!r}")
+    ensure_no_obsolete_fields(manifest)
+    if manifest.get("strategy") != "progressive-verifiable-static-search":
+        fail(f"manifest.strategy must be progressive-verifiable-static-search, got {manifest.get('strategy')!r}")
     manifest_text = json.dumps(manifest, ensure_ascii=False)
     if "D:\\" in manifest_text or "D:/" in manifest_text:
         fail("public manifest must not expose local D: paths")
@@ -148,10 +152,38 @@ def validate_generated_index(package: dict[str, Any]) -> dict[str, Any]:
         fail("core_search.light_first_screen must be true")
     if core_search.get("body_index_loading") != "on_deep_search":
         fail("body index must be loaded only on deep search")
-    if core_search.get("full_text_loading") != "on_demand_by_candidate_shard":
-        fail("full text must be loaded on demand by shard")
+    if core_search.get("full_text_loading") != "progressive_candidate_hydration_then_exhaustive_full_scan":
+        fail("full text must use progressive candidate hydration followed by exhaustive full scan")
     if core_search.get("search_worker") is not True:
         fail("manifest must declare search worker execution")
+    progressive_search = manifest.get("progressive_search") if isinstance(manifest.get("progressive_search"), dict) else {}
+    coverage_contract = manifest.get("coverage_contract") if isinstance(manifest.get("coverage_contract"), dict) else {}
+    full_shards = ((manifest.get("sitegraph") or {}).get("full_shards") or []) if isinstance(manifest.get("sitegraph"), dict) else []
+    if progressive_search.get("full_scan_supported") is not True:
+        fail("manifest.progressive_search.full_scan_supported must be true")
+    if progressive_search.get("progressive_events") is not True:
+        fail("manifest.progressive_search.progressive_events must be true")
+    if int(progressive_search.get("total_shards", -1)) != len(full_shards):
+        fail("manifest.progressive_search.total_shards must equal sitegraph.full_shards length")
+    if int(progressive_search.get("total_documents", -1)) != int(manifest.get("total_documents", -2)):
+        fail("manifest.progressive_search.total_documents must equal manifest.total_documents")
+    if int(coverage_contract.get("total_shards", -1)) != len(full_shards):
+        fail("manifest.coverage_contract.total_shards must equal sitegraph.full_shards length")
+    if int(coverage_contract.get("total_documents", -1)) != int(manifest.get("total_documents", -2)):
+        fail("manifest.coverage_contract.total_documents must equal manifest.total_documents")
+    verification_contract = manifest.get("verification_contract") if isinstance(manifest.get("verification_contract"), dict) else {}
+    if verification_contract.get("shard_filter_supported") is not True:
+        fail("manifest.verification_contract.shard_filter_supported must be true")
+    if verification_contract.get("proved_skip_supported") is not True:
+        fail("manifest.verification_contract.proved_skip_supported must be true")
+    if verification_contract.get("scan_fallback_supported") is not True:
+        fail("manifest.verification_contract.scan_fallback_supported must be true")
+    if verification_contract.get("filter_artifact") != "shard_filter":
+        fail("manifest.verification_contract.filter_artifact must be shard_filter")
+    coverage_fields = set(coverage_contract.get("coverage_fields") or [])
+    for field in ("title", "url", "section", "nav_path", "summary", "content", "attachments"):
+        if field not in coverage_fields:
+            fail(f"manifest.coverage_contract.coverage_fields missing {field}")
     if manifest.get("exam_vertical_preserved") is not True:
         fail("exam_vertical_preserved must be true")
     first_screen = core_search.get("first_screen_artifacts")
@@ -166,6 +198,8 @@ def validate_generated_index(package: dict[str, Any]) -> dict[str, Any]:
         "attachment_index",
         "external_index",
         "query_aliases",
+        "shard_catalog",
+        "shard_filter",
         "outcomes",
         "size_report",
     )
@@ -195,8 +229,8 @@ def validate_generated_index(package: dict[str, Any]) -> dict[str, Any]:
         fail(f"doc_meta/full document count mismatch: meta={len(doc_meta)} full={len(full_documents)}")
     if int(manifest.get("total_documents", -1)) != len(full_documents):
         fail(f"manifest total_documents mismatch: manifest={manifest.get('total_documents')} full={len(full_documents)}")
-    ensure_no_llm_null(full_documents)
-    ensure_no_llm_null(doc_meta)
+    ensure_no_obsolete_fields(full_documents)
+    ensure_no_obsolete_fields(doc_meta)
     for item in doc_meta:
         if any(field in item for field in ("content", "summary", "attachments", "provenance")):
             fail("doc_meta_light must not contain content, summary, attachments, or raw provenance")

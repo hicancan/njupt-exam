@@ -1,6 +1,6 @@
 # Product Search Quality Gate
 
-The product gate protects the static JWC sitegraph search path that users see in the browser.
+The product gate protects the JWC progressive static search path and the separate exam vertical.
 
 ## Required Commands
 
@@ -10,6 +10,7 @@ uv run python scripts\build_sitegraph_index.py --sitegraph-index D:\code\github\
 uv run python scripts\validate_sitegraph_index.py --sitegraph-index D:\code\github\hicancan\njupt-site-graph\data\sites\jwc\index
 uv run python scripts\utils\validate_search_index.py
 uv run python scripts\eval\sitegraph_query_smoke_test.py
+uv run python -m pytest
 npm test
 npm run typecheck
 npm run build
@@ -17,11 +18,14 @@ npm run build
 
 ## Blocking Invariants
 
-- upstream package has `errors=0`;
-- every discovered URL has an outcome;
-- attachments are `metadata_only`;
-- external links are `record_only`;
-- generated detail page, attachment, external link, and edge counts match upstream truth counts;
-- `public/index/documents.json`, `public/index/task_frames.json`, and `public/index/ontology.json` are absent;
-- core index files contain no old model/semantic/task-frame fields;
-- representative queries return results.
+- upstream JWC package has no quality errors and every discovered URL has an outcome;
+- attachment binaries are not saved; attachment records are metadata only;
+- external links are recorded only and are not recursively crawled;
+- generated detail, attachment, external link, and edge counts match upstream truth counts;
+- manifest declares `progressive_search`, `coverage_contract`, and `verification_contract`;
+- manifest provides `shard_catalog` plus `shard_filter` proof metadata;
+- large artifacts are hash-addressed under `public/index/sitegraph/jwc/`;
+- stale fixed-name public index artifacts are absent;
+- Worker emits progressive events and final exhaustive coverage;
+- representative queries have quick results and complete exhaustive verification;
+- exam data remains available through the exam vertical.

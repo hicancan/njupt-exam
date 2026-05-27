@@ -40,7 +40,7 @@ QUERY_EXPECTATIONS = (
     QueryExpectation("大创", "大学生创新", "notice_article", "大学生创新创业", r"jwc\.njupt\.edu\.cn/.+/page\.htm$", "词项"),
     QueryExpectation("推免", "免试攻读", "notice_article", "推免生", r"jwc\.njupt\.edu\.cn/.+/page\.htm$", "附件名"),
     QueryExpectation("成绩", "成绩复核", "exam", "通知公告", r"jwc\.njupt\.edu\.cn/.+/page\.htm$", "标题"),
-    QueryExpectation("附件1", "选课通知", "exam", "通知公告", r"jwc\.njupt\.edu\.cn/.+/page\.htm$", "附件名命中"),
+    QueryExpectation("附件1", "考试通知", "exam", "通知公告", r"jwc\.njupt\.edu\.cn/.+/page\.htm$", "附件名命中"),
     QueryExpectation("xlsx", "xlsx", "external", "综合信息服务", r"^http://dag\.njupt\.edu\.cn/main\.htm$", "xlsx"),
 )
 
@@ -91,9 +91,12 @@ def validate_quality() -> dict[str, Any]:
         query_summaries.append(
             {
                 "query": expectation.query,
+                "quick_result_count": stats.get("quick_result_count", 0),
                 "loaded_shard_count": stats.get("loaded_shard_count", 0),
                 "candidate_count": stats.get("candidate_count", 0),
                 "used_body_index": stats.get("used_body_index", False),
+                "exhaustive_complete": (stats.get("coverage") or {}).get("exhaustive_complete", False),
+                "coverage": stats.get("coverage"),
                 "matched_title": match.get("title") if match else None,
                 "matched_facet": match.get("facet") if match else None,
                 "matched_nav_path": match.get("nav_path_text") if match else None,
@@ -115,8 +118,16 @@ def validate_quality() -> dict[str, Any]:
                     for item in results[:8]
                 ],
             }
-        if int(stats.get("loaded_shard_count", 0)) > SIZE_BUDGETS["max_representative_query_shards"]:
-            failures[f"{expectation.query}:shards"] = stats
+        if int(stats.get("quick_result_count", 0)) <= 0:
+            failures[f"{expectation.query}:quick"] = {"reason": "quick phase returned no results"}
+        coverage = stats.get("coverage") or {}
+        if coverage.get("exhaustive_complete") is not True:
+            failures[f"{expectation.query}:coverage"] = coverage
+        covered_shards = int(coverage.get("proved_no_match_shards", 0)) + int(coverage.get("scanned_shards", 0))
+        if covered_shards != int(coverage.get("total_shards", -2)):
+            failures[f"{expectation.query}:shard_coverage"] = coverage
+        if int(stats.get("candidate_shard_count", 0)) > SIZE_BUDGETS["max_representative_query_shards"]:
+            failures[f"{expectation.query}:candidate_shards"] = stats
     if failures:
         fail("representative query quality checks failed", failures)
     return {
@@ -137,8 +148,14 @@ def validate_size_budget() -> dict[str, Any]:
     size_report = read_json(BASE_DIR / "public" / artifacts["size_report"]["path"])
     budget_summary = {
         "first_screen_files": size_report["first_screen_files"],
+        "first_screen_bytes": size_report["first_screen_bytes"],
         "first_screen_total_bytes": size_report["first_screen_total_bytes"],
         "body_index_bytes": size_report["body_index_bytes"],
+        "full_scan_total_bytes": size_report["full_scan_total_bytes"],
+        "shard_count": size_report["shard_count"],
+        "max_shard_bytes": size_report["max_shard_bytes"],
+        "avg_shard_bytes": size_report["avg_shard_bytes"],
+        "representative_query_phase_timings": size_report["representative_query_phase_timings"],
         "full_shard_count": size_report["full_shard_count"],
         "max_full_shard_bytes": size_report["max_full_shard_bytes"],
         "avg_full_shard_bytes": size_report["avg_full_shard_bytes"],

@@ -176,7 +176,7 @@ export type SitegraphFullShard = z.infer<typeof SitegraphFullShardSchema>;
 
 export const SitegraphSearchManifestSchema = z.object({
     generated_at: z.string().min(1),
-    strategy: z.literal('pure-sitegraph-code-search-v2'),
+    strategy: z.literal('progressive-verifiable-static-search'),
     producer_repo: z.string().min(1),
     producer_ref: z.string().min(1),
     site_id: z.literal('jwc'),
@@ -197,8 +197,31 @@ export const SitegraphSearchManifestSchema = z.object({
             z.literal('query_aliases')
         ]),
         body_index_loading: z.literal('on_deep_search'),
-        full_text_loading: z.literal('on_demand_by_candidate_shard'),
+        full_text_loading: z.literal('progressive_candidate_hydration_then_exhaustive_full_scan'),
         search_worker: z.literal(true)
+    }).passthrough(),
+    progressive_search: z.object({
+        total_shards: z.number(),
+        total_documents: z.number(),
+        full_scan_supported: z.literal(true),
+        progressive_events: z.literal(true),
+        artifact_roles: z.array(z.string())
+    }).passthrough(),
+    coverage_contract: z.object({
+        coverage_fields: z.array(z.string()),
+        proof: z.object({
+            indexed_fields: z.array(z.string()),
+            full_scan_fields: z.array(z.string())
+        }).passthrough(),
+        total_shards: z.number(),
+        total_documents: z.number()
+    }).passthrough(),
+    verification_contract: z.object({
+        shard_filter_supported: z.literal(true),
+        proved_skip_supported: z.literal(true),
+        scan_fallback_supported: z.literal(true),
+        filter_artifact: z.literal('shard_filter'),
+        catalog_artifact: z.literal('shard_catalog')
     }).passthrough(),
     artifacts: z.object({
         doc_meta_light: SitegraphArtifactSchema,
@@ -208,6 +231,8 @@ export const SitegraphSearchManifestSchema = z.object({
         attachment_index: SitegraphArtifactSchema,
         external_index: SitegraphArtifactSchema,
         query_aliases: SitegraphArtifactSchema,
+        shard_catalog: SitegraphArtifactSchema,
+        shard_filter: SitegraphArtifactSchema,
         outcomes: SitegraphArtifactSchema,
         size_report: SitegraphArtifactSchema
     }).passthrough(),
@@ -240,14 +265,62 @@ export interface SitegraphIndexBundle {
     docMeta: SitegraphDocMeta[];
     lightInvertedIndex: SitegraphInvertedIndex;
     bodyInvertedIndex?: SitegraphInvertedIndex;
+    shardFilter?: Record<string, {
+        bitset_base64: string;
+        bit_count: number;
+        hash_count: number;
+        token_count: number;
+        sha256: string;
+        hash_algorithm: string;
+    }>;
     queryAliases: Record<string, unknown>;
 }
 
+export type SitegraphSearchPhase =
+    | 'quick_started'
+    | 'quick_results'
+    | 'body_started'
+    | 'body_results'
+    | 'hydrate_started'
+    | 'hydrate_results'
+    | 'verify_started'
+    | 'verify_progress'
+    | 'verify_results'
+    | 'exhaustive_complete'
+    | 'cancelled'
+    | 'error';
+
+export interface SitegraphSearchCoverage {
+    phase: SitegraphSearchPhase;
+    searched_fields: string[];
+    proved_no_match_shards: number;
+    scanned_shards: number;
+    total_shards: number;
+    searched_documents: number;
+    total_documents: number;
+    loaded_bytes: number;
+    used_body_index: boolean;
+    exhaustive_complete: boolean;
+}
+
 export interface SitegraphQueryStats {
+    phase: SitegraphSearchPhase;
+    coverage: SitegraphSearchCoverage;
     usedBodyIndex: boolean;
     loadedShardCount: number;
     loadedShardPaths: string[];
     candidateCount: number;
+    exhaustiveComplete: boolean;
+    resultCount: number;
+}
+
+export interface SitegraphSearchEvent {
+    type: SitegraphSearchPhase;
+    query: string;
+    coverage: SitegraphSearchCoverage;
+    results?: RankedSitegraphDocument[];
+    stats?: SitegraphQueryStats;
+    message?: string;
 }
 
 export interface SearchWorkerHandle {

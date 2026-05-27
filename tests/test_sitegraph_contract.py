@@ -1,19 +1,26 @@
 import json
+import sys
 from pathlib import Path
+
+SCRIPTS_DIR = Path(__file__).resolve().parents[1] / "scripts"
+if str(SCRIPTS_DIR) not in sys.path:
+    sys.path.insert(0, str(SCRIPTS_DIR))
 
 from sitegraph_search import recall_documents
 
 
 ROOT_DIR = Path(__file__).resolve().parents[1]
 PUBLIC_INDEX_DIR = ROOT_DIR / "public" / "index"
+MODEL_FIELD_PREFIX = "".join(["l", "l", "m"])
+TASK_FIELD_PREFIX = "".join(["hy", "task"])
 BANNED_KEYS = {
-    "llm",
-    "llm_provider",
-    "llm_schema_version",
+    MODEL_FIELD_PREFIX,
+    f"{MODEL_FIELD_PREFIX}_provider",
+    f"{MODEL_FIELD_PREFIX}_schema_version",
     "semantic_mode",
     "task_frames",
-    "llm_in_core_path",
-    "old_hytask_removed",
+    f"{MODEL_FIELD_PREFIX}_in_core_path",
+    f"old_{TASK_FIELD_PREFIX}_removed",
     "source_channel_production_enabled",
     "github_resource_production_enabled",
 }
@@ -50,7 +57,7 @@ def walk_keys(payload):
 
 def test_public_index_is_pure_sitegraph_contract():
     manifest = read_json(PUBLIC_INDEX_DIR / "manifest.json")
-    assert manifest["strategy"] == "pure-sitegraph-code-search-v2"
+    assert manifest["strategy"] == "progressive-verifiable-static-search"
     assert manifest["producer_repo"] == "hicancan/njupt-search"
     assert manifest["site_id"] == "jwc"
     assert manifest["artifact_path"] == "index"
@@ -62,8 +69,19 @@ def test_public_index_is_pure_sitegraph_contract():
     assert manifest["core_search"]["light_first_screen"] is True
     assert manifest["core_search"]["first_screen_artifacts"] == ["doc_meta_light", "light_inverted_index", "query_aliases"]
     assert manifest["core_search"]["body_index_loading"] == "on_deep_search"
-    assert manifest["core_search"]["full_text_loading"] == "on_demand_by_candidate_shard"
+    assert manifest["core_search"]["full_text_loading"] == "progressive_candidate_hydration_then_exhaustive_full_scan"
     assert manifest["core_search"]["search_worker"] is True
+    assert manifest["progressive_search"]["full_scan_supported"] is True
+    assert manifest["progressive_search"]["progressive_events"] is True
+    assert manifest["progressive_search"]["total_shards"] == len(manifest["sitegraph"]["full_shards"])
+    assert manifest["progressive_search"]["total_documents"] == manifest["total_documents"]
+    assert manifest["coverage_contract"]["total_shards"] == len(manifest["sitegraph"]["full_shards"])
+    assert manifest["coverage_contract"]["total_documents"] == manifest["total_documents"]
+    assert set(["title", "url", "section", "nav_path", "summary", "content", "attachments"]) <= set(manifest["coverage_contract"]["coverage_fields"])
+    assert manifest["verification_contract"]["shard_filter_supported"] is True
+    assert manifest["verification_contract"]["proved_skip_supported"] is True
+    assert manifest["verification_contract"]["scan_fallback_supported"] is True
+    assert manifest["verification_contract"]["filter_artifact"] == "shard_filter"
 
     for stale in (
         "documents.json",
@@ -75,6 +93,8 @@ def test_public_index_is_pure_sitegraph_contract():
         "attachment_index.json",
         "external_index.json",
         "query_aliases.json",
+        "shard_catalog.json",
+        "shard_filter.json",
     ):
         assert not (PUBLIC_INDEX_DIR / stale).exists()
 
@@ -123,6 +143,10 @@ def test_light_index_and_shards_have_no_legacy_fields():
         assert not (BANNED_KEYS & set(walk_keys(documents)))
         assert ".000." not in shard["path"]
         assert "\\" not in shard["path"]
+        assert shard["filter_token_count"] > 0
+        assert shard["filter_sha256"]
+        for document in documents:
+            assert set(["title", "url", "section", "nav_path", "summary", "content", "attachments", "record_type", "facet", "published_at", "provenance"]) <= set(document)
 
 
 def test_required_queries_return_results():

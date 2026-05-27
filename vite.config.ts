@@ -51,7 +51,7 @@ export default defineConfig({
             urlPattern: ({ url }) => url.pathname.endsWith('/index/manifest.json'),
             handler: 'NetworkFirst',
             options: {
-              cacheName: 'njupt-search-manifest-v2',
+              cacheName: 'njupt-search-manifest-progressive',
               expiration: {
                 maxEntries: 4,
                 maxAgeSeconds: 60 * 5
@@ -69,7 +69,7 @@ export default defineConfig({
             urlPattern: ({ url }) => url.pathname.includes('/index/sitegraph/jwc/artifacts/'),
             handler: 'CacheFirst',
             options: {
-              cacheName: 'njupt-search-sitegraph-index-v2',
+              cacheName: 'njupt-search-sitegraph-index-progressive',
               expiration: {
                 maxEntries: 40,
                 maxAgeSeconds: 60 * 60 * 24 * 365
@@ -83,7 +83,7 @@ export default defineConfig({
             urlPattern: ({ url }) => url.pathname.includes('/index/sitegraph/jwc/shards/'),
             handler: 'CacheFirst',
             options: {
-              cacheName: 'njupt-search-sitegraph-shards-v2',
+              cacheName: 'njupt-search-sitegraph-shards-progressive',
               expiration: {
                 maxEntries: 650,
                 maxAgeSeconds: 60 * 60 * 24 * 365
@@ -97,7 +97,7 @@ export default defineConfig({
             urlPattern: ({ url }) => url.pathname.includes('/data/'),
             handler: 'NetworkFirst',
             options: {
-              cacheName: 'njupt-search-exam-data-v2',
+              cacheName: 'njupt-search-exam-data-current',
               expiration: {
                 maxEntries: 12,
                 maxAgeSeconds: 60 * 60 * 24 * 30

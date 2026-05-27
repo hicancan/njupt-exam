@@ -63,15 +63,15 @@ jobs:
       - name: Validate upstream JWC sitegraph package
         run: python scripts/validate_sitegraph_index.py --sitegraph-index "$SITEGRAPH_INDEX" --skip-output
 
-      - name: Build pure JWC sitegraph search index
+      - name: Build progressive JWC sitegraph search index
         run: python scripts/build_sitegraph_index.py --sitegraph-index "$SITEGRAPH_INDEX"
 
-      - name: Validate pure JWC sitegraph search index
+      - name: Validate progressive JWC sitegraph search index
         run: |
           python scripts/validate_sitegraph_index.py --sitegraph-index "$SITEGRAPH_INDEX"
           python scripts/utils/validate_search_index.py
 
-      - name: Representative sitegraph search smoke test
+      - name: Progressive search evaluation
         run: python scripts/eval/sitegraph_query_smoke_test.py
 
       - name: Python integrity checks
@@ -84,7 +84,6 @@ jobs:
             scripts/analyze_and_update.py \
             scripts/eval/sitegraph_query_smoke_test.py \
             scripts/utils/validate_search_index.py
-          python -m unittest discover -s tests
           python -m pytest tests
 
       - name: Frontend checks

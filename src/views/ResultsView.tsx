@@ -3,7 +3,15 @@ import { CalendarDays, Download, ExternalLink, FileText, Filter } from 'lucide-r
 import { ExamList } from '@/components/ExamList';
 import { ExamDetail } from '@/components/ExamDetail';
 import { ResultsSkeleton } from '@/components/ResultsSkeleton';
-import { RankedSitegraphDocument, SearchResult, SitegraphFacet, SitegraphFullDocument, SitegraphQueryStats } from '@/types';
+import {
+    RankedSitegraphDocument,
+    SearchResult,
+    SitegraphFacet,
+    SitegraphFullDocument,
+    SitegraphQueryStats,
+    SitegraphSearchCoverage,
+    SitegraphSearchPhase
+} from '@/types';
 import { formatSearchDate } from '@/utils/searchIndex';
 
 type FacetFilter = SitegraphFacet | 'all';
@@ -31,6 +39,41 @@ function methodLabel(method: string): string {
     if (method === 'attachment_metadata_only') return '附件元数据收录';
     if (method === 'external_record_only') return '外部入口收录';
     return '站点图收录';
+}
+
+function phaseLabel(phase: SitegraphSearchPhase | null, searching: boolean): string {
+    if (phase === 'exhaustive_complete') return '已完成 JWC 全量公开索引核查';
+    if (phase === 'cancelled') return '已取消本次核查';
+    if (!searching) return '等待搜索';
+    if (phase === 'quick_started') return '正在启动快速搜索';
+    if (phase === 'quick_results') return '快速结果已返回，正在继续核查全量公开索引';
+    if (phase === 'body_started' || phase === 'body_results') return '正在继续核查正文索引';
+    if (phase === 'hydrate_started' || phase === 'hydrate_results') return '正在补全文档记录并重排结果';
+    if (phase === 'verify_started' || phase === 'verify_progress' || phase === 'verify_results') return '正在核查 JWC 全量公开索引';
+    return '正在搜索';
+}
+
+function fieldLabel(fields: string[]): string {
+    if (fields.length === 0) return '尚未开始';
+    const labels: Record<string, string> = {
+        title: '标题',
+        section: '栏目',
+        nav_path: '导航路径',
+        tags: '标签',
+        attachments: '附件',
+        external: '外部入口',
+        system: '系统入口',
+        summary: '摘要',
+        content: '正文',
+        url: 'URL'
+    };
+    return fields.map(field => labels[field] || field).join('、');
+}
+
+function formatBytes(bytes: number): string {
+    if (bytes >= 1024 * 1024) return `${(bytes / 1024 / 1024).toFixed(1)} MB`;
+    if (bytes >= 1024) return `${Math.round(bytes / 1024)} KB`;
+    return `${bytes} B`;
 }
 
 function SearchResultCard({ document }: SearchResultCardProps) {
@@ -125,6 +168,9 @@ interface ResultsViewProps {
     query: string;
     results: RankedSitegraphDocument[];
     queryStats: SitegraphQueryStats | null;
+    queryCoverage: SitegraphSearchCoverage | null;
+    searchPhase: SitegraphSearchPhase | null;
+    searching: boolean;
     classMode: SearchResult;
     selectedIds: Set<string>;
     reminders: number[];
@@ -142,6 +188,9 @@ export function ResultsView({
     query,
     results,
     queryStats,
+    queryCoverage,
+    searchPhase,
+    searching,
     classMode,
     selectedIds,
     reminders,
@@ -167,6 +216,7 @@ export function ResultsView({
     const visibleKey = `${trimmedQuery}\u0000${activeFacet}`;
     const visibleCount = visibleState.key === visibleKey ? visibleState.count : 20;
     const visibleResults = filteredResults.slice(0, visibleCount);
+    const coverage = queryCoverage || queryStats?.coverage || null;
 
     const hasClassDetail = classMode.mode === 'DETAIL' && classMode.exams.length > 0;
     const showSearchResultsSection = !(hasClassDetail && filteredResults.length === 0);
@@ -230,9 +280,26 @@ export function ResultsView({
                             </div>
                             <p className="mt-1 text-sm text-[#70757a] dark:text-[#9aa0a6]">
                                 {trimmedQuery.length >= 2
-                                    ? `找到 ${filteredResults.length} 条结果。已加载 ${queryStats?.loadedShardCount ?? 0} 个全文分片${queryStats?.usedBodyIndex ? '，已触发正文深搜。' : '。'}`
+                                    ? `找到 ${filteredResults.length} 条结果。${phaseLabel(searchPhase, searching)}。`
                                     : '输入至少两个字符搜索本科生院 / 教务处站点图。'}
                             </p>
+                            {coverage ? (
+                                <div className="mt-3 rounded-md border border-[#dadce0] dark:border-[#3c4043] bg-[#f8fafc] dark:bg-[#2d2e30] px-3 py-2 text-sm text-[#4d5156] dark:text-[#bdc1c6]">
+                                    <div className="flex flex-wrap gap-x-4 gap-y-1">
+                                        <span>已证明跳过 {coverage.proved_no_match_shards}</span>
+                                        <span>已扫描 {coverage.scanned_shards}/{coverage.total_shards}</span>
+                                        <span>文档 {coverage.searched_documents}/{coverage.total_documents}</span>
+                                        <span>已加载 {formatBytes(coverage.loaded_bytes)}</span>
+                                        <span>阶段：{coverage.phase}</span>
+                                        <span>字段：{fieldLabel(coverage.searched_fields)}</span>
+                                    </div>
+                                    <div className="mt-1 text-[#70757a] dark:text-[#9aa0a6]">
+                                        {coverage.exhaustive_complete
+                                            ? '已完成 JWC 全量公开索引核查；核查范围扩大已结束，加载更多结果只会展示更多已召回结果。'
+                                            : '核查范围扩大中；加载更多结果只会展示更多已召回结果。'}
+                                    </div>
+                                </div>
+                            ) : null}
                         </div>
 
                         {visibleResults.length > 0 ? (
@@ -246,7 +313,7 @@ export function ResultsView({
                                             onClick={() => setVisibleState({ key: visibleKey, count: visibleCount + 20 })}
                                             className="px-6 py-2 rounded-full border border-[#dadce0] dark:border-[#3c4043] bg-white dark:bg-[#202124] text-sm font-medium text-[#1a73e8] hover:bg-[#f8f9fa] dark:hover:bg-[#303134] transition-colors"
                                         >
-                                            加载更多
+                                            加载更多结果
                                         </button>
                                     </div>
                                 )}

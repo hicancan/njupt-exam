@@ -1,10 +1,17 @@
 import { useEffect, useState } from 'react';
-import { RankedSitegraphDocument, SitegraphQueryStats } from '@/types';
+import {
+    RankedSitegraphDocument,
+    SitegraphQueryStats,
+    SitegraphSearchCoverage,
+    SitegraphSearchPhase
+} from '@/types';
 
 type SearchState = {
     query: string;
     results: RankedSitegraphDocument[];
     stats: SitegraphQueryStats | null;
+    coverage: SitegraphSearchCoverage | null;
+    phase: SitegraphSearchPhase | null;
     error: string | null;
     settled: boolean;
 };
@@ -17,6 +24,8 @@ export function useSearchEngine(
         query: '',
         results: [],
         stats: null,
+        coverage: null,
+        phase: null,
         error: null,
         settled: true
     });
@@ -38,22 +47,40 @@ export function useSearchEngine(
                 requestId?: number;
                 results?: RankedSitegraphDocument[];
                 stats?: SitegraphQueryStats;
+                coverage?: SitegraphSearchCoverage;
                 message?: string;
             };
             if (!active || message.requestId !== requestId) return;
-            if (message.type === 'results') {
-                setSearchState({
+            const phase = message.type as SitegraphSearchPhase | undefined;
+            if (phase && [
+                'quick_started',
+                'quick_results',
+                'body_started',
+                'body_results',
+                'hydrate_started',
+                'hydrate_results',
+                'verify_started',
+                'verify_progress',
+                'verify_results',
+                'exhaustive_complete',
+                'cancelled'
+            ].includes(phase)) {
+                setSearchState(previous => ({
                     query: requestQuery,
-                    results: message.results || [],
-                    stats: message.stats || null,
+                    results: message.results || previous.results,
+                    stats: message.stats || previous.stats,
+                    coverage: message.coverage || previous.coverage,
+                    phase,
                     error: null,
-                    settled: true
-                });
+                    settled: phase === 'exhaustive_complete' || phase === 'cancelled'
+                }));
             } else if (message.type === 'error') {
                 setSearchState({
                     query: requestQuery,
                     results: [],
                     stats: null,
+                    coverage: message.coverage || null,
+                    phase: 'error',
                     error: message.message || '搜索 JWC sitegraph 失败',
                     settled: true
                 });
@@ -75,6 +102,8 @@ export function useSearchEngine(
     return {
         recalledResults: isCurrentResult ? searchState.results : [],
         queryStats: isCurrentResult ? searchState.stats : null,
+        queryCoverage: isCurrentResult ? searchState.coverage : null,
+        searchPhase: isCurrentResult ? searchState.phase : null,
         searching: canSearch ? !(isCurrentResult && searchState.settled) : false,
         searchError: isCurrentResult ? searchState.error : null
     };

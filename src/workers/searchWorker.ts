@@ -1,6 +1,7 @@
 import { APP_CONFIG } from '@/constants';
 import {
     SitegraphIndexBundle,
+    SitegraphSearchCoverage,
     SitegraphSearchManifest,
 } from '@/types';
 import { fetchJson } from '@/utils/fetch';
@@ -8,7 +9,7 @@ import {
     parseSitegraphDocMeta,
     parseSitegraphInvertedIndex,
     parseSitegraphManifest,
-    recallSitegraphDocuments,
+    searchSitegraphProgressively,
 } from '@/utils/searchIndex';
 
 type InitMessage = { type: 'init'; requestId: number };
@@ -19,6 +20,7 @@ type IncomingMessage = InitMessage | QueryMessage | CancelMessage;
 let manifest: SitegraphSearchManifest | null = null;
 let bundle: SitegraphIndexBundle | null = null;
 let activeController: AbortController | null = null;
+let lastCoverage: SitegraphSearchCoverage | null = null;
 
 const post = (payload: Record<string, unknown>) => {
     self.postMessage(payload);
@@ -27,16 +29,6 @@ const post = (payload: Record<string, unknown>) => {
 const publicPath = (path: string): string => {
     if (/^https?:\/\//.test(path) || path.startsWith('/')) return path;
     return `/${path}`;
-};
-
-const loadBodyIndex = async (signal: AbortSignal) => {
-    if (!bundle || bundle.bodyInvertedIndex) return;
-    const bodyPath = bundle.manifest.artifacts.body_inverted_index.path;
-    const payload = await fetchJson(publicPath(bodyPath), signal, 'index');
-    bundle = {
-        ...bundle,
-        bodyInvertedIndex: parseSitegraphInvertedIndex(payload, bodyPath),
-    };
 };
 
 const init = async (requestId: number) => {
@@ -73,29 +65,21 @@ const query = async (requestId: number, queryText: string, limit = 30) => {
     activeController?.abort();
     const controller = new AbortController();
     activeController = controller;
-
-    let payload = await recallSitegraphDocuments(bundle, queryText, controller.signal, limit);
-    if (payload.results.length < 8 && !bundle.bodyInvertedIndex) {
-        await loadBodyIndex(controller.signal);
-        if (bundle) {
-            payload = await recallSitegraphDocuments(bundle, queryText, controller.signal, limit);
-        }
-    }
-
-    post({
-        type: 'results',
-        requestId,
-        query: queryText,
-        results: payload.results,
-        stats: payload.stats,
-    });
+    await searchSitegraphProgressively(bundle, queryText, controller.signal, event => {
+        lastCoverage = event.coverage;
+        post({ ...event, requestId });
+    }, { limit });
 };
 
 self.onmessage = (event: MessageEvent<IncomingMessage>) => {
     const message = event.data;
     if (message.type === 'cancel') {
         activeController?.abort();
-        post({ type: 'cancelled', requestId: message.requestId });
+        post({
+            type: 'cancelled',
+            requestId: message.requestId,
+            coverage: lastCoverage ? { ...lastCoverage, phase: 'cancelled', exhaustive_complete: false } : null,
+        });
         return;
     }
 
@@ -109,6 +93,7 @@ self.onmessage = (event: MessageEvent<IncomingMessage>) => {
             type: 'error',
             requestId: message.requestId,
             message: error instanceof Error ? error.message : String(error),
+            coverage: lastCoverage ? { ...lastCoverage, phase: 'error' } : null,
         });
     });
 };

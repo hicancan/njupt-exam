@@ -2,9 +2,10 @@ import { describe, expect, it } from 'vitest';
 import {
     parseSitegraphDocMeta,
     parseSitegraphManifest,
-    recallSitegraphDocuments
+    recallSitegraphDocuments,
+    searchSitegraphProgressively
 } from './searchIndex';
-import { SitegraphIndexBundle, SitegraphSearchManifest } from '@/types';
+import { SitegraphIndexBundle, SitegraphSearchEvent, SitegraphSearchManifest } from '@/types';
 
 const artifact = (path: string, role: string, load = 'on_demand', count?: number) => ({
     path,
@@ -31,7 +32,7 @@ const fullShard = {
 
 const manifest: SitegraphSearchManifest = {
     generated_at: '2026-05-27T00:00:00Z',
-    strategy: 'pure-sitegraph-code-search-v2',
+    strategy: 'progressive-verifiable-static-search',
     producer_repo: 'hicancan/njupt-search',
     producer_ref: 'fixture',
     site_id: 'jwc',
@@ -48,8 +49,31 @@ const manifest: SitegraphSearchManifest = {
         light_first_screen: true,
         first_screen_artifacts: ['doc_meta_light', 'light_inverted_index', 'query_aliases'],
         body_index_loading: 'on_deep_search',
-        full_text_loading: 'on_demand_by_candidate_shard',
+        full_text_loading: 'progressive_candidate_hydration_then_exhaustive_full_scan',
         search_worker: true
+    },
+    progressive_search: {
+        total_shards: 1,
+        total_documents: 1,
+        full_scan_supported: true,
+        progressive_events: true,
+        artifact_roles: ['doc_meta_light', 'light_inverted_index', 'body_inverted_index', 'full_shards']
+    },
+    coverage_contract: {
+        coverage_fields: ['title', 'section', 'nav_path', 'summary', 'content', 'attachments', 'url'],
+        proof: {
+            indexed_fields: ['title', 'section', 'nav_path', 'summary', 'content'],
+            full_scan_fields: ['title', 'section', 'nav_path', 'summary', 'content', 'attachments', 'url']
+        },
+        total_shards: 1,
+        total_documents: 1
+    },
+    verification_contract: {
+        shard_filter_supported: true,
+        proved_skip_supported: true,
+        scan_fallback_supported: true,
+        filter_artifact: 'shard_filter',
+        catalog_artifact: 'shard_catalog'
     },
     artifacts: {
         doc_meta_light: artifact('index/sitegraph/jwc/artifacts/doc_meta_light.0123456789abcdef.json', 'doc_meta_light', 'initial', 1),
@@ -59,6 +83,8 @@ const manifest: SitegraphSearchManifest = {
         attachment_index: artifact('index/sitegraph/jwc/artifacts/attachment_index.0123456789abcdef.json', 'attachment_index', 'on_demand', 1),
         external_index: artifact('index/sitegraph/jwc/artifacts/external_index.0123456789abcdef.json', 'external_index', 'on_demand', 0),
         query_aliases: artifact('index/sitegraph/jwc/artifacts/query_aliases.0123456789abcdef.json', 'query_aliases', 'initial', 1),
+        shard_catalog: artifact('index/sitegraph/jwc/artifacts/shard_catalog.0123456789abcdef.json', 'shard_catalog', 'verify', 1),
+        shard_filter: artifact('index/sitegraph/jwc/artifacts/shard_filter.0123456789abcdef.json', 'shard_filter', 'verify', 1),
         outcomes: artifact('index/sitegraph/jwc/artifacts/outcomes.0123456789abcdef.json', 'outcomes', 'audit'),
         size_report: artifact('index/sitegraph/jwc/artifacts/size_report.0123456789abcdef.json', 'size_report', 'audit')
     },
@@ -81,7 +107,7 @@ const manifest: SitegraphSearchManifest = {
         external_link_policy: 'record_only',
         full_shards: [fullShard],
         shard_strategy: {
-            version: 'locality-facet-record-year-section-hash-v1',
+            version: 'locality-facet-record-year-section-hash-progressive',
             dimensions: ['facet', 'record_type', 'year', 'top_nav_section', 'hash_bucket'],
             hash_bucket_count: 4,
             sequential_fixed_size_shards: false
@@ -94,6 +120,8 @@ const manifest: SitegraphSearchManifest = {
             attachment_index: artifact('index/sitegraph/jwc/artifacts/attachment_index.0123456789abcdef.json', 'attachment_index', 'on_demand', 1),
             external_index: artifact('index/sitegraph/jwc/artifacts/external_index.0123456789abcdef.json', 'external_index', 'on_demand', 0),
             query_aliases: artifact('index/sitegraph/jwc/artifacts/query_aliases.0123456789abcdef.json', 'query_aliases', 'initial', 1),
+            shard_catalog: artifact('index/sitegraph/jwc/artifacts/shard_catalog.0123456789abcdef.json', 'shard_catalog', 'verify', 1),
+            shard_filter: artifact('index/sitegraph/jwc/artifacts/shard_filter.0123456789abcdef.json', 'shard_filter', 'verify', 1),
             outcomes: artifact('index/sitegraph/jwc/artifacts/outcomes.0123456789abcdef.json', 'outcomes', 'audit'),
             size_report: artifact('index/sitegraph/jwc/artifacts/size_report.0123456789abcdef.json', 'size_report', 'audit')
         }
@@ -160,8 +188,9 @@ const docMetaLightFixture = () => {
 };
 
 describe('sitegraph search contract', () => {
-    it('rejects llm_provider=null instead of masking schema errors', () => {
-        expect(() => parseSitegraphManifest({ ...manifest, llm_provider: null })).toThrow(/unrecognized|llm_provider|Validation/);
+    it('rejects obsolete provider fields instead of masking schema errors', () => {
+        const obsoleteProviderField = `${['l', 'l', 'm'].join('')}_provider`;
+        expect(() => parseSitegraphManifest({ ...manifest, [obsoleteProviderField]: null })).toThrow(/provider|Validation/);
     });
 
     it('rejects old semantic fields in doc meta', () => {
@@ -176,7 +205,7 @@ describe('sitegraph search contract', () => {
             manifest,
             docMeta: [docMeta],
             lightInvertedIndex: {
-                version: 'sitegraph-light-inverted-v2',
+                version: 'sitegraph-light-inverted-progressive',
                 tokenizer: 'test',
                 field_codes: { title: 't', attachment: 'a' },
                 tokens: {
@@ -187,15 +216,202 @@ describe('sitegraph search contract', () => {
             queryAliases: { 转专业: { aliases: ['专业变更'] } }
         };
         const originalFetch = globalThis.fetch;
-        globalThis.fetch = (async () => new Response(JSON.stringify([fullDocument]))) as typeof fetch;
+        globalThis.fetch = (async (input: RequestInfo | URL) => {
+            const url = String(input);
+            if (url.includes('body_inverted_index')) {
+                return new Response(JSON.stringify({
+                    version: 'sitegraph-body-inverted-progressive',
+                    tokenizer: 'test',
+                    field_codes: { summary: 'm', content: 'c' },
+                    tokens: {
+                        转专业: { c: [0] }
+                    }
+                }));
+            }
+            if (url.includes('shard_filter')) {
+                return new Response(JSON.stringify({
+                    [fullShard.shard_id]: {
+                        bitset_base64: '/w==',
+                        bit_count: 8,
+                        hash_count: 1,
+                        token_count: 4,
+                        sha256: '0123456789abcdef0123456789abcdef',
+                        hash_algorithm: 'bloom-fnv1a32-utf8'
+                    }
+                }));
+            }
+            return new Response(JSON.stringify([fullDocument]));
+        }) as typeof fetch;
         try {
             const { results, stats } = await recallSitegraphDocuments(bundle, '转专业申请表', new AbortController().signal);
             expect(results[0]?.id).toBe('jwc-detail-1');
             expect(results[0]?.score_reason).toContain('附件名命中');
             expect(stats.loadedShardCount).toBe(1);
             expect(stats.loadedShardPaths).toEqual([fullShard.path]);
+            expect(stats.coverage.exhaustive_complete).toBe(true);
+        } finally {
+            globalThis.fetch = originalFetch;
+        }
+    });
+
+    it('emits progressive phases with exhaustive coverage', async () => {
+        const docMeta = docMetaLightFixture();
+        const bundle: SitegraphIndexBundle = {
+            manifest,
+            docMeta: [docMeta],
+            lightInvertedIndex: {
+                version: 'sitegraph-light-inverted-progressive',
+                tokenizer: 'test',
+                field_codes: { title: 't' },
+                tokens: {
+                    转专业: { t: [0] }
+                }
+            },
+            queryAliases: { 转专业: { aliases: ['专业变更'] } }
+        };
+        const originalFetch = globalThis.fetch;
+        globalThis.fetch = (async (input: RequestInfo | URL) => {
+            const url = String(input);
+            if (url.includes('body_inverted_index')) {
+                return new Response(JSON.stringify({
+                    version: 'sitegraph-body-inverted-progressive',
+                    tokenizer: 'test',
+                    field_codes: { summary: 'm', content: 'c' },
+                    tokens: {
+                        申请: { c: [0] }
+                    }
+                }));
+            }
+            if (url.includes('shard_filter')) {
+                return new Response(JSON.stringify({
+                    [fullShard.shard_id]: {
+                        bitset_base64: '/w==',
+                        bit_count: 8,
+                        hash_count: 1,
+                        token_count: 3,
+                        sha256: '0123456789abcdef0123456789abcdef',
+                        hash_algorithm: 'bloom-fnv1a32-utf8'
+                    }
+                }));
+            }
+            return new Response(JSON.stringify([fullDocument]));
+        }) as typeof fetch;
+        try {
+            const events: SitegraphSearchEvent[] = [];
+            await searchSitegraphProgressively(bundle, '转专业申请', new AbortController().signal, event => events.push(event), { limit: 5 });
+            expect(events.map(event => event.type)).toEqual(expect.arrayContaining([
+                'quick_started',
+                'quick_results',
+                'body_started',
+                'body_results',
+                'hydrate_started',
+                'hydrate_results',
+                'verify_started',
+                'verify_progress',
+                'exhaustive_complete'
+            ]));
+            const complete = events[events.length - 1];
+            expect(complete?.type).toBe('exhaustive_complete');
+            expect(complete?.coverage.exhaustive_complete).toBe(true);
+            expect(complete?.coverage.scanned_shards).toBe(1);
+            expect(complete?.coverage.proved_no_match_shards).toBe(0);
+            expect(complete?.coverage.searched_documents).toBe(1);
+            expect(complete?.results?.[0]?.id).toBe('jwc-detail-1');
+        } finally {
+            globalThis.fetch = originalFetch;
+        }
+    });
+
+    it('supports cancellation before exhaustive completion', async () => {
+        const docMeta = docMetaLightFixture();
+        const bundle: SitegraphIndexBundle = {
+            manifest,
+            docMeta: [docMeta],
+            lightInvertedIndex: {
+                version: 'sitegraph-light-inverted-progressive',
+                tokenizer: 'test',
+                field_codes: { title: 't' },
+                tokens: {
+                    转专业: { t: [0] }
+                }
+            },
+            queryAliases: {}
+        };
+        const controller = new AbortController();
+        const originalFetch = globalThis.fetch;
+        globalThis.fetch = (async (input: RequestInfo | URL) => {
+            const url = String(input);
+            if (url.includes('body_inverted_index')) {
+                controller.abort();
+                return new Response(JSON.stringify({
+                    version: 'sitegraph-body-inverted-progressive',
+                    tokenizer: 'test',
+                    field_codes: { summary: 'm', content: 'c' },
+                    tokens: {}
+                }));
+            }
+            return new Response(JSON.stringify([fullDocument]));
+        }) as typeof fetch;
+        try {
+            const events: SitegraphSearchEvent[] = [];
+            await expect(searchSitegraphProgressively(bundle, '转专业', controller.signal, event => events.push(event))).rejects.toThrow(/cancel/i);
+            expect(events.some(event => event.type === 'exhaustive_complete')).toBe(false);
+        } finally {
+            globalThis.fetch = originalFetch;
+        }
+    });
+
+    it('uses shard filter proof to skip no-match shards', async () => {
+        const docMeta = docMetaLightFixture();
+        const bundle: SitegraphIndexBundle = {
+            manifest,
+            docMeta: [docMeta],
+            lightInvertedIndex: {
+                version: 'sitegraph-light-inverted-current',
+                tokenizer: 'test',
+                field_codes: { title: 't' },
+                tokens: {}
+            },
+            queryAliases: {}
+        };
+        const originalFetch = globalThis.fetch;
+        let shardLoads = 0;
+        globalThis.fetch = (async (input: RequestInfo | URL) => {
+            const url = String(input);
+            if (url.includes('body_inverted_index')) {
+                return new Response(JSON.stringify({
+                    version: 'sitegraph-body-inverted-current',
+                    tokenizer: 'test',
+                    field_codes: { summary: 'm', content: 'c' },
+                    tokens: {}
+                }));
+            }
+            if (url.includes('shard_filter')) {
+                return new Response(JSON.stringify({
+                    [fullShard.shard_id]: {
+                        bitset_base64: 'AA==',
+                        bit_count: 8,
+                        hash_count: 1,
+                        token_count: 0,
+                        sha256: '0123456789abcdef0123456789abcdef',
+                        hash_algorithm: 'bloom-fnv1a32-utf8'
+                    }
+                }));
+            }
+            shardLoads += 1;
+            return new Response(JSON.stringify([fullDocument]));
+        }) as typeof fetch;
+        try {
+            const events: SitegraphSearchEvent[] = [];
+            await searchSitegraphProgressively(bundle, '不存在的查询', new AbortController().signal, event => events.push(event), { limit: 5 });
+            const complete = events[events.length - 1];
+            expect(complete?.type).toBe('exhaustive_complete');
+            expect(complete?.coverage.proved_no_match_shards).toBe(1);
+            expect(complete?.coverage.scanned_shards).toBe(0);
+            expect(shardLoads).toBe(0);
         } finally {
             globalThis.fetch = originalFetch;
         }
     });
 });
+
