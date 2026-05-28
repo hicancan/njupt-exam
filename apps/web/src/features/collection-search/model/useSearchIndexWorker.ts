@@ -34,13 +34,13 @@ export function useSearchIndexWorker(enabled = true): UseSearchIndexWorkerResult
             } else if (message.type === 'error') {
                 setManifest(null);
                 setWorkerState(null);
-                setError(message.message || '无法加载公开教务合集搜索索引 Worker');
+                setError(message.message || '无法加载南邮官网信息搜索索引 Worker');
             }
         };
         worker.onerror = event => {
             setManifest(null);
             setWorkerState(null);
-            setError(event.message || '公开教务合集搜索 Worker 启动失败');
+            setError(event.message || '南邮官网信息搜索 Worker 启动失败');
         };
         worker.postMessage({ type: 'init', requestId });
 

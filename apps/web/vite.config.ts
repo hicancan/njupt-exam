@@ -39,7 +39,7 @@ export default defineConfig({
       manifest: {
         name: 'njupt-search',
         short_name: 'njupt-search',
-        description: '南邮学生信息入口：搜索公开教务合集和考试安排',
+        description: '南邮学生信息入口：搜索南邮官网信息和考试安排',
         theme_color: '#ffffff',
         background_color: '#ffffff',
         start_url: '/',

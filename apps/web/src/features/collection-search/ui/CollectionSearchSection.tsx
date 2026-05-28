@@ -43,10 +43,10 @@ function phaseLabel(phase: SitegraphSearchPhase | null, searching: boolean): str
     if (phase === 'cancelled') return '已取消本次核查';
     if (!searching) return '等待搜索';
     if (phase === 'quick_started') return '正在启动快速搜索';
-    if (phase === 'quick_results') return '快速结果已返回，正在继续核查全量公开索引';
+    if (phase === 'quick_results') return '快速结果已返回，正在继续核查官网信息索引';
     if (phase === 'body_started' || phase === 'body_results') return '正在继续核查正文索引';
     if (phase === 'hydrate_started' || phase === 'hydrate_results') return '正在补全文档记录并重排结果';
-    if (phase === 'verify_started' || phase === 'verify_progress' || phase === 'verify_results') return '正在核查公开合集全量索引';
+    if (phase === 'verify_started' || phase === 'verify_progress' || phase === 'verify_results') return '正在核查官网信息索引';
     return '正在搜索';
 }
 
@@ -225,7 +225,7 @@ export function CollectionSearchSection({
         Boolean(coverage?.exhaustive_complete)
     );
     const statusText = trimmedQuery.length < 2
-        ? '输入至少两个字符搜索公开教务合集。'
+        ? '输入至少两个字符搜索南邮官网信息。'
         : phaseText
             ? `${summary}${phaseText}。`
             : summary;
@@ -258,7 +258,7 @@ export function CollectionSearchSection({
                             {coverageProgress.showBar ? (
                                 <div
                                     className="h-1.5 w-28 overflow-hidden rounded-full bg-[#e8eaed] dark:bg-[#3c4043]"
-                                    aria-label={`公开合集核查进度 ${coverageProgress.percent}%`}
+                                    aria-label={`官网信息核查进度 ${coverageProgress.percent}%`}
                                     role="progressbar"
                                     aria-valuemin={0}
                                     aria-valuemax={100}
@@ -313,7 +313,7 @@ export function CollectionSearchSection({
                 </div>
             ) : (
                 <div className="border border-[#dadce0] dark:border-[#3c4043] rounded-md bg-white dark:bg-[#202124] p-6 text-[#4d5156] dark:text-[#bdc1c6] max-w-[692px]">
-                    <p>没有找到匹配的公开教务合集记录。</p>
+                    <p>没有找到匹配的南邮官网信息。</p>
                     <p className="mt-2 text-sm">可以尝试“校历”“缓考申请表”“奖学金”“教务管理系统”这类学生任务关键词。</p>
                 </div>
             )}

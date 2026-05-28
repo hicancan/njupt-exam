@@ -1,7 +1,7 @@
 export const APP_CONFIG = {
     APP_NAME: 'njupt-search',
     PAGE_TITLE: '南邮学生信息入口',
-    PAGE_SUBTITLE: '搜索南邮公开教务合集',
+    PAGE_SUBTITLE: '搜索南邮官网信息',
     DOMAIN: 'njupt.hicancan.top',
     GITHUB_REPO: 'https://github.com/hicancan/njupt-search',
     BILIBILI_PAGE: 'https://space.bilibili.com/1144561698',
