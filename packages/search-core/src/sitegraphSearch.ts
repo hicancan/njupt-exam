@@ -15,7 +15,7 @@ import {
     parseSitegraphInvertedIndex,
     SearchContractError
 } from './sitegraphContract';
-import { normalizeSearchText as normalize, tokenizeSitegraphQuery } from './tokenizer';
+import { expandSitegraphQueryPhrases, normalizeSearchText as normalize, tokenizeSitegraphQuery } from './tokenizer';
 const DEFAULT_CANDIDATE_LIMIT = 160;
 const DEFAULT_MAX_SHARD_LOADS = 40;
 const QUICK_MAX_SHARD_LOADS = 8;
@@ -418,12 +418,15 @@ const rankHydratedCandidates = (
     fullDocsByIndex: Map<number, SitegraphFullDocument>,
     scores: Map<number, number>,
     query: string,
-    terms: string[]
+    terms: string[],
+    matchPhrases: string[]
 ): RankedSitegraphDocument[] => {
     return indices
         .map(docIndex => {
             const document = fullDocsByIndex.get(docIndex);
-            return document ? rankDocument(document, query, terms, scores.get(docIndex) || 0) : null;
+            return document && documentMatchesFullScan(document, matchPhrases)
+                ? rankDocument(document, query, terms, scores.get(docIndex) || 0)
+                : null;
         })
         .filter((item): item is RankedSitegraphDocument => Boolean(item));
 };
@@ -437,21 +440,21 @@ const hydrateCandidatePhase = async (
     loadedShardPaths: Set<string>,
     fullDocsByIndex: Map<number, SitegraphFullDocument>,
     candidateLimit: number,
-    maxShardLoads: number
+    maxShardLoads: number,
+    matchPhrases: string[]
 ): Promise<{ ranked: RankedSitegraphDocument[]; candidateCount: number }> => {
     const candidates = candidateShardPaths(bundle, scores, candidateLimit, maxShardLoads);
     const pathsToLoad = candidates.paths.filter(path => !loadedShardPaths.has(path));
     await loadShardBatch(pathsToLoad, signal, loadedShardPaths, fullDocsByIndex);
     return {
-        ranked: rankHydratedCandidates(candidates.indices, fullDocsByIndex, scores, query, terms),
+        ranked: rankHydratedCandidates(candidates.indices, fullDocsByIndex, scores, query, terms, matchPhrases),
         candidateCount: candidates.indices.length,
     };
 };
 
-const documentMatchesFullScan = (document: SitegraphFullDocument, normalizedQuery: string, terms: string[]): boolean => {
+const documentMatchesFullScan = (document: SitegraphFullDocument, matchPhrases: string[]): boolean => {
     const blob = fullScanBlob(document);
-    if (normalizedQuery && blob.includes(normalizedQuery)) return true;
-    return terms.some(term => term.length >= 2 && blob.includes(term));
+    return matchPhrases.some(term => blob.includes(term));
 };
 
 const filterTokenHashInt = (text: string, seed: number): number => {
@@ -523,6 +526,7 @@ export const searchSitegraphProgressively = async (
     const maxShardLoads = options.maxShardLoads ?? DEFAULT_MAX_SHARD_LOADS;
     const terms = tokenizeSitegraphQuery(trimmed, bundle.queryAliases);
     const normalizedQuery = normalize(trimmed);
+    const matchPhrases = expandSitegraphQueryPhrases(trimmed, bundle.queryAliases);
     const scores = new Map<number, number>();
     const resultMap = new Map<string, RankedSitegraphDocument>();
     const loadedShardPaths = new Set<string>();
@@ -567,7 +571,8 @@ export const searchSitegraphProgressively = async (
         loadedShardPaths,
         fullDocsByIndex,
         Math.min(candidateLimit, 48),
-        Math.min(maxShardLoads, QUICK_MAX_SHARD_LOADS)
+        Math.min(maxShardLoads, QUICK_MAX_SHARD_LOADS),
+        matchPhrases
     );
     candidateCount = quick.candidateCount;
     mergeRankedResults(resultMap, quick.ranked);
@@ -591,7 +596,8 @@ export const searchSitegraphProgressively = async (
         loadedShardPaths,
         fullDocsByIndex,
         Math.min(candidateLimit, 96),
-        Math.min(maxShardLoads, BODY_MAX_SHARD_LOADS)
+        Math.min(maxShardLoads, BODY_MAX_SHARD_LOADS),
+        matchPhrases
     );
     candidateCount = body.candidateCount;
     mergeRankedResults(resultMap, body.ranked);
@@ -609,7 +615,8 @@ export const searchSitegraphProgressively = async (
         loadedShardPaths,
         fullDocsByIndex,
         candidateLimit,
-        Math.min(maxShardLoads, HYDRATE_MAX_SHARD_LOADS)
+        Math.min(maxShardLoads, HYDRATE_MAX_SHARD_LOADS),
+        matchPhrases
     );
     candidateCount = hydrate.candidateCount;
     mergeRankedResults(resultMap, hydrate.ranked);
@@ -641,7 +648,7 @@ export const searchSitegraphProgressively = async (
             for (const document of documents) {
                 fullDocsByIndex.set(document.doc_index, document);
                 searchedDocuments += 1;
-                if (documentMatchesFullScan(document, normalizedQuery, terms)) {
+                if (documentMatchesFullScan(document, matchPhrases)) {
                     const baseScore = scores.get(document.doc_index) ?? 24;
                     verifyMatches.push(rankDocument(document, trimmed, terms, baseScore));
                 }

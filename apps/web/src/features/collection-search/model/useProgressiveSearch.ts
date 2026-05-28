@@ -5,6 +5,7 @@ import {
     SitegraphSearchCoverage,
     SitegraphSearchPhase
 } from '@/shared/lib/contracts';
+import { APP_CONFIG } from '@/app/config/constants';
 
 type SearchState = {
     query: string;
@@ -89,7 +90,12 @@ export function useProgressiveSearch(
         };
 
         worker.addEventListener('message', handleMessage);
-        worker.postMessage({ type: 'query', requestId, query: requestQuery, limit: 30 });
+        worker.postMessage({
+            type: 'query',
+            requestId,
+            query: requestQuery,
+            limit: APP_CONFIG.COLLECTION_SEARCH_RESULT_LIMIT
+        });
 
         return () => {
             active = false;

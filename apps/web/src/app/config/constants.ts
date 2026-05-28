@@ -14,5 +14,6 @@ export const APP_CONFIG = {
     UPDATE_CHANNEL: 'search-data-update-channel',
     UPDATE_APPLY_EVENT: 'njupt-search-apply-update',
     START_TIME_DEFAULT: '2025-12-15T00:00:00',
-    MAX_CLASS_DISPLAY_COUNT: 50
+    MAX_CLASS_DISPLAY_COUNT: 50,
+    COLLECTION_SEARCH_RESULT_LIMIT: 80
 };

@@ -272,6 +272,117 @@ describe('sitegraph search contract', () => {
         }
     });
 
+    it('uses alias n-grams for candidate recall without counting weak phrase misses as results', async () => {
+        const aliasShard = {
+            ...fullShard,
+            shard_id: 'notice__detail__2026__calendar__b0',
+            path: 'fixture-alias-shard.0123456789abcdef.json',
+            count: 2,
+            facet_range: ['notice_article'],
+            section_range: ['jwc_notice_root']
+        };
+        const calendarDocument = {
+            ...fullDocument,
+            doc_index: 0,
+            id: 'calendar',
+            facet: 'notice_article' as const,
+            title: '2025-2026学年校历',
+            section: '通知公告',
+            nav_path: ['通知公告'],
+            nav_path_text: '通知公告',
+            summary: '2025-2026学年校历',
+            content: '学校发布2025-2026学年校历。',
+            shard: { shard_id: aliasShard.shard_id, path: aliasShard.path },
+            attachments: []
+        };
+        const weakAliasDocument = {
+            ...calendarDocument,
+            doc_index: 1,
+            id: 'weak-alias',
+            title: '2025-2026学年第二学期学生选课通知',
+            summary: '2025-2026学年第二学期选课安排。',
+            content: '学生选课通知，不包含目标完整短语。'
+        };
+        const bundle: SitegraphIndexBundle = {
+            manifest: {
+                ...manifest,
+                total_documents: 2,
+                sitegraph: {
+                    ...manifest.sitegraph,
+                    full_shards: [aliasShard]
+                },
+                progressive_search: {
+                    ...manifest.progressive_search,
+                    total_documents: 2
+                }
+            },
+            docMeta: [calendarDocument, weakAliasDocument].map(document => ({
+                doc_index: document.doc_index,
+                id: document.id,
+                record_type: document.record_type,
+                facet: document.facet,
+                title: document.title,
+                url: document.url,
+                source: document.source,
+                section_id: document.section_id,
+                section: document.section,
+                nav_path: document.nav_path,
+                nav_path_text: document.nav_path_text,
+                published_at: document.published_at,
+                attachment_count: document.attachment_count,
+                collection_method: document.collection_method,
+                shard: document.shard
+            })),
+            lightInvertedIndex: {
+                version: 'sitegraph-light-inverted-progressive',
+                tokenizer: 'test',
+                field_codes: { title: 't' },
+                tokens: {
+                    校历: { t: [0] },
+                    '2025-2026': { t: [0, 1] },
+                    学年: { t: [0, 1] }
+                }
+            },
+            queryAliases: { 校历: { aliases: ['2025-2026学年校历'] } }
+        };
+        const originalFetch = globalThis.fetch;
+        globalThis.fetch = (async (input: RequestInfo | URL) => {
+            const url = String(input);
+            if (url.includes('body_inverted_index')) {
+                return new Response(JSON.stringify({
+                    version: 'sitegraph-body-inverted-progressive',
+                    tokenizer: 'test',
+                    field_codes: { content: 'c' },
+                    tokens: {
+                        校历: { c: [0] },
+                        '2025-2026': { c: [0, 1] },
+                        学年: { c: [0, 1] }
+                    }
+                }));
+            }
+            if (url.includes('shard_filter')) {
+                return new Response(JSON.stringify({
+                    [aliasShard.shard_id]: {
+                        bitset_base64: '/w==',
+                        bit_count: 8,
+                        hash_count: 1,
+                        token_count: 3,
+                        sha256: '0123456789abcdef0123456789abcdef',
+                        hash_algorithm: 'bloom-fnv1a32-utf8'
+                    }
+                }));
+            }
+            return new Response(JSON.stringify([calendarDocument, weakAliasDocument]));
+        }) as typeof fetch;
+        try {
+            const { results, stats } = await recallSitegraphDocuments(bundle, '校历', new AbortController().signal, 10);
+            expect(results.map(result => result.id)).toEqual(['calendar']);
+            expect(stats.resultCount).toBe(1);
+        } finally {
+            globalThis.fetch = originalFetch;
+        }
+    });
+
     it('emits progressive phases with exhaustive coverage', async () => {
         const docMeta = docMetaLightFixture();
         const bundle: SitegraphIndexBundle = {

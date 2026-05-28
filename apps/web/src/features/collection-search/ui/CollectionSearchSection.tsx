@@ -72,6 +72,27 @@ function formatBytes(bytes: number): string {
     return `${bytes} B`;
 }
 
+function resultSummary(
+    activeFacet: FacetFilter,
+    filteredCount: number,
+    returnedCount: number,
+    totalCount: number,
+    exhaustiveComplete: boolean
+): string {
+    const phaseVerb = exhaustiveComplete ? '匹配' : '已召回';
+    const isCapped = totalCount > returnedCount;
+    if (activeFacet === 'all') {
+        return isCapped
+            ? `${phaseVerb} ${totalCount} 条，展示相关性最高的前 ${returnedCount} 条。`
+            : `${phaseVerb} ${totalCount} 条。`;
+    }
+
+    if (isCapped) {
+        return `${FACET_LABELS[activeFacet]}展示 ${filteredCount} 条，范围来自前 ${returnedCount} 条高相关结果。`;
+    }
+    return `${FACET_LABELS[activeFacet]} ${phaseVerb} ${filteredCount} 条。`;
+}
+
 function SearchResultCard({ document }: SearchResultCardProps) {
     const recallReason = (document as Partial<RankedSitegraphDocument>).score_reason || '';
     const wrapperProps = {
@@ -192,6 +213,14 @@ export function CollectionSearchSection({
     const visibleCount = visibleState.key === visibleKey ? visibleState.count : 20;
     const visibleResults = filteredResults.slice(0, visibleCount);
     const coverage = queryCoverage || queryStats?.coverage || null;
+    const totalResultCount = queryStats?.resultCount ?? results.length;
+    const summary = resultSummary(
+        activeFacet,
+        filteredResults.length,
+        results.length,
+        totalResultCount,
+        Boolean(coverage?.exhaustive_complete)
+    );
 
     return (
         <section>
@@ -210,7 +239,7 @@ export function CollectionSearchSection({
                 </div>
                 <p className="mt-1 text-sm text-[#70757a] dark:text-[#9aa0a6]">
                     {trimmedQuery.length >= 2
-                        ? `找到 ${filteredResults.length} 条结果。${phaseLabel(searchPhase, searching)}。`
+                        ? `${summary}${phaseLabel(searchPhase, searching)}。`
                         : '输入至少两个字符搜索公开教务合集。'}
                 </p>
                 {coverage ? (
@@ -244,7 +273,7 @@ export function CollectionSearchSection({
                                     <span>字段：{fieldLabel(coverage.searched_fields)}</span>
                                 </div>
                                 <div className="mt-1 text-[#70757a] dark:text-[#9aa0a6]">
-                                    加载更多结果只会展示更多已召回结果，不会改变当前核查范围。
+                                    加载更多只展开当前已返回结果；若总匹配数更大，可继续细化关键词缩小范围。
                                 </div>
                             </div>
                         ) : null}

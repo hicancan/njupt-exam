@@ -72,7 +72,7 @@ export function ResultsPage({
     );
 
     return (
-        <main className="max-w-6xl w-full mx-auto px-4 pt-3 pb-6">
+        <main className="flex-1 max-w-6xl w-full mx-auto px-4 pt-3 pb-6">
             {isLoading ? (
                 loadingSkeleton
             ) : (

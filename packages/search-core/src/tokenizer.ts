@@ -5,7 +5,7 @@ const normalize = (value: unknown): string => String(value || '')
 
 export const normalizeSearchText = normalize;
 
-export const tokenizeSitegraphQuery = (query: string, queryAliases: Record<string, unknown> = {}): string[] => {
+export const expandSitegraphQueryPhrases = (query: string, queryAliases: Record<string, unknown> = {}): string[] => {
     const candidates = [query];
     const normalizedQuery = normalize(query);
     for (const [key, rawPayload] of Object.entries(queryAliases)) {
@@ -16,10 +16,17 @@ export const tokenizeSitegraphQuery = (query: string, queryAliases: Record<strin
         }
     }
 
+    return Array.from(new Set(candidates.map(normalize).filter(text => text.length >= 2)))
+        .sort((a, b) => b.length - a.length);
+};
+
+export const tokenizeSitegraphQuery = (query: string, queryAliases: Record<string, unknown> = {}): string[] => {
+    const candidates = expandSitegraphQueryPhrases(query, queryAliases);
+
     const tokens = new Set<string>();
     for (const candidate of candidates) {
         const text = normalize(candidate);
-        if (text.length >= 2) tokens.add(text);
+        tokens.add(text);
         const matches = text.match(/[\u4e00-\u9fff]{2,}|[a-z0-9][a-z0-9._-]{1,}/g) || [];
         for (const part of matches) {
             if (/^[\u4e00-\u9fff]+$/.test(part)) {
