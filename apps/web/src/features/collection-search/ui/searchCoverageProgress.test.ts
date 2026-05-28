@@ -26,14 +26,23 @@ describe('getSearchCoverageProgress', () => {
             totalShards: 100,
             percent: 65,
             label: '已核查 65%',
+            complete: false,
+            showBar: true,
         });
     });
 
-    it('caps complete coverage at 100 percent', () => {
+    it('uses a compact complete state without a redundant progress bar', () => {
         expect(getSearchCoverageProgress(coverage({
             proved_no_match_shards: 70,
             scanned_shards: 50,
             exhaustive_complete: true,
-        })).percent).toBe(100);
+        }))).toEqual({
+            completedShards: 100,
+            totalShards: 100,
+            percent: 100,
+            label: '已全量核查',
+            complete: true,
+            showBar: false,
+        });
     });
 });

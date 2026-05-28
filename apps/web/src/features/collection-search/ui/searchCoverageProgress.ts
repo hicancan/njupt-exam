@@ -5,6 +5,8 @@ export interface SearchCoverageProgress {
     totalShards: number;
     percent: number;
     label: string;
+    complete: boolean;
+    showBar: boolean;
 }
 
 export function getSearchCoverageProgress(coverage: SitegraphSearchCoverage): SearchCoverageProgress {
@@ -22,5 +24,7 @@ export function getSearchCoverageProgress(coverage: SitegraphSearchCoverage): Se
         totalShards,
         percent: coverage.exhaustive_complete ? 100 : percent,
         label: coverage.exhaustive_complete ? '已全量核查' : `已核查 ${percent}%`,
+        complete: coverage.exhaustive_complete,
+        showBar: !coverage.exhaustive_complete,
     };
 }
