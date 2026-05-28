@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { Download, ExternalLink, FileText, Filter } from 'lucide-react';
+import { ChevronDown, ChevronUp, Download, ExternalLink, FileText, Filter, ShieldCheck } from 'lucide-react';
 import {
     RankedSitegraphDocument,
     SitegraphFacet,
@@ -8,7 +8,7 @@ import {
     SitegraphSearchCoverage,
     SitegraphSearchPhase,
 } from '@/shared/lib/contracts';
-import { formatSearchDate } from '@/features/collection-search/lib/searchIndex';
+import { formatSearchDate } from '@njupt-search/search-core';
 
 type FacetFilter = SitegraphFacet | 'all';
 
@@ -178,6 +178,7 @@ export function CollectionSearchSection({
 }: CollectionSearchSectionProps) {
     const trimmedQuery = query.trim();
     const [activeFacet, setActiveFacet] = useState<FacetFilter>('all');
+    const [showDiagnostics, setShowDiagnostics] = useState(false);
     const [visibleState, setVisibleState] = useState({ key: '', count: 20 });
     const availableFacets = useMemo(() => {
         const facets = Array.from(new Set(results.map(document => document.facet)));
@@ -215,19 +216,39 @@ export function CollectionSearchSection({
                 </p>
                 {coverage ? (
                     <div className="mt-3 rounded-md border border-[#dadce0] dark:border-[#3c4043] bg-[#f8fafc] dark:bg-[#2d2e30] px-3 py-2 text-sm text-[#4d5156] dark:text-[#bdc1c6]">
-                        <div className="flex flex-wrap gap-x-4 gap-y-1">
-                            <span>已证明跳过 {coverage.proved_no_match_shards}</span>
-                            <span>已扫描 {coverage.scanned_shards}/{coverage.total_shards}</span>
-                            <span>文档 {coverage.searched_documents}/{coverage.total_documents}</span>
-                            <span>已加载 {formatBytes(coverage.loaded_bytes)}</span>
-                            <span>阶段：{coverage.phase}</span>
-                            <span>字段：{fieldLabel(coverage.searched_fields)}</span>
+                        <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+                            <div className="flex items-center gap-2">
+                                <ShieldCheck size={16} className="shrink-0 text-[#188038] dark:text-[#81c995]" aria-hidden="true" />
+                                <span>
+                                    {coverage.exhaustive_complete
+                                        ? '已完成公开合集全量核查'
+                                        : '正在扩大公开合集核查范围'}
+                                </span>
+                            </div>
+                            <button
+                                type="button"
+                                onClick={() => setShowDiagnostics(value => !value)}
+                                className="inline-flex w-fit items-center gap-1 text-[#1a73e8] dark:text-[#8ab4f8] hover:underline"
+                            >
+                                {showDiagnostics ? <ChevronUp size={15} aria-hidden="true" /> : <ChevronDown size={15} aria-hidden="true" />}
+                                技术细节
+                            </button>
                         </div>
-                        <div className="mt-1 text-[#70757a] dark:text-[#9aa0a6]">
-                            {coverage.exhaustive_complete
-                                ? '已完成公开合集全量索引核查；核查范围扩大已结束，加载更多结果只会展示更多已召回结果。'
-                                : '核查范围扩大中；加载更多结果只会展示更多已召回结果。'}
-                        </div>
+                        {showDiagnostics ? (
+                            <div className="mt-2 border-t border-[#dadce0] dark:border-[#3c4043] pt-2">
+                                <div className="flex flex-wrap gap-x-4 gap-y-1">
+                                    <span>已证明跳过 {coverage.proved_no_match_shards}</span>
+                                    <span>已扫描 {coverage.scanned_shards}/{coverage.total_shards}</span>
+                                    <span>文档 {coverage.searched_documents}/{coverage.total_documents}</span>
+                                    <span>已加载 {formatBytes(coverage.loaded_bytes)}</span>
+                                    <span>阶段：{coverage.phase}</span>
+                                    <span>字段：{fieldLabel(coverage.searched_fields)}</span>
+                                </div>
+                                <div className="mt-1 text-[#70757a] dark:text-[#9aa0a6]">
+                                    加载更多结果只会展示更多已召回结果，不会改变当前核查范围。
+                                </div>
+                            </div>
+                        ) : null}
                     </div>
                 ) : null}
             </div>

@@ -10,7 +10,7 @@ import {
     parseSitegraphInvertedIndex,
     parseSitegraphManifest,
     searchSitegraphProgressively,
-} from '@/features/collection-search/lib/searchIndex';
+} from '@njupt-search/search-core';
 
 type InitMessage = { type: 'init'; requestId: number };
 type QueryMessage = { type: 'query'; requestId: number; query: string; limit?: number };

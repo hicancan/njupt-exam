@@ -1,3 +1,4 @@
+import { Check, Clock, MapPin, User, Users } from 'lucide-react';
 import { Exam } from '@/shared/lib/contracts';
 
 interface ExamCardProps {
@@ -45,9 +46,7 @@ export function ExamCard({ exam, isSelected, onToggle }: ExamCardProps) {
                         }
                     `}>
                         {isSelected && (
-                            <svg className="w-3.5 h-3.5 text-white dark:text-[#202124] draw-check" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
-                                <polyline points="20 6 9 17 4 12"></polyline>
-                            </svg>
+                            <Check className="w-3.5 h-3.5 text-white dark:text-[#202124] draw-check" aria-hidden="true" />
                         )}
                     </div>
                 </div>
@@ -67,7 +66,7 @@ export function ExamCard({ exam, isSelected, onToggle }: ExamCardProps) {
                     <div className="text-[14px] text-[#4d5156] dark:text-[#bdc1c6] space-y-2.5 mt-1">
                         {isValidTime ? (
                             <div className="flex items-start gap-2">
-                                <svg className="w-4 h-4 mt-0.5 shrink-0 text-[#4285f4] dark:text-[#8ab4f8]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                                <Clock className="w-4 h-4 mt-0.5 shrink-0 text-[#4285f4] dark:text-[#8ab4f8]" aria-hidden="true" />
                                 <div>
                                     <span className="font-medium text-[#202124] dark:text-[#e8eaed]">{formatDisplayDate(exam.start_timestamp)}</span> 
                                     <span className="mx-1 text-[#70757a]">至</span> 
@@ -79,13 +78,13 @@ export function ExamCard({ exam, isSelected, onToggle }: ExamCardProps) {
                             </div>
                         ) : (
                             <div className="flex items-center gap-2 text-[#d93025] dark:text-[#f28b82]">
-                                <svg className="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                                <Clock className="w-4 h-4 shrink-0" aria-hidden="true" />
                                 <span><span className="font-medium">时间待定:</span> {exam.raw_time || '未发布'}</span>
                             </div>
                         )}
                         
                         <div className="flex items-start gap-2">
-                            <svg className="w-4 h-4 mt-0.5 shrink-0 text-[#ea4335] dark:text-[#f28b82]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
+                            <MapPin className="w-4 h-4 mt-0.5 shrink-0 text-[#ea4335] dark:text-[#f28b82]" aria-hidden="true" />
                             <span className="font-medium text-[#202124] dark:text-[#e8eaed]">{exam.location || '待定'}</span>
                         </div>
                         
@@ -96,11 +95,11 @@ export function ExamCard({ exam, isSelected, onToggle }: ExamCardProps) {
                                 </span>
                             )}
                             <span className="flex items-center gap-1.5">
-                                <svg className="w-4 h-4 text-[#34a853] dark:text-[#81c995]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>
+                                <User className="w-4 h-4 text-[#34a853] dark:text-[#81c995]" aria-hidden="true" />
                                 {exam.teacher || '未知'}
                             </span>
                             <span className="flex items-center gap-1.5">
-                                <svg className="w-4 h-4 text-[#fbbc04] dark:text-[#fdd663]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" /></svg>
+                                <Users className="w-4 h-4 text-[#fbbc04] dark:text-[#fdd663]" aria-hidden="true" />
                                 {exam.count ?? '-'} 人
                             </span>
                             {exam.notes && <span className="italic">注: {exam.notes}</span>}

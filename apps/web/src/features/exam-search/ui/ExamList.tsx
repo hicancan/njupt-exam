@@ -1,4 +1,5 @@
 
+import { ChevronRight } from 'lucide-react';
 import { APP_CONFIG } from '@/app/config/constants';
 
 interface ExamListProps {
@@ -24,9 +25,7 @@ export function ExamList({ classes, onClassClick }: ExamListProps) {
                         className="px-5 py-2.5 bg-white dark:bg-[#202124] border border-[#dadce0] dark:border-[#5f6368] rounded-full text-[15px] text-[#1a0dab] dark:text-[#8ab4f8] hover:bg-[#f8f9fa] dark:hover:bg-[#303134] hover:border-[#d2e3fc] dark:hover:border-[#8ab4f8]/30 transition-all shadow-sm hover:shadow active:scale-95 flex items-center gap-2"
                     >
                         <span>{cls}</span>
-                        <svg className="w-3.5 h-3.5 opacity-60" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
-                        </svg>
+                        <ChevronRight className="w-3.5 h-3.5 opacity-60" aria-hidden="true" />
                     </button>
                 ))}
             </div>

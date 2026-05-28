@@ -2,61 +2,46 @@
 
 ## Repository Role
 
-`njupt-search` is the downstream public search product in the three-repository ecosystem:
+`njupt-search` is the downstream public search product for NJUPT student-facing information lookup. It consumes audited source packages and generated exam data, compiles browser runtime artifacts, and owns the React/PWA user experience.
 
-```text
-static-site-graph -> njupt-site-graph -> njupt-search
-```
-
-This repository consumes audited source packages and generated exam data, compiles browser runtime artifacts, and owns the React/PWA user experience. It must not absorb upstream crawling, source discovery, or source-truth audit ownership from `static-site-graph` or `njupt-site-graph`.
-
-## Current Milestone Discipline
-
-Follow `docs/goals/njupt-search-terminal-goal.md` milestone by milestone.
-
-- Do not start a later milestone until the current milestone has been reported and accepted.
-- Preserve user-visible behavior unless an ADR explicitly records the behavior change; the generated artifact URL migration is now ADR-recorded and uses only the terminal `generated` layout.
-- Do not mark a milestone complete unless the required local checks, browser acceptance, and GitHub Actions/cloud CI checks pass or are explicitly blocked with evidence.
-- Do not create empty target directories for architecture appearance only.
-- Do not add a Codex GitHub Action, Codex review workflow, or `.github/codex/prompts`.
+Do not move upstream crawling, source discovery, or source-truth audit ownership into this repository. Do not reintroduce LLM search, task-frame search, provider fields, server-side runtime search, or obsolete semantic production fields.
 
 ## Product Boundaries
 
-- Use `collection` as the product abstraction. Current production may compile only JWC, but target contracts must allow `collection_id: njupt-public` with multiple future source packages.
-- Keep source packages separate from vertical product experiences. `jwc` is a source package; `exam` is a product vertical.
-- Production non-exam search remains audited source package -> collection compiler -> hash-addressed static artifacts -> browser Worker progressive static search -> React/PWA UI.
-- Do not reintroduce LLM search, task-frame search, provider fields, server-side runtime search, or obsolete semantic production fields.
+- Use `collection` as the product abstraction. The current generated public collection is `njupt-public`.
+- `jwc` is a source package id, not the product boundary.
+- `exam` is a product vertical with generated data under `apps/web/public/generated/exam/`.
 - Generated JSON artifacts are compiled runtime data. Update generators or source inputs; do not manually edit generated artifacts.
+- The old `docs/` tree is ignored and must not drive implementation decisions. Use current code, tests, generated manifests, workflows, and `tools/search-eval/queries/representative_queries.json` as the authoritative project state.
 
 ## Local Commands
 
-Use PowerShell commands from the repository root.
+Run from the repository root in PowerShell:
 
 ```powershell
 npm test
 npm run typecheck
-npm run build
 npm run lint
+npm run build
 uv run python -m pytest
+uv run python tools\quality-gates\scripts\validate_search_index.py
+uv run python tools\quality-gates\scripts\check_public_artifact_sizes.py
+uv run python -m njupt_search_eval run-smoke-queries --collection apps\web\public\generated\collections\njupt-public
 ```
 
-Current generated-artifact quality commands:
+Current generated-artifact rebuild path:
 
 ```powershell
 uv run python -m njupt_search_indexer validate --source-package <path-to-njupt-site-graph-jwc-index> --skip-output
 uv run python -m njupt_search_indexer build --collection-id njupt-public --source-package <path-to-njupt-site-graph-jwc-index> --out apps\web\public\generated\collections\njupt-public
 uv run python -m njupt_search_indexer validate --source-package <path-to-njupt-site-graph-jwc-index> --collection apps\web\public\generated\collections\njupt-public
-uv run python tools\quality-gates\scripts\validate_search_index.py
-uv run python tools\quality-gates\scripts\check_no_obsolete_fields.py
-uv run python tools\quality-gates\scripts\check_public_artifact_sizes.py
-uv run python -m njupt_search_eval run-smoke-queries --collection apps\web\public\generated\collections\njupt-public
 ```
 
 ## Browser Acceptance
 
-Run browser acceptance for milestones touching routing, React pages, search UI, exam UI/data, Worker behavior, public paths, PWA caching, generated artifact layout, deployment output, or final acceptance.
+Run browser acceptance for changes touching routing, React pages, search UI, exam UI/data, Worker behavior, public paths, PWA caching, generated artifact layout, deployment output, or final release acceptance.
 
-Minimum queries:
+Minimum manual queries:
 
 ```text
 校历
@@ -64,6 +49,5 @@ Minimum queries:
 教务管理系统
 学生相关文件及表格
 xlsx
+B250403
 ```
-
-Use the full canonical representative query list from `docs/goals/njupt-search-terminal-goal.md` for smoke tests and docs updates. Do not duplicate it independently in production code.

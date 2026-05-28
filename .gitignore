@@ -59,19 +59,7 @@ project_files_list_utf8.txt
 project-inventory.txt
 tracked-files.txt
 review-source-files.txt
-/docs/*
-!/docs/architecture/
-!/docs/architecture/**
-!/docs/adr/
-!/docs/adr/**
-!/docs/codex/
-!/docs/codex/**
-!/docs/goals/
-!/docs/goals/**
-!/docs/source-audit/
-!/docs/source-audit/**
-!/docs/product/
-!/docs/product/**
-!/docs/operations/
-!/docs/operations/**
-/docs/goals/njupt-search-terminal-goal-final.md
+
+# Local/legacy documentation
+/doc/
+/docs/

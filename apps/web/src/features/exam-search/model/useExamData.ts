@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { APP_CONFIG } from '@/app/config/constants';
-import { assertManifestMatchesExams, parseExamData, parseManifest } from '@/features/exam-search/lib/examDataContract';
+import { assertManifestMatchesExams, parseExamData, parseManifest } from '@njupt-search/exam-core/contract';
 import { fetchJson } from '@/shared/lib/fetch';
 import { Exam, Manifest } from '@/shared/lib/contracts';
 

@@ -1,10 +1,15 @@
 import { useState } from 'react';
+import { Download, Share2 } from 'lucide-react';
 import { buildExamCalendarFilename } from '@/features/exam-search/lib/downloadFilename';
-import { generateICSContent } from '@/features/exam-search/lib/icsGenerator';
+import { generateICSContent } from '@njupt-search/exam-core/calendar';
 import { Exam } from '@/shared/lib/contracts';
 import { ExamCard } from './ExamCard';
 import { ReminderSettings } from './ReminderSettings';
 
+type Notice = {
+    tone: 'success' | 'error';
+    message: string;
+} | null;
 
 interface ExamDetailProps {
     className: string;
@@ -25,24 +30,37 @@ export function ExamDetail({
     selectedIds,
     onToggleSelection,
     reminders,
-    onRemindersChange
+    onRemindersChange,
+    sourceUrl,
+    sourceTitle,
+    generatedAt,
+    totalRecords,
 }: ExamDetailProps) {
     const [copyState, setCopyState] = useState<boolean>(false);
+    const [notice, setNotice] = useState<Notice>(null);
+
+    const showNotice = (nextNotice: NonNullable<Notice>) => {
+        setNotice(nextNotice);
+        window.setTimeout(() => {
+            setNotice(current => current?.message === nextNotice.message ? null : current);
+        }, 3000);
+    };
 
     const copyShareLink = () => {
         const url = window.location.href;
         if (!navigator.clipboard) {
-            alert('复制失败，请手动复制浏览器地址栏链接');
+            showNotice({ tone: 'error', message: '复制失败，请手动复制浏览器地址栏链接' });
             return;
         }
 
         navigator.clipboard.writeText(url)
             .then(() => {
                 setCopyState(true);
+                showNotice({ tone: 'success', message: '链接已复制' });
                 setTimeout(() => setCopyState(false), 2000);
             })
             .catch(() => {
-                alert('复制失败，请手动复制浏览器地址栏链接');
+                showNotice({ tone: 'error', message: '复制失败，请手动复制浏览器地址栏链接' });
             });
     };
 
@@ -51,7 +69,7 @@ export function ExamDetail({
         const validExams = selectedExams.filter(e => e.start_timestamp);
 
         if (validExams.length === 0) {
-            alert('请至少勾选一门包含有效时间的考试');
+            showNotice({ tone: 'error', message: '请至少勾选一门包含有效时间的考试' });
             return;
         }
 
@@ -68,7 +86,7 @@ export function ExamDetail({
             window.setTimeout(() => URL.revokeObjectURL(objectUrl), 0);
         } catch (err) {
             console.error('ICS generation failed:', err);
-            alert('日历文件生成失败，请稍后重试或联系开发者');
+            showNotice({ tone: 'error', message: '日历文件生成失败，请稍后重试或联系开发者' });
         }
     };
 
@@ -87,11 +105,22 @@ export function ExamDetail({
                             type="button"
                             className={`flex items-center gap-1 hover:underline transition-colors ${copyState ? 'text-[#34A853]' : 'text-[var(--color-google-blue)] dark:text-[var(--color-google-blue-dark)]'}`}
                         >
-                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"></path>
-                            </svg>
+                            <Share2 className="w-4 h-4" aria-hidden="true" />
                             {copyState ? '链接已复制' : '分享此页面'}
                         </button>
+                    </div>
+                    <div className="mt-3 flex flex-wrap items-center gap-x-3 gap-y-1 text-[13px] text-[#70757a] dark:text-[#9aa0a6]">
+                        {sourceTitle ? (
+                            sourceUrl ? (
+                                <a href={sourceUrl} target="_blank" rel="noopener noreferrer" className="text-[#1a73e8] dark:text-[#8ab4f8] hover:underline">
+                                    来源：{sourceTitle}
+                                </a>
+                            ) : (
+                                <span>来源：{sourceTitle}</span>
+                            )
+                        ) : null}
+                        {generatedAt ? <span>更新：{new Date(generatedAt).toLocaleString('zh-CN')}</span> : null}
+                        {totalRecords ? <span>数据记录：{totalRecords}</span> : null}
                     </div>
                 </div>
                 <button
@@ -104,12 +133,20 @@ export function ExamDetail({
                             : 'bg-[#f8f9fa] dark:bg-[#303134] text-[#9aa0a6] cursor-not-allowed border border-[#dadce0] dark:border-[#3c4043]'}
                     `}
                 >
-                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
-                    </svg>
+                    <Download className="w-4 h-4" aria-hidden="true" />
                     导出日历 (.ics)
                 </button>
             </div>
+
+            {notice ? (
+                <div className={`mb-4 rounded-md border px-4 py-2 text-sm ${
+                    notice.tone === 'success'
+                        ? 'border-[#b7e1cd] bg-[#e6f4ea] text-[#137333] dark:border-[#1e8e3e] dark:bg-[#12351f] dark:text-[#81c995]'
+                        : 'border-[#f4c7c3] bg-[#fce8e6] text-[#b3261e] dark:border-[#5f2b26] dark:bg-[#2b1715] dark:text-[#f28b82]'
+                }`}>
+                    {notice.message}
+                </div>
+            ) : null}
 
             <div className="mb-6 bg-[#f8f9fa] dark:bg-[#202124] border border-[#dadce0] dark:border-[#3c4043] rounded-lg p-4">
                 <ReminderSettings selected={reminders} onChange={onRemindersChange} />

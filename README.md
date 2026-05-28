@@ -66,7 +66,6 @@ uv run python -m njupt_search_indexer validate --source-package D:\code\github\h
 uv run python -m njupt_search_indexer build --collection-id njupt-public --source-package D:\code\github\hicancan\njupt-site-graph\data\sites\jwc\index --out apps\web\public\generated\collections\njupt-public
 uv run python -m njupt_search_indexer validate --source-package D:\code\github\hicancan\njupt-site-graph\data\sites\jwc\index --collection apps\web\public\generated\collections\njupt-public
 uv run python tools\quality-gates\scripts\validate_search_index.py
-uv run python tools\quality-gates\scripts\check_no_obsolete_fields.py
 uv run python tools\quality-gates\scripts\check_public_artifact_sizes.py
 uv run python -m njupt_search_eval run-smoke-queries --collection apps\web\public\generated\collections\njupt-public
 uv run python -m pytest
