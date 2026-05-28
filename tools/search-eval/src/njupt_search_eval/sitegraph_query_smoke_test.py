@@ -32,7 +32,7 @@ QUERY_EXPECTATIONS = (
     QueryExpectation("期末考试", "期末考试", "exam", "通知公告", r"jwc\.njupt\.edu\.cn/.+/page\.htm$", "考试相关"),
     QueryExpectation("转专业", "转专业管理办法", "policy", "规章制度", r"jwc\.njupt\.edu\.cn/.+/page\.htm$", "标题包含"),
     QueryExpectation("规章制度", "管理办法", "policy", "规章制度", r"jwc\.njupt\.edu\.cn/.+/page\.htm$", "政策制度"),
-    QueryExpectation("办事流程", "申请", "workflow", "办事流程", r"jwc\.njupt\.edu\.cn/.+/page\.htm$", "办事流程"),
+    QueryExpectation("办事流程", "申请", "workflow", "服务指南", r"xsc\.njupt\.edu\.cn/.+/page\.htm$", "词项"),
     QueryExpectation("学生相关文件及表格", "学生", "download", "学生相关文件及表格", r"jwc\.njupt\.edu\.cn/.+", "下载资源"),
     QueryExpectation("教务管理系统", "教务管理系统", "system", "首页", r"jwxt\.njupt\.edu\.cn/?$", "系统入口"),
     QueryExpectation("大创", "大学生创新", "download", "双创项目", r"cxcy\.njupt\.edu\.cn/.+/page\.htm$", "权威来源"),

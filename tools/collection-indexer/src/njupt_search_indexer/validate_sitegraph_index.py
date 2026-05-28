@@ -7,17 +7,8 @@ import sys
 from pathlib import Path
 from typing import Any
 
-from .build_sitegraph_index import (
-    BASE_DIR,
-    DEFAULT_SITEGRAPH_INDEXES,
-    DEFAULT_SITEGRAPH_INDEX,
-    OBSOLETE_INDEX_DIR,
-    PUBLIC_INDEX_DIR,
-    PUBLIC_ROOT,
-    aggregate_counts,
-    package_source_id,
-    validate_sitegraph_package,
-)
+from . import build_sitegraph_index as build_index
+from .build_sitegraph_index import BASE_DIR, aggregate_counts, package_source_id, validate_sitegraph_package
 
 
 REQUIRED_QUERIES = (
@@ -67,7 +58,7 @@ def load_full_documents(manifest: dict[str, Any]) -> list[dict[str, Any]]:
         for field in ("shard_id", "facet_range", "section_range", "year_range", "hash_bucket", "sha256", "bytes"):
             if field not in shard:
                 fail(f"full shard missing {field}: {shard_rel}")
-        shard_path = PUBLIC_ROOT / shard_rel
+        shard_path = build_index.PUBLIC_ROOT / shard_rel
         if not shard_path.exists():
             fail(f"full shard missing: {shard_path}")
         payload = read_json(shard_path)
@@ -89,7 +80,7 @@ def artifact_path(manifest: dict[str, Any], name: str) -> Path:
         fail(f"manifest artifact path must be public-relative, got {name}: {path}")
     if name != "manifest" and not re.search(r"\.[0-9a-f]{16}\.json$", path):
         fail(f"artifact {name} must use a content hash filename: {path}")
-    return PUBLIC_ROOT / path
+    return build_index.PUBLIC_ROOT / path
 
 
 MODEL_FIELD_PREFIX = "".join(["l", "l", "m"])
@@ -129,11 +120,11 @@ def validate_generated_index(packages: list[dict[str, Any]] | dict[str, Any]) ->
         for package in packages
         for item in package["detail_pages"]
     }
-    manifest_path = PUBLIC_INDEX_DIR / "manifest.json"
+    manifest_path = build_index.PUBLIC_INDEX_DIR / "manifest.json"
     if not manifest_path.exists():
         fail(f"required generated artifact missing: manifest: {manifest_path}")
-    if OBSOLETE_INDEX_DIR.exists():
-        fail(f"obsolete index directory must be removed: {OBSOLETE_INDEX_DIR}")
+    if build_index.OBSOLETE_INDEX_DIR.exists():
+        fail(f"obsolete index directory must be removed: {build_index.OBSOLETE_INDEX_DIR}")
     for stale in (
         "documents.json",
         "task_frames.json",
@@ -145,8 +136,8 @@ def validate_generated_index(packages: list[dict[str, Any]] | dict[str, Any]) ->
         "external_index.json",
         "query_aliases.json",
     ):
-        if (PUBLIC_INDEX_DIR / stale).exists():
-            fail(f"{PUBLIC_INDEX_DIR}/{stale} must not exist in the hash-addressed contract")
+        if (build_index.PUBLIC_INDEX_DIR / stale).exists():
+            fail(f"{build_index.PUBLIC_INDEX_DIR}/{stale} must not exist in the hash-addressed contract")
 
     manifest = read_json(manifest_path)
     if not isinstance(manifest, dict):
@@ -391,7 +382,7 @@ def main() -> None:
     from .build_sitegraph_index import configure_collection_output
 
     configure_collection_output(output_dir=args.collection)
-    source_packages = args.source_packages or list(DEFAULT_SITEGRAPH_INDEXES)
+    source_packages = args.source_packages or list(build_index.DEFAULT_SITEGRAPH_INDEXES)
     resolved_packages = [path.resolve() for path in source_packages]
     packages = [validate_sitegraph_package(path) for path in resolved_packages]
     summary: dict[str, Any] = {

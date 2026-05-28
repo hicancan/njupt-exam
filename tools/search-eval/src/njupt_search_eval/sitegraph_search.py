@@ -382,6 +382,9 @@ def rank_document(document: dict[str, Any], query: str, terms: list[str], light_
     if profile["intent"] == "academic_policy" and is_short_landing_page(document, normalized_query, title):
         score -= float(SEARCH_INTENT_CONFIG["ranking"]["short_landing_page_penalty"])
         reasons.append("短入口降权")
+    if profile["intent"] == "form_download" and document.get("record_type") == "external":
+        score -= float(SEARCH_INTENT_CONFIG["ranking"]["form_download_external_penalty"])
+        reasons.append("外链非下载降权")
     if profile["intent"] == "scholarship_aid" and "学业困难" in title and "家庭经济困难" not in title:
         score -= float(SEARCH_INTENT_CONFIG["ranking"]["scholarship_non_financial_hardship_penalty"])
         reasons.append("非资助困难降权")

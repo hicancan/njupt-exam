@@ -12,9 +12,9 @@
     "audited_at": "2026-05-28",
     "raw_source_records": {
       "jwc": {
-        "detail_pages": 6884,
-        "attachments": 7905,
-        "external_links": 426,
+        "detail_pages": 6941,
+        "attachments": 7908,
+        "external_links": 739,
         "dominant_student_intents": ["exam_schedule", "form_download", "course_grade_credit", "academic_policy"]
       },
       "xsc": {
@@ -25,14 +25,14 @@
       },
       "cxcy": {
         "detail_pages": 612,
-        "attachments": 205,
+        "attachments": 204,
         "external_links": 60,
         "dominant_student_intents": ["innovation_entrepreneurship", "competition_registration", "innovation_project", "cxcy_system"]
       }
     },
     "runtime_collection": {
-      "documents": 9888,
-      "shards": 598
+      "documents": 10258,
+      "shards": 603
     },
     "ranking_implications": [
       "JWC volume and attachments can dominate generic lexical scoring, so XSC/CXCY task authority must be explicit.",

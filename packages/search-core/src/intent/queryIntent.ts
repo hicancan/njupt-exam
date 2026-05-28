@@ -104,6 +104,7 @@ interface SearchIntentConfig {
             }>;
         };
         short_landing_page_penalty: number;
+        form_download_external_penalty: number;
         scholarship_non_financial_hardship_penalty: number;
     };
 }

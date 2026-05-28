@@ -196,6 +196,10 @@ export const rankSitegraphDocument = (
         score -= SEARCH_INTENT_CONFIG.ranking.short_landing_page_penalty;
         reasons.push('短入口降权');
     }
+    if (profile.intent === 'form_download' && document.record_type === 'external') {
+        score -= SEARCH_INTENT_CONFIG.ranking.form_download_external_penalty;
+        reasons.push('外链非下载降权');
+    }
     if (profile.intent === 'scholarship_aid' && title.includes(normalize('学业困难')) && !title.includes(normalize('家庭经济困难'))) {
         score -= SEARCH_INTENT_CONFIG.ranking.scholarship_non_financial_hardship_penalty;
         reasons.push('非资助困难降权');

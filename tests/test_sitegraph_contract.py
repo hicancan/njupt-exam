@@ -42,10 +42,10 @@ REQUIRED_QUERIES = [
 
 EXPECTED_SOURCE_COUNTS = {
     "jwc": {
-        "detail_pages": 6884,
-        "attachments": 7905,
-        "external_links": 426,
-        "edges": 16311,
+        "detail_pages": 6941,
+        "attachments": 7908,
+        "external_links": 739,
+        "edges": 16314,
     },
     "xsc": {
         "detail_pages": 1589,
@@ -55,9 +55,9 @@ EXPECTED_SOURCE_COUNTS = {
     },
     "cxcy": {
         "detail_pages": 612,
-        "attachments": 205,
+        "attachments": 204,
         "external_links": 60,
-        "edges": 1101,
+        "edges": 1085,
     },
 }
 
