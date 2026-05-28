@@ -11,6 +11,7 @@ export function ReminderSettings({ selected, onChange }: ReminderSettingsProps) 
         { value: 30, label: '30分钟前' },
         { value: 60, label: '1小时前' },
         { value: 1440, label: '1天前' },
+        { value: 2880, label: '2天前' },
     ];
 
     const toggleOption = (val: number) => {

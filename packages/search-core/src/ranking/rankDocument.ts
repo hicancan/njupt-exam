@@ -60,6 +60,7 @@ const stalePenalty = (document: SitegraphFullDocument, freshnessMode: ReturnType
     if (!value) return 0;
     const days = ageDays(value);
     for (const threshold of penaltyConfig.thresholds) {
+        if (threshold.modes && !threshold.modes.includes(freshnessMode)) continue;
         if (days > threshold.older_than_days) return threshold.score;
     }
     return 0;

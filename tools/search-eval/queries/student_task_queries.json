@@ -159,6 +159,10 @@
           "priority": "p1"
         },
         {
+          "query": "普通话考试",
+          "priority": "p1"
+        },
+        {
           "query": "B250403",
           "priority": "p0",
           "expected_vertical": "exam",

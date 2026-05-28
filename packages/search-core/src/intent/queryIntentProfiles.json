@@ -35,7 +35,7 @@
         "intent": "exam_schedule",
         "authority_sources": ["jwc"],
         "freshness_mode": "current_term",
-        "match_any": ["期末考试", "考试安排", "补考", "缓考", "重修考试", "慕课考试", "考场", "考试周", "四六级"]
+        "match_any": ["期末考试", "考试安排", "补考", "缓考", "重修考试", "慕课考试", "考场", "考试周", "四六级", "口语考试", "计算机等级", "普通话", "普通话考试"]
       },
       {
         "intent": "academic_calendar",
@@ -76,7 +76,7 @@
       {
         "intent": "innovation_entrepreneurship",
         "authority_sources": ["cxcy"],
-        "freshness_mode": "current_notice",
+        "freshness_mode": "current_term",
         "match_any": ["大创", "创新创业", "双创", "互联网+", "挑战杯", "竞赛报名", "竞赛", "创业", "学科竞赛"]
       }
     ],
@@ -111,7 +111,7 @@
     "authority": {
       "focused_source_boost": 1900,
       "broad_source_boost": 260,
-      "single_source_miss_penalty": 650
+      "single_source_miss_penalty": 1200
     },
     "facet_boosts": [
       {
@@ -191,6 +191,16 @@
         {
           "older_than_days": 1460,
           "score": 3000
+        },
+        {
+          "older_than_days": 365,
+          "score": 1800,
+          "modes": ["current_term"]
+        },
+        {
+          "older_than_days": 180,
+          "score": 650,
+          "modes": ["current_term"]
         }
       ]
     },

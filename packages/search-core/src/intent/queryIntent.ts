@@ -100,6 +100,7 @@ interface SearchIntentConfig {
             thresholds: Array<{
                 older_than_days: number;
                 score: number;
+                modes?: FreshnessMode[];
             }>;
         };
         short_landing_page_penalty: number;

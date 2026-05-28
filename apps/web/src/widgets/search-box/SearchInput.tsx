@@ -2,11 +2,11 @@ import { useEffect, useRef, useState } from 'react';
 import { Search, X } from 'lucide-react';
 
 const SEARCH_SUGGESTIONS = [
+    '搜考试安排',
     '搜校历',
-    '搜期末考试',
     '搜四六级',
     '搜计算机等级',
-    '搜口语考试',
+    '搜普通话考试',
     '搜竞赛报名',
     '搜奖学金',
     '搜大创',

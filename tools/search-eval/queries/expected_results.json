@@ -36,7 +36,7 @@
       "top1": {
         "source_id": "cxcy",
         "title_contains_any": ["竞赛", "大赛", "创新创业"],
-        "min_effective_date": "2025-01-01"
+        "min_effective_date": "2026-01-01"
       }
     },
     {
@@ -75,6 +75,15 @@
         "source_id": "cxcy",
         "title_contains_any": ["竞赛"],
         "min_effective_date": "2025-01-01"
+      }
+    },
+    {
+      "query": "普通话考试",
+      "top1": {
+        "source_id": "jwc",
+        "facet": "exam",
+        "title_contains_any": ["普通话"],
+        "min_effective_date": "2026-01-01"
       }
     },
     {

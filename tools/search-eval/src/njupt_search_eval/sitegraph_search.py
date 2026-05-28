@@ -266,6 +266,9 @@ def stale_penalty(document: dict[str, Any], mode: str) -> float:
         return 0.0
     days = age_days(value)
     for threshold in config["thresholds"]:
+        threshold_modes = threshold.get("modes")
+        if isinstance(threshold_modes, list) and mode not in set(str(item) for item in threshold_modes):
+            continue
         if days > float(threshold["older_than_days"]):
             return float(threshold["score"])
     return 0.0
