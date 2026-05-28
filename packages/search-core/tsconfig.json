@@ -16,6 +16,13 @@
     "forceConsistentCasingInFileNames": true,
     "isolatedModules": true,
     "moduleDetection": "force",
+    "baseUrl": "../..",
+    "paths": {
+      "@njupt-search/contracts": ["packages/contracts/src/index.ts"],
+      "@njupt-search/contracts/exam": ["packages/contracts/src/exam/index.ts"],
+      "@njupt-search/contracts/search-index": ["packages/contracts/src/search-index/index.ts"],
+      "@njupt-search/contracts/source-sitegraph": ["packages/contracts/src/source-sitegraph/index.ts"]
+    },
     "noEmit": true
   },
   "include": ["src", "tests", "../contracts/src"]

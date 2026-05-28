@@ -82,7 +82,7 @@ export function useProgressiveSearch(
                     stats: null,
                     coverage: message.coverage || null,
                     phase: 'error',
-                    error: message.message || '搜索 JWC sitegraph 失败',
+                    error: message.message || '搜索公开教务合集失败',
                     settled: true
                 });
             }

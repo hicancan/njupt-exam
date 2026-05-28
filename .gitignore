@@ -32,6 +32,7 @@ coverage/
 eval/reports/eval-*.json
 # Temp files
 *.tmp
+cache/
 # Generated files
 project_structure.txt
 project_files.txt
@@ -55,6 +56,9 @@ project_structure_utf8.txt
 project_structure_v2.txt
 *.bak
 project_files_list_utf8.txt
+project-inventory.txt
+tracked-files.txt
+review-source-files.txt
 /docs/*
 !/docs/architecture/
 !/docs/architecture/**
@@ -68,4 +72,6 @@ project_files_list_utf8.txt
 !/docs/source-audit/**
 !/docs/product/
 !/docs/product/**
+!/docs/operations/
+!/docs/operations/**
 /docs/goals/njupt-search-terminal-goal-final.md

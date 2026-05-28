@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import type { Exam } from '../../contracts/src/exam';
+import type { Exam } from '@njupt-search/contracts/exam';
 import { generateICSContent } from '../src/calendar';
 
 const baseExam: Exam = {

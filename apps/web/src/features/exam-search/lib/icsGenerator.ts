@@ -1,1 +1,1 @@
-export * from '../../../../../../packages/exam-core/src/calendar';
+export * from '@njupt-search/exam-core/calendar';

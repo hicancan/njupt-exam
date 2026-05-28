@@ -48,7 +48,7 @@ SIZE_BUDGETS = {
     "full_shard_count": 650,
     "max_full_shard_bytes": 512 * 1024,
     "avg_full_shard_bytes": 96 * 1024,
-    "max_representative_query_shards": 32,
+    "max_candidate_shards_per_query": 32,
 }
 
 
@@ -91,6 +91,9 @@ def validate_quality() -> dict[str, Any]:
                 "query": expectation.query,
                 "quick_result_count": stats.get("quick_result_count", 0),
                 "loaded_shard_count": stats.get("loaded_shard_count", 0),
+                "candidate_shard_count": stats.get("candidate_shard_count", 0),
+                "scanned_shards": stats.get("scanned_shards", 0),
+                "proved_no_match_shards": stats.get("proved_no_match_shards", 0),
                 "candidate_count": stats.get("candidate_count", 0),
                 "used_body_index": stats.get("used_body_index", False),
                 "exhaustive_complete": (stats.get("coverage") or {}).get("exhaustive_complete", False),
@@ -124,13 +127,16 @@ def validate_quality() -> dict[str, Any]:
         covered_shards = int(coverage.get("proved_no_match_shards", 0)) + int(coverage.get("scanned_shards", 0))
         if covered_shards != int(coverage.get("total_shards", -2)):
             failures[f"{expectation.query}:shard_coverage"] = coverage
-        if int(stats.get("candidate_shard_count", 0)) > SIZE_BUDGETS["max_representative_query_shards"]:
+        if int(stats.get("candidate_shard_count", 0)) > SIZE_BUDGETS["max_candidate_shards_per_query"]:
             failures[f"{expectation.query}:candidate_shards"] = stats
     if failures:
         fail("representative query quality checks failed", failures)
     return {
         "queries": query_summaries,
+        "max_candidate_shards": max((int(item["candidate_shard_count"]) for item in query_summaries), default=0),
         "max_loaded_shards": max((int(item["loaded_shard_count"]) for item in query_summaries), default=0),
+        "max_scanned_shards": max((int(item["scanned_shards"]) for item in query_summaries), default=0),
+        "note": "candidate_shards is the bounded hydration cost; loaded/scanned shards include exhaustive verification coverage.",
     }
 
 

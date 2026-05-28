@@ -32,6 +32,33 @@
         "paths": {
             "@/*": [
                 "./apps/web/src/*"
+            ],
+            "@njupt-search/contracts": [
+                "./packages/contracts/src/index.ts"
+            ],
+            "@njupt-search/contracts/exam": [
+                "./packages/contracts/src/exam/index.ts"
+            ],
+            "@njupt-search/contracts/search-index": [
+                "./packages/contracts/src/search-index/index.ts"
+            ],
+            "@njupt-search/contracts/source-sitegraph": [
+                "./packages/contracts/src/source-sitegraph/index.ts"
+            ],
+            "@njupt-search/search-core": [
+                "./packages/search-core/src/index.ts"
+            ],
+            "@njupt-search/exam-core": [
+                "./packages/exam-core/src/index.ts"
+            ],
+            "@njupt-search/exam-core/calendar": [
+                "./packages/exam-core/src/calendar/index.ts"
+            ],
+            "@njupt-search/exam-core/contract": [
+                "./packages/exam-core/src/contract/index.ts"
+            ],
+            "@njupt-search/exam-core/search": [
+                "./packages/exam-core/src/search/index.ts"
             ]
         }
     },

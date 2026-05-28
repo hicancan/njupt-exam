@@ -20,6 +20,7 @@ type IncomingMessage = InitMessage | QueryMessage | CancelMessage;
 let manifest: SitegraphSearchManifest | null = null;
 let bundle: SitegraphIndexBundle | null = null;
 let activeController: AbortController | null = null;
+let activeRequestId: number | null = null;
 let lastCoverage: SitegraphSearchCoverage | null = null;
 
 const post = (payload: Record<string, unknown>) => {
@@ -35,6 +36,7 @@ const init = async (requestId: number) => {
     activeController?.abort();
     const controller = new AbortController();
     activeController = controller;
+    activeRequestId = requestId;
     const manifestPath = publicPath(APP_CONFIG.DATA_URLS.SEARCH_MANIFEST);
     const manifestPayload = await fetchJson(manifestPath, controller.signal, 'manifest');
     manifest = parseSitegraphManifest(manifestPayload, manifestPath);
@@ -65,6 +67,7 @@ const query = async (requestId: number, queryText: string, limit = 30) => {
     activeController?.abort();
     const controller = new AbortController();
     activeController = controller;
+    activeRequestId = requestId;
     await searchSitegraphProgressively(bundle, queryText, controller.signal, event => {
         lastCoverage = event.coverage;
         post({ ...event, requestId });
@@ -74,7 +77,11 @@ const query = async (requestId: number, queryText: string, limit = 30) => {
 self.onmessage = (event: MessageEvent<IncomingMessage>) => {
     const message = event.data;
     if (message.type === 'cancel') {
-        activeController?.abort();
+        if (message.requestId === activeRequestId) {
+            activeController?.abort();
+            activeController = null;
+            activeRequestId = null;
+        }
         post({
             type: 'cancelled',
             requestId: message.requestId,

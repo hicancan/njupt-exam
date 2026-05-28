@@ -27,13 +27,23 @@ export const SitegraphInvertedIndexSchema = z.object({
 }).passthrough();
 export type SitegraphInvertedIndex = z.infer<typeof SitegraphInvertedIndexSchema>;
 
+export const CollectionSourceSchema = z.object({
+    source_id: z.string().min(1),
+    source_kind: z.literal('sitegraph'),
+    artifact_root: z.string().min(1),
+    upstream_generated_at: z.string().min(1).nullable().optional(),
+    display_name: z.string().min(1).optional()
+}).passthrough();
+export type CollectionSource = z.infer<typeof CollectionSourceSchema>;
+
 export const SitegraphSearchManifestSchema = z.object({
     generated_at: z.string().min(1),
     strategy: z.literal('progressive-verifiable-static-search'),
     producer_repo: z.string().min(1),
     producer_ref: z.string().min(1),
-    site_id: z.literal('jwc'),
+    site_id: z.string().min(1),
     collection_id: z.literal('njupt-public'),
+    sources: z.array(CollectionSourceSchema).min(1),
     artifact_path: z.string().min(1),
     upstream_generated_at: z.string().min(1),
     truth_counts: z.record(z.string(), z.number()),

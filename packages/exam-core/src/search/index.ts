@@ -1,7 +1,7 @@
 import type {
     Exam,
     SearchResult
-} from '../../../contracts/src/exam';
+} from '@njupt-search/contracts/exam';
 
 const CLASS_LOOKUP_PATTERN = /^[BFPQY]\d{2,}(?:\([A-Z0-9]+\))?$/;
 const COMPLETE_CLASS_PATTERN = /^[BFPQY]\d{6}(?:\([A-Z0-9]+\))?$/;

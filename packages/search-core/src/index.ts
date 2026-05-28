@@ -17,7 +17,7 @@ import {
     SitegraphSearchPhase,
     SitegraphSearchManifest,
     SitegraphSearchManifestSchema
-} from '../../contracts/src';
+} from '@njupt-search/contracts';
 import { fetchJson } from './fetchJson';
 import { z } from 'zod';
 
@@ -199,7 +199,7 @@ const FIELD_WEIGHTS: Record<string, number> = {
     c: 10
 };
 
-const shardCache = new Map<string, Promise<SitegraphFullDocument[]>>();
+const shardCache = new Map<string, SitegraphFullDocument[]>();
 
 const publicAssetPath = (path: string): string => {
     if (/^https?:\/\//.test(path) || path.startsWith('/')) return path;
@@ -213,15 +213,13 @@ const shardPathForMeta = (bundle: SitegraphIndexBundle, meta: SitegraphDocMeta):
 
 const loadShard = (path: string, signal: AbortSignal): Promise<SitegraphFullDocument[]> => {
     const existing = shardCache.get(path);
-    if (existing) return existing;
-    const promise = fetchJson(publicAssetPath(path), signal, 'shard')
-        .then(payload => parseSitegraphFullDocuments(payload, path))
-        .catch(error => {
-            shardCache.delete(path);
-            throw error;
+    if (existing) return Promise.resolve(existing);
+    return fetchJson(publicAssetPath(path), signal, 'shard')
+        .then(payload => {
+            const documents = parseSitegraphFullDocuments(payload, path);
+            shardCache.set(path, documents);
+            return documents;
         });
-    shardCache.set(path, promise);
-    return promise;
 };
 
 const ensureBodyIndex = async (bundle: SitegraphIndexBundle, signal: AbortSignal): Promise<SitegraphInvertedIndex> => {

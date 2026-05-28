@@ -18,6 +18,15 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
+      '@njupt-search/contracts/exam': path.resolve(__dirname, '../../packages/contracts/src/exam/index.ts'),
+      '@njupt-search/contracts/search-index': path.resolve(__dirname, '../../packages/contracts/src/search-index/index.ts'),
+      '@njupt-search/contracts/source-sitegraph': path.resolve(__dirname, '../../packages/contracts/src/source-sitegraph/index.ts'),
+      '@njupt-search/contracts': path.resolve(__dirname, '../../packages/contracts/src/index.ts'),
+      '@njupt-search/exam-core/calendar': path.resolve(__dirname, '../../packages/exam-core/src/calendar/index.ts'),
+      '@njupt-search/exam-core/contract': path.resolve(__dirname, '../../packages/exam-core/src/contract/index.ts'),
+      '@njupt-search/exam-core/search': path.resolve(__dirname, '../../packages/exam-core/src/search/index.ts'),
+      '@njupt-search/exam-core': path.resolve(__dirname, '../../packages/exam-core/src/index.ts'),
+      '@njupt-search/search-core': path.resolve(__dirname, '../../packages/search-core/src/index.ts'),
     },
   },
   plugins: [
@@ -30,7 +39,7 @@ export default defineConfig({
       manifest: {
         name: 'njupt-search',
         short_name: 'njupt-search',
-        description: '南邮学生信息入口：搜公告、考试、竞赛、讲座、项目和资料',
+        description: '南邮学生信息入口：搜索公开教务合集和考试安排',
         theme_color: '#ffffff',
         background_color: '#ffffff',
         start_url: '/',
@@ -72,7 +81,7 @@ export default defineConfig({
             }
           },
           {
-            urlPattern: ({ url }) => url.pathname.includes('/generated/collections/njupt-public/sitegraph/jwc/artifacts/'),
+            urlPattern: ({ url }) => url.pathname.includes('/generated/collections/njupt-public/sitegraph/') && url.pathname.includes('/artifacts/'),
             handler: 'CacheFirst',
             options: {
               cacheName: 'njupt-search-sitegraph-index-progressive',
@@ -86,7 +95,7 @@ export default defineConfig({
             }
           },
           {
-            urlPattern: ({ url }) => url.pathname.includes('/generated/collections/njupt-public/sitegraph/jwc/shards/'),
+            urlPattern: ({ url }) => url.pathname.includes('/generated/collections/njupt-public/sitegraph/') && url.pathname.includes('/shards/'),
             handler: 'CacheFirst',
             options: {
               cacheName: 'njupt-search-sitegraph-shards-progressive',

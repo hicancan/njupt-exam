@@ -38,14 +38,14 @@ function methodLabel(method: string): string {
 }
 
 function phaseLabel(phase: SitegraphSearchPhase | null, searching: boolean): string {
-    if (phase === 'exhaustive_complete') return '已完成 JWC 全量公开索引核查';
+    if (phase === 'exhaustive_complete') return '已完成公开合集全量索引核查';
     if (phase === 'cancelled') return '已取消本次核查';
     if (!searching) return '等待搜索';
     if (phase === 'quick_started') return '正在启动快速搜索';
     if (phase === 'quick_results') return '快速结果已返回，正在继续核查全量公开索引';
     if (phase === 'body_started' || phase === 'body_results') return '正在继续核查正文索引';
     if (phase === 'hydrate_started' || phase === 'hydrate_results') return '正在补全文档记录并重排结果';
-    if (phase === 'verify_started' || phase === 'verify_progress' || phase === 'verify_results') return '正在核查 JWC 全量公开索引';
+    if (phase === 'verify_started' || phase === 'verify_progress' || phase === 'verify_results') return '正在核查公开合集全量索引';
     return '正在搜索';
 }
 
@@ -195,7 +195,7 @@ export function CollectionSearchSection({
     return (
         <section className="mt-8">
             <div className="mb-4">
-                <h2 className="text-xl font-semibold text-[#202124] dark:text-[#e8eaed]">JWC sitegraph 搜索结果</h2>
+                <h2 className="text-xl font-semibold text-[#202124] dark:text-[#e8eaed]">公开教务合集搜索结果</h2>
                 <div className="flex gap-4 mt-2 mb-1 border-b border-[#dadce0] dark:border-[#3c4043] overflow-x-auto whitespace-nowrap">
                     <button onClick={() => setActiveFacet('all')} className={`shrink-0 pb-2 text-sm font-medium ${activeFacet === 'all' ? 'text-[#1a73e8] border-b-2 border-[#1a73e8]' : 'text-[#5f6368] hover:text-[#202124] dark:text-[#9aa0a6] dark:hover:text-[#e8eaed]'}`}>全部</button>
                     {availableFacets.map(facet => (
@@ -211,7 +211,7 @@ export function CollectionSearchSection({
                 <p className="mt-1 text-sm text-[#70757a] dark:text-[#9aa0a6]">
                     {trimmedQuery.length >= 2
                         ? `找到 ${filteredResults.length} 条结果。${phaseLabel(searchPhase, searching)}。`
-                        : '输入至少两个字符搜索本科生院 / 教务处站点图。'}
+                        : '输入至少两个字符搜索公开教务合集。'}
                 </p>
                 {coverage ? (
                     <div className="mt-3 rounded-md border border-[#dadce0] dark:border-[#3c4043] bg-[#f8fafc] dark:bg-[#2d2e30] px-3 py-2 text-sm text-[#4d5156] dark:text-[#bdc1c6]">
@@ -225,7 +225,7 @@ export function CollectionSearchSection({
                         </div>
                         <div className="mt-1 text-[#70757a] dark:text-[#9aa0a6]">
                             {coverage.exhaustive_complete
-                                ? '已完成 JWC 全量公开索引核查；核查范围扩大已结束，加载更多结果只会展示更多已召回结果。'
+                                ? '已完成公开合集全量索引核查；核查范围扩大已结束，加载更多结果只会展示更多已召回结果。'
                                 : '核查范围扩大中；加载更多结果只会展示更多已召回结果。'}
                         </div>
                     </div>
@@ -250,7 +250,7 @@ export function CollectionSearchSection({
                 </div>
             ) : (
                 <div className="border border-[#dadce0] dark:border-[#3c4043] rounded-md bg-white dark:bg-[#202124] p-6 text-[#4d5156] dark:text-[#bdc1c6] max-w-[692px]">
-                    <p>没有找到匹配的 JWC sitegraph 记录。</p>
+                    <p>没有找到匹配的公开教务合集记录。</p>
                     <p className="mt-2 text-sm">可以尝试“校历”“期末考试”“学生相关文件及表格”“教务管理系统”这类官网栏目或标题关键词。</p>
                 </div>
             )}

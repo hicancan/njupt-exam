@@ -6,7 +6,7 @@ import {
     searchSitegraphProgressively,
     tokenizeSitegraphQuery
 } from '../src';
-import type { SitegraphIndexBundle, SitegraphSearchEvent, SitegraphSearchManifest } from '../../contracts/src';
+import type { SitegraphIndexBundle, SitegraphSearchEvent, SitegraphSearchManifest } from '@njupt-search/contracts';
 
 const artifact = (path: string, role: string, load = 'on_demand', count?: number) => ({
     path,
@@ -38,6 +38,13 @@ const manifest: SitegraphSearchManifest = {
     producer_ref: 'fixture',
     site_id: 'jwc',
     collection_id: 'njupt-public',
+    sources: [{
+        source_id: 'jwc',
+        source_kind: 'sitegraph',
+        artifact_root: 'generated/collections/njupt-public/sitegraph/jwc',
+        upstream_generated_at: '2026-05-26T00:00:00Z',
+        display_name: '本科生院 / 教务处'
+    }],
     artifact_path: 'generated/collections/njupt-public',
     upstream_generated_at: '2026-05-26T00:00:00Z',
     truth_counts: { detail_pages: 1, attachments: 1, external_links: 0, edges: 0 },
@@ -367,6 +374,101 @@ describe('sitegraph search contract', () => {
             const events: SitegraphSearchEvent[] = [];
             await expect(searchSitegraphProgressively(bundle, '转专业', controller.signal, event => events.push(event))).rejects.toThrow(/cancel/i);
             expect(events.some(event => event.type === 'exhaustive_complete')).toBe(false);
+        } finally {
+            globalThis.fetch = originalFetch;
+        }
+    });
+
+    it('does not share pending shard fetches across abort signals', async () => {
+        const shardPath = 'fixture-shard-abort-race.0123456789abcdef.json';
+        const raceShard = { ...fullShard, shard_id: 'policy__detail__2026__rules__race', path: shardPath };
+        const raceDocument = {
+            ...fullDocument,
+            shard: { shard_id: raceShard.shard_id, path: shardPath }
+        };
+        const raceManifest: SitegraphSearchManifest = {
+            ...manifest,
+            sitegraph: {
+                ...manifest.sitegraph,
+                full_shards: [raceShard]
+            }
+        };
+        const docMeta = {
+            ...docMetaLightFixture(),
+            shard: { shard_id: raceShard.shard_id, path: shardPath }
+        };
+        const bundle = (): SitegraphIndexBundle => ({
+            manifest: raceManifest,
+            docMeta: [docMeta],
+            lightInvertedIndex: {
+                version: 'sitegraph-light-inverted-progressive',
+                tokenizer: 'test',
+                field_codes: { title: 't' },
+                tokens: {
+                    转专业: { t: [0] }
+                }
+            },
+            queryAliases: {}
+        });
+        const originalFetch = globalThis.fetch;
+        let shardFetches = 0;
+        let firstShardRequested: (() => void) | null = null;
+        const firstShardStarted = new Promise<void>(resolve => {
+            firstShardRequested = resolve;
+        });
+        globalThis.fetch = (async (input: RequestInfo | URL, init?: RequestInit) => {
+            const url = String(input);
+            if (url.includes('body_inverted_index')) {
+                return new Response(JSON.stringify({
+                    version: 'sitegraph-body-inverted-progressive',
+                    tokenizer: 'test',
+                    field_codes: { summary: 'm', content: 'c' },
+                    tokens: {}
+                }));
+            }
+            if (url.includes('shard_filter')) {
+                return new Response(JSON.stringify({
+                    [raceShard.shard_id]: {
+                        bitset_base64: '/w==',
+                        bit_count: 8,
+                        hash_count: 1,
+                        token_count: 3,
+                        sha256: '0123456789abcdef0123456789abcdef',
+                        hash_algorithm: 'bloom-fnv1a32-utf8'
+                    }
+                }));
+            }
+            if (url.includes(shardPath)) {
+                shardFetches += 1;
+                if (shardFetches === 1) {
+                    firstShardRequested?.();
+                    return new Promise<Response>((_resolve, reject) => {
+                        const signal = init?.signal;
+                        if (signal?.aborted) {
+                            reject(new DOMException('Search cancelled', 'AbortError'));
+                            return;
+                        }
+                        signal?.addEventListener('abort', () => reject(new DOMException('Search cancelled', 'AbortError')), { once: true });
+                    });
+                }
+                return new Response(JSON.stringify([raceDocument]));
+            }
+            return new Response(JSON.stringify([raceDocument]));
+        }) as typeof fetch;
+
+        const controller1 = new AbortController();
+        const controller2 = new AbortController();
+        try {
+            const firstSearch = searchSitegraphProgressively(bundle(), '转专业', controller1.signal, () => undefined, { limit: 5 });
+            await firstShardStarted;
+            const secondEvents: SitegraphSearchEvent[] = [];
+            const secondSearch = searchSitegraphProgressively(bundle(), '转专业', controller2.signal, event => secondEvents.push(event), { limit: 5 });
+            await new Promise(resolve => setTimeout(resolve, 0));
+            controller1.abort();
+            await expect(firstSearch).rejects.toThrow(/cancel/i);
+            await expect(secondSearch).resolves.toBeUndefined();
+            expect(shardFetches).toBe(2);
+            expect(secondEvents.at(-1)?.type).toBe('exhaustive_complete');
         } finally {
             globalThis.fetch = originalFetch;
         }

@@ -3,6 +3,10 @@
   "private": true,
   "version": "2.2.0",
   "type": "module",
+  "workspaces": [
+    "apps/web",
+    "packages/*"
+  ],
   "scripts": {
     "dev": "node ./node_modules/vite/bin/vite.js --config apps/web/vite.config.ts",
     "build": "node ./node_modules/typescript/bin/tsc -b && node ./node_modules/vite/bin/vite.js build --config apps/web/vite.config.ts",

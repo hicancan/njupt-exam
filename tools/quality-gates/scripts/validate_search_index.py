@@ -81,6 +81,20 @@ def main() -> None:
     for field in ("producer_repo", "producer_ref", "site_id", "collection_id", "artifact_path", "upstream_generated_at", "truth_counts"):
         if not manifest.get(field):
             fail(f"manifest missing required producer field: {field}")
+    sources = manifest.get("sources")
+    if not isinstance(sources, list) or not sources:
+        fail("manifest.sources must declare at least one audited source package")
+    source_ids = {str(item.get("source_id")) for item in sources if isinstance(item, dict)}
+    if manifest.get("site_id") not in source_ids:
+        fail("manifest.site_id must be represented in manifest.sources")
+    for item in sources:
+        if not isinstance(item, dict):
+            fail("manifest.sources entries must be objects")
+        if item.get("source_kind") != "sitegraph":
+            fail(f"manifest.sources.source_kind must be sitegraph, got {item.get('source_kind')!r}")
+        root = item.get("artifact_root")
+        if not isinstance(root, str) or not root.startswith("generated/collections/njupt-public/sitegraph/"):
+            fail(f"manifest.sources.artifact_root must be public collection-relative, got {root!r}")
     if manifest.get("collection_id") != "njupt-public":
         fail(f"unexpected collection_id: {manifest.get('collection_id')!r}")
     if manifest.get("artifact_path") != "generated/collections/njupt-public":

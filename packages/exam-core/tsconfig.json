@@ -16,6 +16,11 @@
     "forceConsistentCasingInFileNames": true,
     "isolatedModules": true,
     "moduleDetection": "force",
+    "baseUrl": "../..",
+    "paths": {
+      "@njupt-search/contracts": ["packages/contracts/src/index.ts"],
+      "@njupt-search/contracts/exam": ["packages/contracts/src/exam/index.ts"]
+    },
     "noEmit": true
   },
   "include": ["src", "tests", "../contracts/src"]

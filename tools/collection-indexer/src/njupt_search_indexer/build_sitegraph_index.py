@@ -20,9 +20,10 @@ from urllib.parse import urlparse
 BASE_DIR = Path(__file__).resolve().parents[4]
 PUBLIC_ROOT = BASE_DIR / "apps" / "web" / "public"
 COLLECTION_ID = "njupt-public"
+SOURCE_ID = "jwc"
 DEFAULT_SITEGRAPH_INDEX = BASE_DIR.parent / "njupt-site-graph" / "data" / "sites" / "jwc" / "index"
 PUBLIC_INDEX_DIR = PUBLIC_ROOT / "generated" / "collections" / COLLECTION_ID
-PUBLIC_SITEGRAPH_DIR = PUBLIC_INDEX_DIR / "sitegraph" / "jwc"
+PUBLIC_SITEGRAPH_DIR = PUBLIC_INDEX_DIR / "sitegraph" / SOURCE_ID
 PUBLIC_ARTIFACT_DIR = PUBLIC_SITEGRAPH_DIR / "artifacts"
 PUBLIC_SHARD_DIR = PUBLIC_SITEGRAPH_DIR / "shards"
 OBSOLETE_INDEX_DIR = PUBLIC_ROOT / "index"
@@ -41,7 +42,7 @@ def configure_collection_output(collection_id: str = COLLECTION_ID, output_dir: 
 
     COLLECTION_ID = collection_id
     PUBLIC_INDEX_DIR = target
-    PUBLIC_SITEGRAPH_DIR = PUBLIC_INDEX_DIR / "sitegraph" / "jwc"
+    PUBLIC_SITEGRAPH_DIR = PUBLIC_INDEX_DIR / "sitegraph" / SOURCE_ID
     PUBLIC_ARTIFACT_DIR = PUBLIC_SITEGRAPH_DIR / "artifacts"
     PUBLIC_SHARD_DIR = PUBLIC_SITEGRAPH_DIR / "shards"
 
@@ -962,13 +963,24 @@ def write_public_index(package: dict[str, Any], built: dict[str, Any], *, shard_
 
     generated_at = now_iso()
     upstream_generated_at = clean_text(package["manifest"].get("generated_at")) or None
+    source_id = clean_text(package["site"].get("site_id")) or SOURCE_ID
+    source_artifact_root = f"generated/collections/{COLLECTION_ID}/sitegraph/{source_id}"
     manifest = {
         "generated_at": generated_at,
         "strategy": "progressive-verifiable-static-search",
         "producer_repo": os.environ.get("GITHUB_REPOSITORY") or "hicancan/njupt-search",
         "producer_ref": producer_ref(),
-        "site_id": "jwc",
+        "site_id": source_id,
         "collection_id": COLLECTION_ID,
+        "sources": [
+            {
+                "source_id": source_id,
+                "source_kind": "sitegraph",
+                "artifact_root": source_artifact_root,
+                "upstream_generated_at": upstream_generated_at,
+                "display_name": clean_text(package["site"].get("name")) or source_id,
+            }
+        ],
         "artifact_path": f"generated/collections/{COLLECTION_ID}",
         "upstream_generated_at": upstream_generated_at,
         "truth_counts": upstream_counts,

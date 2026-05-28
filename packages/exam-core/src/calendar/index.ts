@@ -1,4 +1,4 @@
-import type { Exam } from '../../../contracts/src/exam';
+import type { Exam } from '@njupt-search/contracts/exam';
 
 export interface ICSProductOptions {
     appName?: string;

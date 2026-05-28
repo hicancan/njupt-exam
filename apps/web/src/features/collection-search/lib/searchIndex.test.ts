@@ -37,6 +37,13 @@ const manifest: SitegraphSearchManifest = {
     producer_ref: 'fixture',
     site_id: 'jwc',
     collection_id: 'njupt-public',
+    sources: [{
+        source_id: 'jwc',
+        source_kind: 'sitegraph',
+        artifact_root: 'generated/collections/njupt-public/sitegraph/jwc',
+        upstream_generated_at: '2026-05-26T00:00:00Z',
+        display_name: '本科生院 / 教务处'
+    }],
     artifact_path: 'generated/collections/njupt-public',
     upstream_generated_at: '2026-05-26T00:00:00Z',
     truth_counts: { detail_pages: 1, attachments: 1, external_links: 0, edges: 0 },

@@ -1,1 +1,1 @@
-export * from '../../../../../../packages/search-core/src';
+export * from '@njupt-search/search-core';

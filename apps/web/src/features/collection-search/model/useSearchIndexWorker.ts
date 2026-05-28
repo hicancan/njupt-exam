@@ -34,13 +34,13 @@ export function useSearchIndexWorker(enabled = true): UseSearchIndexWorkerResult
             } else if (message.type === 'error') {
                 setManifest(null);
                 setWorkerState(null);
-                setError(message.message || '无法加载 JWC sitegraph 搜索索引 Worker');
+                setError(message.message || '无法加载公开教务合集搜索索引 Worker');
             }
         };
         worker.onerror = event => {
             setManifest(null);
             setWorkerState(null);
-            setError(event.message || 'JWC sitegraph 搜索 Worker 启动失败');
+            setError(event.message || '公开教务合集搜索 Worker 启动失败');
         };
         worker.postMessage({ type: 'init', requestId });
 

@@ -2,16 +2,16 @@ import { z } from 'zod';
 import {
     ExamSchema,
     ManifestSchema
-} from '../../../contracts/src/exam';
+} from '@njupt-search/contracts/exam';
 import type {
     Exam,
     Manifest
-} from '../../../contracts/src/exam';
+} from '@njupt-search/contracts/exam';
 
 export type {
     Exam,
     Manifest
-} from '../../../contracts/src/exam';
+} from '@njupt-search/contracts/exam';
 
 export class DataContractError extends Error {
     constructor(message: string) {

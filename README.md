@@ -1,6 +1,6 @@
 # njupt-search
 
-`njupt-search` 是南邮本科生教务搜索和考试查询静态应用。当前生产架构是 Progressive Verifiable Static Search：快速结果先返回，后台继续扩大覆盖，最终证明 JWC 全量公开索引已核查完成。
+`njupt-search` 是南邮本科生教务搜索和考试查询静态应用。当前生产架构是 Progressive Verifiable Static Search：快速结果先返回，后台继续扩大覆盖，最终证明 collection 中已声明的公开 source package 已核查完成。
 
 [在线使用](https://njupt.hicancan.top)
 
@@ -8,15 +8,15 @@
 
 生产数据路径只有两条：
 
-1. JWC 公开搜索：只消费 `njupt-site-graph` 已审计的 JWC sitegraph 包，生成 hash-addressed 静态索引，由浏览器 Worker 执行纯代码搜索。
+1. Collection 公开搜索：当前只消费 `njupt-site-graph` 已审计的 JWC sitegraph source package，生成 hash-addressed 静态索引，由浏览器 Worker 执行纯代码搜索。`collection_id` 是 `njupt-public`，`jwc` 只是当前 source id。
 2. 考试垂直频道：生成 `apps/web/public/generated/exam/all_exams.json` 和 `apps/web/public/generated/exam/data_summary.json`，支持班级考试查询、课程选择和 `.ics` 日历导出。
 
-非考试搜索不运行其他校园源、不调用模型、不保留任务框架或固定索引文件。
+非考试搜索不运行未审计源、不调用模型、不保留任务框架或固定索引文件。Python 依赖以 `pyproject.toml` 和 `uv.lock` 为准，不维护并行 `requirements.txt`。
 
 ## Progressive Search
 
 ```text
-njupt-site-graph/data/sites/jwc/index
+audited njupt-site-graph source package
 -> python -m njupt_search_indexer build
 -> apps/web/public/generated/collections/njupt-public/manifest.json
 -> apps/web/public/generated/collections/njupt-public/sitegraph/jwc/artifacts/*.json
@@ -80,7 +80,7 @@ npm run build
 
 ## 自动更新
 
-`.github/workflows/update-exam-data.yml` 更新考试数据，`.github/workflows/update-collection-index.yml` 消费 JWC sitegraph 包并生成 `apps/web/public/generated/collections/njupt-public`。`ci.yml`、`validate-generated-artifacts.yml` 和 `deploy-web.yml` 分别负责通用检查、生成物质量门和 GitHub Pages 部署。
+`.github/workflows/update-exam-data.yml` 更新考试数据，`.github/workflows/update-collection-index.yml` 消费已审计 source package 并生成 `apps/web/public/generated/collections/njupt-public`。`ci.yml`、`validate-generated-artifacts.yml` 和 `deploy-web.yml` 分别负责通用检查、生成物质量门和 GitHub Pages 部署。
 
 ## 目录
 

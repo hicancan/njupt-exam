@@ -1,1 +1,1 @@
-export * from '../../../../../../packages/exam-core/src/contract';
+export * from '@njupt-search/exam-core/contract';

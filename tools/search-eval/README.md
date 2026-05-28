@@ -4,7 +4,8 @@ This tool owns deterministic representative query evaluation.
 
 Near-term migration purpose:
 
-- validate progressive search recall, hydration, coverage, and exhaustive verification for generated collection artifacts.
+- validate progressive search recall, bounded candidate hydration, coverage, and exhaustive verification for generated collection artifacts.
+- report candidate shard cost separately from loaded/scanned shards, because exhaustive verification may load many shards to prove complete coverage.
 
 ```powershell
 uv run python -m njupt_search_eval run-smoke-queries --collection apps\web\public\generated\collections\njupt-public

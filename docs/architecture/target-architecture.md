@@ -37,6 +37,8 @@ docs/goals
 
 Directories are introduced only when they contain migrated production code, migrated tests, immediately used config, scoped instructions, or useful README documentation.
 
+TypeScript package boundaries are imported through stable `@njupt-search/*` package names or configured aliases, not deep relative paths from `apps/web` into `packages/*/src`.
+
 ## Ownership Boundaries
 
 ### `apps/web`
@@ -90,7 +92,7 @@ python -m njupt_search_indexer build --collection-id njupt-public --source-kind 
 
 ### `tools/exam-pipeline`
 
-Owns exam data acquisition and transformation into generated exam artifacts.
+Owns exam data transformation into generated exam artifacts. Current JWC exam notice discovery and spreadsheet download code is an isolated temporary acquisition adapter documented by ADR 0010; it must not become collection source ownership or browser runtime search.
 
 ### `tools/search-eval`
 
