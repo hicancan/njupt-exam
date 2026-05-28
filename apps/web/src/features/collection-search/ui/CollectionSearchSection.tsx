@@ -194,10 +194,9 @@ export function CollectionSearchSection({
     const coverage = queryCoverage || queryStats?.coverage || null;
 
     return (
-        <section className="mt-8">
+        <section>
             <div className="mb-4">
-                <h2 className="text-xl font-semibold text-[#202124] dark:text-[#e8eaed]">公开教务合集搜索结果</h2>
-                <div className="flex gap-4 mt-2 mb-1 border-b border-[#dadce0] dark:border-[#3c4043] overflow-x-auto whitespace-nowrap">
+                <div className="flex gap-4 mb-1 border-b border-[#dadce0] dark:border-[#3c4043] overflow-x-auto whitespace-nowrap">
                     <button onClick={() => setActiveFacet('all')} className={`shrink-0 pb-2 text-sm font-medium ${activeFacet === 'all' ? 'text-[#1a73e8] border-b-2 border-[#1a73e8]' : 'text-[#5f6368] hover:text-[#202124] dark:text-[#9aa0a6] dark:hover:text-[#e8eaed]'}`}>全部</button>
                     {availableFacets.map(facet => (
                         <button

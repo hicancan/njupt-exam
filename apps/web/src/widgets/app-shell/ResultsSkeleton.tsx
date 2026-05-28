@@ -1,36 +1,49 @@
+function ShimmerBlock({ className }: { className: string }) {
+    return (
+        <div className={`relative overflow-hidden bg-[#f1f3f4] dark:bg-[#303134] ${className}`}>
+            <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/40 dark:via-white/10 to-transparent animate-shimmer" />
+        </div>
+    );
+}
+
 export function ResultsSkeleton() {
+    const tabWidths = ['w-12', 'w-16', 'w-16', 'w-16', 'w-16'];
+
     return (
         <div className="w-full">
-            <div className="flex gap-6 border-b border-[#dadce0] dark:border-[#3c4043] pb-0 mb-4 overflow-hidden">
-                {[0, 1, 2, 3, 4].map(item => (
-                    <div key={item} className="h-4 w-12 mb-3 bg-[#f1f3f4] dark:bg-[#303134] rounded relative overflow-hidden shrink-0">
-                        <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/40 dark:via-white/10 to-transparent animate-shimmer" />
-                    </div>
+            <div className="flex gap-4 mb-1 border-b border-[#dadce0] dark:border-[#3c4043] overflow-hidden whitespace-nowrap">
+                {tabWidths.map((width, item) => (
+                    <ShimmerBlock key={item} className={`h-5 ${width} mb-2 rounded shrink-0`} />
                 ))}
             </div>
-            
-            <div className="mt-8 space-y-8">
+
+            <ShimmerBlock className="mt-2 h-4 w-64 max-w-full rounded" />
+
+            <div className="mt-3 rounded-md border border-[#dadce0] dark:border-[#3c4043] bg-[#f8fafc] dark:bg-[#2d2e30] px-3 py-2">
+                <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+                    <div className="flex items-center gap-2">
+                        <ShimmerBlock className="h-4 w-4 rounded-full shrink-0" />
+                        <ShimmerBlock className="h-4 w-48 max-w-full rounded" />
+                    </div>
+                    <ShimmerBlock className="h-4 w-20 rounded" />
+                </div>
+            </div>
+
+            <div className="mt-4">
                 {[0, 1, 2, 3].map(item => (
-                    <div key={item} className="max-w-[692px]">
+                    <div key={item} className="max-w-[692px] py-4 border-b border-[#e8eaed] dark:border-[#3c4043]">
                         <div className="flex items-center gap-2 mb-2">
-                            <div className="h-3 w-32 bg-[#f1f3f4] dark:bg-[#303134] rounded relative overflow-hidden">
-                                <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/40 dark:via-white/10 to-transparent animate-shimmer" />
-                            </div>
+                            <ShimmerBlock className="h-3 w-32 rounded" />
                         </div>
-                        <div className="h-6 w-3/4 bg-[#f1f3f4] dark:bg-[#303134] rounded relative overflow-hidden mb-3">
-                            <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/40 dark:via-white/10 to-transparent animate-shimmer" />
-                        </div>
-                        <div className="flex gap-2 mb-3">
-                            <div className="h-5 w-12 bg-[#f1f3f4] dark:bg-[#303134] rounded relative overflow-hidden"></div>
-                            <div className="h-5 w-16 bg-[#f1f3f4] dark:bg-[#303134] rounded relative overflow-hidden"></div>
-                        </div>
+                        <ShimmerBlock className="h-6 w-3/4 rounded mb-3" />
+                        <ShimmerBlock className="h-3.5 w-full rounded mb-3" />
                         <div className="space-y-2">
-                            <div className="h-3.5 w-full bg-[#f1f3f4] dark:bg-[#303134] rounded relative overflow-hidden">
-                                <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/40 dark:via-white/10 to-transparent animate-shimmer" />
-                            </div>
-                            <div className="h-3.5 w-5/6 bg-[#f1f3f4] dark:bg-[#303134] rounded relative overflow-hidden">
-                                <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/40 dark:via-white/10 to-transparent animate-shimmer" />
-                            </div>
+                            <ShimmerBlock className="h-3.5 w-full rounded" />
+                            <ShimmerBlock className="h-3.5 w-5/6 rounded" />
+                        </div>
+                        <div className="flex gap-2 mt-3">
+                            <ShimmerBlock className="h-6 w-28 rounded" />
+                            <ShimmerBlock className="h-6 w-20 rounded" />
                         </div>
                     </div>
                 ))}

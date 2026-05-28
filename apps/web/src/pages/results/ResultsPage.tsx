@@ -55,7 +55,7 @@ export function ResultsPage({
     const showSearchResultsSection = !(hasClassDetail && results.length === 0);
 
     return (
-        <main className="max-w-6xl w-full mx-auto px-4 py-6">
+        <main className="max-w-6xl w-full mx-auto px-4 pt-3 pb-6">
             {isLoading ? (
                 <ResultsSkeleton />
             ) : (
