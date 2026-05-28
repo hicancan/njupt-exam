@@ -160,6 +160,9 @@ def test_light_index_and_shards_have_no_obsolete_fields():
     assert all("summary" not in item for item in doc_meta)
     assert all("attachments" not in item for item in doc_meta)
     assert all("provenance" not in item for item in doc_meta)
+    assert all(item.get("source_id") in {"jwc", "xsc", "cxcy"} for item in doc_meta)
+    assert all(item.get("date_kind") for item in doc_meta)
+    assert all(item.get("task_kind") for item in doc_meta)
 
     light_index = read_json(PUBLIC_ROOT / manifest["artifacts"]["light_inverted_index"]["path"])
     body_index = read_json(PUBLIC_ROOT / manifest["artifacts"]["body_inverted_index"]["path"])
@@ -175,7 +178,11 @@ def test_light_index_and_shards_have_no_obsolete_fields():
         assert shard["filter_token_count"] > 0
         assert shard["filter_sha256"]
         for document in documents:
-            assert set(["title", "url", "section", "nav_path", "summary", "content", "attachments", "record_type", "facet", "published_at", "provenance"]) <= set(document)
+            assert set(["title", "url", "section", "nav_path", "summary", "content", "attachments", "record_type", "facet", "published_at", "provenance", "source_id", "canonical_title", "date_kind", "date_confidence", "task_kind", "authority_profile", "dedupe_key"]) <= set(document)
+            assert document["source_id"] == document["provenance"]["site_id"]
+            if document["record_type"] == "external":
+                assert not document.get("published_at")
+                assert document.get("recorded_at")
 
 
 def test_required_queries_return_results():

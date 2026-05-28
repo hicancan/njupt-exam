@@ -1,0 +1,211 @@
+{
+  "version": 1,
+  "purpose": "Deterministic expectations for high-value NJUPT student task queries. These assertions are intentionally data-driven and should be updated only when audited source-package truth changes.",
+  "defaults": {
+    "limit": 12
+  },
+  "expectations": [
+    {
+      "query": "期末考试",
+      "top1": {
+        "source_id": "jwc",
+        "facet": "exam",
+        "title_contains_any": ["期末考试"],
+        "min_effective_date": "2026-01-01"
+      },
+      "forbid_top_n": {
+        "n": 5,
+        "title_contains_any": ["2013-2014", "2012-2013"]
+      }
+    },
+    {
+      "query": "考试安排",
+      "top1": {
+        "source_id": "jwc",
+        "facet": "exam",
+        "title_contains_any": ["考试安排"],
+        "min_effective_date": "2025-01-01"
+      },
+      "forbid_top_n": {
+        "n": 5,
+        "title_contains_any": ["2013-2014", "2012-2013"]
+      }
+    },
+    {
+      "query": "竞赛报名",
+      "top1": {
+        "source_id": "cxcy",
+        "title_contains_any": ["竞赛", "大赛", "创新创业"],
+        "min_effective_date": "2025-01-01"
+      }
+    },
+    {
+      "query": "大创",
+      "top1": {
+        "source_id": "cxcy",
+        "title_contains_any": ["大学生创新创业", "创新创业训练", "创新创业竞赛"],
+        "min_effective_date": "2024-01-01"
+      },
+      "forbid_top_n": {
+        "n": 5,
+        "source_id": "jwc",
+        "title_contains_any": ["2013"]
+      }
+    },
+    {
+      "query": "创新创业",
+      "top1": {
+        "source_id": "cxcy",
+        "title_contains_any": ["创新创业"],
+        "min_effective_date": "2024-01-01"
+      }
+    },
+    {
+      "query": "互联网+",
+      "top_n": {
+        "n": 5,
+        "source_id": "cxcy",
+        "title_contains_any": ["互联网+"],
+        "min_effective_date": "2022-01-01"
+      }
+    },
+    {
+      "query": "双创信息管理系统",
+      "top1": {
+        "source_id": "cxcy",
+        "facet": "system",
+        "title_contains_any": ["双创信息管理系统"]
+      }
+    },
+    {
+      "query": "奖学金",
+      "top1": {
+        "source_id": "xsc",
+        "title_contains_any": ["奖学金"],
+        "min_effective_date": "2025-01-01"
+      }
+    },
+    {
+      "query": "助学金",
+      "top_n": {
+        "n": 3,
+        "source_id": "xsc",
+        "title_contains_any": ["助学金", "奖助学金"]
+      }
+    },
+    {
+      "query": "困难认定",
+      "top1": {
+        "source_id": "xsc",
+        "title_contains_any": ["家庭经济困难", "困难学生认定"]
+      },
+      "forbid_top_n": {
+        "n": 5,
+        "title_contains_any": ["学业困难"]
+      }
+    },
+    {
+      "query": "辅导员",
+      "top1": {
+        "source_id": "xsc",
+        "title_contains_any": ["辅导员"]
+      }
+    },
+    {
+      "query": "心理健康",
+      "top1": {
+        "source_id": "xsc",
+        "facet": "system",
+        "title_contains_any": ["心理健康"]
+      }
+    },
+    {
+      "query": "转专业",
+      "top1": {
+        "source_id": "jwc",
+        "facet": "policy",
+        "title_contains_any": ["转专业管理办法"],
+        "min_effective_date": "2025-01-01"
+      },
+      "forbid_top_n": {
+        "n": 3,
+        "title_equals_any": ["转专业"]
+      }
+    },
+    {
+      "query": "推免",
+      "top_n": {
+        "n": 3,
+        "source_id": "jwc",
+        "title_contains_any": ["2026年各学院", "管理办法（修订）"],
+        "min_effective_date": "2025-01-01"
+      }
+    },
+    {
+      "query": "学生相关文件及表格",
+      "top1": {
+        "source_id": "jwc",
+        "facet": "download",
+        "nav_contains_any": ["学生相关文件及表格"],
+        "min_effective_date": "2026-01-01"
+      }
+    },
+    {
+      "query": "缓考申请表",
+      "top1": {
+        "source_id": "jwc",
+        "facet": "download",
+        "title_contains_any": ["缓考申请表"],
+        "min_effective_date": "2026-01-01"
+      }
+    },
+    {
+      "query": "成绩复核申请表",
+      "top1": {
+        "source_id": "jwc",
+        "facet": "download",
+        "title_contains_any": ["成绩复核申请表"],
+        "min_effective_date": "2026-01-01"
+      }
+    },
+    {
+      "query": "教务管理系统",
+      "top1": {
+        "source_id": "jwc",
+        "facet": "system",
+        "title_contains_any": ["教务管理系统"]
+      }
+    },
+    {
+      "query": "信息门户",
+      "top1": {
+        "source_id": "jwc",
+        "title_contains_any": ["综合信息服务", "教务管理系统", "考试信息查询"]
+      },
+      "forbid_top_n": {
+        "n": 5,
+        "title_contains_any": ["党政联席会议信息"]
+      }
+    },
+    {
+      "query": "规章制度",
+      "top_n": {
+        "n": 3,
+        "source_id": "jwc",
+        "title_contains_any": ["管理办法"]
+      }
+    },
+    {
+      "query": "xlsx",
+      "top1": {
+        "facet": "download",
+        "min_effective_date": "2025-01-01"
+      }
+    },
+    {
+      "query": "B250403",
+      "allow_empty": true,
+      "note": "This is an exam vertical query; the sitegraph evaluator accepts an empty collection result."
+    }
+  ]
+}

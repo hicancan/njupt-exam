@@ -15,6 +15,7 @@ import {
     parseSitegraphInvertedIndex,
     SearchContractError
 } from './sitegraphContract';
+import { rankingDateSortValue, rankSitegraphDocument, SITEGRAPH_FIELD_WEIGHTS } from './ranking/rankDocument';
 import { expandSitegraphQueryPhrases, normalizeSearchText as normalize, tokenizeSitegraphQuery } from './tokenizer';
 const DEFAULT_CANDIDATE_LIMIT = 160;
 const DEFAULT_MAX_SHARD_LOADS = 40;
@@ -25,18 +26,6 @@ const SHARD_BATCH_SIZE = 4;
 const LIGHT_SEARCH_FIELDS = ['title', 'section', 'nav_path', 'tags', 'attachments', 'external', 'system'];
 const BODY_SEARCH_FIELDS = [...LIGHT_SEARCH_FIELDS, 'summary', 'content'];
 const FULL_SCAN_FIELDS = ['title', 'section', 'nav_path', 'summary', 'content', 'attachments', 'url'];
-
-const FIELD_WEIGHTS: Record<string, number> = {
-    t: 120,
-    a: 95,
-    e: 95,
-    y: 95,
-    s: 60,
-    n: 55,
-    g: 45,
-    m: 16,
-    c: 10
-};
 
 const shardCache = new Map<string, SitegraphFullDocument[]>();
 
@@ -93,12 +82,6 @@ const textBlob = (document: SitegraphFullDocument | SitegraphDocMeta, fields: Ar
     return normalize(values.join(' '));
 };
 
-const attachmentBlob = (document: SitegraphFullDocument): string => normalize(
-    document.attachments
-        .map(attachment => [attachment.name, attachment.extension, attachment.section, attachment.parent_url].filter(Boolean).join(' '))
-        .join(' ')
-);
-
 const fullScanBlob = (document: SitegraphFullDocument): string => normalize([
     document.title,
     document.section,
@@ -111,124 +94,6 @@ const fullScanBlob = (document: SitegraphFullDocument): string => normalize([
         .map(attachment => [attachment.name, attachment.extension, attachment.url, attachment.section, attachment.parent_url].filter(Boolean).join(' '))
         .join(' ')
 ].join(' '));
-
-const dateSortValue = (dateLike: string | null | undefined): number => {
-    if (!dateLike) return 0;
-    const date = new Date(dateLike);
-    return Number.isNaN(date.getTime()) ? 0 : date.getTime();
-};
-
-const freshnessScore = (document: SitegraphFullDocument): number => {
-    if (!['notice_article', 'exam', 'news'].includes(document.facet)) return 0;
-    const value = dateSortValue(document.published_at);
-    if (!value) return 0;
-    const days = Math.max(0, (Date.now() - value) / 86_400_000);
-    return Math.max(0, 600 - Math.min(days, 3650) / 3650 * 600);
-};
-
-const rankDocument = (
-    document: SitegraphFullDocument,
-    query: string,
-    terms: string[],
-    lightScore: number
-): RankedSitegraphDocument => {
-    const normalizedQuery = normalize(query);
-    const title = textBlob(document, ['title']);
-    const section = textBlob(document, ['section', 'nav_path_text']);
-    const summary = textBlob(document, ['summary']);
-    const content = textBlob(document, ['content']);
-    const tags = textBlob(document, ['tags']);
-    const attachment = attachmentBlob(document);
-    const url = normalize(document.url);
-    const external = document.record_type === 'external' ? normalize(`${document.title} ${document.url} ${document.summary}`) : '';
-    let score = lightScore;
-    const reasons: string[] = [];
-
-    if (normalizedQuery && title === normalizedQuery) {
-        score += 5000;
-        reasons.push('标题精确');
-    } else if (normalizedQuery && title.includes(normalizedQuery)) {
-        score += 520;
-        reasons.push('标题包含');
-    }
-    if (normalizedQuery && attachment.includes(normalizedQuery)) {
-        score += 360;
-        reasons.push('附件名命中');
-    }
-    if (normalizedQuery && external.includes(normalizedQuery)) {
-        score += 360;
-        reasons.push('外部入口命中');
-    }
-    if (normalizedQuery && url.includes(normalizedQuery)) {
-        score += 220;
-        reasons.push('URL 命中');
-    }
-    if (normalizedQuery && section.includes(normalizedQuery)) {
-        score += 180;
-        reasons.push('栏目路径命中');
-    }
-    if (normalizedQuery && content.includes(normalizedQuery)) {
-        score += 120;
-        reasons.push('正文命中');
-    }
-    if (normalizedQuery && tags.includes(normalizedQuery)) {
-        score += 80;
-        reasons.push('标签命中');
-    }
-
-    const matchedTerms: string[] = [];
-    for (const term of terms.slice(0, 12)) {
-        if (title.includes(term)) {
-            score += 80;
-            matchedTerms.push(term);
-        } else if (attachment.includes(term)) {
-            score += 70;
-            matchedTerms.push(term);
-        } else if (external.includes(term)) {
-            score += 65;
-            matchedTerms.push(term);
-        } else if (url.includes(term)) {
-            score += 55;
-            matchedTerms.push(term);
-        } else if (section.includes(term)) {
-            score += 45;
-            matchedTerms.push(term);
-        } else if (summary.includes(term) || content.includes(term)) {
-            score += 12;
-            matchedTerms.push(term);
-        }
-    }
-    if (matchedTerms.length > 0) {
-        reasons.push(`词项：${Array.from(new Set(matchedTerms)).sort((a, b) => b.length - a.length).slice(0, 6).join('、')}`);
-    }
-    if (document.facet === 'system' && ['系统', 'jwxt', '教务'].some(term => normalizedQuery.includes(term))) {
-        score += 1500;
-        reasons.push('系统入口');
-    }
-    if (document.facet === 'download' && ['附件', '下载', 'xlsx', 'xls', '表格'].some(term => normalizedQuery.includes(term))) {
-        score += 120;
-        reasons.push('下载资源');
-    }
-    if (document.facet === 'policy' && ['规章', '制度', '管理办法', '政策'].some(term => normalizedQuery.includes(term))) {
-        score += 900;
-        reasons.push('政策制度');
-    }
-    if (document.facet === 'workflow' && ['办事流程', '办理', '申请流程', '流程'].some(term => normalizedQuery.includes(term))) {
-        score += 900;
-        reasons.push('办事流程');
-    }
-    if (document.facet === 'exam' && ['考试', '期末', '慕课', 'mooc'].some(term => normalizedQuery.includes(term))) {
-        score += 650;
-        reasons.push('考试相关');
-    }
-    score += freshnessScore(document);
-
-    return {
-        ...document,
-        score,
-        score_reason: reasons.join('；') || '倒排候选'
-    };
-};
 
 const throwIfAborted = (signal: AbortSignal): void => {
     if (signal.aborted) {
@@ -249,7 +114,7 @@ const applyPostings = (
         const postings = tokens[term];
         if (!postings) continue;
         for (const [field, ids] of Object.entries(postings)) {
-            const weight = FIELD_WEIGHTS[field] || 8;
+            const weight = SITEGRAPH_FIELD_WEIGHTS[field] || 8;
             for (const docIndex of ids) {
                 scores.set(docIndex, (scores.get(docIndex) || 0) + weight + Math.min(term.length, 8));
             }
@@ -329,7 +194,7 @@ const sortRankedResults = (results: RankedSitegraphDocument[]): RankedSitegraphD
     return results.sort((a, b) => {
         const scoreDelta = b.score - a.score;
         if (scoreDelta !== 0) return scoreDelta;
-        const dateDelta = dateSortValue(b.published_at) - dateSortValue(a.published_at);
+        const dateDelta = rankingDateSortValue(b) - rankingDateSortValue(a);
         if (dateDelta !== 0) return dateDelta;
         return a.id.localeCompare(b.id);
     });
@@ -425,7 +290,7 @@ const rankHydratedCandidates = (
         .map(docIndex => {
             const document = fullDocsByIndex.get(docIndex);
             return document && documentMatchesFullScan(document, matchPhrases)
-                ? rankDocument(document, query, terms, scores.get(docIndex) || 0)
+                ? rankSitegraphDocument(document, query, terms, scores.get(docIndex) || 0)
                 : null;
         })
         .filter((item): item is RankedSitegraphDocument => Boolean(item));
@@ -650,7 +515,7 @@ export const searchSitegraphProgressively = async (
                 searchedDocuments += 1;
                 if (documentMatchesFullScan(document, matchPhrases)) {
                     const baseScore = scores.get(document.doc_index) ?? 24;
-                    verifyMatches.push(rankDocument(document, trimmed, terms, baseScore));
+                    verifyMatches.push(rankSitegraphDocument(document, trimmed, terms, baseScore));
                 }
             }
         });

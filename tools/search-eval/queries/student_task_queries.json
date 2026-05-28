@@ -1,0 +1,887 @@
+{
+  "version": 1,
+  "generated_at": "2026-05-28",
+  "purpose": "Student-task query corpus for NJUPT Search ranking research, regression evaluation, and query-intent design.",
+  "methodology": {
+    "primary_truth_source": "Audited source packages under sibling repository njupt-site-graph/data/sites/{jwc,xsc,cxcy}/index.",
+    "runtime_validation_source": "Compiled browser artifacts under apps/web/public/generated/collections/njupt-public.",
+    "maintenance_rule": "Add queries when source-package data distribution, failed result audits, user feedback, or campus calendar seasonality exposes a new search intent or wording variant.",
+    "non_goal": "This file is not an exhaustive dictionary of every possible phrase. It is a living, high-coverage task corpus used to drive evaluation and ranking design."
+  },
+  "priority_levels": {
+    "p0": "High-frequency, high-urgency, or high-consequence student task.",
+    "p1": "Common task or important seasonal task.",
+    "p2": "Long-tail, exploratory, or wording-variant task."
+  },
+  "freshness_profiles": {
+    "current_term": "Prefer the current or latest academic year/term. Strongly downrank old semester notices.",
+    "current_notice": "Prefer the latest official notice, public announcement, registration notice, or result announcement.",
+    "official_entry": "Prefer stable official system entry. Recency should be tiny or disabled.",
+    "form_version": "Prefer exact form title, attachment/form type, and latest version date.",
+    "current_policy": "Prefer current/revised policy and current-year working notice when both are relevant.",
+    "evergreen": "Prefer official, authoritative, and exact result; time is secondary."
+  },
+  "source_authority": {
+    "jwc": [
+      "exam_schedule",
+      "academic_calendar",
+      "course_selection",
+      "grade_credit",
+      "student_status",
+      "form_download",
+      "academic_policy",
+      "recommendation_exemption"
+    ],
+    "xsc": [
+      "scholarship_aid",
+      "counselor_affairs",
+      "mental_health",
+      "dormitory",
+      "employment",
+      "military_service",
+      "student_community",
+      "ideological_education"
+    ],
+    "cxcy": [
+      "innovation_entrepreneurship",
+      "competition_registration",
+      "innovation_project",
+      "business_startup",
+      "cxcy_system"
+    ]
+  },
+  "categories": [
+    {
+      "category": "exam_schedule",
+      "description": "Exams, class-specific exam lookup, makeup exams, retakes, and MOOC/offline exams.",
+      "expected_sources": [
+        "jwc"
+      ],
+      "expected_facets": [
+        "exam",
+        "notice_article",
+        "download"
+      ],
+      "freshness_profile": "current_term",
+      "queries": [
+        {
+          "query": "期末考试",
+          "priority": "p0",
+          "notes": "Current audit failure: old 2013-2014 exam notice can outrank newer notices."
+        },
+        {
+          "query": "考试安排",
+          "priority": "p0"
+        },
+        {
+          "query": "期末考试安排",
+          "priority": "p0"
+        },
+        {
+          "query": "考场安排",
+          "priority": "p1"
+        },
+        {
+          "query": "补考",
+          "priority": "p0"
+        },
+        {
+          "query": "缓考",
+          "priority": "p0"
+        },
+        {
+          "query": "缓考申请表",
+          "priority": "p0",
+          "expected_facets": [
+            "download",
+            "workflow"
+          ],
+          "freshness_profile": "form_version"
+        },
+        {
+          "query": "重修考试",
+          "priority": "p1"
+        },
+        {
+          "query": "单开重修班",
+          "priority": "p1"
+        },
+        {
+          "query": "慕课考试",
+          "priority": "p1"
+        },
+        {
+          "query": "MOOC考试",
+          "priority": "p1"
+        },
+        {
+          "query": "SPOC考试",
+          "priority": "p2"
+        },
+        {
+          "query": "四六级",
+          "priority": "p1"
+        },
+        {
+          "query": "英语四六级口语考试",
+          "priority": "p1"
+        },
+        {
+          "query": "B250403",
+          "priority": "p0",
+          "expected_vertical": "exam",
+          "notes": "Should route to exam vertical rather than sitegraph collection."
+        },
+        {
+          "query": "班级考试安排",
+          "priority": "p1",
+          "expected_vertical": "exam"
+        }
+      ]
+    },
+    {
+      "category": "academic_calendar",
+      "description": "Calendar, teaching weeks, holidays, semester start/end, and current academic year.",
+      "expected_sources": [
+        "jwc"
+      ],
+      "expected_facets": [
+        "notice_article",
+        "policy",
+        "download"
+      ],
+      "freshness_profile": "current_term",
+      "queries": [
+        {
+          "query": "校历",
+          "priority": "p0"
+        },
+        {
+          "query": "教学周历",
+          "priority": "p0"
+        },
+        {
+          "query": "2025-2026学年校历",
+          "priority": "p0"
+        },
+        {
+          "query": "教学周",
+          "priority": "p1"
+        },
+        {
+          "query": "开学时间",
+          "priority": "p1"
+        },
+        {
+          "query": "放假安排",
+          "priority": "p1"
+        },
+        {
+          "query": "暑假",
+          "priority": "p1"
+        },
+        {
+          "query": "寒假",
+          "priority": "p1"
+        },
+        {
+          "query": "清明节放假",
+          "priority": "p2"
+        },
+        {
+          "query": "劳动节放假",
+          "priority": "p2"
+        },
+        {
+          "query": "国庆节放假",
+          "priority": "p2"
+        }
+      ]
+    },
+    {
+      "category": "system_entry",
+      "description": "Stable official system links and portals.",
+      "expected_facets": [
+        "system",
+        "external"
+      ],
+      "freshness_profile": "official_entry",
+      "queries": [
+        {
+          "query": "教务管理系统",
+          "priority": "p0",
+          "expected_sources": [
+            "jwc"
+          ]
+        },
+        {
+          "query": "教务系统登录",
+          "priority": "p0",
+          "expected_sources": [
+            "jwc"
+          ]
+        },
+        {
+          "query": "正方教务",
+          "priority": "p1",
+          "expected_sources": [
+            "jwc"
+          ]
+        },
+        {
+          "query": "jwxt",
+          "priority": "p1",
+          "expected_sources": [
+            "jwc"
+          ]
+        },
+        {
+          "query": "信息门户",
+          "priority": "p0",
+          "notes": "Current audit failure: phrase can be diluted to the broad token 信息."
+        },
+        {
+          "query": "选课系统",
+          "priority": "p0",
+          "expected_sources": [
+            "jwc"
+          ]
+        },
+        {
+          "query": "成绩查询",
+          "priority": "p0",
+          "expected_sources": [
+            "jwc"
+          ]
+        },
+        {
+          "query": "自主学分系统",
+          "priority": "p1",
+          "expected_sources": [
+            "jwc"
+          ]
+        },
+        {
+          "query": "毕业设计系统",
+          "priority": "p1",
+          "expected_sources": [
+            "jwc"
+          ]
+        },
+        {
+          "query": "双创信息管理系统",
+          "priority": "p0",
+          "expected_sources": [
+            "cxcy"
+          ]
+        },
+        {
+          "query": "心理健康",
+          "priority": "p0",
+          "expected_sources": [
+            "xsc"
+          ]
+        },
+        {
+          "query": "全国征兵网",
+          "priority": "p1",
+          "expected_sources": [
+            "xsc"
+          ]
+        },
+        {
+          "query": "就业指导",
+          "priority": "p1",
+          "expected_sources": [
+            "xsc"
+          ]
+        }
+      ]
+    },
+    {
+      "category": "form_download",
+      "description": "Forms, attachments, downloads, file-type searches, and application materials.",
+      "expected_sources": [
+        "jwc",
+        "xsc",
+        "cxcy"
+      ],
+      "expected_facets": [
+        "download",
+        "workflow",
+        "external"
+      ],
+      "freshness_profile": "form_version",
+      "queries": [
+        {
+          "query": "学生相关文件及表格",
+          "priority": "p0",
+          "expected_sources": [
+            "jwc"
+          ],
+          "notes": "Needs structured version_date from title/attachment name."
+        },
+        {
+          "query": "申请表",
+          "priority": "p0",
+          "notes": "Broad query should group by task or expose refinement chips."
+        },
+        {
+          "query": "学生申请表",
+          "priority": "p1"
+        },
+        {
+          "query": "缓考申请表",
+          "priority": "p0"
+        },
+        {
+          "query": "成绩复核申请表",
+          "priority": "p0"
+        },
+        {
+          "query": "退选课程申请表",
+          "priority": "p0"
+        },
+        {
+          "query": "加选课程申请表",
+          "priority": "p1"
+        },
+        {
+          "query": "课程替代申请表",
+          "priority": "p1"
+        },
+        {
+          "query": "复学申请表",
+          "priority": "p1"
+        },
+        {
+          "query": "休学申请表",
+          "priority": "p1"
+        },
+        {
+          "query": "退学审批表",
+          "priority": "p1"
+        },
+        {
+          "query": "学籍信息更改申请表",
+          "priority": "p1"
+        },
+        {
+          "query": "毕业申请表",
+          "priority": "p1"
+        },
+        {
+          "query": "毕业证明书申请表",
+          "priority": "p1"
+        },
+        {
+          "query": "学位证明书申请表",
+          "priority": "p1"
+        },
+        {
+          "query": "免修申请表",
+          "priority": "p1"
+        },
+        {
+          "query": "重修申请表",
+          "priority": "p1"
+        },
+        {
+          "query": "xlsx",
+          "priority": "p1"
+        },
+        {
+          "query": "xls",
+          "priority": "p1"
+        },
+        {
+          "query": "pdf",
+          "priority": "p2"
+        },
+        {
+          "query": "学生手册",
+          "priority": "p1",
+          "expected_sources": [
+            "xsc"
+          ]
+        }
+      ]
+    },
+    {
+      "category": "academic_policy",
+      "description": "Academic policies, regulations, status, degree, training plans, transfer major, and recommendation exemption.",
+      "expected_sources": [
+        "jwc"
+      ],
+      "expected_facets": [
+        "policy",
+        "notice_article",
+        "workflow",
+        "download"
+      ],
+      "freshness_profile": "current_policy",
+      "queries": [
+        {
+          "query": "规章制度",
+          "priority": "p0"
+        },
+        {
+          "query": "转专业",
+          "priority": "p0",
+          "notes": "Should surface current policy, current-term notice, and college rules; short legacy section pages should not dominate."
+        },
+        {
+          "query": "转专业管理办法",
+          "priority": "p0"
+        },
+        {
+          "query": "转专业工作细则",
+          "priority": "p0"
+        },
+        {
+          "query": "推免",
+          "priority": "p0",
+          "notes": "Needs latest work plan/current-year notice before old annual notices."
+        },
+        {
+          "query": "推荐免试",
+          "priority": "p1"
+        },
+        {
+          "query": "免试攻读研究生",
+          "priority": "p1"
+        },
+        {
+          "query": "培养方案",
+          "priority": "p0"
+        },
+        {
+          "query": "培养计划",
+          "priority": "p1"
+        },
+        {
+          "query": "毕业设计",
+          "priority": "p1"
+        },
+        {
+          "query": "毕业论文",
+          "priority": "p1"
+        },
+        {
+          "query": "学分认定",
+          "priority": "p1"
+        },
+        {
+          "query": "成绩转换",
+          "priority": "p1"
+        },
+        {
+          "query": "课程替代",
+          "priority": "p1"
+        },
+        {
+          "query": "学籍异动",
+          "priority": "p1"
+        },
+        {
+          "query": "学士学位授予办法",
+          "priority": "p1"
+        },
+        {
+          "query": "教材管理办法",
+          "priority": "p2"
+        }
+      ]
+    },
+    {
+      "category": "course_grade_credit",
+      "description": "Course selection, grades, credits, textbooks, retakes, makeups, and teaching operations.",
+      "expected_sources": [
+        "jwc"
+      ],
+      "expected_facets": [
+        "notice_article",
+        "exam",
+        "workflow",
+        "download",
+        "system"
+      ],
+      "freshness_profile": "current_term",
+      "queries": [
+        {
+          "query": "选课",
+          "priority": "p0"
+        },
+        {
+          "query": "补选",
+          "priority": "p1"
+        },
+        {
+          "query": "退选",
+          "priority": "p1"
+        },
+        {
+          "query": "重修选课",
+          "priority": "p0"
+        },
+        {
+          "query": "课表",
+          "priority": "p1"
+        },
+        {
+          "query": "通识选修课",
+          "priority": "p1"
+        },
+        {
+          "query": "教材",
+          "priority": "p1"
+        },
+        {
+          "query": "成绩",
+          "priority": "p0"
+        },
+        {
+          "query": "成绩复核",
+          "priority": "p0"
+        },
+        {
+          "query": "绩点",
+          "priority": "p1"
+        },
+        {
+          "query": "学分",
+          "priority": "p1"
+        },
+        {
+          "query": "自主学分",
+          "priority": "p1"
+        },
+        {
+          "query": "免修",
+          "priority": "p1"
+        }
+      ]
+    },
+    {
+      "category": "scholarship_aid",
+      "description": "Scholarships, grants, financial aid, hardship recognition, and related public announcements.",
+      "expected_sources": [
+        "xsc"
+      ],
+      "expected_facets": [
+        "notice_article",
+        "policy",
+        "workflow",
+        "download"
+      ],
+      "freshness_profile": "current_notice",
+      "queries": [
+        {
+          "query": "奖学金",
+          "priority": "p0"
+        },
+        {
+          "query": "奖学金公示",
+          "priority": "p0"
+        },
+        {
+          "query": "国家奖学金",
+          "priority": "p1"
+        },
+        {
+          "query": "励志奖学金",
+          "priority": "p1"
+        },
+        {
+          "query": "甘霖励志奖学金",
+          "priority": "p1"
+        },
+        {
+          "query": "助学金",
+          "priority": "p0"
+        },
+        {
+          "query": "瑞华春雨助学金",
+          "priority": "p1"
+        },
+        {
+          "query": "困难认定",
+          "priority": "p0",
+          "notes": "Current audit risk: can drift to 学业困难 news instead of financial-aid hardship recognition."
+        },
+        {
+          "query": "家庭经济困难学生认定",
+          "priority": "p0"
+        },
+        {
+          "query": "资助",
+          "priority": "p1"
+        },
+        {
+          "query": "勤工助学",
+          "priority": "p1"
+        },
+        {
+          "query": "助学贷款",
+          "priority": "p1"
+        },
+        {
+          "query": "评奖评优",
+          "priority": "p1"
+        }
+      ]
+    },
+    {
+      "category": "student_affairs",
+      "description": "Counselor affairs, ideological education, mental health, dormitory, student community, employment, and military service.",
+      "expected_sources": [
+        "xsc"
+      ],
+      "expected_facets": [
+        "notice_article",
+        "news",
+        "system",
+        "workflow",
+        "policy"
+      ],
+      "freshness_profile": "current_notice",
+      "queries": [
+        {
+          "query": "辅导员",
+          "priority": "p0"
+        },
+        {
+          "query": "辅导员队伍建设",
+          "priority": "p1"
+        },
+        {
+          "query": "辅导员宣讲团",
+          "priority": "p1"
+        },
+        {
+          "query": "心理健康",
+          "priority": "p0",
+          "freshness_profile": "official_entry"
+        },
+        {
+          "query": "心理咨询",
+          "priority": "p0"
+        },
+        {
+          "query": "心理危机",
+          "priority": "p1"
+        },
+        {
+          "query": "宿舍",
+          "priority": "p1"
+        },
+        {
+          "query": "宿舍管理",
+          "priority": "p1"
+        },
+        {
+          "query": "一站式学生社区",
+          "priority": "p1"
+        },
+        {
+          "query": "学工要闻",
+          "priority": "p2"
+        },
+        {
+          "query": "就业",
+          "priority": "p0"
+        },
+        {
+          "query": "就业工作",
+          "priority": "p1"
+        },
+        {
+          "query": "招聘",
+          "priority": "p1"
+        },
+        {
+          "query": "征兵",
+          "priority": "p0"
+        },
+        {
+          "query": "入伍",
+          "priority": "p1"
+        },
+        {
+          "query": "思政专题",
+          "priority": "p2"
+        },
+        {
+          "query": "防诈骗",
+          "priority": "p1"
+        },
+        {
+          "query": "消防安全",
+          "priority": "p1"
+        }
+      ]
+    },
+    {
+      "category": "innovation_entrepreneurship",
+      "description": "Innovation and entrepreneurship, competitions, Da Chuang, Internet+, Challenge Cup, and CXCY systems.",
+      "expected_sources": [
+        "cxcy"
+      ],
+      "expected_facets": [
+        "notice_article",
+        "system",
+        "download",
+        "workflow",
+        "external"
+      ],
+      "freshness_profile": "current_notice",
+      "queries": [
+        {
+          "query": "大创",
+          "priority": "p0",
+          "notes": "Current audit failure: old JWC 2013 forms can dominate CXCY authority."
+        },
+        {
+          "query": "大学生创新创业训练计划",
+          "priority": "p0"
+        },
+        {
+          "query": "创新创业",
+          "priority": "p0"
+        },
+        {
+          "query": "双创",
+          "priority": "p0"
+        },
+        {
+          "query": "双创信息管理系统",
+          "priority": "p0",
+          "freshness_profile": "official_entry"
+        },
+        {
+          "query": "互联网+",
+          "priority": "p0"
+        },
+        {
+          "query": "互联网+报名",
+          "priority": "p0"
+        },
+        {
+          "query": "中国国际大学生创新大赛",
+          "priority": "p1"
+        },
+        {
+          "query": "挑战杯",
+          "priority": "p0"
+        },
+        {
+          "query": "竞赛报名",
+          "priority": "p0",
+          "notes": "Current audit failure: 2010 registration notice can outrank current competition notices."
+        },
+        {
+          "query": "学科竞赛",
+          "priority": "p0"
+        },
+        {
+          "query": "数学建模竞赛",
+          "priority": "p1"
+        },
+        {
+          "query": "电子设计竞赛",
+          "priority": "p1"
+        },
+        {
+          "query": "西门子杯",
+          "priority": "p1"
+        },
+        {
+          "query": "iCAN创新大赛",
+          "priority": "p1"
+        },
+        {
+          "query": "创业训练",
+          "priority": "p1"
+        },
+        {
+          "query": "创新训练",
+          "priority": "p1"
+        },
+        {
+          "query": "大创延期申请表",
+          "priority": "p1",
+          "freshness_profile": "form_version"
+        },
+        {
+          "query": "大创结题",
+          "priority": "p1"
+        },
+        {
+          "query": "竞赛获奖统计表",
+          "priority": "p1",
+          "freshness_profile": "form_version"
+        }
+      ]
+    },
+    {
+      "category": "broad_exploratory",
+      "description": "Broad terms that should usually trigger grouping, refinement, or diversified result pages.",
+      "expected_sources": [
+        "jwc",
+        "xsc",
+        "cxcy"
+      ],
+      "freshness_profile": "evergreen",
+      "queries": [
+        {
+          "query": "通知",
+          "priority": "p2"
+        },
+        {
+          "query": "公示",
+          "priority": "p1"
+        },
+        {
+          "query": "报名",
+          "priority": "p1",
+          "freshness_profile": "current_notice"
+        },
+        {
+          "query": "名单",
+          "priority": "p1",
+          "freshness_profile": "current_notice"
+        },
+        {
+          "query": "办法",
+          "priority": "p2"
+        },
+        {
+          "query": "流程",
+          "priority": "p1"
+        },
+        {
+          "query": "下载",
+          "priority": "p1"
+        },
+        {
+          "query": "系统",
+          "priority": "p1",
+          "freshness_profile": "official_entry"
+        },
+        {
+          "query": "学院",
+          "priority": "p2"
+        },
+        {
+          "query": "竞赛",
+          "priority": "p1",
+          "freshness_profile": "current_notice"
+        },
+        {
+          "query": "学生",
+          "priority": "p2"
+        }
+      ]
+    }
+  ]
+}

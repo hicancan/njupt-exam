@@ -83,6 +83,7 @@ QUERY_SYNONYMS: dict[str, list[str]] = {
     "办事流程": ["流程", "办理指南", "办事指南", "申请流程"],
     "学生相关文件及表格": ["学生表格", "常用下载", "表格下载", "学生相关文件"],
     "教务管理系统": ["正方教务", "教务系统", "jwxt"],
+    "信息门户": ["综合信息服务", "智慧校园", "统一身份认证"],
     "大创": ["大学生创新创业", "创新创业", "创新训练", "创业训练"],
     "推免": ["免试攻读研究生", "推荐免试", "推免生"],
     "成绩": ["成绩查询", "成绩单", "绩点", "成绩复核"],
@@ -90,10 +91,13 @@ QUERY_SYNONYMS: dict[str, list[str]] = {
     "xlsx": ["xls", "Excel", "表格"],
     "学工": ["学生工作", "学生工作部", "学工要闻"],
     "奖学金": ["助学金", "资助", "评奖评优"],
+    "困难认定": ["家庭经济困难学生认定", "家庭经济困难", "困难学生认定", "资助认定"],
+    "助学金": ["资助", "奖助学金", "家庭经济困难"],
     "辅导员": ["辅导员队伍建设", "辅导员宣讲团"],
     "心理健康": ["心理咨询", "心理中心"],
     "双创": ["双创信息管理系统", "双创基地"],
     "互联网+": [],
+    "竞赛报名": ["创新创业竞赛报名", "学科竞赛报名", "大赛报名"],
 }
 
 FIELD_CODES = {
@@ -235,6 +239,116 @@ def clean_text(value: Any) -> str:
 def normalize_text(value: Any) -> str:
     text = unicodedata.normalize("NFKC", str(value or "")).lower()
     return re.sub(r"\s+", "", text)
+
+
+def normalize_iso_date(raw: str | None) -> str | None:
+    text = clean_text(raw)
+    if not text:
+        return None
+    try:
+        parsed = datetime.fromisoformat(text.replace("Z", "+00:00"))
+    except ValueError:
+        return None
+    return parsed.date().isoformat()
+
+
+def valid_iso_date(year: int, month: int, day: int) -> str | None:
+    if year < 1990 or year > 2035:
+        return None
+    try:
+        return datetime(year, month, day).date().isoformat()
+    except ValueError:
+        return None
+
+
+def infer_academic_year(value: Any) -> str | None:
+    text = clean_text(value)
+    match = re.search(r"(20\d{2})\s*[-—~至]\s*(20\d{2})\s*学年", text)
+    if match:
+        start, end = int(match.group(1)), int(match.group(2))
+        if end == start + 1:
+            return f"{start}-{end}"
+    match = re.search(r"(20\d{2})\s*[-—~]\s*(20\d{2})", text)
+    if match:
+        start, end = int(match.group(1)), int(match.group(2))
+        if end == start + 1:
+            return f"{start}-{end}"
+    return None
+
+
+def infer_term(value: Any) -> str | None:
+    text = normalize_text(value)
+    if any(term in text for term in ("第二学期", "下学期", "-2学期", "2学期")):
+        return "2"
+    if any(term in text for term in ("第一学期", "上学期", "-1学期", "1学期")):
+        return "1"
+    return None
+
+
+def infer_version_date(value: Any, *, published_at: str | None = None) -> str | None:
+    text = unicodedata.normalize("NFKC", str(value or ""))
+    for pattern in (
+        r"(20\d{2})[-/.年](\d{1,2})[-/.月](\d{1,2})日?",
+        r"(20\d{2})\s*年\s*(\d{1,2})\s*月\s*(\d{1,2})\s*日",
+    ):
+        match = re.search(pattern, text)
+        if match:
+            parsed = valid_iso_date(int(match.group(1)), int(match.group(2)), int(match.group(3)))
+            if parsed:
+                return parsed
+    compact = re.search(r"(?<!\d)(20\d{2})(\d{2})(\d{2})(?!\d)", text)
+    if compact:
+        parsed = valid_iso_date(int(compact.group(1)), int(compact.group(2)), int(compact.group(3)))
+        if parsed:
+            return parsed
+    if published_at:
+        year_match = re.search(r"(20\d{2})", normalize_iso_date(published_at) or "")
+        month_day = re.search(r"(?<!\d)(\d{1,2})[-/.](\d{1,2})(?!\d)", text)
+        if year_match and month_day:
+            parsed = valid_iso_date(int(year_match.group(1)), int(month_day.group(1)), int(month_day.group(2)))
+            if parsed:
+                return parsed
+    return None
+
+
+def canonical_title(value: Any) -> str:
+    text = clean_text(value)
+    text = re.sub(r"^【[^】]{1,24}】", "", text)
+    text = re.sub(r"\s+", " ", text).strip(" -_")
+    return text or clean_text(value)
+
+
+def infer_task_kind(*, source_id: str, facet: str, record_type: str, title: str, section: str, nav_path: list[str], tags: list[str]) -> str:
+    text = normalize_text(" ".join([title, section, " ".join(nav_path), " ".join(tags), facet, record_type]))
+    if facet == "system":
+        return "system_entry"
+    if record_type == "attachment" or facet == "download" or any(term in text for term in ("申请表", "表格", "下载", "附件", "xls", "xlsx", "doc", "pdf")):
+        return "form_download"
+    if any(term in text for term in ("期末考试", "考试安排", "补考", "重修考试", "考场", "慕课", "mooc")):
+        return "exam_schedule"
+    if any(term in text for term in ("校历", "教学周历", "教学日历", "放假安排")):
+        return "academic_calendar"
+    if any(term in text for term in ("转专业", "推免", "免试攻读", "培养方案", "学籍", "管理办法")):
+        return "academic_policy"
+    if any(term in text for term in ("选课", "成绩", "学分", "课程")):
+        return "course_grade_credit"
+    if source_id == "xsc" and any(term in text for term in ("奖学金", "助学金", "资助", "家庭经济困难", "困难学生认定", "评奖评优")):
+        return "scholarship_aid"
+    if source_id == "xsc":
+        return "student_affairs"
+    if source_id == "cxcy" or any(term in text for term in ("双创", "创新创业", "大创", "互联网+", "挑战杯", "竞赛")):
+        return "innovation_entrepreneurship"
+    return "broad_exploratory"
+
+
+def authority_profile_for(source_id: str, task_kind: str) -> str:
+    if source_id == "jwc":
+        return "jwc_academic"
+    if source_id == "xsc":
+        return "xsc_student_affairs"
+    if source_id == "cxcy":
+        return "cxcy_innovation"
+    return f"{source_id}_{task_kind}"
 
 
 def unique_strings(values: list[Any], *, limit: int | None = None) -> list[str]:
@@ -453,30 +567,81 @@ def make_doc_meta(
     source_url: str | None = None,
     external_category: str | None = None,
     tags: list[str] | None = None,
+    updated_at: str | None = None,
+    recorded_at: str | None = None,
+    version_date: str | None = None,
 ) -> dict[str, Any]:
     section_name, nav_path, section_tags = section_label(section)
     source_domain = clean_text(site.get("domain")) or doc_host(clean_text(site.get("base_url")))
     source_id = site_source_id(site)
+    title_text = clean_text(title) or clean_text(url)
+    canonical = canonical_title(title_text)
+    all_tags = unique_strings([*(tags or []), *section_tags, facet, record_type], limit=16)
+    published_clean = normalize_iso_date(published_at) or clean_text(published_at) or None
+    updated_clean = normalize_iso_date(updated_at) or clean_text(updated_at) or None
+    recorded_clean = clean_text(recorded_at) or None
+    version_clean = (
+        normalize_iso_date(version_date)
+        or infer_version_date(" ".join([title_text, summary, " ".join(all_tags)]), published_at=published_clean)
+    )
+    if published_clean and version_clean and version_clean != published_clean:
+        date_kind = "published_and_version"
+        date_confidence = "source_published_and_title_version"
+    elif published_clean:
+        date_kind = "published"
+        date_confidence = "source_published"
+    elif version_clean:
+        date_kind = "version"
+        date_confidence = "title_or_attachment"
+    elif recorded_clean:
+        date_kind = "recorded"
+        date_confidence = "recorded_only"
+    else:
+        date_kind = "undated"
+        date_confidence = "unknown"
+    task_kind = infer_task_kind(
+        source_id=source_id,
+        facet=facet,
+        record_type=record_type,
+        title=title_text,
+        section=section_name,
+        nav_path=nav_path,
+        tags=all_tags,
+    )
+    academic_year = infer_academic_year(" ".join([title_text, summary]))
+    term = infer_term(" ".join([title_text, summary]))
     return {
         "doc_index": doc_index,
         "id": doc_id,
         "record_type": record_type,
         "page_type": page_type,
         "facet": facet,
-        "title": clean_text(title) or clean_text(url),
+        "title": title_text,
         "url": clean_text(url),
+        "source_id": source_id,
         "source": site_display_name(site),
         "source_domain": source_domain,
         "section_id": clean_text(section.get("section_id")) if section else None,
         "section": section_name,
         "nav_path": nav_path,
         "nav_path_text": " / ".join(nav_path),
-        "published_at": clean_text(published_at) or None,
+        "canonical_title": canonical,
+        "published_at": published_clean,
+        "updated_at": updated_clean,
+        "recorded_at": recorded_clean,
+        "version_date": version_clean,
+        "date_kind": date_kind,
+        "date_confidence": date_confidence,
+        "academic_year": academic_year,
+        "term": term,
+        "task_kind": task_kind,
+        "authority_profile": authority_profile_for(source_id, task_kind),
+        "dedupe_key": f"{source_id}:{record_type}:{sha1_text(normalize_text(canonical), length=16)}",
         "publisher": clean_text(publisher) or None,
         "summary": clean_text(summary),
         "attachment_count": int(attachment_count or 0),
         "hash": content_hash,
-        "tags": unique_strings([*(tags or []), *section_tags, facet, record_type], limit=16),
+        "tags": all_tags,
         "collection_method": outcome,
         "provenance": {
             "site_id": source_id,
@@ -534,6 +699,7 @@ def build_documents(package: dict[str, Any]) -> dict[str, Any]:
             section=section,
             page_type=clean_text(page.get("page_type")) or "detail_article_page",
             published_at=clean_text(page.get("published_at")) or None,
+            updated_at=clean_text(page.get("updated_at")) or None,
             publisher=clean_text(page.get("publisher")) or None,
             summary=summarize(content, title),
             content_hash=clean_text(page.get("content_hash")) or sha1_text(content or title),
@@ -579,12 +745,13 @@ def build_documents(package: dict[str, Any]) -> dict[str, Any]:
                 title=title,
                 url=metadata["url"],
                 site=site,
-                section=section,
-                page_type="attachment_metadata",
-                published_at=None,
-                publisher=None,
-                summary=f"附件元数据：{title}。来源栏目：{metadata['section']}。",
-                content_hash=sha1_text(metadata["url"] or title),
+            section=section,
+            page_type="attachment_metadata",
+            published_at=None,
+            version_date=infer_version_date(title),
+            publisher=None,
+            summary=f"附件元数据：{title}。来源栏目：{metadata['section']}。",
+            content_hash=sha1_text(metadata["url"] or title),
                 attachment_count=1,
                 facet=facet,
                 outcome="attachment_metadata_only",
@@ -612,7 +779,9 @@ def build_documents(package: dict[str, Any]) -> dict[str, Any]:
             site=site,
             section=section,
             page_type="external_link_record",
-            published_at=clean_text(link.get("recorded_at")) or None,
+            published_at=None,
+            recorded_at=clean_text(link.get("recorded_at")) or None,
+            version_date=infer_version_date(label),
             publisher=None,
             summary=f"{source_name}记录的外链：{label}。该链接只记录入口，不递归抓取内容。",
             content_hash=sha1_text(url + label),
@@ -773,8 +942,8 @@ def measure_representative_full_scan_ms(documents: list[dict[str, Any]], query: 
 
 
 def shard_year(document: dict[str, Any]) -> str:
-    published = clean_text(document.get("published_at"))
-    match = re.search(r"(20\d{2}|19\d{2})", published)
+    date_text = clean_text(document.get("published_at")) or clean_text(document.get("version_date"))
+    match = re.search(r"(20\d{2}|19\d{2})", date_text)
     return match.group(1) if match else "undated"
 
 
@@ -971,9 +1140,13 @@ def write_public_index(packages: list[dict[str, Any]], built: dict[str, Any], *,
         "record_type",
         "facet",
         "title",
+        "source_id",
         "section",
         "nav_path_text",
         "published_at",
+        "version_date",
+        "date_kind",
+        "task_kind",
         "shard",
     }
     doc_meta_light = [

@@ -48,14 +48,7 @@ def filter_token_hash_int(text: str, seed: int) -> int:
 
 
 def tokens_for_query(query: str, aliases: dict[str, Any]) -> list[str]:
-    candidates = [query]
-    normalized_query = normalize_text(query)
-    for key, payload in aliases.items():
-        terms = [key]
-        if isinstance(payload, dict) and isinstance(payload.get("aliases"), list):
-            terms.extend(str(item) for item in payload["aliases"])
-        if any(normalize_text(term) and normalize_text(term) in normalized_query for term in terms):
-            candidates.extend(terms)
+    candidates = expand_query_phrases(query, aliases)
     tokens: set[str] = set()
     for candidate in candidates:
         text = normalize_text(candidate)
@@ -70,6 +63,18 @@ def tokens_for_query(query: str, aliases: dict[str, Any]) -> list[str]:
             else:
                 tokens.add(part)
     return sorted(tokens, key=len, reverse=True)
+
+
+def expand_query_phrases(query: str, aliases: dict[str, Any]) -> list[str]:
+    candidates = [query]
+    normalized_query = normalize_text(query)
+    for key, payload in aliases.items():
+        terms = [key]
+        if isinstance(payload, dict) and isinstance(payload.get("aliases"), list):
+            terms.extend(str(item) for item in payload["aliases"])
+        if any(normalize_text(term) and normalize_text(term) in normalized_query for term in terms):
+            candidates.extend(terms)
+    return sorted({normalize_text(item) for item in candidates if len(normalize_text(item)) >= 2}, key=len, reverse=True)
 
 
 def load_index() -> dict[str, Any]:
@@ -181,9 +186,107 @@ def date_sort_value(raw: Any) -> float:
     return published.timestamp()
 
 
+def ranking_date_sort_value(document: dict[str, Any]) -> float:
+    return date_sort_value(document.get("published_at")) or date_sort_value(document.get("version_date"))
+
+
+def source_id_for(document: dict[str, Any]) -> str:
+    if document.get("source_id"):
+        return str(document["source_id"])
+    provenance = document.get("provenance") if isinstance(document.get("provenance"), dict) else {}
+    if provenance.get("site_id"):
+        return str(provenance["site_id"])
+    return str(document.get("id") or "").split("-", 1)[0]
+
+
+def includes_any(text: str, terms: tuple[str, ...]) -> bool:
+    return any(normalize_text(term) in text for term in terms)
+
+
+def detect_query_intent(query: str) -> dict[str, Any]:
+    text = normalize_text(query)
+    if includes_any(text, ("双创", "创新创业", "大创")):
+        system_authority = ["cxcy"]
+    elif includes_any(text, ("心理", "学工", "资助", "就业", "征兵")):
+        system_authority = ["xsc"]
+    else:
+        system_authority = ["jwc"]
+
+    if includes_any(text, ("教务管理系统", "正方教务", "jwxt", "双创信息管理系统", "心理健康", "心理咨询", "信息门户", "系统", "门户")):
+        return {"intent": "system_entry", "authority_sources": system_authority, "freshness_mode": "official_entry"}
+    if includes_any(text, ("期末考试", "考试安排", "补考", "重修考试", "慕课考试", "考场", "考试周")):
+        return {"intent": "exam_schedule", "authority_sources": ["jwc"], "freshness_mode": "current_term"}
+    if includes_any(text, ("校历", "教学周历", "教学日历", "放假安排")):
+        return {"intent": "academic_calendar", "authority_sources": ["jwc"], "freshness_mode": "current_term"}
+    if includes_any(text, ("申请表", "表格", "xlsx", "xls", "下载", "附件")):
+        return {"intent": "form_download", "authority_sources": ["jwc", "xsc", "cxcy"], "freshness_mode": "form_version"}
+    if includes_any(text, ("转专业", "推免", "免试攻读", "培养方案", "学籍", "管理办法", "规章制度", "政策文件")):
+        return {"intent": "academic_policy", "authority_sources": ["jwc"], "freshness_mode": "current_policy"}
+    if includes_any(text, ("选课", "成绩", "绩点", "学分", "课程")):
+        return {"intent": "course_grade_credit", "authority_sources": ["jwc"], "freshness_mode": "current_notice"}
+    if includes_any(text, ("奖学金", "助学金", "资助", "困难认定", "家庭经济困难", "评奖评优")):
+        return {"intent": "scholarship_aid", "authority_sources": ["xsc"], "freshness_mode": "current_notice"}
+    if includes_any(text, ("辅导员", "心理", "宿舍", "征兵", "就业", "学工", "一站式")):
+        return {"intent": "student_affairs", "authority_sources": ["xsc"], "freshness_mode": "balanced"}
+    if includes_any(text, ("大创", "创新创业", "双创", "互联网+", "挑战杯", "竞赛报名", "竞赛", "创业")):
+        return {"intent": "innovation_entrepreneurship", "authority_sources": ["cxcy"], "freshness_mode": "current_notice"}
+    return {"intent": "broad_exploratory", "authority_sources": ["jwc", "xsc", "cxcy"], "freshness_mode": "balanced"}
+
+
+def age_days(timestamp: float) -> float:
+    return max(0.0, (datetime.now(timezone.utc).timestamp() - timestamp) / 86400)
+
+
+def decayed_freshness(timestamp: float, max_score: float, horizon_days: float) -> float:
+    if not timestamp:
+        return 0.0
+    return max(0.0, max_score - min(age_days(timestamp), horizon_days) / horizon_days * max_score)
+
+
+def intent_freshness_score(document: dict[str, Any], mode: str) -> float:
+    if mode == "official_entry":
+        return 220.0 if document.get("facet") == "system" else 0.0
+    if mode == "form_version":
+        return decayed_freshness(date_sort_value(document.get("version_date")) or date_sort_value(document.get("published_at")), 2800.0, 3650.0)
+    if mode == "current_policy":
+        return decayed_freshness(date_sort_value(document.get("published_at")) or date_sort_value(document.get("version_date")), 4200.0, 2920.0)
+    if mode == "current_term":
+        return decayed_freshness(date_sort_value(document.get("published_at")) or date_sort_value(document.get("version_date")), 7200.0, 1460.0)
+    if mode == "current_notice":
+        return decayed_freshness(date_sort_value(document.get("published_at")) or date_sort_value(document.get("version_date")), 5200.0, 1825.0)
+    return decayed_freshness(date_sort_value(document.get("published_at")) or date_sort_value(document.get("version_date")), 900.0, 3650.0)
+
+
+def stale_penalty(document: dict[str, Any], mode: str) -> float:
+    if mode not in {"current_notice", "current_term", "current_policy"}:
+        return 0.0
+    value = date_sort_value(document.get("published_at")) or date_sort_value(document.get("version_date"))
+    if not value:
+        return 0.0
+    days = age_days(value)
+    if days > 3650:
+        return 4200.0
+    if days > 2190:
+        return 3000.0
+    if days > 1460:
+        return 1800.0
+    return 0.0
+
+
+def is_short_landing_page(document: dict[str, Any], normalized_query: str, title: str) -> bool:
+    return (
+        title == normalized_query
+        and document.get("facet") in {"workflow", "news", "notice_article"}
+        and not date_sort_value(document.get("published_at"))
+        and len(normalize_text(document.get("content"))) < 220
+    )
+
+
 def rank_document(document: dict[str, Any], query: str, terms: list[str], light_score: float) -> dict[str, Any]:
+    profile = detect_query_intent(query)
     normalized_query = normalize_text(query)
     title = text_blob(document, "title")
+    canonical_title = text_blob(document, "canonical_title")
     section = text_blob(document, "section", "nav_path_text")
     summary = text_blob(document, "summary")
     content = text_blob(document, "content")
@@ -197,47 +300,47 @@ def rank_document(document: dict[str, Any], query: str, terms: list[str], light_
 
     score = light_score
     reasons: list[str] = []
-    if normalized_query and title == normalized_query:
-        score += 5000
+    if normalized_query and (title == normalized_query or canonical_title == normalized_query):
+        score += 5200 if document.get("facet") == "system" else 2400
         reasons.append("标题精确")
-    elif normalized_query and normalized_query in title:
-        score += 520
+    elif normalized_query and (normalized_query in title or normalized_query in canonical_title):
+        score += 1000
         reasons.append("标题包含")
     if normalized_query and normalized_query in attachment:
-        score += 360
+        score += 520
         reasons.append("附件名命中")
     if normalized_query and normalized_query in external:
-        score += 360
+        score += 440
         reasons.append("外部系统/外链命中")
     if normalized_query and normalized_query in url:
         score += 220
         reasons.append("URL 命中")
     if normalized_query and normalized_query in section:
-        score += 180
+        score += 260
         reasons.append("栏目路径命中")
     if normalized_query and normalized_query in content:
         score += 120
         reasons.append("正文命中")
     if normalized_query and normalized_query in tags:
-        score += 80
+        score += 120
         reasons.append("标签命中")
 
     matched_terms = []
     for term in terms[:12]:
-        if term in title:
-            score += 80
+        if term in title or term in canonical_title:
+            score += 92
             matched_terms.append(term)
         elif term in attachment:
-            score += 70
+            score += 78
             matched_terms.append(term)
         elif term in external:
-            score += 65
+            score += 68
             matched_terms.append(term)
         elif term in url:
             score += 55
             matched_terms.append(term)
         elif term in section:
-            score += 45
+            score += 48
             matched_terms.append(term)
         elif term in summary or term in content:
             score += 12
@@ -245,22 +348,51 @@ def rank_document(document: dict[str, Any], query: str, terms: list[str], light_
     if matched_terms:
         reasons.append("词项: " + "、".join(sorted(set(matched_terms), key=len, reverse=True)[:6]))
 
-    if document.get("facet") == "system" and any(term in normalized_query for term in ("系统", "jwxt", "教务")):
-        score += 1500
+    source_id = source_id_for(document)
+    if source_id in profile["authority_sources"]:
+        score += 260 if profile["intent"] == "broad_exploratory" else 1900
+        reasons.append("权威来源")
+    elif len(profile["authority_sources"]) == 1 and profile["intent"] != "broad_exploratory":
+        score -= 650
+
+    if document.get("facet") == "system" and profile["intent"] == "system_entry":
+        score += 2100
         reasons.append("系统入口")
-    if document.get("facet") == "download" and any(term in normalized_query for term in ("附件", "下载", "xlsx", "xls", "表格")):
-        score += 120
+    if document.get("facet") == "download" and profile["intent"] == "form_download":
+        score += 1150
         reasons.append("下载资源")
-    if document.get("facet") == "policy" and any(term in normalized_query for term in ("规章", "制度", "管理办法", "政策")):
-        score += 900
+    if document.get("facet") == "policy" and profile["intent"] in {"academic_policy", "scholarship_aid"}:
+        score += 1050
         reasons.append("政策制度")
-    if document.get("facet") == "workflow" and any(term in normalized_query for term in ("办事流程", "办理", "申请流程", "流程")):
-        score += 900
+    if document.get("facet") == "workflow" and profile["intent"] in {"form_download", "course_grade_credit"}:
+        score += 520
         reasons.append("办事流程")
-    if document.get("facet") == "exam" and any(term in normalized_query for term in ("考试", "期末", "慕课", "mooc")):
-        score += 650
+    if document.get("facet") == "exam" and profile["intent"] == "exam_schedule":
+        score += 1250
         reasons.append("考试相关")
-    score += freshness_score(document)
+    if normalize_text(document.get("task_kind")) == normalize_text(profile["intent"]):
+        score += 900
+        reasons.append("任务匹配")
+
+    freshness = intent_freshness_score(document, str(profile["freshness_mode"]))
+    if freshness > 0:
+        score += freshness
+        if profile["freshness_mode"] == "official_entry":
+            reasons.append("官方入口")
+        elif profile["freshness_mode"] == "form_version":
+            reasons.append("版本较新")
+        else:
+            reasons.append("时间较新")
+    penalty = stale_penalty(document, str(profile["freshness_mode"]))
+    if penalty > 0:
+        score -= penalty
+        reasons.append("历史内容降权")
+    if profile["intent"] == "academic_policy" and is_short_landing_page(document, normalized_query, title):
+        score -= 2600
+        reasons.append("短入口降权")
+    if profile["intent"] == "scholarship_aid" and "学业困难" in title and "家庭经济困难" not in title:
+        score -= 1800
+        reasons.append("非资助困难降权")
 
     ranked = dict(document)
     ranked["score"] = round(score, 4)
@@ -300,9 +432,9 @@ def full_scan_blob(document: dict[str, Any]) -> str:
     )
 
 
-def full_scan_matches(document: dict[str, Any], normalized_query: str, terms: list[str]) -> bool:
+def full_scan_matches(document: dict[str, Any], match_phrases: list[str]) -> bool:
     blob = full_scan_blob(document)
-    return bool((normalized_query and normalized_query in blob) or any(len(term) >= 2 and term in blob for term in terms))
+    return any(phrase in blob for phrase in match_phrases)
 
 
 def shard_filter_proves_no_match(shard_id: str, shard_filter: dict[str, Any], terms: list[str]) -> bool:
@@ -331,7 +463,7 @@ def sorted_ranked(results: list[dict[str, Any]]) -> list[dict[str, Any]]:
         results,
         key=lambda item: (
             -float(item.get("score") or 0),
-            -date_sort_value(item.get("published_at")),
+            -ranking_date_sort_value(item),
             str(item.get("id") or ""),
         ),
     )
@@ -380,6 +512,7 @@ def recall_documents_with_stats(
     manifest = index["manifest"]
     doc_meta = index["doc_meta"]
     terms = tokens_for_query(query, index["aliases"])
+    match_phrases = expand_query_phrases(query, index["aliases"])
     scores: dict[int, float] = {}
     apply_postings(scores, index["light_inverted"]["tokens"], terms)
 
@@ -412,7 +545,7 @@ def recall_documents_with_stats(
     quick_ranked = sorted_ranked([
         rank_document(quick_docs[doc_index], query, terms, scores.get(doc_index, 0.0))
         for doc_index in quick_indices
-        if doc_index in quick_docs
+        if doc_index in quick_docs and full_scan_matches(quick_docs[doc_index], match_phrases)
     ])
 
     body_index = load_body_index(index)
@@ -438,6 +571,8 @@ def recall_documents_with_stats(
             continue
         if doc_index not in full_docs:
             continue
+        if not full_scan_matches(full_docs[doc_index], match_phrases):
+            continue
         item = rank_document(full_docs[doc_index], query, terms, scores.get(doc_index, 0.0))
         existing = ranked_by_id.get(str(item["id"]))
         if existing is None or float(item["score"]) > float(existing.get("score") or 0):
@@ -459,7 +594,7 @@ def recall_documents_with_stats(
         for document in documents:
             searched_documents += 1
             doc_index = int(document["doc_index"])
-            if full_scan_matches(document, normalized_query, terms):
+            if full_scan_matches(document, match_phrases):
                 item = rank_document(document, query, terms, scores.get(doc_index, 24.0))
                 existing = ranked_by_id.get(str(item["id"]))
                 if existing is None or float(item["score"]) > float(existing.get("score") or 0):

@@ -277,12 +277,31 @@ def validate_generated_index(packages: list[dict[str, Any]] | dict[str, Any]) ->
     for item in doc_meta:
         if any(field in item for field in ("content", "summary", "attachments", "provenance")):
             fail("doc_meta_light must not contain content, summary, attachments, or raw provenance")
+        for field in ("source_id", "date_kind", "task_kind"):
+            if not item.get(field):
+                fail(f"doc_meta_light record missing ranking field {field}: {item.get('id')}")
+        if item.get("source_id") not in expected_source_ids:
+            fail(f"doc_meta_light record has unexpected source_id: {item.get('source_id')}")
 
     ids = [str(item.get("id") or "") for item in full_documents if isinstance(item, dict)]
     if len(ids) != len(set(ids)):
         fail("full documents contain duplicate ids")
     if len(ids) != len(full_documents):
         fail("full documents contain non-object or missing-id entries")
+    for document in full_documents:
+        for field in ("source_id", "canonical_title", "date_kind", "date_confidence", "task_kind", "authority_profile", "dedupe_key"):
+            if not document.get(field):
+                fail(f"full document missing ranking field {field}: {document.get('id')}")
+        if document.get("source_id") not in expected_source_ids:
+            fail(f"full document has unexpected source_id: {document.get('source_id')}")
+        provenance = document.get("provenance") if isinstance(document.get("provenance"), dict) else {}
+        if document.get("source_id") != provenance.get("site_id"):
+            fail(f"full document source_id/provenance.site_id mismatch: {document.get('id')}")
+        if document.get("record_type") == "external":
+            if document.get("published_at"):
+                fail(f"external record must not treat recorded_at as published_at: {document.get('id')}")
+            if not document.get("recorded_at"):
+                fail(f"external record missing recorded_at: {document.get('id')}")
 
     detail_docs = {str(item.get("url")): item for item in full_documents if item.get("record_type") == "detail"}
     missing_detail_urls = sorted(detail_urls.difference(detail_docs))

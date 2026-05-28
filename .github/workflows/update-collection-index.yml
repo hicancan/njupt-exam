@@ -68,6 +68,7 @@ jobs:
           python tools/quality-gates/scripts/validate_search_index.py
           python tools/quality-gates/scripts/check_public_artifact_sizes.py
           python -m njupt_search_eval run-smoke-queries --collection "$COLLECTION_DIR"
+          python -m njupt_search_eval run-task-queries --collection "$COLLECTION_DIR"
 
       - name: Frontend checks
         run: |
