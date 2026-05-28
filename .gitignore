@@ -62,6 +62,10 @@ review-source-files.txt
 
 # Local/legacy documentation
 /AGENTS.md
+/CLAUDE.md
+/.agents/
+/.claude/
 /doc/
 /docs/
+/prompts/
 /reports/
