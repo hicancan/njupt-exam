@@ -35,7 +35,7 @@ function ExamCardSkeleton() {
 
 export function ExamDetailSkeleton() {
     return (
-        <div className="fade-in w-full pb-10">
+        <div className="fade-in w-full">
             <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4 mb-6">
                 <div className="min-w-0 flex-1">
                     <SkeletonBlock className="h-8 w-72 max-w-full rounded mb-3" />

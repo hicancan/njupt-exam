@@ -60,7 +60,7 @@ export function ResultsPage({
     const hasClassDetail = classMode.mode === 'DETAIL' && classMode.exams.length > 0;
     const showSearchResultsSection = !(hasClassDetail && results.length === 0);
     const loadingSkeleton = loadingKind === 'exam-detail' ? (
-        <section className="mt-6 border-b border-[#dadce0] dark:border-[#3c4043] pb-8">
+        <section className="mt-6">
             <ExamDetailSkeleton />
         </section>
     ) : loadingKind === 'exam-list' ? (
@@ -84,7 +84,7 @@ export function ResultsPage({
                     ) : null}
 
                     {classMode.mode === 'DETAIL' ? (
-                        <section className="mt-6 border-b border-[#dadce0] dark:border-[#3c4043] pb-8">
+                        <section className="mt-6">
                             <ExamDetail
                                 className={classMode.classes[0] || ''}
                                 exams={classMode.exams}

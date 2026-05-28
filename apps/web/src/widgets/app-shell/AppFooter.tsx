@@ -4,7 +4,7 @@ import { UptimeDisplay } from '@/widgets/app-shell/UptimeDisplay';
 
 export function AppFooter() {
     return (
-        <footer className="mt-auto border-t border-[#dadce0] dark:border-[#3c4043] bg-white dark:bg-[#202124] text-sm text-[#70757a] dark:text-[#9aa0a6]">
+        <footer className="border-t border-[#dadce0] dark:border-[#3c4043] bg-white dark:bg-[#202124] text-sm text-[#70757a] dark:text-[#9aa0a6]">
             <div className="max-w-6xl mx-auto px-4 py-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                 <div className="flex flex-wrap items-center gap-6">
                     <a href={APP_CONFIG.GITHUB_REPO} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 hover:underline text-[#5f6368] dark:text-[#9aa0a6] hover:text-[#202124] dark:hover:text-[#e8eaed] transition-colors">
