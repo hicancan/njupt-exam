@@ -7,7 +7,6 @@ import { ExamCard } from './ExamCard';
 import { ReminderSettings } from './ReminderSettings';
 
 type Notice = {
-    tone: 'success' | 'error';
     message: string;
 } | null;
 
@@ -39,7 +38,7 @@ export function ExamDetail({
     const [copyState, setCopyState] = useState<boolean>(false);
     const [notice, setNotice] = useState<Notice>(null);
 
-    const showNotice = (nextNotice: NonNullable<Notice>) => {
+    const showErrorNotice = (nextNotice: NonNullable<Notice>) => {
         setNotice(nextNotice);
         window.setTimeout(() => {
             setNotice(current => current?.message === nextNotice.message ? null : current);
@@ -49,18 +48,17 @@ export function ExamDetail({
     const copyShareLink = () => {
         const url = window.location.href;
         if (!navigator.clipboard) {
-            showNotice({ tone: 'error', message: '复制失败，请手动复制浏览器地址栏链接' });
+            showErrorNotice({ message: '复制失败，请手动复制浏览器地址栏链接' });
             return;
         }
 
         navigator.clipboard.writeText(url)
             .then(() => {
                 setCopyState(true);
-                showNotice({ tone: 'success', message: '链接已复制' });
                 setTimeout(() => setCopyState(false), 2000);
             })
             .catch(() => {
-                showNotice({ tone: 'error', message: '复制失败，请手动复制浏览器地址栏链接' });
+                showErrorNotice({ message: '复制失败，请手动复制浏览器地址栏链接' });
             });
     };
 
@@ -69,7 +67,7 @@ export function ExamDetail({
         const validExams = selectedExams.filter(e => e.start_timestamp);
 
         if (validExams.length === 0) {
-            showNotice({ tone: 'error', message: '请至少勾选一门包含有效时间的考试' });
+            showErrorNotice({ message: '请至少勾选一门包含有效时间的考试' });
             return;
         }
 
@@ -86,7 +84,7 @@ export function ExamDetail({
             window.setTimeout(() => URL.revokeObjectURL(objectUrl), 0);
         } catch (err) {
             console.error('ICS generation failed:', err);
-            showNotice({ tone: 'error', message: '日历文件生成失败，请稍后重试或联系开发者' });
+            showErrorNotice({ message: '日历文件生成失败，请稍后重试或联系开发者' });
         }
     };
 
@@ -139,11 +137,7 @@ export function ExamDetail({
             </div>
 
             {notice ? (
-                <div className={`mb-4 rounded-md border px-4 py-2 text-sm ${
-                    notice.tone === 'success'
-                        ? 'border-[#b7e1cd] bg-[#e6f4ea] text-[#137333] dark:border-[#1e8e3e] dark:bg-[#12351f] dark:text-[#81c995]'
-                        : 'border-[#f4c7c3] bg-[#fce8e6] text-[#b3261e] dark:border-[#5f2b26] dark:bg-[#2b1715] dark:text-[#f28b82]'
-                }`}>
+                <div className="mb-4 rounded-md border border-[#f4c7c3] bg-[#fce8e6] px-4 py-2 text-sm text-[#b3261e] dark:border-[#5f2b26] dark:bg-[#2b1715] dark:text-[#f28b82]">
                     {notice.message}
                 </div>
             ) : null}

@@ -103,7 +103,7 @@ function SearchResultCard({ document }: SearchResultCardProps) {
     };
 
     return (
-        <a {...wrapperProps} className="block w-full text-left py-4 group border-b border-[#e8eaed] dark:border-[#3c4043] last:border-b-0">
+        <a {...wrapperProps} className="block w-full text-left py-3 group border-b border-[#e8eaed] dark:border-[#3c4043] last:border-b-0">
             <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-[13px] text-[#70757a] dark:text-[#9aa0a6]">
                 <span className="font-medium text-[#3c4043] dark:text-[#bdc1c6]">{FACET_LABELS[document.facet]}</span>
                 <span>{document.source}</span>
@@ -232,7 +232,7 @@ export function CollectionSearchSection({
 
     return (
         <section>
-            <div className="mb-4">
+            <div className="mb-2">
                 <div className="flex gap-4 mb-1 border-b border-[#dadce0] dark:border-[#3c4043] overflow-x-auto whitespace-nowrap">
                     <button onClick={() => setActiveFacet('all')} className={`shrink-0 pb-2 text-sm font-medium ${activeFacet === 'all' ? 'text-[#1a73e8] border-b-2 border-[#1a73e8]' : 'text-[#5f6368] hover:text-[#202124] dark:text-[#9aa0a6] dark:hover:text-[#e8eaed]'}`}>全部</button>
                     {availableFacets.map(facet => (
@@ -314,7 +314,7 @@ export function CollectionSearchSection({
             ) : (
                 <div className="border border-[#dadce0] dark:border-[#3c4043] rounded-md bg-white dark:bg-[#202124] p-6 text-[#4d5156] dark:text-[#bdc1c6] max-w-[692px]">
                     <p>没有找到匹配的南邮官网信息。</p>
-                    <p className="mt-2 text-sm">可以尝试“校历”“缓考申请表”“奖学金”“教务管理系统”这类学生任务关键词。</p>
+                    <p className="mt-2 text-sm">可以尝试“期末考试”“四六级”“计算机等级”“口语考试”“奖学金”“大创”“竞赛报名”这类学生任务关键词。</p>
                 </div>
             )}
         </section>
