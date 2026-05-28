@@ -22,7 +22,7 @@ export function ReminderSettings({ selected, onChange }: ReminderSettingsProps) 
     };
 
     return (
-        <div className="bg-[#f8f9fa] dark:bg-[#202124] rounded-lg p-4 mb-6">
+        <div className="mb-6 rounded-lg border border-[#dadce0] dark:border-[#3c4043] bg-[#f8f9fa] dark:bg-[#202124] p-4">
             <div className="flex items-center gap-2 mb-3">
                 <Bell className="w-5 h-5 text-[#fbbc05]" aria-hidden="true" />
                 <h3 className="font-medium text-[#202124] dark:text-[#e8eaed] text-[14px]">考前提醒设置</h3>

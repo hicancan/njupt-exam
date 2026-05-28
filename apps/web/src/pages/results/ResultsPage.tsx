@@ -1,8 +1,10 @@
 import { CalendarDays } from 'lucide-react';
+import { CollectionResultsSkeleton } from '@/features/collection-search/ui/CollectionResultsSkeleton';
+import { ExamDetailSkeleton } from '@/features/exam-search/ui/ExamDetailSkeleton';
+import { ExamListSkeleton } from '@/features/exam-search/ui/ExamListSkeleton';
 import { CollectionSearchSection } from '@/features/collection-search/ui/CollectionSearchSection';
 import { ExamDetail } from '@/features/exam-search/ui/ExamDetail';
 import { ExamList } from '@/features/exam-search/ui/ExamList';
-import { ResultsSkeleton } from '@/widgets/app-shell/ResultsSkeleton';
 import {
     RankedSitegraphDocument,
     SearchResult,
@@ -11,8 +13,11 @@ import {
     SitegraphSearchPhase,
 } from '@/shared/lib/contracts';
 
+type ResultsLoadingKind = 'collection' | 'exam-list' | 'exam-detail';
+
 interface ResultsPageProps {
     isLoading?: boolean;
+    loadingKind: ResultsLoadingKind;
     query: string;
     results: RankedSitegraphDocument[];
     queryStats: SitegraphQueryStats | null;
@@ -33,6 +38,7 @@ interface ResultsPageProps {
 
 export function ResultsPage({
     isLoading,
+    loadingKind,
     query,
     results,
     queryStats,
@@ -53,11 +59,22 @@ export function ResultsPage({
     const trimmedQuery = query.trim();
     const hasClassDetail = classMode.mode === 'DETAIL' && classMode.exams.length > 0;
     const showSearchResultsSection = !(hasClassDetail && results.length === 0);
+    const loadingSkeleton = loadingKind === 'exam-detail' ? (
+        <section className="mt-6 border-b border-[#dadce0] dark:border-[#3c4043] pb-8">
+            <ExamDetailSkeleton />
+        </section>
+    ) : loadingKind === 'exam-list' ? (
+        <section className="mt-6">
+            <ExamListSkeleton />
+        </section>
+    ) : (
+        <CollectionResultsSkeleton />
+    );
 
     return (
         <main className="max-w-6xl w-full mx-auto px-4 pt-3 pb-6">
             {isLoading ? (
-                <ResultsSkeleton />
+                loadingSkeleton
             ) : (
                 <div className="w-full">
                     {classMode.mode === 'LIST' ? (

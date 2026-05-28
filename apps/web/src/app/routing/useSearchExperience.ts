@@ -13,6 +13,8 @@ import {
 import { useUrlState } from '@/features/query-router/model/useUrlState';
 import { useDataUpdateNotifier } from '@/widgets/update-notifier/model/useDataUpdateNotifier';
 
+type ResultsLoadingKind = 'collection' | 'exam-list' | 'exam-detail';
+
 export function useSearchExperience() {
     const { classParam, qParam, navigate } = useUrlState();
 
@@ -23,6 +25,9 @@ export function useSearchExperience() {
     const shouldSearchSitegraph = Boolean(qParam && !isExamRoute && qParam.trim().length >= 2);
     const searchQuery = shouldSearchSitegraph ? qParam || '' : '';
     const manualSelection = classParam;
+    const loadingKind: ResultsLoadingKind = needsExamData
+        ? (classParam || isCompleteClassQuery(qParam || '') ? 'exam-detail' : 'exam-list')
+        : 'collection';
 
     const { exams: allExams, loading: examLoading, error: examError, sourceUrl, sourceTitle, generatedAt, totalRecords } = useExamData(needsExamData);
     const { newDataAvailable, reloadToUpdate } = useDataUpdateNotifier();
@@ -124,6 +129,7 @@ export function useSearchExperience() {
         },
         results: {
             isLoading,
+            loadingKind,
             query: initialQuery,
             results: recalledResults,
             queryStats,

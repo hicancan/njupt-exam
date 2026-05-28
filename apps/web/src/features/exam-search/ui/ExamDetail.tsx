@@ -148,9 +148,7 @@ export function ExamDetail({
                 </div>
             ) : null}
 
-            <div className="mb-6 bg-[#f8f9fa] dark:bg-[#202124] border border-[#dadce0] dark:border-[#3c4043] rounded-lg p-4">
-                <ReminderSettings selected={reminders} onChange={onRemindersChange} />
-            </div>
+            <ReminderSettings selected={reminders} onChange={onRemindersChange} />
 
             <div className="space-y-0 border border-[#dadce0] dark:border-[#3c4043] rounded-lg overflow-hidden bg-white dark:bg-[#202124]">
                 {exams.map((exam, idx) => (
