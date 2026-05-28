@@ -23,7 +23,7 @@ export function useDataUpdateNotifier() {
     }, []);
 
     const reloadToUpdate = () => {
-        window.location.reload();
+        window.dispatchEvent(new Event(APP_CONFIG.UPDATE_APPLY_EVENT));
     };
 
     return { newDataAvailable, reloadToUpdate };
