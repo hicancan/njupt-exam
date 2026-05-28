@@ -61,5 +61,7 @@ tracked-files.txt
 review-source-files.txt
 
 # Local/legacy documentation
+/AGENTS.md
 /doc/
 /docs/
+/reports/
