@@ -5,11 +5,8 @@ import json
 from pathlib import Path
 from typing import Any
 
-from .build_sitegraph_index import (
-    aggregate_counts,
-    build_sitegraph_indexes,
-    configure_collection_output,
-)
+from .build_sitegraph_index import build_sitegraph_indexes
+from .sitegraph_public_index import aggregate_counts, configure_collection_output
 from .sitegraph_source import load_collection_source_packages, package_source_id, validate_sitegraph_package
 from .validate_sitegraph_index import validate_generated_index
 
