@@ -23,12 +23,40 @@ jobs:
     runs-on: ubuntu-latest
     env:
       SITEGRAPH_REF: ${{ github.event.client_payload.sitegraph_ref || github.event.inputs.sitegraph_ref || 'main' }}
+      DISPATCH_SITEGRAPH_REF: ${{ github.event.client_payload.sitegraph_ref || '' }}
+      DISPATCH_SOURCE_REPO: ${{ github.event.client_payload.source_repo || '' }}
+      DISPATCH_SOURCE_RUN_ID: ${{ github.event.client_payload.source_run_id || '' }}
+      DISPATCH_REASON: ${{ github.event.client_payload.dispatch_reason || '' }}
+      SITEGRAPH_CHANGED: ${{ github.event.client_payload.sitegraph_changed || '' }}
       NJUPT_SITEGRAPH_REPO: _sitegraph/njupt-site-graph
       COLLECTION_DIR: apps/web/public/generated/collections/njupt-public
 
     steps:
       - name: Checkout njupt-search
         uses: actions/checkout@v4
+
+      - name: Validate update trigger context
+        run: |
+          if [ "$GITHUB_EVENT_NAME" = "repository_dispatch" ]; then
+            if [ -z "$DISPATCH_SITEGRAPH_REF" ]; then
+              echo "::error::repository_dispatch missing client_payload.sitegraph_ref"
+              exit 1
+            fi
+            if [ "$DISPATCH_SOURCE_REPO" != "hicancan/njupt-site-graph" ]; then
+              echo "::error::repository_dispatch source_repo must be hicancan/njupt-site-graph"
+              exit 1
+            fi
+            if [ -z "$DISPATCH_SOURCE_RUN_ID" ]; then
+              echo "::error::repository_dispatch missing client_payload.source_run_id"
+              exit 1
+            fi
+          fi
+          echo "event_name=$GITHUB_EVENT_NAME"
+          echo "sitegraph_ref=$SITEGRAPH_REF"
+          echo "source_repo=${DISPATCH_SOURCE_REPO:-manual-or-unspecified}"
+          echo "source_run_id=${DISPATCH_SOURCE_RUN_ID:-manual-or-unspecified}"
+          echo "sitegraph_changed=${SITEGRAPH_CHANGED:-unspecified}"
+          echo "dispatch_reason=${DISPATCH_REASON:-unspecified}"
 
       - name: Checkout sitegraph source packages
         uses: actions/checkout@v4

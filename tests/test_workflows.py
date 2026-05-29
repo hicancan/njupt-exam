@@ -10,6 +10,12 @@ def test_collection_update_is_triggered_by_sitegraph_dispatch():
     assert "cron: '30 */6 * * *'" not in text
     assert "github.event.client_payload.sitegraph_ref" in text
     assert "ref: ${{ env.SITEGRAPH_REF }}" in text
+    assert "DISPATCH_SITEGRAPH_REF" in text
+    assert "DISPATCH_SOURCE_REPO" in text
+    assert "DISPATCH_SOURCE_RUN_ID" in text
+    assert "repository_dispatch missing client_payload.sitegraph_ref" in text
+    assert "repository_dispatch source_repo must be hicancan/njupt-site-graph" in text
+    assert "repository_dispatch missing client_payload.source_run_id" in text
 
 
 def test_collection_update_uses_configured_source_packages():
