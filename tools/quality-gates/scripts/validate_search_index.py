@@ -15,6 +15,8 @@ from njupt_search_indexer.build_sitegraph_index import (  # noqa: E402
     OBSOLETE_INDEX_DIR,
     PUBLIC_INDEX_DIR,
     PUBLIC_ROOT,
+)
+from njupt_search_indexer.sitegraph_source import (  # noqa: E402
     load_collection_source_packages,
     package_source_id,
     validate_sitegraph_package,

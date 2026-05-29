@@ -3,7 +3,7 @@ from pathlib import Path
 
 import pytest
 
-from njupt_search_indexer.build_sitegraph_index import (
+from njupt_search_indexer.sitegraph_source import (
     load_collection_source_packages,
     validate_sitegraph_package,
 )

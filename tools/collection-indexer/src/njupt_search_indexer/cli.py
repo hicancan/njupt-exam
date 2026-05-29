@@ -9,10 +9,9 @@ from .build_sitegraph_index import (
     aggregate_counts,
     build_sitegraph_indexes,
     configure_collection_output,
-    load_collection_source_packages,
-    package_source_id,
 )
-from .validate_sitegraph_index import validate_generated_index, validate_sitegraph_package
+from .sitegraph_source import load_collection_source_packages, package_source_id, validate_sitegraph_package
+from .validate_sitegraph_index import validate_generated_index
 
 
 def _print_json(payload: dict[str, Any]) -> None:

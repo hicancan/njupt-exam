@@ -87,24 +87,15 @@ npm run dev
 
 ```powershell
 # 1. 验证上游数据源
-uv run python -m njupt_search_indexer validate `
-  --source-package D:\code\github\hicancan\njupt-site-graph\data\sites\jwc\index `
-  --source-package D:\code\github\hicancan\njupt-site-graph\data\sites\xsc\index `
-  --source-package D:\code\github\hicancan\njupt-site-graph\data\sites\cxcy\index `
-  --skip-output
+$env:NJUPT_SITEGRAPH_REPO = "..\njupt-site-graph"
+uv run python -m njupt_search_indexer validate --skip-output
 
 # 2. 编译并生成前端静态索引 (Collection)
 uv run python -m njupt_search_indexer build --collection-id njupt-public `
-  --source-package D:\code\github\hicancan\njupt-site-graph\data\sites\jwc\index `
-  --source-package D:\code\github\hicancan\njupt-site-graph\data\sites\xsc\index `
-  --source-package D:\code\github\hicancan\njupt-site-graph\data\sites\cxcy\index `
   --out apps\web\public\generated\collections\njupt-public
 
 # 3. 验证生成的产物契约
 uv run python -m njupt_search_indexer validate `
-  --source-package D:\code\github\hicancan\njupt-site-graph\data\sites\jwc\index `
-  --source-package D:\code\github\hicancan\njupt-site-graph\data\sites\xsc\index `
-  --source-package D:\code\github\hicancan\njupt-site-graph\data\sites\cxcy\index `
   --collection apps\web\public\generated\collections\njupt-public
 
 # 4. 质量门禁检查 (索引体积与结构规范)

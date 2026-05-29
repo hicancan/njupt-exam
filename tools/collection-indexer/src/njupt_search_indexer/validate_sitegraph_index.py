@@ -8,7 +8,8 @@ from pathlib import Path
 from typing import Any
 
 from . import build_sitegraph_index as build_index
-from .build_sitegraph_index import BASE_DIR, aggregate_counts, package_source_id, validate_sitegraph_package
+from .build_sitegraph_index import BASE_DIR, aggregate_counts
+from .sitegraph_source import load_collection_source_packages, package_source_id, validate_sitegraph_package
 
 
 REQUIRED_QUERIES = (
@@ -379,7 +380,7 @@ def main() -> None:
     parser.add_argument("--skip-output", action="store_true", help="Only validate upstream sitegraph source packages")
     args = parser.parse_args()
 
-    from .build_sitegraph_index import configure_collection_output, load_collection_source_packages
+    from .build_sitegraph_index import configure_collection_output
 
     configure_collection_output(output_dir=args.collection)
     source_packages = args.source_packages or load_collection_source_packages()
