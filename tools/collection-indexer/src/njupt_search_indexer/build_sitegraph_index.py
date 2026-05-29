@@ -14,7 +14,6 @@ from datetime import datetime, timezone
 from pathlib import Path
 from time import perf_counter
 from typing import Any
-from urllib.parse import urlparse
 
 from .sitegraph_artifact_io import artifact_entry, write_hashed_json, write_json
 from .sitegraph_source import (
@@ -22,6 +21,18 @@ from .sitegraph_source import (
     load_collection_source_packages,
     package_source_id,
     validate_sitegraph_package,
+)
+from .sitegraph_text import (
+    canonical_title,
+    clean_text,
+    doc_host,
+    normalize_text,
+    sha1_text,
+    sha256_text,
+    sitegraph_tokens,
+    stable_slug,
+    summarize,
+    unique_strings,
 )
 
 
@@ -96,14 +107,6 @@ BODY_FIELD_CODES = {key: FIELD_CODES[key] for key in ("summary", "content")}
 FACET_ORDER = ("notice_article", "policy", "workflow", "download", "system", "exam", "news", "external")
 
 
-def sha1_text(text: str, length: int = 20) -> str:
-    return hashlib.sha1(text.encode("utf-8")).hexdigest()[:length]
-
-
-def sha256_text(text: str, length: int = 16) -> str:
-    return hashlib.sha256(text.encode("utf-8")).hexdigest()[:length]
-
-
 def filter_token_hash(text: str) -> str:
     value = 2166136261
     for byte in text.encode("utf-8"):
@@ -133,14 +136,6 @@ def build_filter_bitset(tokens: list[str], *, bit_count: int = 16384, hash_count
     }
 
 
-def stable_slug(value: Any, *, fallback: str = "unknown", max_length: int = 48) -> str:
-    text = normalize_text(value)
-    text = re.sub(r"[^a-z0-9\u4e00-\u9fff_-]+", "-", text).strip("-")
-    if not text:
-        text = fallback
-    return text[:max_length]
-
-
 def producer_ref() -> str:
     for env_name in ("GITHUB_SHA", "GITHUB_REF_NAME"):
         value = os.environ.get(env_name)
@@ -154,15 +149,6 @@ def producer_ref() -> str:
 
 def now_iso() -> str:
     return datetime.now(timezone.utc).isoformat()
-
-
-def clean_text(value: Any) -> str:
-    return re.sub(r"\s+", " ", str(value or "")).strip()
-
-
-def normalize_text(value: Any) -> str:
-    text = unicodedata.normalize("NFKC", str(value or "")).lower()
-    return re.sub(r"\s+", "", text)
 
 
 def normalize_iso_date(raw: str | None) -> str | None:
@@ -235,13 +221,6 @@ def infer_version_date(value: Any, *, published_at: str | None = None) -> str | 
     return None
 
 
-def canonical_title(value: Any) -> str:
-    text = clean_text(value)
-    text = re.sub(r"^【[^】]{1,24}】", "", text)
-    text = re.sub(r"\s+", " ", text).strip(" -_")
-    return text or clean_text(value)
-
-
 def infer_task_kind(*, source_id: str, facet: str, record_type: str, title: str, section: str, nav_path: list[str], tags: list[str]) -> str:
     text = normalize_text(" ".join([title, section, " ".join(nav_path), " ".join(tags), facet, record_type]))
     if facet == "system":
@@ -273,44 +252,6 @@ def authority_profile_for(source_id: str, task_kind: str) -> str:
     if source_id == "cxcy":
         return "cxcy_innovation"
     return f"{source_id}_{task_kind}"
-
-
-def unique_strings(values: list[Any], *, limit: int | None = None) -> list[str]:
-    result: list[str] = []
-    seen: set[str] = set()
-    for value in values:
-        text = clean_text(value)
-        if not text or text in seen:
-            continue
-        seen.add(text)
-        result.append(text)
-        if limit is not None and len(result) >= limit:
-            break
-    return result
-
-
-def sitegraph_tokens(value: Any, *, cjk_max_n: int = 3, cap: int | None = None) -> set[str]:
-    text = normalize_text(value)
-    tokens: set[str] = set()
-    if not text:
-        return tokens
-    for match in re.finditer(r"[\u4e00-\u9fff]{2,}|[a-z0-9][a-z0-9._-]{1,}", text):
-        part = match.group(0)
-        if re.fullmatch(r"[\u4e00-\u9fff]+", part):
-            if len(part) <= 16:
-                tokens.add(part)
-            for size in range(2, cjk_max_n + 1):
-                if len(part) < size:
-                    continue
-                for index in range(0, len(part) - size + 1):
-                    tokens.add(part[index : index + size])
-                    if cap is not None and len(tokens) >= cap:
-                        return tokens
-        else:
-            tokens.add(part)
-        if cap is not None and len(tokens) >= cap:
-            return tokens
-    return tokens
 
 
 def query_alias_payload() -> dict[str, dict[str, list[str]]]:
@@ -350,14 +291,6 @@ def infer_facet(*, record_type: str, section: dict[str, Any] | None, title: str,
     return "notice_article"
 
 
-def summarize(content: str, title: str, limit: int = 180) -> str:
-    text = clean_text(content)
-    title_text = clean_text(title)
-    if text.startswith(title_text):
-        text = text[len(title_text):].strip()
-    return text[:limit] if text else title_text
-
-
 def attachment_metadata(item: dict[str, Any], *, parent_doc_id: str | None, section: dict[str, Any] | None) -> dict[str, Any]:
     section_name, nav_path, _ = section_label(section)
     return {
@@ -373,11 +306,6 @@ def attachment_metadata(item: dict[str, Any], *, parent_doc_id: str | None, sect
         "metadata_only": True,
         "position": item.get("position"),
     }
-
-
-def doc_host(url: str) -> str:
-    parsed = urlparse(url)
-    return parsed.netloc
 
 
 def site_source_id(site: dict[str, Any]) -> str:
