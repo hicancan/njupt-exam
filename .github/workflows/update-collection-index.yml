@@ -58,6 +58,15 @@ jobs:
           echo "sitegraph_changed=${SITEGRAPH_CHANGED:-unspecified}"
           echo "dispatch_reason=${DISPATCH_REASON:-unspecified}"
 
+      - name: Validate sitegraph ref exists
+        env:
+          GH_TOKEN: ${{ secrets.NJUPT_SITEGRAPH_TOKEN || github.token }}
+        run: |
+          if ! gh api "repos/hicancan/njupt-site-graph/commits/$SITEGRAPH_REF" --silent; then
+            echo "::error::sitegraph_ref $SITEGRAPH_REF is not a commit visible in hicancan/njupt-site-graph"
+            exit 1
+          fi
+
       - name: Checkout sitegraph source packages
         uses: actions/checkout@v4
         with:

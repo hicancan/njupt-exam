@@ -16,6 +16,9 @@ def test_collection_update_is_triggered_by_sitegraph_dispatch():
     assert "repository_dispatch missing client_payload.sitegraph_ref" in text
     assert "repository_dispatch source_repo must be hicancan/njupt-site-graph" in text
     assert "repository_dispatch missing client_payload.source_run_id" in text
+    assert "Validate sitegraph ref exists" in text
+    assert "repos/hicancan/njupt-site-graph/commits/$SITEGRAPH_REF" in text
+    assert "sitegraph_ref $SITEGRAPH_REF is not a commit visible in hicancan/njupt-site-graph" in text
 
 
 def test_collection_update_uses_configured_source_packages():
