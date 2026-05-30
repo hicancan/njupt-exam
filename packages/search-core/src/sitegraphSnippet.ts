@@ -1,8 +1,8 @@
-import type { SitegraphFullDocument, SitegraphMatchSnippet } from '@njupt-search/contracts';
+import type { SitegraphFullDocument, SitegraphMatchHighlight, SitegraphMatchSnippet } from '@njupt-search/contracts';
 import { normalizeSearchText as normalize } from './tokenizer';
 
-const SNIPPET_PREFIX_LENGTH = 64;
-const SNIPPET_SUFFIX_LENGTH = 96;
+const VISIBLE_MATCH_PREFIX_LENGTH = 24;
+const SNIPPET_SUFFIX_LENGTH = 112;
 const FALLBACK_SNIPPET_LENGTH = 180;
 
 type SnippetField = SitegraphMatchSnippet['field'];
@@ -12,29 +12,144 @@ interface SnippetCandidate {
     text: string;
 }
 
+interface SearchableText {
+    normalized: string;
+    sourceStartByNormalizedIndex: number[];
+    sourceEndByNormalizedIndex: number[];
+}
+
+interface TextMatch {
+    start: number;
+    end: number;
+    term: string;
+}
+
+interface ScoredMatch {
+    candidate: SnippetCandidate;
+    text: string;
+    match: TextMatch;
+    score: number;
+}
+
+const FIELD_WEIGHTS: Record<SnippetField, number> = {
+    content: 90,
+    summary: 82,
+    attachments: 76,
+    title: 70,
+    nav_path: 58,
+    url: 30,
+};
+
 const compactText = (value: string): string => value.replace(/\s+/g, ' ').trim();
 
+const expandVisibleTermAliases = (terms: string[]): string[] => {
+    const expanded = [...terms];
+    if (terms.some(term => term === '四六级' || term === '四六' || term.includes('四六级'))) {
+        expanded.push('四级', '六级');
+    }
+    return expanded;
+};
+
 const normalizedTerms = (query: string, terms: string[]): string[] => {
-    return Array.from(new Set([query, ...terms].map(normalize).filter(term => term.length >= 2)))
+    return Array.from(new Set(expandVisibleTermAliases([query, ...terms])
+        .map(normalize)
+        .filter(term => term.length >= 2)))
         .sort((a, b) => b.length - a.length);
 };
 
-const findFirstMatch = (text: string, terms: string[]): { index: number; term: string } | null => {
-    const lowerText = text.toLocaleLowerCase('zh-CN');
-    let best: { index: number; term: string } | null = null;
+const buildSearchableText = (text: string): SearchableText => {
+    let normalized = '';
+    const sourceStartByNormalizedIndex: number[] = [];
+    const sourceEndByNormalizedIndex: number[] = [];
+
+    for (let sourceIndex = 0; sourceIndex < text.length;) {
+        const codePoint = text.codePointAt(sourceIndex);
+        const char = String.fromCodePoint(codePoint || 0);
+        const sourceEnd = sourceIndex + char.length;
+        const normalizedChar = char.normalize('NFKC').toLocaleLowerCase('zh-CN');
+        if (!/\s/.test(normalizedChar)) {
+            for (let index = 0; index < normalizedChar.length; index += 1) {
+                sourceStartByNormalizedIndex.push(sourceIndex);
+                sourceEndByNormalizedIndex.push(sourceEnd);
+            }
+            normalized += normalizedChar;
+        }
+        sourceIndex = sourceEnd;
+    }
+
+    return { normalized, sourceStartByNormalizedIndex, sourceEndByNormalizedIndex };
+};
+
+const collectMatches = (text: string, terms: string[]): TextMatch[] => {
+    const searchable = buildSearchableText(text);
+    const matches: TextMatch[] = [];
     for (const term of terms) {
-        const index = lowerText.indexOf(term.toLocaleLowerCase('zh-CN'));
-        if (index < 0) continue;
-        if (!best || index < best.index || (index === best.index && term.length > best.term.length)) {
-            best = { index, term };
+        let normalizedIndex = searchable.normalized.indexOf(term);
+        while (normalizedIndex >= 0) {
+            const normalizedEnd = normalizedIndex + term.length - 1;
+            const start = searchable.sourceStartByNormalizedIndex[normalizedIndex];
+            const end = searchable.sourceEndByNormalizedIndex[normalizedEnd];
+            if (start !== undefined && end !== undefined) {
+                matches.push({ start, end, term });
+            }
+            normalizedIndex = searchable.normalized.indexOf(term, normalizedIndex + 1);
+        }
+    }
+    return matches;
+};
+
+const chooseNonOverlappingHighlights = (matches: TextMatch[]): SitegraphMatchHighlight[] => {
+    const selected: SitegraphMatchHighlight[] = [];
+    const sorted = [...matches].sort((a, b) => {
+        if (a.start !== b.start) return a.start - b.start;
+        return (b.end - b.start) - (a.end - a.start);
+    });
+
+    for (const match of sorted) {
+        const overlaps = selected.some(item => match.start < item.end && match.end > item.start);
+        if (overlaps) continue;
+        selected.push({ start: match.start, end: match.end, term: match.term });
+    }
+    return selected.sort((a, b) => a.start - b.start);
+};
+
+const buildHighlights = (text: string, terms: string[]): SitegraphMatchHighlight[] => {
+    return chooseNonOverlappingHighlights(collectMatches(text, terms));
+};
+
+const scoreMatch = (field: SnippetField, match: TextMatch, normalizedQuery: string): number => {
+    const queryBoost = match.term === normalizedQuery ? 1000 : 0;
+    const termLengthBoost = match.term.length * 12;
+    const earlyMatchBoost = Math.max(0, 40 - Math.floor(match.start / 8));
+    return FIELD_WEIGHTS[field] + queryBoost + termLengthBoost + earlyMatchBoost;
+};
+
+const bestCandidateMatch = (candidates: SnippetCandidate[], terms: string[], normalizedQuery: string): ScoredMatch | null => {
+    let best: ScoredMatch | null = null;
+    for (const candidate of candidates) {
+        const text = compactText(candidate.text);
+        if (!text) continue;
+        const matches = collectMatches(text, terms);
+        for (const match of matches) {
+            const scored: ScoredMatch = {
+                candidate,
+                text,
+                match,
+                score: scoreMatch(candidate.field, match, normalizedQuery),
+            };
+            if (!best
+                || scored.score > best.score
+                || (scored.score === best.score && scored.match.start < best.match.start)) {
+                best = scored;
+            }
         }
     }
     return best;
 };
 
-const sliceAroundMatch = (text: string, index: number, termLength: number): string => {
-    const start = Math.max(0, index - SNIPPET_PREFIX_LENGTH);
-    const end = Math.min(text.length, index + termLength + SNIPPET_SUFFIX_LENGTH);
+const sliceAroundMatch = (text: string, match: TextMatch): string => {
+    const start = Math.max(0, match.start - VISIBLE_MATCH_PREFIX_LENGTH);
+    const end = Math.min(text.length, match.end + SNIPPET_SUFFIX_LENGTH);
     const prefix = start > 0 ? '...' : '';
     const suffix = end < text.length ? '...' : '';
     return `${prefix}${text.slice(start, end).trim()}${suffix}`;
@@ -47,6 +162,7 @@ const fallbackSnippet = (candidate: SnippetCandidate): SitegraphMatchSnippet | n
         field: candidate.field,
         text: text.length > FALLBACK_SNIPPET_LENGTH ? `${text.slice(0, FALLBACK_SNIPPET_LENGTH).trim()}...` : text,
         matched_terms: [],
+        highlights: [],
     };
 };
 
@@ -58,23 +174,26 @@ export const buildSitegraphMatchSnippet = (
     const candidates: SnippetCandidate[] = [
         { field: 'content', text: document.content },
         { field: 'summary', text: document.summary },
-        { field: 'title', text: document.title },
         { field: 'attachments', text: document.attachments.map(attachment => attachment.name).join(' ') },
+        { field: 'title', text: document.title },
         { field: 'nav_path', text: document.nav_path_text || document.section },
         { field: 'url', text: document.url },
     ];
     const matchTerms = normalizedTerms(query, terms);
+    const normalizedQuery = normalize(query);
+    const best = bestCandidateMatch(candidates, matchTerms, normalizedQuery);
 
-    for (const candidate of candidates) {
-        const text = compactText(candidate.text);
-        if (!text) continue;
-        const match = findFirstMatch(text, matchTerms);
-        if (!match) continue;
-        const snippet = sliceAroundMatch(text, match.index, match.term.length);
+    if (best) {
+        const snippet = sliceAroundMatch(best.text, best.match);
+        const highlights = buildHighlights(snippet, matchTerms);
+        const matchedTerms = Array.from(new Set(highlights.map(highlight => highlight.term)))
+            .sort((a, b) => b.length - a.length);
         return {
-            field: candidate.field,
+            field: best.candidate.field,
             text: snippet,
-            matched_terms: matchTerms.filter(term => snippet.toLocaleLowerCase('zh-CN').includes(term.toLocaleLowerCase('zh-CN'))),
+            matched_terms: matchedTerms,
+            highlights,
+            primary_term: best.match.term,
         };
     }
 

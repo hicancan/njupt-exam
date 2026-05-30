@@ -3,6 +3,7 @@ import { ArrowDownWideNarrow, CalendarDays, ChevronDown, ChevronUp, Download, Ex
 import {
     SitegraphFilterOption,
     SitegraphFilterOptions,
+    SitegraphMatchHighlight,
     RankedSitegraphDocument,
     SitegraphFacet,
     SitegraphFullDocument,
@@ -85,36 +86,67 @@ function formatBytes(bytes: number): string {
     return `${bytes} B`;
 }
 
-function highlightedSegments(text: string, terms: string[]): Array<{ text: string; highlighted: boolean }> {
+function highlightRangesFromTerms(text: string, terms: string[]): SitegraphMatchHighlight[] {
     const uniqueTerms = Array.from(new Set(terms.filter(term => term.length >= 2)))
         .sort((a, b) => b.length - a.length);
-    if (uniqueTerms.length === 0) return [{ text, highlighted: false }];
+    if (uniqueTerms.length === 0) return [];
 
     const lowerText = text.toLocaleLowerCase('zh-CN');
-    const segments: Array<{ text: string; highlighted: boolean }> = [];
-    let index = 0;
-    while (index < text.length) {
-        const matched = uniqueTerms.find(term => lowerText.startsWith(term.toLocaleLowerCase('zh-CN'), index));
-        if (matched) {
-            segments.push({ text: text.slice(index, index + matched.length), highlighted: true });
-            index += matched.length;
-            continue;
+    const ranges: SitegraphMatchHighlight[] = [];
+    for (const term of uniqueTerms) {
+        const lowerTerm = term.toLocaleLowerCase('zh-CN');
+        let index = lowerText.indexOf(lowerTerm);
+        while (index >= 0) {
+            const end = index + term.length;
+            const overlaps = ranges.some(range => index < range.end && end > range.start);
+            if (!overlaps) {
+                ranges.push({ start: index, end, term });
+            }
+            index = lowerText.indexOf(lowerTerm, index + 1);
         }
-        const nextIndex = uniqueTerms
-            .map(term => lowerText.indexOf(term.toLocaleLowerCase('zh-CN'), index + 1))
-            .filter(next => next >= 0)
-            .sort((a, b) => a - b)[0] ?? text.length;
-        segments.push({ text: text.slice(index, nextIndex), highlighted: false });
-        index = nextIndex;
+    }
+    return ranges.sort((a, b) => a.start - b.start);
+}
+
+function highlightedSegments(
+    text: string,
+    highlights: SitegraphMatchHighlight[] | undefined,
+    terms: string[]
+): Array<{ text: string; highlighted: boolean }> {
+    const ranges = (highlights && highlights.length > 0 ? highlights : highlightRangesFromTerms(text, terms))
+        .filter(range => Number.isInteger(range.start)
+            && Number.isInteger(range.end)
+            && range.start >= 0
+            && range.end > range.start
+            && range.end <= text.length)
+        .sort((a, b) => a.start - b.start);
+    if (ranges.length === 0) return [{ text, highlighted: false }];
+
+    const segments: Array<{ text: string; highlighted: boolean }> = [];
+    let cursor = 0;
+    for (const range of ranges) {
+        if (range.start < cursor) continue;
+        if (range.start > cursor) {
+            segments.push({ text: text.slice(cursor, range.start), highlighted: false });
+        }
+        segments.push({ text: text.slice(range.start, range.end), highlighted: true });
+        cursor = range.end;
+    }
+    if (cursor < text.length) {
+        segments.push({ text: text.slice(cursor), highlighted: false });
     }
     return segments.filter(segment => segment.text.length > 0);
 }
 
-function HighlightedText({ text, terms }: { text: string; terms: string[] }) {
+function HighlightedText({ text, terms, highlights }: { text: string; terms: string[]; highlights?: SitegraphMatchHighlight[] }) {
     return (
         <>
-            {highlightedSegments(text, terms).map((segment, index) => segment.highlighted ? (
-                <mark key={`${segment.text}-${index}`} className="rounded bg-[#fff3bf] px-0.5 text-inherit dark:bg-[#5f4b18]">
+            {highlightedSegments(text, highlights, terms).map((segment, index) => segment.highlighted ? (
+                <mark
+                    key={`${segment.text}-${index}`}
+                    data-testid="collection-result-highlight"
+                    className="rounded bg-[#fff3bf] px-0.5 text-inherit dark:bg-[#5f4b18]"
+                >
                     {segment.text}
                 </mark>
             ) : (
@@ -188,8 +220,15 @@ function SearchResultCard({ document }: SearchResultCardProps) {
                 ) : null}
             </div>
 
-            <p className="mt-2 text-[14px] text-[#4d5156] dark:text-[#bdc1c6] line-clamp-2 break-words">
-                <HighlightedText text={snippetText} terms={snippet?.matched_terms || []} />
+            <p
+                data-testid="collection-result-snippet"
+                className="mt-2 text-[14px] text-[#4d5156] dark:text-[#bdc1c6] line-clamp-3 sm:line-clamp-2 break-words"
+            >
+                <HighlightedText
+                    text={snippetText}
+                    terms={snippet?.matched_terms || []}
+                    highlights={snippet?.highlights}
+                />
             </p>
 
             <div className="mt-2 flex flex-wrap gap-2 text-[12px] text-[#5f6368] dark:text-[#9aa0a6]">

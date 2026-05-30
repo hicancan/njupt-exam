@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import {
+    buildSitegraphMatchSnippet,
     formatResolvedSearchDate,
     parseSitegraphDocMeta,
     parseSitegraphManifest,
@@ -223,6 +224,25 @@ describe('sitegraph search contract', () => {
         expect(tokens[0]?.length).toBeGreaterThanOrEqual(tokens[tokens.length - 1]?.length ?? 0);
     });
 
+    it('keeps the primary body hit visible near the start of mobile-safe snippets', () => {
+        const terms = tokenizeSitegraphQuery('四六级');
+        const snippet = buildSitegraphMatchSnippet({
+            ...fullDocument,
+            title: '关于英国伦敦大学学院2026年暑期访学项目报名的通知',
+            summary: '暑期访学项目报名通知。',
+            content: '自习等多种方式进行。项目时间：8月3日-8月21日 项目收获：官方证书、学习报告 申请要求：托福 76、雅思6、四级425、六级400；无以上语言成绩者可内测，测试通过替代语言成绩获得申请资格。',
+            attachments: []
+        }, '四六级', terms);
+
+        expect(snippet?.text).toContain('六级400');
+        expect(snippet?.matched_terms).toEqual(expect.arrayContaining(['四级', '六级']));
+        const firstHighlight = snippet?.highlights[0];
+        expect(firstHighlight?.term).toBe('四级');
+        expect(firstHighlight?.start).toBeLessThanOrEqual(32);
+        const visibleLead = snippet?.text.slice(0, firstHighlight?.end ?? 0);
+        expect(visibleLead).toContain('四级');
+    });
+
     it('rejects obsolete provider fields instead of masking schema errors', () => {
         const obsoleteProviderField = `${['l', 'l', 'm'].join('')}_provider`;
         expect(() => parseSitegraphManifest({ ...manifest, [obsoleteProviderField]: null })).toThrow(/provider|Validation/);
@@ -281,8 +301,10 @@ describe('sitegraph search contract', () => {
             const { results, stats } = await recallSitegraphDocuments(bundle, '转专业申请表', new AbortController().signal);
             expect(results[0]?.id).toBe('jwc-detail-1');
             expect(results[0]?.score_reason).toContain('附件名命中');
-            expect(results[0]?.match_snippet?.text).toContain('学生申请转专业需要符合管理办法');
-            expect(results[0]?.match_snippet?.matched_terms).toContain('转专业');
+            expect(results[0]?.match_snippet?.field).toBe('attachments');
+            expect(results[0]?.match_snippet?.text).toContain('转专业申请表.doc');
+            expect(results[0]?.match_snippet?.matched_terms).toContain('转专业申请表');
+            expect(results[0]?.match_snippet?.highlights.length).toBeGreaterThan(0);
             expect(stats.loadedShardCount).toBe(1);
             expect(stats.loadedShardPaths).toEqual([fullShard.path]);
             expect(stats.coverage.exhaustive_complete).toBe(true);

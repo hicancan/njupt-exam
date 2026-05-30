@@ -200,10 +200,18 @@ export interface SitegraphFilterOptions {
     facets: Array<SitegraphFilterOption & { id: SitegraphFacet }>;
 }
 
+export interface SitegraphMatchHighlight {
+    start: number;
+    end: number;
+    term: string;
+}
+
 export interface SitegraphMatchSnippet {
     text: string;
     field: 'title' | 'summary' | 'content' | 'attachments' | 'nav_path' | 'url';
     matched_terms: string[];
+    highlights: SitegraphMatchHighlight[];
+    primary_term?: string;
 }
 
 export interface RankedSitegraphDocument extends SitegraphFullDocument {
