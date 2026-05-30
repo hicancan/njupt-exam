@@ -63,6 +63,21 @@ def walk_keys(payload):
             yield from walk_keys(item)
 
 
+def read_artifact(artifact: dict):
+    return read_json(PUBLIC_ROOT / artifact["path"])
+
+
+def load_source_registry(manifest: dict) -> dict:
+    return read_artifact(manifest["artifacts"]["source_registry"])
+
+
+def load_source_manifests(manifest: dict) -> list[dict]:
+    return [
+        read_artifact(manifest["sitegraph"]["source_manifests"][source_id])
+        for source_id in sorted(manifest["sitegraph"]["source_manifests"])
+    ]
+
+
 def expected_source_counts(manifest: dict) -> dict[str, dict[str, int]]:
     source_package_paths = [path for path in load_collection_source_packages() if path.exists()]
     if source_package_paths:
@@ -75,9 +90,10 @@ def expected_source_counts(manifest: dict) -> dict[str, dict[str, int]]:
             for package in packages
         }
 
+    source_registry = load_source_registry(manifest)
     source_entries = {
         str(item.get("source_id")): item
-        for item in manifest.get("sources", [])
+        for item in source_registry.get("sources", [])
         if isinstance(item, dict)
     }
     return {
@@ -91,33 +107,48 @@ def expected_source_counts(manifest: dict) -> dict[str, dict[str, int]]:
 
 def test_public_index_is_pure_sitegraph_contract():
     manifest = read_json(PUBLIC_INDEX_DIR / "manifest.json")
-    assert manifest["strategy"] == "progressive-verifiable-static-search"
+    assert manifest["strategy"] == "routed-verifiable-static-search"
     assert manifest["producer_repo"] == "hicancan/njupt-search"
     assert manifest["site_id"] == "njupt-public"
     assert manifest["collection_id"] == "njupt-public"
-    assert {item["source_id"] for item in manifest["sources"]} == {"jwc", "xsc", "cxcy"}
+    assert "sources" not in manifest
     assert manifest["artifact_path"] == "generated/collections/njupt-public"
     assert manifest["upstream_generated_at"]
     assert "D:\\" not in json.dumps(manifest, ensure_ascii=False)
     assert "D:/" not in json.dumps(manifest, ensure_ascii=False)
     assert manifest["exam_vertical_preserved"] is True
     assert manifest["core_search"]["execution_model"] == "pure_frontend_worker"
-    assert manifest["core_search"]["light_first_screen"] is True
-    assert manifest["core_search"]["first_screen_artifacts"] == ["doc_meta_light", "light_inverted_index", "query_aliases"]
-    assert manifest["core_search"]["body_index_loading"] == "on_deep_search"
-    assert manifest["core_search"]["full_text_loading"] == "progressive_candidate_hydration_then_exhaustive_full_scan"
+    assert manifest["core_search"]["readiness"] == "routed_bootstrap"
+    assert manifest["core_search"]["legacy_global_first_screen"] is False
+    assert manifest["core_search"]["first_screen_artifacts"] == ["source_registry", "global_query_directory", "query_aliases"]
+    assert manifest["core_search"]["local_index_loading"] == "query_planned_on_demand"
+    assert manifest["core_search"]["body_index_loading"] == "query_planned_on_demand"
+    assert manifest["core_search"]["full_text_loading"] == "lazy_candidate_hydration_then_verified_scope_scan"
     assert manifest["core_search"]["search_worker"] is True
     assert manifest["progressive_search"]["full_scan_supported"] is True
     assert manifest["progressive_search"]["progressive_events"] is True
-    assert manifest["progressive_search"]["total_shards"] == len(manifest["sitegraph"]["full_shards"])
+    assert "full_shards" not in manifest["sitegraph"]
+    source_manifests = load_source_manifests(manifest)
+    source_registry = load_source_registry(manifest)
+    assert {item["source_id"] for item in source_registry["sources"]} == {"jwc", "xsc", "cxcy"}
+    total_shards = sum(len(source_manifest["full_shards"]) for source_manifest in source_manifests)
+    assert manifest["progressive_search"]["total_shards"] == total_shards
     assert manifest["progressive_search"]["total_documents"] == manifest["total_documents"]
-    assert manifest["coverage_contract"]["total_shards"] == len(manifest["sitegraph"]["full_shards"])
+    assert manifest["coverage_contract"]["total_shards"] == total_shards
     assert manifest["coverage_contract"]["total_documents"] == manifest["total_documents"]
     assert set(["title", "url", "section", "nav_path", "summary", "content", "attachments"]) <= set(manifest["coverage_contract"]["coverage_fields"])
     assert manifest["verification_contract"]["shard_filter_supported"] is True
     assert manifest["verification_contract"]["proved_skip_supported"] is True
     assert manifest["verification_contract"]["scan_fallback_supported"] is True
-    assert manifest["verification_contract"]["filter_artifact"] == "shard_filter"
+    assert manifest["verification_contract"]["filter_artifact_family"] == "shard_filters"
+    assert manifest["verification_contract"]["catalog_artifact_family"] == "shard_catalogs"
+    assert manifest["routing_contract"]["planner"] == "source_registry_plus_global_query_directory"
+    assert manifest["routing_contract"]["directory_contains_doc_postings"] is False
+    assert manifest["routing_contract"]["startup_loads_local_indexes"] is False
+    assert manifest["routing_contract"]["startup_loads_full_shards"] is False
+    assert manifest["routing_contract"]["startup_loads_global_document_metadata"] is False
+    assert "doc_meta_light" not in manifest["artifacts"]
+    assert "light_inverted_index" not in manifest["artifacts"]
 
     for stale in (
         "documents.json",
@@ -142,11 +173,24 @@ def test_public_index_is_pure_sitegraph_contract():
         assert "\\" not in artifact["path"]
         assert (PUBLIC_ROOT / artifact["path"]).exists(), name
 
+    source_manifest_artifacts = manifest["sitegraph"]["source_manifests"]
+    for source in source_registry["sources"]:
+        source_id = source["source_id"]
+        assert source["artifact_manifest"]["path"] == source_manifest_artifacts[source_id]["path"]
+        assert source["artifact_manifest"]["load"] == "query_planned"
+
+    query_directory = read_artifact(manifest["artifacts"]["global_query_directory"])
+    assert query_directory["entry_count"] == len(query_directory["entries"])
+    assert query_directory["fallback"]["mode"] == "load_authority_source_manifests_then_verify_in_scope_shards"
+    assert not {"doc_index", "postings", "documents"} & set(walk_keys(query_directory))
+
 
 def test_source_truth_counts_are_preserved():
     manifest = read_json(PUBLIC_INDEX_DIR / "manifest.json")
     truth_counts = manifest["sitegraph"]["truth_counts"]
-    source_entries = {item["source_id"]: item for item in manifest["sources"]}
+    source_registry = load_source_registry(manifest)
+    source_entries = {item["source_id"]: item for item in source_registry["sources"]}
+    source_manifests = {item["source_id"]: item for item in load_source_manifests(manifest)}
     expected_counts = expected_source_counts(manifest)
     expected_totals = {
         field: sum(source_counts[field] for source_counts in expected_counts.values())
@@ -158,6 +202,8 @@ def test_source_truth_counts_are_preserved():
         for field, value in expected.items():
             assert manifest["sitegraph"]["source_truth_counts"][source_id][field] == value
             assert source_entries[source_id]["truth_counts"][field] == value
+        assert source_manifests[source_id]["doc_count"] == source_entries[source_id]["doc_count"]
+        assert source_manifests[source_id]["attachment_count"] == source_entries[source_id]["attachment_count"]
     for field, value in expected_totals.items():
         assert truth_counts[field] == value
     assert manifest["sitegraph"]["detail_page_records"] == truth_counts["detail_pages"]
@@ -171,35 +217,45 @@ def test_source_truth_counts_are_preserved():
 
 def test_light_index_and_shards_have_no_obsolete_fields():
     manifest = read_json(PUBLIC_INDEX_DIR / "manifest.json")
-    doc_meta = read_json(PUBLIC_ROOT / manifest["artifacts"]["doc_meta_light"]["path"])
-    assert not (BANNED_KEYS & set(walk_keys(doc_meta)))
-    assert all("content" not in item for item in doc_meta)
-    assert all("summary" not in item for item in doc_meta)
-    assert all("attachments" not in item for item in doc_meta)
-    assert all("provenance" not in item for item in doc_meta)
-    assert all(item.get("source_id") in {"jwc", "xsc", "cxcy"} for item in doc_meta)
-    assert all(item.get("date_kind") for item in doc_meta)
-    assert all(item.get("task_kind") for item in doc_meta)
+    for source_manifest in load_source_manifests(manifest):
+        assert source_manifest["source_id"] in EXPECTED_SOURCE_IDS
+        assert source_manifest["local_indexes"]
+        assert source_manifest["full_shards"]
+        for ref in source_manifest["local_indexes"]:
+            assert ref["scope"]["source_id"] == source_manifest["source_id"]
+            assert ref["index_id"] == ref["scope"]["index_id"]
+            light_index = read_json(PUBLIC_ROOT / ref["light_index"]["path"])
+            body_index = read_json(PUBLIC_ROOT / ref["body_index"]["path"])
+            assert light_index["scope"] == ref["scope"]
+            assert body_index["scope"] == ref["scope"]
+            assert set(light_index["field_codes"].values()) <= {"t", "s", "n", "g", "a", "e", "y"}
+            assert set(body_index["field_codes"].values()) == {"m", "c"}
+            assert len(light_index["documents"]) == ref["doc_count"]
+            assert not (BANNED_KEYS & set(walk_keys(light_index)))
+            for item in light_index["documents"]:
+                assert "content" not in item
+                assert "summary" not in item
+                assert "attachments" not in item
+                assert "provenance" not in item
+                assert item.get("source_id") == source_manifest["source_id"]
+                assert item.get("date_kind")
+                assert item.get("task_kind")
 
-    light_index = read_json(PUBLIC_ROOT / manifest["artifacts"]["light_inverted_index"]["path"])
-    body_index = read_json(PUBLIC_ROOT / manifest["artifacts"]["body_inverted_index"]["path"])
-    assert set(light_index["field_codes"].values()) <= {"t", "s", "n", "g", "a", "e", "y"}
-    assert set(body_index["field_codes"].values()) == {"m", "c"}
-
-    for shard in manifest["sitegraph"]["full_shards"]:
-        documents = read_json(PUBLIC_ROOT / shard["path"])
-        assert len(documents) == shard["count"]
-        assert not (BANNED_KEYS & set(walk_keys(documents)))
-        assert ".000." not in shard["path"]
-        assert "\\" not in shard["path"]
-        assert shard["filter_token_count"] > 0
-        assert shard["filter_sha256"]
-        for document in documents:
-            assert set(["title", "url", "section", "nav_path", "summary", "content", "attachments", "record_type", "facet", "published_at", "provenance", "source_id", "canonical_title", "date_kind", "date_confidence", "task_kind", "authority_profile", "dedupe_key"]) <= set(document)
-            assert document["source_id"] == document["provenance"]["site_id"]
-            if document["record_type"] == "external":
-                assert not document.get("published_at")
-                assert document.get("recorded_at")
+        for shard in source_manifest["full_shards"]:
+            documents = read_json(PUBLIC_ROOT / shard["path"])
+            assert len(documents) == shard["count"]
+            assert not (BANNED_KEYS & set(walk_keys(documents)))
+            assert ".000." not in shard["path"]
+            assert "\\" not in shard["path"]
+            assert shard["source_id"] == source_manifest["source_id"]
+            assert shard["filter_token_count"] > 0
+            assert shard["filter_sha256"]
+            for document in documents:
+                assert set(["title", "url", "section", "nav_path", "summary", "content", "attachments", "record_type", "facet", "published_at", "provenance", "source_id", "canonical_title", "date_kind", "date_confidence", "task_kind", "authority_profile", "dedupe_key"]) <= set(document)
+                assert document["source_id"] == document["provenance"]["site_id"]
+                if document["record_type"] == "external":
+                    assert not document.get("published_at")
+                    assert document.get("recorded_at")
 
 
 def test_required_queries_return_results():

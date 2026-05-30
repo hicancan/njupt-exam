@@ -77,7 +77,8 @@ def build_sitegraph_indexes(index_dirs: list[Path] | tuple[Path, ...], *, shard_
         "external_link_records": manifest["sitegraph"]["external_link_records"],
         "utility_link_records": manifest["sitegraph"]["utility_link_records"],
         "truth_counts": manifest["sitegraph"]["truth_counts"],
-        "full_shards": manifest["sitegraph"]["full_shards"],
+        "source_manifests": manifest["sitegraph"]["source_manifests"],
+        "total_shards": manifest["progressive_search"]["total_shards"],
         "public_index": str(public_index.PUBLIC_INDEX_DIR),
     }
 

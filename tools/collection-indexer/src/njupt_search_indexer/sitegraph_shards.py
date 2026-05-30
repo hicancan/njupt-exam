@@ -53,6 +53,7 @@ def shard_bucket(document: dict[str, Any], bucket_count: int = 4) -> str:
 def shard_id_for_document(document: dict[str, Any]) -> str:
     return "__".join(
         [
+            stable_slug(document.get("source_id"), fallback="source"),
             stable_slug(document.get("facet"), fallback="facet"),
             stable_slug(document.get("record_type"), fallback="record"),
             shard_year(document),
@@ -100,6 +101,7 @@ def build_locality_shards(
             "bytes": artifact["bytes"],
             "count": len(shard_docs),
             "contains": "full_documents",
+            "source_id": str(shard_docs[0].get("source_id") or ""),
             "facet_range": facets,
             "record_type_range": record_types,
             "section_range": sections[:24],

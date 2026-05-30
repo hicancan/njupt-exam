@@ -170,12 +170,14 @@ def infer_facet(
 def attachment_metadata(
     item: dict[str, Any],
     *,
+    source_id: str,
     parent_doc_id: str | None,
     section: dict[str, Any] | None,
 ) -> dict[str, Any]:
     section_name, nav_path, _ = section_label(section)
     return {
         "attachment_id": clean_text(item.get("attachment_id")) or sha1_text(str(item.get("url") or item.get("name"))),
+        "source_id": source_id,
         "name": clean_text(item.get("name")) or "未命名附件",
         "url": clean_text(item.get("url")),
         "extension": clean_text(item.get("extension")).lower() or None,
@@ -334,7 +336,7 @@ def build_documents(package: dict[str, Any]) -> dict[str, Any]:
         doc_id = f"{source_id}-detail-{clean_text(page.get('page_id')) or sha1_text(url)}"
         detail_id_by_url[url] = doc_id
         attachments = [
-            attachment_metadata(item, parent_doc_id=doc_id, section=section)
+            attachment_metadata(item, source_id=source_id, parent_doc_id=doc_id, section=section)
             for item in attachments_by_parent.get(url, [])
         ]
         facet = infer_facet(record_type="detail", section=section, title=title, content=content)
@@ -371,7 +373,7 @@ def build_documents(package: dict[str, Any]) -> dict[str, Any]:
         else:
             list_page = list_pages_by_url.get(parent_url)
             section = sections_by_id.get(clean_text(list_page.get("section_id"))) if list_page else None
-        metadata = attachment_metadata(attachment, parent_doc_id=parent_doc_id, section=section)
+        metadata = attachment_metadata(attachment, source_id=source_id, parent_doc_id=parent_doc_id, section=section)
         attachment_index.append(metadata)
         outcomes["attachment_metadata_records"].append(
             {

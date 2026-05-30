@@ -194,7 +194,7 @@
         },
         {
           "older_than_days": 365,
-          "score": 1800,
+          "score": 2600,
           "modes": ["current_term"]
         },
         {

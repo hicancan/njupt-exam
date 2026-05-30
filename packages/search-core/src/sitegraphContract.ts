@@ -1,16 +1,25 @@
 import {
     SitegraphAttachment,
     SitegraphAttachmentSchema,
-    SitegraphDocMeta,
     SitegraphDocMetaSchema,
     SitegraphExternalRecord,
     SitegraphExternalRecordSchema,
     SitegraphFullDocument,
     SitegraphFullDocumentSchema,
+    SitegraphGlobalQueryDirectory,
+    SitegraphGlobalQueryDirectorySchema,
     SitegraphInvertedIndex,
     SitegraphInvertedIndexSchema,
+    SitegraphLocalBodyIndex,
+    SitegraphLocalBodyIndexSchema,
+    SitegraphLocalLightIndex,
+    SitegraphLocalLightIndexSchema,
     SitegraphSearchManifest,
-    SitegraphSearchManifestSchema
+    SitegraphSearchManifestSchema,
+    SitegraphSourceManifest,
+    SitegraphSourceManifestSchema,
+    SitegraphSourceRegistry,
+    SitegraphSourceRegistrySchema
 } from '@njupt-search/contracts';
 import { z } from 'zod';
 
@@ -34,7 +43,8 @@ const LEGACY_FIELDS = new Set([
     'source_channel_production_enabled',
     'github_resource_production_enabled'
 ]);
-const DOC_META_FORBIDDEN_FIELDS = new Set(['content', 'summary', 'attachments', 'provenance']);
+const LOCAL_META_FORBIDDEN_FIELDS = new Set(['content', 'summary', 'attachments', 'provenance']);
+const LEGACY_ARTIFACT_NAMES = new Set(['doc_meta_light', 'light_inverted_index']);
 
 const valueAtPath = (payload: unknown, path: PropertyKey[]): unknown => {
     let current = payload;
@@ -85,7 +95,13 @@ export const parseSitegraphManifest = (payload: unknown, source = 'sitegraph man
         if (text.includes('D:\\') || text.includes('D:/')) {
             throw new SearchContractError(`Validation failed for ${source}: public manifest must not expose local D: paths`);
         }
-        return SitegraphSearchManifestSchema.parse(payload);
+        const manifest = SitegraphSearchManifestSchema.parse(payload);
+        for (const legacyName of LEGACY_ARTIFACT_NAMES) {
+            if (legacyName in manifest.artifacts || manifest.core_search.first_screen_artifacts.includes(legacyName as never)) {
+                throw new SearchContractError(`Validation failed for ${source}: legacy global artifact ${legacyName} is not a routed startup artifact`);
+            }
+        }
+        return manifest;
     } catch (e) {
         if (e instanceof z.ZodError) {
             throw new SearchContractError(`Validation failed for ${source}: ${formatZodIssues(payload, e)}`);
@@ -94,20 +110,83 @@ export const parseSitegraphManifest = (payload: unknown, source = 'sitegraph man
     }
 };
 
-export const parseSitegraphDocMeta = (payload: unknown, source = 'sitegraph doc_meta'): SitegraphDocMeta[] => {
-    assertNoLegacyFields(payload, source);
-    const docs = parseArray(SitegraphDocMetaSchema, payload, source);
+export const parseSitegraphSourceRegistry = (payload: unknown, source = 'sitegraph source_registry'): SitegraphSourceRegistry => {
+    try {
+        assertNoLegacyFields(payload, source);
+        return SitegraphSourceRegistrySchema.parse(payload);
+    } catch (e) {
+        if (e instanceof z.ZodError) {
+            throw new SearchContractError(`Validation failed for ${source}: ${formatZodIssues(payload, e)}`);
+        }
+        throw new SearchContractError(`Validation failed for ${source}: ${e instanceof Error ? e.message : String(e)}`);
+    }
+};
+
+export const parseSitegraphGlobalQueryDirectory = (
+    payload: unknown,
+    source = 'sitegraph global_query_directory'
+): SitegraphGlobalQueryDirectory => {
+    try {
+        assertNoLegacyFields(payload, source);
+        return SitegraphGlobalQueryDirectorySchema.parse(payload);
+    } catch (e) {
+        if (e instanceof z.ZodError) {
+            throw new SearchContractError(`Validation failed for ${source}: ${formatZodIssues(payload, e)}`);
+        }
+        throw new SearchContractError(`Validation failed for ${source}: ${e instanceof Error ? e.message : String(e)}`);
+    }
+};
+
+export const parseSitegraphSourceManifest = (payload: unknown, source = 'sitegraph source manifest'): SitegraphSourceManifest => {
+    try {
+        assertNoLegacyFields(payload, source);
+        return SitegraphSourceManifestSchema.parse(payload);
+    } catch (e) {
+        if (e instanceof z.ZodError) {
+            throw new SearchContractError(`Validation failed for ${source}: ${formatZodIssues(payload, e)}`);
+        }
+        throw new SearchContractError(`Validation failed for ${source}: ${e instanceof Error ? e.message : String(e)}`);
+    }
+};
+
+const validateLocalDocuments = (documents: unknown, source: string): void => {
+    const docs = parseArray(SitegraphDocMetaSchema, documents, source);
     const ids = new Set<string>();
     for (const item of docs) {
         if (ids.has(item.id)) throw new SearchContractError(`${source} contains duplicate id: ${item.id}`);
-        for (const field of DOC_META_FORBIDDEN_FIELDS) {
+        for (const field of LOCAL_META_FORBIDDEN_FIELDS) {
             if (field in item) {
-                throw new SearchContractError(`Validation failed for ${source}: doc_meta_light must not contain ${field}`);
+                throw new SearchContractError(`Validation failed for ${source}: local index metadata must not contain ${field}`);
             }
         }
         ids.add(item.id);
     }
-    return docs;
+};
+
+export const parseSitegraphLocalLightIndex = (payload: unknown, source = 'sitegraph local light index'): SitegraphLocalLightIndex => {
+    try {
+        assertNoLegacyFields(payload, source);
+        const parsed = SitegraphLocalLightIndexSchema.parse(payload);
+        validateLocalDocuments(parsed.documents, source);
+        return parsed;
+    } catch (e) {
+        if (e instanceof z.ZodError) {
+            throw new SearchContractError(`Validation failed for ${source}: ${formatZodIssues(payload, e)}`);
+        }
+        throw new SearchContractError(`Validation failed for ${source}: ${e instanceof Error ? e.message : String(e)}`);
+    }
+};
+
+export const parseSitegraphLocalBodyIndex = (payload: unknown, source = 'sitegraph local body index'): SitegraphLocalBodyIndex => {
+    try {
+        assertNoLegacyFields(payload, source);
+        return SitegraphLocalBodyIndexSchema.parse(payload);
+    } catch (e) {
+        if (e instanceof z.ZodError) {
+            throw new SearchContractError(`Validation failed for ${source}: ${formatZodIssues(payload, e)}`);
+        }
+        throw new SearchContractError(`Validation failed for ${source}: ${e instanceof Error ? e.message : String(e)}`);
+    }
 };
 
 export const parseSitegraphFullDocuments = (payload: unknown, source = 'sitegraph full shard'): SitegraphFullDocument[] => {

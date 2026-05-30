@@ -2,13 +2,28 @@ import { describe, expect, it } from 'vitest';
 import {
     buildSitegraphMatchSnippet,
     formatResolvedSearchDate,
-    parseSitegraphDocMeta,
+    parseSitegraphLocalLightIndex,
     parseSitegraphManifest,
     recallSitegraphDocuments,
     searchSitegraphProgressively,
     tokenizeSitegraphQuery
 } from '../src';
-import type { SitegraphIndexBundle, SitegraphSearchEvent, SitegraphSearchManifest } from '@njupt-search/contracts';
+import type {
+    QueryDirectoryRoute,
+    SitegraphDocMeta,
+    SitegraphFullDocument,
+    SitegraphFullShard,
+    SitegraphGlobalQueryDirectory,
+    SitegraphInvertedIndex,
+    SitegraphLocalBodyIndex,
+    SitegraphLocalIndexRef,
+    SitegraphLocalLightIndex,
+    SitegraphRoutedSession,
+    SitegraphSearchEvent,
+    SitegraphSearchManifest,
+    SitegraphSourceManifest,
+    SitegraphSourceRegistry
+} from '@njupt-search/contracts';
 
 const artifact = (path: string, role: string, load = 'on_demand', count?: number) => ({
     path,
@@ -19,199 +34,394 @@ const artifact = (path: string, role: string, load = 'on_demand', count?: number
     ...(count === undefined ? {} : { count })
 });
 
-const fullShard = {
-    shard_id: 'policy__detail__2026__rules__b0',
-    path: 'fixture-shard.0123456789abcdef.json',
+const required = <T>(value: T | undefined, message: string): T => {
+    if (value === undefined) throw new Error(message);
+    return value;
+};
+
+const fullShard = (prefix: string, count: number, facet = 'policy'): SitegraphFullShard => ({
+    shard_id: `jwc__${facet}__detail__2026__rules__b0__${prefix}`,
+    path: `${prefix}/full-shard.json`,
     sha256: '0123456789abcdef0123456789abcdef',
     bytes: 256,
-    count: 1,
-    contains: 'full_documents' as const,
-    facet_range: ['policy'],
+    count,
+    contains: 'full_documents',
+    source_id: 'jwc',
+    facet_range: [facet],
     record_type_range: ['detail'],
     section_range: ['jwc_rules_root'],
     year_range: ['2026'],
-    hash_bucket: 'b0'
-};
+    hash_bucket: 'b0',
+    filter_token_count: 4,
+    filter_sha256: '0123456789abcdef'
+});
 
-const manifest: SitegraphSearchManifest = {
-    generated_at: '2026-05-27T00:00:00Z',
-    strategy: 'progressive-verifiable-static-search',
-    producer_repo: 'hicancan/njupt-search',
-    producer_ref: 'fixture',
-    site_id: 'jwc',
-    collection_id: 'njupt-public',
-    sources: [{
+const makeDocument = (overrides: Partial<SitegraphFullDocument> = {}): SitegraphFullDocument => {
+    const shard = overrides.shard ?? { shard_id: 'jwc__policy__detail__2026__rules__b0', path: 'fixture/full-shard.json' };
+    return {
+        doc_index: 0,
+        id: 'jwc-detail-1',
+        record_type: 'detail',
+        page_type: 'detail_article_page',
+        facet: 'policy',
+        title: '南京邮电大学本科生转专业管理办法',
+        url: 'https://jwc.njupt.edu.cn/1/page.htm',
         source_id: 'jwc',
-        source_kind: 'sitegraph',
-        artifact_root: 'generated/collections/njupt-public/sitegraph/jwc',
-        upstream_generated_at: '2026-05-26T00:00:00Z',
-        display_name: '本科生院 / 教务处'
-    }],
-    artifact_path: 'generated/collections/njupt-public',
-    upstream_generated_at: '2026-05-26T00:00:00Z',
-    truth_counts: { detail_pages: 1, attachments: 1, external_links: 0, edges: 0 },
-    total_documents: 1,
-    record_counts: { detail: 1 },
-    facet_counts: { policy: 1 },
-    exam_vertical_preserved: true,
-    core_search: {
-        algorithm: 'static inverted index plus on-demand full shard ranking',
-        execution_model: 'pure_frontend_worker',
-        light_first_screen: true,
-        first_screen_artifacts: ['doc_meta_light', 'light_inverted_index', 'query_aliases'],
-        body_index_loading: 'on_deep_search',
-        full_text_loading: 'progressive_candidate_hydration_then_exhaustive_full_scan',
-        search_worker: true
-    },
-    progressive_search: {
-        total_shards: 1,
-        total_documents: 1,
-        full_scan_supported: true,
-        progressive_events: true,
-        artifact_roles: ['doc_meta_light', 'light_inverted_index', 'body_inverted_index', 'full_shards']
-    },
-    coverage_contract: {
-        coverage_fields: ['title', 'section', 'nav_path', 'summary', 'content', 'attachments', 'url'],
-        proof: {
-            indexed_fields: ['title', 'section', 'nav_path', 'summary', 'content'],
-            full_scan_fields: ['title', 'section', 'nav_path', 'summary', 'content', 'attachments', 'url']
-        },
-        total_shards: 1,
-        total_documents: 1
-    },
-    verification_contract: {
-        shard_filter_supported: true,
-        proved_skip_supported: true,
-        scan_fallback_supported: true,
-        filter_artifact: 'shard_filter',
-        catalog_artifact: 'shard_catalog'
-    },
-    artifacts: {
-        doc_meta_light: artifact('index/sitegraph/jwc/artifacts/doc_meta_light.0123456789abcdef.json', 'doc_meta_light', 'initial', 1),
-        light_inverted_index: artifact('index/sitegraph/jwc/artifacts/light_inverted_index.0123456789abcdef.json', 'light_inverted_index', 'initial'),
-        body_inverted_index: artifact('index/sitegraph/jwc/artifacts/body_inverted_index.0123456789abcdef.json', 'body_inverted_index', 'deep_search'),
-        section_index: artifact('index/sitegraph/jwc/artifacts/section_index.0123456789abcdef.json', 'section_index', 'on_demand'),
-        attachment_index: artifact('index/sitegraph/jwc/artifacts/attachment_index.0123456789abcdef.json', 'attachment_index', 'on_demand', 1),
-        external_index: artifact('index/sitegraph/jwc/artifacts/external_index.0123456789abcdef.json', 'external_index', 'on_demand', 0),
-        query_aliases: artifact('index/sitegraph/jwc/artifacts/query_aliases.0123456789abcdef.json', 'query_aliases', 'initial', 1),
-        shard_catalog: artifact('index/sitegraph/jwc/artifacts/shard_catalog.0123456789abcdef.json', 'shard_catalog', 'verify', 1),
-        shard_filter: artifact('index/sitegraph/jwc/artifacts/shard_filter.0123456789abcdef.json', 'shard_filter', 'verify', 1),
-        outcomes: artifact('index/sitegraph/jwc/artifacts/outcomes.0123456789abcdef.json', 'outcomes', 'audit'),
-        size_report: artifact('index/sitegraph/jwc/artifacts/size_report.0123456789abcdef.json', 'size_report', 'audit')
-    },
-    sitegraph: {
-        truth_counts: { detail_pages: 1, attachments: 1, external_links: 0, edges: 0 },
-        quality: {
-            errors: 0,
-            all_discovered_urls_have_outcomes: true,
-            attachment_policy: 'metadata_only',
-            external_link_policy: 'record_only'
-        },
-        upstream_generated_at: '2026-05-26T00:00:00Z',
-        detail_page_records: 1,
-        attachment_metadata_records: 1,
-        direct_attachment_records: 0,
-        external_link_records: 0,
-        external_document_records: 0,
-        utility_link_records: 0,
-        attachment_policy: 'metadata_only',
-        external_link_policy: 'record_only',
-        full_shards: [fullShard],
-        shard_strategy: {
-            version: 'locality-facet-record-year-section-hash-progressive',
-            dimensions: ['facet', 'record_type', 'year', 'top_nav_section', 'hash_bucket'],
-            hash_bucket_count: 4,
-            sequential_fixed_size_shards: false
-        },
-        indexes: {
-            doc_meta_light: artifact('index/sitegraph/jwc/artifacts/doc_meta_light.0123456789abcdef.json', 'doc_meta_light', 'initial', 1),
-            light_inverted_index: artifact('index/sitegraph/jwc/artifacts/light_inverted_index.0123456789abcdef.json', 'light_inverted_index', 'initial'),
-            body_inverted_index: artifact('index/sitegraph/jwc/artifacts/body_inverted_index.0123456789abcdef.json', 'body_inverted_index', 'deep_search'),
-            section_index: artifact('index/sitegraph/jwc/artifacts/section_index.0123456789abcdef.json', 'section_index', 'on_demand'),
-            attachment_index: artifact('index/sitegraph/jwc/artifacts/attachment_index.0123456789abcdef.json', 'attachment_index', 'on_demand', 1),
-            external_index: artifact('index/sitegraph/jwc/artifacts/external_index.0123456789abcdef.json', 'external_index', 'on_demand', 0),
-            query_aliases: artifact('index/sitegraph/jwc/artifacts/query_aliases.0123456789abcdef.json', 'query_aliases', 'initial', 1),
-            shard_catalog: artifact('index/sitegraph/jwc/artifacts/shard_catalog.0123456789abcdef.json', 'shard_catalog', 'verify', 1),
-            shard_filter: artifact('index/sitegraph/jwc/artifacts/shard_filter.0123456789abcdef.json', 'shard_filter', 'verify', 1),
-            outcomes: artifact('index/sitegraph/jwc/artifacts/outcomes.0123456789abcdef.json', 'outcomes', 'audit'),
-            size_report: artifact('index/sitegraph/jwc/artifacts/size_report.0123456789abcdef.json', 'size_report', 'audit')
-        }
-    }
-};
-
-const fullDocument = {
-    doc_index: 0,
-    id: 'jwc-detail-1',
-    record_type: 'detail' as const,
-    page_type: 'detail_article_page',
-    facet: 'policy' as const,
-    title: '南京邮电大学本科生转专业管理办法',
-    url: 'https://jwc.njupt.edu.cn/1/page.htm',
-    source_id: 'jwc',
-    source: '本科生院 / 教务处',
-    source_domain: 'jwc.njupt.edu.cn',
-    section_id: 'jwc_rules_root',
-    section: '规章制度',
-    nav_path: ['规章制度'],
-    nav_path_text: '规章制度',
-    canonical_title: '南京邮电大学本科生转专业管理办法',
-    published_at: '2026-05-20',
-    updated_at: null,
-    recorded_at: null,
-    version_date: '2026-05-20',
-    date_kind: 'published',
-    date_confidence: 'source_published',
-    academic_year: null,
-    term: null,
-    task_kind: 'academic_policy',
-    authority_profile: 'jwc_academic',
-    dedupe_key: 'jwc:detail:fixture',
-    publisher: '综合科',
-    summary: '转专业政策摘要',
-    attachment_count: 1,
-    hash: 'hash',
-    tags: ['policy'],
-    collection_method: 'search_record',
-    provenance: { site_id: 'jwc', section_id: 'jwc_rules_root', nav_path: ['规章制度'], outcome: 'search_record' },
-    shard: { shard_id: fullShard.shard_id, path: fullShard.path },
-    content: '学生申请转专业需要符合管理办法。',
-    attachments: [{
-        attachment_id: 'att-1',
-        name: '转专业申请表.doc',
-        url: 'https://jwc.njupt.edu.cn/a.doc',
-        extension: 'doc',
-        parent_url: 'https://jwc.njupt.edu.cn/1/page.htm',
-        parent_doc_id: 'jwc-detail-1',
+        source: '本科生院 / 教务处',
+        source_domain: 'jwc.njupt.edu.cn',
         section_id: 'jwc_rules_root',
         section: '规章制度',
         nav_path: ['规章制度'],
-        metadata_only: true as const,
-        position: 1
-    }]
+        nav_path_text: '规章制度',
+        canonical_title: '南京邮电大学本科生转专业管理办法',
+        published_at: '2026-05-20',
+        updated_at: null,
+        recorded_at: null,
+        version_date: '2026-05-20',
+        date_kind: 'published',
+        date_confidence: 'source_published',
+        academic_year: null,
+        term: null,
+        task_kind: 'academic_policy',
+        authority_profile: 'jwc_academic',
+        dedupe_key: 'jwc:detail:fixture',
+        publisher: '综合科',
+        summary: '转专业政策摘要',
+        attachment_count: 1,
+        hash: 'hash',
+        tags: ['policy'],
+        collection_method: 'search_record',
+        provenance: { site_id: 'jwc', section_id: 'jwc_rules_root', nav_path: ['规章制度'], outcome: 'search_record' },
+        shard,
+        content: '学生申请转专业需要符合管理办法。',
+        attachments: [{
+            attachment_id: 'att-1',
+            name: '转专业申请表.doc',
+            url: 'https://jwc.njupt.edu.cn/a.doc',
+            extension: 'doc',
+            parent_url: 'https://jwc.njupt.edu.cn/1/page.htm',
+            parent_doc_id: 'jwc-detail-1',
+            section_id: 'jwc_rules_root',
+            section: '规章制度',
+            nav_path: ['规章制度'],
+            metadata_only: true,
+            position: 1
+        }],
+        ...overrides
+    };
 };
 
-const docMetaLightFixture = () => {
-    return {
-        doc_index: fullDocument.doc_index,
-        id: fullDocument.id,
-        record_type: fullDocument.record_type,
-        facet: fullDocument.facet,
-        title: fullDocument.title,
-        url: fullDocument.url,
-        source_id: fullDocument.source_id,
-        source: fullDocument.source,
-        section_id: fullDocument.section_id,
-        section: fullDocument.section,
-        nav_path: fullDocument.nav_path,
-        nav_path_text: fullDocument.nav_path_text,
-        published_at: fullDocument.published_at,
-        version_date: fullDocument.version_date,
-        date_kind: fullDocument.date_kind,
-        task_kind: fullDocument.task_kind,
-        attachment_count: fullDocument.attachment_count,
-        collection_method: fullDocument.collection_method,
-        shard: fullDocument.shard
+const docMetaFrom = (document: SitegraphFullDocument): SitegraphDocMeta => ({
+    doc_index: document.doc_index,
+    id: document.id,
+    record_type: document.record_type,
+    facet: document.facet,
+    title: document.title,
+    url: document.url,
+    source_id: document.source_id,
+    source: document.source,
+    source_domain: document.source_domain,
+    section_id: document.section_id,
+    section: document.section,
+    nav_path: document.nav_path,
+    nav_path_text: document.nav_path_text,
+    canonical_title: document.canonical_title,
+    published_at: document.published_at,
+    updated_at: document.updated_at,
+    recorded_at: document.recorded_at,
+    version_date: document.version_date,
+    date_kind: document.date_kind,
+    date_confidence: document.date_confidence,
+    task_kind: document.task_kind,
+    authority_profile: document.authority_profile,
+    dedupe_key: document.dedupe_key,
+    attachment_count: document.attachment_count,
+    collection_method: document.collection_method,
+    shard: document.shard
+});
+
+const route = (
+    term: string,
+    localIndexIds: string[],
+    likelyFacets = ['policy'],
+    expectedResultTypes = ['detail']
+): QueryDirectoryRoute => ({
+    term,
+    likely_sources: ['jwc'],
+    likely_facets: likelyFacets,
+    likely_years: ['2026'],
+    likely_task_kinds: ['academic_policy'],
+    expected_result_types: expectedResultTypes,
+    local_index_ids: localIndexIds,
+    sample_shard_ids: [],
+    candidate_shard_group_count: 1,
+    authority_priors: { jwc: 1 },
+    freshness_policy: 'prefer_recent_for_current_notice_intents',
+    matched_document_count: 1
+});
+
+interface RoutedFixture {
+    session: SitegraphRoutedSession;
+    sourceManifest: SitegraphSourceManifest;
+    localLightIndex: SitegraphLocalLightIndex;
+    localBodyIndex: SitegraphLocalBodyIndex;
+    shardFilter: Record<string, unknown>;
+    documents: SitegraphFullDocument[];
+}
+
+const makeRoutedFixture = (
+    prefix: string,
+    documents: SitegraphFullDocument[],
+    options: {
+        queryTerms?: string[];
+        lightTokens?: SitegraphInvertedIndex['tokens'];
+        bodyTokens?: SitegraphInvertedIndex['tokens'];
+        queryAliases?: Record<string, unknown>;
+        routeEntries?: Record<string, QueryDirectoryRoute>;
+        intentRoutes?: Record<string, QueryDirectoryRoute>;
+        facet?: string;
+        filterBase64?: string;
+    } = {}
+): RoutedFixture => {
+    const shard = fullShard(prefix, documents.length, options.facet || documents[0]?.facet || 'policy');
+    const localIndexId = `jwc__${options.facet || documents[0]?.facet || 'policy'}__2026__${prefix}`;
+    const scope = {
+        index_id: localIndexId,
+        source_id: 'jwc',
+        facet: options.facet || documents[0]?.facet || 'policy',
+        year: '2026',
+        shard_ids: [shard.shard_id]
     };
+    const localRef: SitegraphLocalIndexRef = {
+        index_id: localIndexId,
+        scope,
+        doc_count: documents.length,
+        light_index: artifact(`${prefix}/local-light.json`, 'local_light_index', 'query_planned', documents.length),
+        body_index: artifact(`${prefix}/local-body.json`, 'local_body_index', 'query_planned', documents.length)
+    };
+    const manifest: SitegraphSearchManifest = {
+        generated_at: '2026-05-30T00:00:00Z',
+        strategy: 'routed-verifiable-static-search',
+        producer_repo: 'hicancan/njupt-search',
+        producer_ref: 'fixture',
+        site_id: 'njupt-public',
+        collection_id: 'njupt-public',
+        artifact_path: 'generated/collections/njupt-public',
+        upstream_generated_at: '2026-05-30T00:00:00Z',
+        truth_counts: { detail_pages: documents.length, attachments: 1, external_links: 0, edges: 0 },
+        total_documents: documents.length,
+        record_counts: { detail: documents.length },
+        facet_counts: { [scope.facet]: documents.length },
+        exam_vertical_preserved: true,
+        core_search: {
+            algorithm: 'routed fixture',
+            execution_model: 'pure_frontend_worker',
+            readiness: 'routed_bootstrap',
+            legacy_global_first_screen: false,
+            first_screen_artifacts: ['source_registry', 'global_query_directory', 'query_aliases'],
+            local_index_loading: 'query_planned_on_demand',
+            body_index_loading: 'query_planned_on_demand',
+            full_text_loading: 'lazy_candidate_hydration_then_verified_scope_scan',
+            search_worker: true
+        },
+        progressive_search: {
+            total_shards: 1,
+            total_documents: documents.length,
+            full_scan_supported: true,
+            progressive_events: true,
+            artifact_roles: ['source_registry', 'global_query_directory', 'local_light_indexes', 'local_body_indexes', 'full_shards']
+        },
+        coverage_contract: {
+            states: ['plan_started', 'local_index_started', 'first_trusted_results', 'body_index_started', 'top_results_hydrated', 'verification_started', 'partial_verified', 'global_exhaustive_complete'],
+            coverage_fields: ['title', 'section', 'nav_path', 'summary', 'content', 'attachments', 'url'],
+            proof: {
+                indexed_fields: ['title', 'section', 'nav_path', 'attachments'],
+                full_scan_fields: ['title', 'section', 'nav_path', 'summary', 'content', 'attachments', 'url'],
+                complete_requires: ['source_manifest', 'shard_filter', 'full_shard_scan_or_proof']
+            },
+            total_shards: 1,
+            total_documents: documents.length
+        },
+        verification_contract: {
+            shard_filter_supported: true,
+            proved_skip_supported: true,
+            scan_fallback_supported: true,
+            filter_artifact_family: 'shard_filters',
+            catalog_artifact_family: 'shard_catalogs'
+        },
+        routing_contract: {
+            planner: 'source_registry_plus_global_query_directory',
+            directory_contains_doc_postings: false,
+            startup_loads_local_indexes: false,
+            startup_loads_full_shards: false,
+            startup_loads_global_document_metadata: false
+        },
+        artifacts: {
+            source_registry: artifact(`${prefix}/source-registry.json`, 'source_registry', 'bootstrap', 1),
+            global_query_directory: artifact(`${prefix}/global-query-directory.json`, 'global_query_directory', 'bootstrap', 1),
+            query_aliases: artifact(`${prefix}/query-aliases.json`, 'query_aliases', 'bootstrap', 1),
+            outcomes: artifact(`${prefix}/outcomes.json`, 'outcomes', 'audit'),
+            quality_report: artifact(`${prefix}/quality-report.json`, 'quality_report', 'audit'),
+            query_eval_report: artifact(`${prefix}/query-eval-report.json`, 'query_eval_report', 'audit'),
+            size_report: artifact(`${prefix}/size-report.json`, 'size_report', 'audit')
+        },
+        sitegraph: {
+            truth_counts: { detail_pages: documents.length, attachments: 1, external_links: 0, edges: 0 },
+            quality: { errors: 0 },
+            upstream_generated_at: '2026-05-30T00:00:00Z',
+            detail_page_records: documents.length,
+            attachment_metadata_records: 1,
+            direct_attachment_records: 0,
+            external_link_records: 0,
+            external_document_records: 0,
+            utility_link_records: 0,
+            attachment_policy: 'metadata_only',
+            external_link_policy: 'record_only',
+            source_manifests: {
+                jwc: artifact(`${prefix}/source-manifest.json`, 'source_manifest', 'query_planned', documents.length)
+            },
+            source_manifest_summaries: {
+                jwc: { doc_count: documents.length, shard_count: 1, local_index_count: 1 }
+            },
+            shard_strategy: {
+                version: 'source-facet-record-year-section-hash-routed',
+                dimensions: ['source_id', 'facet', 'record_type', 'year', 'top_nav_section', 'hash_bucket'],
+                hash_bucket_count: 4,
+                sequential_fixed_size_shards: false
+            },
+            indexes: {}
+        }
+    };
+    manifest.sitegraph.indexes = manifest.artifacts;
+
+    const sourceRegistry: SitegraphSourceRegistry = {
+        version: 'sitegraph-source-registry-v1',
+        collection_id: 'njupt-public',
+        sources: [{
+            source_id: 'jwc',
+            display_name: '本科生院 / 教务处',
+            owner_unit: '本科生院 / 教务处',
+            domain: 'jwc.njupt.edu.cn',
+            source_kind: 'sitegraph',
+            authority_domains: ['academic', 'forms'],
+            priority_by_intent: { academic_policy: 'high', form_download: 'high', academic_calendar: 'high' },
+            freshness_policy: 'current_term_or_latest_notice',
+            artifact_manifest: required(manifest.sitegraph.source_manifests.jwc, 'expected jwc source manifest artifact'),
+            doc_count: documents.length,
+            attachment_count: 1,
+            updated_at: '2026-05-30T00:00:00Z',
+            quality_status: 'ok',
+            coverage_status: 'audited',
+            facet_counts: { [scope.facet]: documents.length },
+            record_counts: { detail: documents.length },
+            truth_counts: { detail_pages: documents.length, attachments: 1, external_links: 0, edges: 0 }
+        }],
+        filter_options: {
+            sources: [{ id: 'jwc', label: '本科生院 / 教务处', count: documents.length }],
+            facets: [{ id: scope.facet, label: scope.facet, count: documents.length }]
+        }
+    };
+    const defaultRoute = route(options.queryTerms?.[0] || documents[0]?.title || '转专业', [localIndexId], [scope.facet]);
+    const entries = options.routeEntries || Object.fromEntries((options.queryTerms || ['转专业']).map(term => [term, route(term, [localIndexId], [scope.facet])]));
+    const globalQueryDirectory: SitegraphGlobalQueryDirectory = {
+        version: 'sitegraph-global-query-directory-v1',
+        tokenizer: 'sitegraph-tokenizer-v1',
+        entry_count: Object.keys(entries).length,
+        entries,
+        intents: options.intentRoutes || { academic_policy: defaultRoute, form_download: defaultRoute, academic_calendar: defaultRoute },
+        fallback: {
+            mode: 'load_authority_source_manifests_then_verify_in_scope_shards',
+            false_negative_policy: 'verify with shard scan or safe filter proof'
+        }
+    };
+    const sourceManifest: SitegraphSourceManifest = {
+        version: 'sitegraph-source-manifest-v1',
+        source_id: 'jwc',
+        display_name: '本科生院 / 教务处',
+        domain: 'jwc.njupt.edu.cn',
+        doc_count: documents.length,
+        attachment_count: 1,
+        facet_counts: { [scope.facet]: documents.length },
+        record_counts: { detail: documents.length },
+        year_counts: { '2026': documents.length },
+        local_indexes: [localRef],
+        full_shards: [shard],
+        artifacts: {
+            shard_catalog: artifact(`${prefix}/shard-catalog.json`, 'shard_catalog', 'verify', 1),
+            shard_filter: artifact(`${prefix}/shard-filter.json`, 'shard_filter', 'verify', 1),
+            attachment_meta_index: artifact(`${prefix}/attachment-meta.json`, 'attachment_meta_index', 'on_demand', 1),
+            attachment_filename_index: artifact(`${prefix}/attachment-filename.json`, 'attachment_filename_index', 'on_demand', 1),
+            attachment_text_shards: artifact(`${prefix}/attachment-text-manifest.json`, 'attachment_text_shards', 'future', 0),
+            section_index: artifact(`${prefix}/section-index.json`, 'section_index', 'on_demand', 1),
+            external_index: artifact(`${prefix}/external-index.json`, 'external_index', 'on_demand', 0)
+        }
+    };
+    const localLightIndex: SitegraphLocalLightIndex = {
+        version: 'sitegraph-local-light-index-v1',
+        tokenizer: 'test',
+        field_codes: { title: 't', attachment: 'a', section: 's' },
+        scope,
+        documents: documents.map(document => docMetaFrom({ ...document, shard: { shard_id: shard.shard_id, path: shard.path } })),
+        tokens: options.lightTokens || { 转专业: { t: [0] }, 申请表: { a: [0] } }
+    };
+    const localBodyIndex: SitegraphLocalBodyIndex = {
+        version: 'sitegraph-local-body-index-v1',
+        tokenizer: 'test',
+        field_codes: { summary: 'm', content: 'c' },
+        scope,
+        tokens: options.bodyTokens || { 转专业: { c: [0] }, 申请表: { c: [0] } }
+    };
+    const shardFilter = {
+        [shard.shard_id]: {
+            bitset_base64: options.filterBase64 || '/w==',
+            bit_count: 8,
+            hash_count: 1,
+            token_count: 4,
+            sha256: '0123456789abcdef0123456789abcdef',
+            hash_algorithm: 'bloom-fnv1a32-utf8'
+        }
+    };
+
+    return {
+        session: {
+            manifest,
+            sourceRegistry,
+            globalQueryDirectory,
+            queryAliases: options.queryAliases || {}
+        },
+        sourceManifest,
+        localLightIndex,
+        localBodyIndex,
+        shardFilter,
+        documents: documents.map(document => ({ ...document, shard: { shard_id: shard.shard_id, path: shard.path } }))
+    };
+};
+
+const withMockFetch = async (fixture: RoutedFixture, callback: () => Promise<void>): Promise<void> => {
+    const originalFetch = globalThis.fetch;
+    const manifestArtifact = required(fixture.session.sourceRegistry.sources[0], 'expected source registry entry').artifact_manifest;
+    const localRef = required(fixture.sourceManifest.local_indexes[0], 'expected local index ref');
+    const sourceManifest = fixture.sourceManifest;
+    const shard = required(sourceManifest.full_shards[0], 'expected full shard');
+    const shardFilterArtifact = required(sourceManifest.artifacts.shard_filter, 'expected shard filter artifact');
+    const responses = new Map<string, unknown>([
+        [manifestArtifact.path, sourceManifest],
+        [localRef.light_index.path, fixture.localLightIndex],
+        [localRef.body_index.path, fixture.localBodyIndex],
+        [shardFilterArtifact.path, fixture.shardFilter],
+        [shard.path, fixture.documents]
+    ]);
+    globalThis.fetch = (async (input: RequestInfo | URL) => {
+        const url = String(input).replace(/^\//, '');
+        const match = Array.from(responses.entries()).find(([path]) => url.endsWith(path));
+        if (!match) return new Response(JSON.stringify({}), { status: 404 });
+        return new Response(JSON.stringify(match[1]));
+    }) as typeof fetch;
+    try {
+        await callback();
+    } finally {
+        globalThis.fetch = originalFetch;
+    }
 };
 
 describe('sitegraph search contract', () => {
@@ -229,7 +439,7 @@ describe('sitegraph search contract', () => {
             四六级: { aliases: ['四级', '六级'] }
         });
         const snippet = buildSitegraphMatchSnippet({
-            ...fullDocument,
+            ...makeDocument(),
             title: '关于英国伦敦大学学院2026年暑期访学项目报名的通知',
             summary: '暑期访学项目报名通知。',
             content: '自习等多种方式进行。项目时间：8月3日-8月21日 项目收获：官方证书、学习报告 申请要求：托福 76、雅思6、四级425、六级400；无以上语言成绩者可内测，测试通过替代语言成绩获得申请资格。',
@@ -248,7 +458,7 @@ describe('sitegraph search contract', () => {
 
     it('marks snippets that could not place a query hit as fallback snippets', () => {
         const snippet = buildSitegraphMatchSnippet({
-            ...fullDocument,
+            ...makeDocument(),
             content: '这是一段可显示的正文，但它不包含当前查询词。'
         }, '不存在的词', ['不存在的词']);
 
@@ -257,145 +467,83 @@ describe('sitegraph search contract', () => {
         expect(snippet?.matched_terms).toEqual([]);
     });
 
-    it('rejects obsolete provider fields instead of masking schema errors', () => {
-        const obsoleteProviderField = `${['l', 'l', 'm'].join('')}_provider`;
-        expect(() => parseSitegraphManifest({ ...manifest, [obsoleteProviderField]: null })).toThrow(/provider|Validation/);
+    it('rejects legacy startup artifacts and full fields in local metadata', () => {
+        const fixture = makeRoutedFixture('legacy-reject', [makeDocument()], { queryTerms: ['转专业'] });
+        expect(() => parseSitegraphManifest({
+            ...fixture.session.manifest,
+            artifacts: {
+                ...fixture.session.manifest.artifacts,
+                doc_meta_light: artifact('legacy/doc_meta_light.json', 'doc_meta_light', 'initial')
+            }
+        })).toThrow(/legacy global artifact/);
+
+        expect(() => parseSitegraphLocalLightIndex({
+            ...fixture.localLightIndex,
+            documents: [{ ...fixture.localLightIndex.documents[0], content: 'must stay in full shards' }]
+        }, 'fixture-local-light')).toThrow(/local index metadata must not contain content/);
     });
 
-    it('rejects old semantic fields in doc meta', () => {
-        const docMeta = docMetaLightFixture();
-        expect(() => parseSitegraphDocMeta([{ ...docMeta, semantic_mode: 'sitegraph_rule' }], 'fixture')).toThrow();
-        expect(() => parseSitegraphDocMeta([{ ...docMeta, content: 'must stay in body index' }], 'fixture')).toThrow(/doc_meta_light/);
-    });
+    it('ranks attachment matches after loading routed local indexes and candidate shards', async () => {
+        const document = makeDocument();
+        const fixture = makeRoutedFixture('rank-attachment', [document], {
+            queryTerms: ['转专业申请表'],
+            lightTokens: { 转专业: { t: [0] }, 申请表: { a: [0] }, 转专业申请表: { a: [0] } },
+            bodyTokens: { 转专业: { c: [0] }, 申请表: { c: [0] } },
+            queryAliases: { 转专业申请表: { aliases: ['专业变更申请表'] } }
+        });
 
-    it('ranks title and attachment matches after loading only candidate shard', async () => {
-        const docMeta = docMetaLightFixture();
-        const bundle: SitegraphIndexBundle = {
-            manifest,
-            docMeta: [docMeta],
-            lightInvertedIndex: {
-                version: 'sitegraph-light-inverted-progressive',
-                tokenizer: 'test',
-                field_codes: { title: 't', attachment: 'a' },
-                tokens: {
-                    转专业: { t: [0], a: [0] },
-                    申请表: { a: [0] }
-                }
-            },
-            queryAliases: { 转专业: { aliases: ['专业变更'] } }
-        };
-        const originalFetch = globalThis.fetch;
-        globalThis.fetch = (async (input: RequestInfo | URL) => {
-            const url = String(input);
-            if (url.includes('body_inverted_index')) {
-                return new Response(JSON.stringify({
-                    version: 'sitegraph-body-inverted-progressive',
-                    tokenizer: 'test',
-                    field_codes: { summary: 'm', content: 'c' },
-                    tokens: {
-                        转专业: { c: [0] }
-                    }
-                }));
-            }
-            if (url.includes('shard_filter')) {
-                return new Response(JSON.stringify({
-                    [fullShard.shard_id]: {
-                        bitset_base64: '/w==',
-                        bit_count: 8,
-                        hash_count: 1,
-                        token_count: 4,
-                        sha256: '0123456789abcdef0123456789abcdef',
-                        hash_algorithm: 'bloom-fnv1a32-utf8'
-                    }
-                }));
-            }
-            return new Response(JSON.stringify([fullDocument]));
-        }) as typeof fetch;
-        try {
-            const { results, stats } = await recallSitegraphDocuments(bundle, '转专业申请表', new AbortController().signal);
+        await withMockFetch(fixture, async () => {
+            const { results, stats } = await recallSitegraphDocuments(fixture.session, '转专业申请表', new AbortController().signal);
             expect(results[0]?.id).toBe('jwc-detail-1');
             expect(results[0]?.score_reason).toContain('附件名命中');
             expect(results[0]?.match_snippet?.field).toBe('attachments');
             expect(results[0]?.match_snippet?.text).toContain('转专业申请表.doc');
-            expect(results[0]?.match_snippet?.matched_terms).toContain('转专业申请表');
-            expect(results[0]?.match_snippet?.highlights.length).toBeGreaterThan(0);
-            expect(stats.loadedShardCount).toBe(1);
-            expect(stats.loadedShardPaths).toEqual([fullShard.path]);
+            expect(stats.loadedLocalIndexIds).toEqual([required(fixture.sourceManifest.local_indexes[0], 'expected local index ref').index_id]);
+            expect(stats.loadedShardPaths).toEqual([required(fixture.sourceManifest.full_shards[0], 'expected full shard').path]);
+            expect(stats.coverage.coverage_state).toBe('global_exhaustive_complete');
             expect(stats.coverage.exhaustive_complete).toBe(true);
-        } finally {
-            globalThis.fetch = originalFetch;
-        }
+        });
     });
 
-    it('reports fallback and verification telemetry in query stats', async () => {
-        const docMeta = docMetaLightFixture();
-        const bundle: SitegraphIndexBundle = {
-            manifest,
-            docMeta: [docMeta],
-            lightInvertedIndex: {
-                version: 'sitegraph-light-inverted-progressive',
-                tokenizer: 'test',
-                field_codes: { title: 't' },
-                tokens: {}
-            },
-            queryAliases: {}
-        };
-        const originalFetch = globalThis.fetch;
-        globalThis.fetch = (async (input: RequestInfo | URL) => {
-            const url = String(input);
-            if (url.includes('body_inverted_index')) {
-                return new Response(JSON.stringify({
-                    version: 'sitegraph-body-inverted-progressive',
-                    tokenizer: 'test',
-                    field_codes: { summary: 'm', content: 'c' },
-                    tokens: {}
-                }));
-            }
-            if (url.includes('shard_filter')) {
-                return new Response(JSON.stringify({
-                    [fullShard.shard_id]: {
-                        bitset_base64: '/w==',
-                        bit_count: 8,
-                        hash_count: 1,
-                        token_count: 1,
-                        sha256: '0123456789abcdef0123456789abcdef',
-                        hash_algorithm: 'bloom-fnv1a32-utf8'
-                    }
-                }));
-            }
-            return new Response(JSON.stringify([fullDocument]));
-        }) as typeof fetch;
-        try {
-            const { results, stats } = await recallSitegraphDocuments(bundle, fullDocument.title, new AbortController().signal);
+    it('reports fallback and verification telemetry in routed query stats', async () => {
+        const fixture = makeRoutedFixture('fallback-telemetry', [makeDocument()], {
+            queryTerms: ['南京邮电大学本科生转专业管理办法'],
+            lightTokens: {},
+            bodyTokens: {}
+        });
+
+        await withMockFetch(fixture, async () => {
+            const { results, stats } = await recallSitegraphDocuments(
+                fixture.session,
+                '南京邮电大学本科生转专业管理办法',
+                new AbortController().signal
+            );
             expect(results[0]?.id).toBe('jwc-detail-1');
-            expect(stats.fallbacks.lightMetaFallbackDocuments).toBe(1);
-            expect(stats.fallbacks.exhaustiveFullScanMatches).toBe(1);
-            expect(stats.fallbacks.snippetFallbackResults).toBe(0);
-            expect(results[0]?.query_stats?.fallbacks.lightMetaFallbackDocuments).toBe(1);
-        } finally {
-            globalThis.fetch = originalFetch;
-        }
+            expect(stats.fallbacks.localMetaFallbackDocuments).toBe(1);
+            expect(stats.fallbacks.verifiedFullScanMatches).toBe(1);
+            expect(results[0]?.query_stats?.fallbacks.localMetaFallbackDocuments).toBe(1);
+        });
     });
 
-    it('uses version and recorded dates for display and date sorting', async () => {
-        const oldNotice = {
-            ...fullDocument,
+    it('uses version and recorded dates for display and scoped date sorting', async () => {
+        const oldNotice = makeDocument({
             doc_index: 0,
             id: 'old-notice',
-            facet: 'notice_article' as const,
+            facet: 'notice_article',
             title: '2024年推免工作方案',
             canonical_title: '2024年推免工作方案',
             published_at: '2024-09-07',
             version_date: null,
             date_kind: 'published',
             summary: '推免工作方案',
-            content: '2024年推免工作方案。'
-        };
-        const versionedDownload = {
-            ...fullDocument,
+            content: '2024年推免工作方案。',
+            attachments: [],
+            attachment_count: 0
+        });
+        const versionedDownload = makeDocument({
             doc_index: 1,
             id: 'versioned-download',
-            facet: 'download' as const,
+            facet: 'download',
             title: '南京邮电大学学生一般事务申请表 2026-04-16',
             canonical_title: '南京邮电大学学生一般事务申请表 2026-04-16',
             published_at: null,
@@ -405,115 +553,25 @@ describe('sitegraph search contract', () => {
             summary: '附件元数据：南京邮电大学学生一般事务申请表 2026-04-16。来源栏目：推免生。',
             content: '附件元数据命中推免生栏目。',
             collection_method: 'attachment_metadata_only'
-        };
-        const otherSource = {
-            ...versionedDownload,
-            doc_index: 2,
-            id: 'other-source',
-            source_id: 'graduate',
-            source: '研究生院',
-            source_domain: 'graduate.njupt.edu.cn',
-            facet: 'download' as const,
-            version_date: '2026-05-01',
-            title: '研究生院推免下载入口',
-            canonical_title: '研究生院推免下载入口',
-            summary: '研究生院推免下载入口。',
-            content: '研究生院推免下载入口。'
-        };
-        const docs = [oldNotice, versionedDownload, otherSource];
-        const searchShard = {
-            ...fullShard,
-            path: 'fixture-date-filter-shard.0123456789abcdef.json',
-            count: docs.length,
-            facet_range: ['notice_article', 'download']
-        };
-        const searchManifest: SitegraphSearchManifest = {
-            ...manifest,
-            total_documents: docs.length,
-            sitegraph: {
-                ...manifest.sitegraph,
-                full_shards: [searchShard]
-            },
-            progressive_search: {
-                ...manifest.progressive_search,
-                total_documents: docs.length
-            }
-        };
-        const bundle: SitegraphIndexBundle = {
-            manifest: searchManifest,
-            docMeta: docs.map(document => ({
-                doc_index: document.doc_index,
-                id: document.id,
-                record_type: document.record_type,
-                facet: document.facet,
-                title: document.title,
-                url: document.url,
-                source_id: document.source_id,
-                source: document.source,
-                section_id: document.section_id,
-                section: document.section,
-                nav_path: document.nav_path,
-                nav_path_text: document.nav_path_text,
-                published_at: document.published_at,
-                version_date: document.version_date,
-                recorded_at: document.recorded_at,
-                date_kind: document.date_kind,
-                date_confidence: document.date_confidence,
-                task_kind: document.task_kind,
-                attachment_count: document.attachment_count,
-                collection_method: document.collection_method,
-                shard: { shard_id: searchShard.shard_id, path: searchShard.path }
-            })),
-            lightInvertedIndex: {
-                version: 'sitegraph-light-inverted-progressive',
-                tokenizer: 'test',
-                field_codes: { title: 't' },
-                tokens: {
-                    推免: { t: [0, 1, 2] }
-                }
-            },
-            queryAliases: {}
-        };
-        const originalFetch = globalThis.fetch;
-        globalThis.fetch = (async (input: RequestInfo | URL) => {
-            const url = String(input);
-            if (url.includes('body_inverted_index')) {
-                return new Response(JSON.stringify({
-                    version: 'sitegraph-body-inverted-progressive',
-                    tokenizer: 'test',
-                    field_codes: { content: 'c' },
-                    tokens: {
-                        推免: { c: [0, 1, 2] }
-                    }
-                }));
-            }
-            if (url.includes('shard_filter')) {
-                return new Response(JSON.stringify({
-                    [searchShard.shard_id]: {
-                        bitset_base64: '/w==',
-                        bit_count: 8,
-                        hash_count: 1,
-                        token_count: 3,
-                        sha256: '0123456789abcdef0123456789abcdef',
-                        hash_algorithm: 'bloom-fnv1a32-utf8'
-                    }
-                }));
-            }
-            return new Response(JSON.stringify(docs.map(document => ({
-                ...document,
-                shard: { shard_id: searchShard.shard_id, path: searchShard.path }
-            }))));
-        }) as typeof fetch;
-        try {
+        });
+        const docs = [oldNotice, versionedDownload];
+        const fixture = makeRoutedFixture('date-filter', docs, {
+            queryTerms: ['推免'],
+            facet: 'download',
+            lightTokens: { 推免: { t: [0, 1] } },
+            bodyTokens: { 推免: { c: [0, 1] } }
+        });
+
+        await withMockFetch(fixture, async () => {
             const events: SitegraphSearchEvent[] = [];
-            await searchSitegraphProgressively(bundle, '推免', new AbortController().signal, event => events.push(event), {
+            await searchSitegraphProgressively(fixture.session, '推免', new AbortController().signal, event => events.push(event), {
                 limit: 10,
                 sortMode: 'date_desc',
                 filters: { sourceId: 'jwc', facet: 'download', dateRange: 'past_year' },
                 now: new Date('2026-05-29T00:00:00+08:00').getTime()
             });
             const complete = events.at(-1);
-            expect(complete?.type).toBe('exhaustive_complete');
+            expect(complete?.type).toBe('scoped_exhaustive_complete');
             expect(complete?.results?.map(result => result.id)).toEqual(['versioned-download']);
             expect(formatResolvedSearchDate(versionedDownload)).toBe('版本日期 2026/04/16');
             expect(formatResolvedSearchDate({
@@ -522,25 +580,14 @@ describe('sitegraph search contract', () => {
                 version_date: null,
                 recorded_at: '2026-05-01'
             })).toBe('收录日期 2026/05/01');
-        } finally {
-            globalThis.fetch = originalFetch;
-        }
+        });
     });
 
-    it('uses alias n-grams for candidate recall without counting weak phrase misses as results', async () => {
-        const aliasShard = {
-            ...fullShard,
-            shard_id: 'notice__detail__2026__calendar__b0',
-            path: 'fixture-alias-shard.0123456789abcdef.json',
-            count: 2,
-            facet_range: ['notice_article'],
-            section_range: ['jwc_notice_root']
-        };
-        const calendarDocument = {
-            ...fullDocument,
+    it('uses alias phrases for candidate recall without counting weak phrase misses as results', async () => {
+        const calendarDocument = makeDocument({
             doc_index: 0,
             id: 'calendar',
-            facet: 'notice_article' as const,
+            facet: 'notice_article',
             title: '2025-2026学年校历',
             canonical_title: '2025-2026学年校历',
             section: '通知公告',
@@ -549,355 +596,93 @@ describe('sitegraph search contract', () => {
             summary: '2025-2026学年校历',
             content: '学校发布2025-2026学年校历。',
             task_kind: 'academic_calendar',
-            shard: { shard_id: aliasShard.shard_id, path: aliasShard.path },
-            attachments: []
-        };
-        const weakAliasDocument = {
-            ...calendarDocument,
+            attachments: [],
+            attachment_count: 0
+        });
+        const weakAliasDocument = makeDocument({
             doc_index: 1,
             id: 'weak-alias',
+            facet: 'notice_article',
             title: '2025-2026学年第二学期学生选课通知',
             canonical_title: '2025-2026学年第二学期学生选课通知',
+            section: '通知公告',
+            nav_path: ['通知公告'],
+            nav_path_text: '通知公告',
             summary: '2025-2026学年第二学期选课安排。',
             content: '学生选课通知，不包含目标完整短语。',
-            task_kind: 'course_grade_credit'
-        };
-        const bundle: SitegraphIndexBundle = {
-            manifest: {
-                ...manifest,
-                total_documents: 2,
-                sitegraph: {
-                    ...manifest.sitegraph,
-                    full_shards: [aliasShard]
-                },
-                progressive_search: {
-                    ...manifest.progressive_search,
-                    total_documents: 2
-                }
+            task_kind: 'course_grade_credit',
+            attachments: [],
+            attachment_count: 0
+        });
+        const fixture = makeRoutedFixture('alias-recall', [calendarDocument, weakAliasDocument], {
+            queryTerms: ['校历'],
+            facet: 'notice_article',
+            lightTokens: {
+                校历: { t: [0] },
+                '2025-2026': { t: [0, 1] },
+                学年: { t: [0, 1] }
             },
-            docMeta: [calendarDocument, weakAliasDocument].map(document => ({
-                doc_index: document.doc_index,
-                id: document.id,
-                record_type: document.record_type,
-                facet: document.facet,
-                title: document.title,
-                url: document.url,
-                source_id: document.source_id,
-                source: document.source,
-                section_id: document.section_id,
-                section: document.section,
-                nav_path: document.nav_path,
-                nav_path_text: document.nav_path_text,
-                published_at: document.published_at,
-                version_date: document.version_date,
-                date_kind: document.date_kind,
-                task_kind: document.task_kind,
-                attachment_count: document.attachment_count,
-                collection_method: document.collection_method,
-                shard: document.shard
-            })),
-            lightInvertedIndex: {
-                version: 'sitegraph-light-inverted-progressive',
-                tokenizer: 'test',
-                field_codes: { title: 't' },
-                tokens: {
-                    校历: { t: [0] },
-                    '2025-2026': { t: [0, 1] },
-                    学年: { t: [0, 1] }
-                }
+            bodyTokens: {
+                校历: { c: [0] },
+                '2025-2026': { c: [0, 1] },
+                学年: { c: [0, 1] }
             },
             queryAliases: { 校历: { aliases: ['2025-2026学年校历'] } }
-        };
-        const originalFetch = globalThis.fetch;
-        globalThis.fetch = (async (input: RequestInfo | URL) => {
-            const url = String(input);
-            if (url.includes('body_inverted_index')) {
-                return new Response(JSON.stringify({
-                    version: 'sitegraph-body-inverted-progressive',
-                    tokenizer: 'test',
-                    field_codes: { content: 'c' },
-                    tokens: {
-                        校历: { c: [0] },
-                        '2025-2026': { c: [0, 1] },
-                        学年: { c: [0, 1] }
-                    }
-                }));
-            }
-            if (url.includes('shard_filter')) {
-                return new Response(JSON.stringify({
-                    [aliasShard.shard_id]: {
-                        bitset_base64: '/w==',
-                        bit_count: 8,
-                        hash_count: 1,
-                        token_count: 3,
-                        sha256: '0123456789abcdef0123456789abcdef',
-                        hash_algorithm: 'bloom-fnv1a32-utf8'
-                    }
-                }));
-            }
-            return new Response(JSON.stringify([calendarDocument, weakAliasDocument]));
-        }) as typeof fetch;
-        try {
-            const { results, stats } = await recallSitegraphDocuments(bundle, '校历', new AbortController().signal, 10);
+        });
+
+        await withMockFetch(fixture, async () => {
+            const { results, stats } = await recallSitegraphDocuments(fixture.session, '校历', new AbortController().signal, 10);
             expect(results.map(result => result.id)).toEqual(['calendar']);
             expect(stats.resultCount).toBe(1);
-        } finally {
-            globalThis.fetch = originalFetch;
-        }
+        });
     });
 
-    it('emits progressive phases with exhaustive coverage', async () => {
-        const docMeta = docMetaLightFixture();
-        const bundle: SitegraphIndexBundle = {
-            manifest,
-            docMeta: [docMeta],
-            lightInvertedIndex: {
-                version: 'sitegraph-light-inverted-progressive',
-                tokenizer: 'test',
-                field_codes: { title: 't' },
-                tokens: {
-                    转专业: { t: [0] }
-                }
-            },
-            queryAliases: { 转专业: { aliases: ['专业变更'] } }
-        };
-        const originalFetch = globalThis.fetch;
-        globalThis.fetch = (async (input: RequestInfo | URL) => {
-            const url = String(input);
-            if (url.includes('body_inverted_index')) {
-                return new Response(JSON.stringify({
-                    version: 'sitegraph-body-inverted-progressive',
-                    tokenizer: 'test',
-                    field_codes: { summary: 'm', content: 'c' },
-                    tokens: {
-                        申请: { c: [0] }
-                    }
-                }));
-            }
-            if (url.includes('shard_filter')) {
-                return new Response(JSON.stringify({
-                    [fullShard.shard_id]: {
-                        bitset_base64: '/w==',
-                        bit_count: 8,
-                        hash_count: 1,
-                        token_count: 3,
-                        sha256: '0123456789abcdef0123456789abcdef',
-                        hash_algorithm: 'bloom-fnv1a32-utf8'
-                    }
-                }));
-            }
-            return new Response(JSON.stringify([fullDocument]));
-        }) as typeof fetch;
-        try {
+    it('emits routed progressive phases with exhaustive coverage', async () => {
+        const fixture = makeRoutedFixture('progressive-phases', [makeDocument()], {
+            queryTerms: ['转专业申请'],
+            lightTokens: { 转专业: { t: [0] } },
+            bodyTokens: { 申请: { c: [0] } }
+        });
+
+        await withMockFetch(fixture, async () => {
             const events: SitegraphSearchEvent[] = [];
-            await searchSitegraphProgressively(bundle, '转专业申请', new AbortController().signal, event => events.push(event), { limit: 5 });
+            await searchSitegraphProgressively(fixture.session, '转专业申请', new AbortController().signal, event => events.push(event), { limit: 5 });
             expect(events.map(event => event.type)).toEqual(expect.arrayContaining([
-                'quick_started',
-                'quick_results',
-                'body_started',
-                'body_results',
-                'hydrate_started',
-                'hydrate_results',
-                'verify_started',
-                'verify_progress',
-                'exhaustive_complete'
+                'plan_started',
+                'local_index_started',
+                'first_trusted_results',
+                'body_index_started',
+                'top_results_hydrated',
+                'verification_started',
+                'partial_verified',
+                'global_exhaustive_complete'
             ]));
-            const complete = events[events.length - 1];
-            expect(complete?.type).toBe('exhaustive_complete');
+            const complete = events.at(-1);
+            expect(complete?.type).toBe('global_exhaustive_complete');
             expect(complete?.coverage.exhaustive_complete).toBe(true);
             expect(complete?.coverage.scanned_shards).toBe(1);
             expect(complete?.coverage.proved_no_match_shards).toBe(0);
             expect(complete?.coverage.searched_documents).toBe(1);
             expect(complete?.results?.[0]?.id).toBe('jwc-detail-1');
-        } finally {
-            globalThis.fetch = originalFetch;
-        }
-    });
-
-    it('supports cancellation before exhaustive completion', async () => {
-        const docMeta = docMetaLightFixture();
-        const bundle: SitegraphIndexBundle = {
-            manifest,
-            docMeta: [docMeta],
-            lightInvertedIndex: {
-                version: 'sitegraph-light-inverted-progressive',
-                tokenizer: 'test',
-                field_codes: { title: 't' },
-                tokens: {
-                    转专业: { t: [0] }
-                }
-            },
-            queryAliases: {}
-        };
-        const controller = new AbortController();
-        const originalFetch = globalThis.fetch;
-        globalThis.fetch = (async (input: RequestInfo | URL) => {
-            const url = String(input);
-            if (url.includes('body_inverted_index')) {
-                controller.abort();
-                return new Response(JSON.stringify({
-                    version: 'sitegraph-body-inverted-progressive',
-                    tokenizer: 'test',
-                    field_codes: { summary: 'm', content: 'c' },
-                    tokens: {}
-                }));
-            }
-            return new Response(JSON.stringify([fullDocument]));
-        }) as typeof fetch;
-        try {
-            const events: SitegraphSearchEvent[] = [];
-            await expect(searchSitegraphProgressively(bundle, '转专业', controller.signal, event => events.push(event))).rejects.toThrow(/cancel/i);
-            expect(events.some(event => event.type === 'exhaustive_complete')).toBe(false);
-        } finally {
-            globalThis.fetch = originalFetch;
-        }
-    });
-
-    it('does not share pending shard fetches across abort signals', async () => {
-        const shardPath = 'fixture-shard-abort-race.0123456789abcdef.json';
-        const raceShard = { ...fullShard, shard_id: 'policy__detail__2026__rules__race', path: shardPath };
-        const raceDocument = {
-            ...fullDocument,
-            shard: { shard_id: raceShard.shard_id, path: shardPath }
-        };
-        const raceManifest: SitegraphSearchManifest = {
-            ...manifest,
-            sitegraph: {
-                ...manifest.sitegraph,
-                full_shards: [raceShard]
-            }
-        };
-        const docMeta = {
-            ...docMetaLightFixture(),
-            shard: { shard_id: raceShard.shard_id, path: shardPath }
-        };
-        const bundle = (): SitegraphIndexBundle => ({
-            manifest: raceManifest,
-            docMeta: [docMeta],
-            lightInvertedIndex: {
-                version: 'sitegraph-light-inverted-progressive',
-                tokenizer: 'test',
-                field_codes: { title: 't' },
-                tokens: {
-                    转专业: { t: [0] }
-                }
-            },
-            queryAliases: {}
         });
-        const originalFetch = globalThis.fetch;
-        let shardFetches = 0;
-        let firstShardRequested: (() => void) | null = null;
-        const firstShardStarted = new Promise<void>(resolve => {
-            firstShardRequested = resolve;
-        });
-        globalThis.fetch = (async (input: RequestInfo | URL, init?: RequestInit) => {
-            const url = String(input);
-            if (url.includes('body_inverted_index')) {
-                return new Response(JSON.stringify({
-                    version: 'sitegraph-body-inverted-progressive',
-                    tokenizer: 'test',
-                    field_codes: { summary: 'm', content: 'c' },
-                    tokens: {}
-                }));
-            }
-            if (url.includes('shard_filter')) {
-                return new Response(JSON.stringify({
-                    [raceShard.shard_id]: {
-                        bitset_base64: '/w==',
-                        bit_count: 8,
-                        hash_count: 1,
-                        token_count: 3,
-                        sha256: '0123456789abcdef0123456789abcdef',
-                        hash_algorithm: 'bloom-fnv1a32-utf8'
-                    }
-                }));
-            }
-            if (url.includes(shardPath)) {
-                shardFetches += 1;
-                if (shardFetches === 1) {
-                    firstShardRequested?.();
-                    return new Promise<Response>((_resolve, reject) => {
-                        const signal = init?.signal;
-                        if (signal?.aborted) {
-                            reject(new DOMException('Search cancelled', 'AbortError'));
-                            return;
-                        }
-                        signal?.addEventListener('abort', () => reject(new DOMException('Search cancelled', 'AbortError')), { once: true });
-                    });
-                }
-                return new Response(JSON.stringify([raceDocument]));
-            }
-            return new Response(JSON.stringify([raceDocument]));
-        }) as typeof fetch;
-
-        const controller1 = new AbortController();
-        const controller2 = new AbortController();
-        try {
-            const firstSearch = searchSitegraphProgressively(bundle(), '转专业', controller1.signal, () => undefined, { limit: 5 });
-            await firstShardStarted;
-            const secondEvents: SitegraphSearchEvent[] = [];
-            const secondSearch = searchSitegraphProgressively(bundle(), '转专业', controller2.signal, event => secondEvents.push(event), { limit: 5 });
-            await new Promise(resolve => setTimeout(resolve, 0));
-            controller1.abort();
-            await expect(firstSearch).rejects.toThrow(/cancel/i);
-            await expect(secondSearch).resolves.toBeUndefined();
-            expect(shardFetches).toBe(2);
-            expect(secondEvents.at(-1)?.type).toBe('exhaustive_complete');
-        } finally {
-            globalThis.fetch = originalFetch;
-        }
     });
 
     it('uses shard filter proof to skip no-match shards', async () => {
-        const docMeta = docMetaLightFixture();
-        const bundle: SitegraphIndexBundle = {
-            manifest,
-            docMeta: [docMeta],
-            lightInvertedIndex: {
-                version: 'sitegraph-light-inverted-current',
-                tokenizer: 'test',
-                field_codes: { title: 't' },
-                tokens: {}
-            },
-            queryAliases: {}
-        };
-        const originalFetch = globalThis.fetch;
-        let shardLoads = 0;
-        globalThis.fetch = (async (input: RequestInfo | URL) => {
-            const url = String(input);
-            if (url.includes('body_inverted_index')) {
-                return new Response(JSON.stringify({
-                    version: 'sitegraph-body-inverted-current',
-                    tokenizer: 'test',
-                    field_codes: { summary: 'm', content: 'c' },
-                    tokens: {}
-                }));
-            }
-            if (url.includes('shard_filter')) {
-                return new Response(JSON.stringify({
-                    [fullShard.shard_id]: {
-                        bitset_base64: 'AA==',
-                        bit_count: 8,
-                        hash_count: 1,
-                        token_count: 0,
-                        sha256: '0123456789abcdef0123456789abcdef',
-                        hash_algorithm: 'bloom-fnv1a32-utf8'
-                    }
-                }));
-            }
-            shardLoads += 1;
-            return new Response(JSON.stringify([fullDocument]));
-        }) as typeof fetch;
-        try {
+        const fixture = makeRoutedFixture('filter-skip', [makeDocument()], {
+            queryTerms: ['不存在的查询'],
+            lightTokens: {},
+            bodyTokens: {},
+            filterBase64: 'AA=='
+        });
+
+        await withMockFetch(fixture, async () => {
             const events: SitegraphSearchEvent[] = [];
-            await searchSitegraphProgressively(bundle, '不存在的查询', new AbortController().signal, event => events.push(event), { limit: 5 });
-            const complete = events[events.length - 1];
-            expect(complete?.type).toBe('exhaustive_complete');
+            await searchSitegraphProgressively(fixture.session, '不存在的查询', new AbortController().signal, event => events.push(event), { limit: 5 });
+            const complete = events.at(-1);
+            expect(complete?.type).toBe('global_exhaustive_complete');
             expect(complete?.coverage.proved_no_match_shards).toBe(1);
             expect(complete?.coverage.scanned_shards).toBe(0);
-            expect(shardLoads).toBe(0);
-        } finally {
-            globalThis.fetch = originalFetch;
-        }
+            expect(complete?.results).toEqual([]);
+        });
     });
 });

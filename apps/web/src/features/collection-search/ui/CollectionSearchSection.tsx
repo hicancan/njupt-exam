@@ -52,14 +52,15 @@ function methodLabel(method: string): string {
 }
 
 function phaseLabel(phase: SitegraphSearchPhase | null, searching: boolean): string {
-    if (phase === 'exhaustive_complete') return '';
+    if (phase === 'scoped_exhaustive_complete' || phase === 'global_exhaustive_complete') return '';
     if (phase === 'cancelled') return '已取消本次核查';
     if (!searching) return '等待搜索';
-    if (phase === 'quick_started') return '正在启动快速搜索';
-    if (phase === 'quick_results') return '快速结果已返回，正在继续核查官网信息索引';
-    if (phase === 'body_started' || phase === 'body_results') return '正在继续核查正文索引';
-    if (phase === 'hydrate_started' || phase === 'hydrate_results') return '正在补全文档记录并重排结果';
-    if (phase === 'verify_started' || phase === 'verify_progress' || phase === 'verify_results') return '正在核查官网信息索引';
+    if (phase === 'plan_started') return '正在规划权威来源';
+    if (phase === 'local_index_started') return '正在加载相关局部索引';
+    if (phase === 'first_trusted_results') return '可信首批结果已返回，正在继续补全';
+    if (phase === 'body_index_started') return '正在加载相关正文索引';
+    if (phase === 'top_results_hydrated') return '高相关结果已补全，正在做覆盖证明';
+    if (phase === 'verification_started' || phase === 'partial_verified') return '正在验证范围内官网分片';
     return '正在搜索';
 }
 
@@ -458,9 +459,10 @@ export function CollectionSearchSection({
                             <span>字段：{fieldLabel(coverage.searched_fields)}</span>
                             {queryStats ? (
                                 <>
-                                    <span>轻元数据兜底 {queryStats.fallbacks.lightMetaFallbackDocuments}</span>
+                                    <span>局部元数据兜底 {queryStats.fallbacks.localMetaFallbackDocuments}</span>
                                     <span>摘要兜底 {queryStats.fallbacks.snippetFallbackResults}</span>
-                                    <span>全量命中 {queryStats.fallbacks.exhaustiveFullScanMatches}</span>
+                                    <span>验证命中 {queryStats.fallbacks.verifiedFullScanMatches}</span>
+                                    <span>局部索引 {queryStats.loadedLocalIndexCount}</span>
                                 </>
                             ) : null}
                         </div>

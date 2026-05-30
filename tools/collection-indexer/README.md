@@ -2,10 +2,12 @@
 
 This tool builds and validates generated collection runtime artifacts.
 
-Near-term migration purpose:
+Current purpose:
 
 - consume one or more audited source package paths through CLI arguments instead of implicit sibling paths;
-- produce generated collection runtime artifacts for `collection_id: njupt-public`;
+- produce routed static-search artifacts for `collection_id: njupt-public`;
+- keep startup artifacts small by emitting `source_registry`, `global_query_directory`, and query-planned local indexes instead of global first-screen indexes;
+- emit source-scoped full shards plus shard filters for proof-based exhaustive verification.
 
 CLI:
 

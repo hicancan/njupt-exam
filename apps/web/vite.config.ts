@@ -81,12 +81,12 @@ export default defineConfig({
             }
           },
           {
-            urlPattern: ({ url }) => url.pathname.includes('/generated/collections/njupt-public/sitegraph/') && url.pathname.includes('/artifacts/'),
+            urlPattern: ({ url }) => url.pathname.includes('/generated/collections/njupt-public/sitegraph/') && !url.pathname.includes('/full_shards/'),
             handler: 'CacheFirst',
             options: {
-              cacheName: 'njupt-search-sitegraph-index-progressive',
+              cacheName: 'njupt-search-sitegraph-routed-indexes',
               expiration: {
-                maxEntries: 40,
+                maxEntries: 1100,
                 maxAgeSeconds: 60 * 60 * 24 * 365
               },
               cacheableResponse: {
@@ -95,12 +95,12 @@ export default defineConfig({
             }
           },
           {
-            urlPattern: ({ url }) => url.pathname.includes('/generated/collections/njupt-public/sitegraph/') && url.pathname.includes('/shards/'),
+            urlPattern: ({ url }) => url.pathname.includes('/generated/collections/njupt-public/sitegraph/full_shards/'),
             handler: 'CacheFirst',
             options: {
-              cacheName: 'njupt-search-sitegraph-shards-progressive',
+              cacheName: 'njupt-search-sitegraph-routed-full-shards',
               expiration: {
-                maxEntries: 650,
+                maxEntries: 1000,
                 maxAgeSeconds: 60 * 60 * 24 * 365
               },
               cacheableResponse: {

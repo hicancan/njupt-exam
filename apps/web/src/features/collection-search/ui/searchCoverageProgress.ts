@@ -19,11 +19,13 @@ export function getSearchCoverageProgress(coverage: SitegraphSearchCoverage): Se
         ? Math.min(100, Math.max(0, Math.round(completedShards / totalShards * 100)))
         : 0;
 
+    const completeLabel = coverage.scope === 'scoped' ? '筛选范围已核查' : '全站范围已核查';
+
     return {
         completedShards,
         totalShards,
         percent: coverage.exhaustive_complete ? 100 : percent,
-        label: coverage.exhaustive_complete ? '已全量核查' : `已核查 ${percent}%`,
+        label: coverage.exhaustive_complete ? completeLabel : `已核查 ${percent}%`,
         complete: coverage.exhaustive_complete,
         showBar: !coverage.exhaustive_complete,
     };

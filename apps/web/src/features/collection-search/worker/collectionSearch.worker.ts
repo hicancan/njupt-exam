@@ -1,6 +1,6 @@
 import { APP_CONFIG } from '@/app/config/constants';
 import {
-    SitegraphIndexBundle,
+    SitegraphRoutedSession,
     SitegraphSearchFilters,
     SitegraphSearchCoverage,
     SitegraphSearchManifest,
@@ -8,11 +8,10 @@ import {
 } from '@/shared/lib/contracts';
 import { fetchJson } from '@/shared/lib/fetch';
 import {
-    parseSitegraphDocMeta,
-    parseSitegraphInvertedIndex,
+    parseSitegraphGlobalQueryDirectory,
     parseSitegraphManifest,
+    parseSitegraphSourceRegistry,
     searchSitegraphProgressively,
-    buildSitegraphFilterOptions,
 } from '@njupt-search/search-core';
 
 type InitMessage = { type: 'init'; requestId: number };
@@ -28,7 +27,7 @@ type CancelMessage = { type: 'cancel'; requestId: number };
 type IncomingMessage = InitMessage | QueryMessage | CancelMessage;
 
 let manifest: SitegraphSearchManifest | null = null;
-let bundle: SitegraphIndexBundle | null = null;
+let session: SitegraphRoutedSession | null = null;
 let activeController: AbortController | null = null;
 let activeRequestId: number | null = null;
 let lastCoverage: SitegraphSearchCoverage | null = null;
@@ -51,26 +50,24 @@ const init = async (requestId: number) => {
     const manifestPayload = await fetchJson(manifestPath, controller.signal, 'manifest');
     manifest = parseSitegraphManifest(manifestPayload, manifestPath);
     const artifacts = manifest.artifacts;
-    const [docMetaPayload, lightIndexPayload, aliasesPayload] = await Promise.all([
-        fetchJson(publicPath(artifacts.doc_meta_light.path), controller.signal, 'index'),
-        fetchJson(publicPath(artifacts.light_inverted_index.path), controller.signal, 'index'),
+    const [sourceRegistryPayload, queryDirectoryPayload, aliasesPayload] = await Promise.all([
+        fetchJson(publicPath(artifacts.source_registry.path), controller.signal, 'index'),
+        fetchJson(publicPath(artifacts.global_query_directory.path), controller.signal, 'index'),
         fetchJson(publicPath(artifacts.query_aliases.path), controller.signal, 'index'),
     ]);
-    bundle = {
+    const sourceRegistry = parseSitegraphSourceRegistry(sourceRegistryPayload, artifacts.source_registry.path);
+    session = {
         manifest,
-        docMeta: parseSitegraphDocMeta(docMetaPayload, artifacts.doc_meta_light.path),
-        lightInvertedIndex: parseSitegraphInvertedIndex(lightIndexPayload, artifacts.light_inverted_index.path),
+        sourceRegistry,
+        globalQueryDirectory: parseSitegraphGlobalQueryDirectory(queryDirectoryPayload, artifacts.global_query_directory.path),
         queryAliases: aliasesPayload as Record<string, unknown>,
     };
     post({
         type: 'ready',
         requestId,
         manifest,
-        filterOptions: buildSitegraphFilterOptions(
-            bundle.docMeta,
-            Object.fromEntries(manifest.sources.map(source => [source.source_id, source.display_name || source.source_id]))
-        ),
-        firstScreenBytes: artifacts.doc_meta_light.bytes + artifacts.light_inverted_index.bytes + artifacts.query_aliases.bytes,
+        filterOptions: sourceRegistry.filter_options,
+        firstScreenBytes: artifacts.source_registry.bytes + artifacts.global_query_directory.bytes + artifacts.query_aliases.bytes,
     });
 };
 
@@ -81,14 +78,14 @@ const query = async (
     sortMode: SitegraphSortMode = 'relevance',
     filters: SitegraphSearchFilters = {}
 ) => {
-    if (!bundle) {
+    if (!session) {
         throw new Error('Search worker is not initialized');
     }
     activeController?.abort();
     const controller = new AbortController();
     activeController = controller;
     activeRequestId = requestId;
-    await searchSitegraphProgressively(bundle, queryText, controller.signal, event => {
+    await searchSitegraphProgressively(session, queryText, controller.signal, event => {
         lastCoverage = event.coverage;
         post({ ...event, requestId });
     }, { limit, sortMode, filters });
@@ -105,7 +102,7 @@ self.onmessage = (event: MessageEvent<IncomingMessage>) => {
         post({
             type: 'cancelled',
             requestId: message.requestId,
-            coverage: lastCoverage ? { ...lastCoverage, phase: 'cancelled', exhaustive_complete: false } : null,
+            coverage: lastCoverage ? { ...lastCoverage, phase: 'cancelled', coverage_state: 'cancelled', exhaustive_complete: false } : null,
         });
         return;
     }
@@ -120,7 +117,7 @@ self.onmessage = (event: MessageEvent<IncomingMessage>) => {
             type: 'error',
             requestId: message.requestId,
             message: error instanceof Error ? error.message : String(error),
-            coverage: lastCoverage ? { ...lastCoverage, phase: 'error' } : null,
+            coverage: lastCoverage ? { ...lastCoverage, phase: 'error', coverage_state: 'error', exhaustive_complete: false } : null,
         });
     });
 };

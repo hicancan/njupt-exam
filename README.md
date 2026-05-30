@@ -2,7 +2,7 @@
 
 # 🔍 njupt-search
 
-**Progressive Verifiable Static Search**
+**Routed Verifiable Static Search**
 
 [![License](https://img.shields.io/badge/license-AGPL--3.0-blue.svg)](LICENSE)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.9-blue.svg)](https://www.typescriptlang.org/)
@@ -10,7 +10,7 @@
 [![Python](https://img.shields.io/badge/Python-3.10+-FFD43B.svg)](https://www.python.org/)
 
 南邮本科生教务信息与考试查询的 Serverless 静态搜索引擎。<br>
-通过预编译倒排索引与 Bloom Filter 分片，将全量搜索算力安全下放至浏览器 Web Worker，实现 **0 成本**的纯静态全文检索体验。
+通过预编译路由目录、本地倒排索引与 Bloom Filter 分片，将全量搜索算力安全下放至浏览器 Web Worker，实现 **0 成本**的纯静态全文检索体验。
 
 🌍 **[在线体验 (njupt.hicancan.top)](https://njupt.hicancan.top)**
 
@@ -22,12 +22,12 @@
 
 本项目不依赖任何服务端数据库（如 MySQL/ElasticSearch），而是通过 Python 工具链将爬取的源数据（Source Package）预先编译为哈希分片，交由前端渐进式消费。
 
-### Progressive Search (渐进式静态检索)
+### Routed Progressive Search (路由式渐进检索)
 
 前端 UI 触发搜索后，Web Worker 将执行多阶段流水线：
-1. **Light Index (轻量索引)**：首先拉取极小的 `light_inverted_index.json`，瞬间返回匹配标题的结果。
-2. **Body Index (摘要补全)**：后台静默拉取 `body_inverted_index.json`，获取文本摘要命中。
-3. **Full Shard Scan (分片扫表)**：利用分片自带的 **Bloom Filter (布隆过滤器)** 提前跳过无命中的数据块，仅下载和扫描包含关键词的完整分片（Full Shards），最终达成 `exhaustive_complete`（穷尽完整结果）。
+1. **Bootstrap Router (启动路由)**：首屏只拉取 `manifest.json`、`source_registry`、`global_query_directory` 与 `query_aliases`，不加载全局文档元数据或全局倒排。
+2. **Local Indexes (按需本地索引)**：根据查询意图和路由目录加载少量 source/facet/year 级 `local_light_indexes` 与 `local_body_indexes`，快速产生可信候选。
+3. **Full Shard Verification (分片核查)**：对候选分片进行懒加载，并用每个来源的 Bloom Filter 证明跳过无命中分片；完成后进入 `scoped_exhaustive_complete` 或 `global_exhaustive_complete`。
 
 ```mermaid
 graph TD
@@ -37,16 +37,18 @@ graph TD
 
     subgraph 静态产物_CDN
     B -->|生成稳定入口| C1[manifest.json]
-    B -->|生成轻量倒排| C2[light_inverted_index.json]
-    B -->|生成正文倒排| C3[body_inverted_index.json]
-    B -->|生成带布隆过滤器的正文块| C4[full.*.hash.json]
+    B -->|生成来源注册表| C2[source_registry]
+    B -->|生成紧凑查询路由| C3[global_query_directory]
+    B -->|生成局部索引| C4[local_light_indexes / local_body_indexes]
+    B -->|生成带布隆过滤器的正文块| C5[full_shards]
     end
 
     subgraph 客户端检索阶段_Browser_Web_Worker
-    C1 --> D{Progressive Search Engine}
-    C2 -->|Phase 1: quick_results| D
-    C3 -->|Phase 2: body_results| D
-    C4 -->|Phase 3: verify / exhaustive_complete| D
+    C1 --> D{Routed Progressive Search Engine}
+    C2 -->|Phase 1: plan_started| D
+    C3 -->|Phase 1: plan_started| D
+    C4 -->|Phase 2: first_trusted_results / top_results_hydrated| D
+    C5 -->|Phase 3: verification / exhaustive_complete| D
     end
 ```
 

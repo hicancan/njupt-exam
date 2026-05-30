@@ -96,9 +96,13 @@ QUERY_EXPECTATIONS = (
 )
 
 SIZE_BUDGETS = {
-    "first_screen_total_bytes": 16_000_000,
-    "body_index_bytes": 19_000_000,
-    "full_shard_count": 650,
+    "routed_first_screen_total_bytes": 1_000_000,
+    "global_query_directory_bytes": 300_000,
+    "source_registry_bytes": 50_000,
+    "query_aliases_bytes": 20_000,
+    "local_index_count": 300,
+    "artifact_count": 1_600,
+    "full_shard_count": 1_000,
     "max_full_shard_bytes": 512 * 1024,
     "avg_full_shard_bytes": 96 * 1024,
     "max_candidate_shards_per_query": 32,
@@ -200,16 +204,21 @@ def validate_size_budget() -> dict[str, Any]:
     manifest = read_json(PUBLIC_INDEX_DIR / "manifest.json")
     artifacts = manifest["artifacts"]
     first_screen_artifacts = manifest["core_search"]["first_screen_artifacts"]
-    if first_screen_artifacts != ["doc_meta_light", "light_inverted_index", "query_aliases"]:
+    if first_screen_artifacts != ["source_registry", "global_query_directory", "query_aliases"]:
         fail("unexpected first-screen artifact list", first_screen_artifacts)
-    if "body_inverted_index" in first_screen_artifacts:
-        fail("body index must not be a first-screen artifact")
+    if any(name in first_screen_artifacts for name in ("body_inverted_index", "local_light_index", "local_body_index")):
+        fail("local/body indexes must not be first-screen artifacts")
 
     size_report = read_json(PUBLIC_ROOT / artifacts["size_report"]["path"])
     budget_summary = {
-        "first_screen_files": size_report["first_screen_files"],
-        "first_screen_bytes": size_report["first_screen_bytes"],
-        "first_screen_total_bytes": size_report["first_screen_total_bytes"],
+        "routed_first_screen_files": size_report["routed_first_screen_files"],
+        "routed_first_screen_bytes": size_report["routed_first_screen_bytes"],
+        "routed_first_screen_total_bytes": size_report["routed_first_screen_total_bytes"],
+        "global_query_directory_bytes": size_report["global_query_directory_bytes"],
+        "source_registry_bytes": size_report["source_registry_bytes"],
+        "query_aliases_bytes": size_report["query_aliases_bytes"],
+        "local_index_count": size_report["local_index_count"],
+        "artifact_count": size_report["artifact_count"],
         "body_index_bytes": size_report["body_index_bytes"],
         "full_scan_total_bytes": size_report["full_scan_total_bytes"],
         "shard_count": size_report["shard_count"],

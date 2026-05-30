@@ -69,16 +69,15 @@ export function useProgressiveSearch(
             if (!active || message.requestId !== requestId) return;
             const phase = message.type as SitegraphSearchPhase | undefined;
             if (phase && [
-                'quick_started',
-                'quick_results',
-                'body_started',
-                'body_results',
-                'hydrate_started',
-                'hydrate_results',
-                'verify_started',
-                'verify_progress',
-                'verify_results',
-                'exhaustive_complete',
+                'plan_started',
+                'local_index_started',
+                'first_trusted_results',
+                'body_index_started',
+                'top_results_hydrated',
+                'verification_started',
+                'partial_verified',
+                'scoped_exhaustive_complete',
+                'global_exhaustive_complete',
                 'cancelled'
             ].includes(phase)) {
                 setSearchState(previous => ({
@@ -88,7 +87,7 @@ export function useProgressiveSearch(
                     coverage: message.coverage || previous.coverage,
                     phase,
                     error: null,
-                    settled: phase === 'exhaustive_complete' || phase === 'cancelled'
+                    settled: phase === 'scoped_exhaustive_complete' || phase === 'global_exhaustive_complete' || phase === 'cancelled'
                 }));
             } else if (message.type === 'error') {
                 setSearchState({

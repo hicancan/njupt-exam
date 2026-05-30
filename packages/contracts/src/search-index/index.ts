@@ -28,10 +28,121 @@ export const SitegraphInvertedIndexSchema = z.object({
 }).passthrough();
 export type SitegraphInvertedIndex = z.infer<typeof SitegraphInvertedIndexSchema>;
 
+export const SitegraphLocalIndexScopeSchema = z.object({
+    index_id: z.string().min(1),
+    source_id: z.string().min(1),
+    facet: z.string().min(1),
+    year: z.string().min(1),
+    shard_ids: z.array(z.string())
+}).passthrough();
+export type SitegraphLocalIndexScope = z.infer<typeof SitegraphLocalIndexScopeSchema>;
+
+export const SitegraphLocalLightIndexSchema = SitegraphInvertedIndexSchema.extend({
+    scope: SitegraphLocalIndexScopeSchema,
+    documents: z.array(z.custom<SitegraphDocMeta>())
+}).passthrough();
+export type SitegraphLocalLightIndex = z.infer<typeof SitegraphLocalLightIndexSchema>;
+
+export const SitegraphLocalBodyIndexSchema = SitegraphInvertedIndexSchema.extend({
+    scope: SitegraphLocalIndexScopeSchema
+}).passthrough();
+export type SitegraphLocalBodyIndex = z.infer<typeof SitegraphLocalBodyIndexSchema>;
+
+export const SitegraphLocalIndexRefSchema = z.object({
+    index_id: z.string().min(1),
+    scope: SitegraphLocalIndexScopeSchema,
+    doc_count: z.number(),
+    light_index: SitegraphArtifactSchema,
+    body_index: SitegraphArtifactSchema
+}).passthrough();
+export type SitegraphLocalIndexRef = z.infer<typeof SitegraphLocalIndexRefSchema>;
+
+export const SitegraphSourceManifestSchema = z.object({
+    version: z.string().min(1),
+    source_id: z.string().min(1),
+    display_name: z.string().min(1),
+    domain: z.string().min(1).optional(),
+    doc_count: z.number(),
+    attachment_count: z.number(),
+    facet_counts: z.record(z.string(), z.number()),
+    record_counts: z.record(z.string(), z.number()),
+    year_counts: z.record(z.string(), z.number()),
+    local_indexes: z.array(SitegraphLocalIndexRefSchema),
+    full_shards: z.array(SitegraphFullShardSchema),
+    artifacts: z.record(z.string(), SitegraphArtifactSchema)
+}).passthrough();
+export type SitegraphSourceManifest = z.infer<typeof SitegraphSourceManifestSchema>;
+
+export const SourceRegistryEntrySchema = z.object({
+    source_id: z.string().min(1),
+    display_name: z.string().min(1),
+    owner_unit: z.string().min(1),
+    domain: z.string().min(1).optional(),
+    source_kind: z.literal('sitegraph'),
+    authority_domains: z.array(z.string()),
+    priority_by_intent: z.record(z.string(), z.string()),
+    freshness_policy: z.string().min(1),
+    artifact_manifest: SitegraphArtifactSchema,
+    doc_count: z.number(),
+    attachment_count: z.number(),
+    updated_at: z.string().nullable().optional(),
+    quality_status: z.string().min(1),
+    coverage_status: z.string().min(1),
+    facet_counts: z.record(z.string(), z.number()),
+    record_counts: z.record(z.string(), z.number()),
+    truth_counts: z.record(z.string(), z.number())
+}).passthrough();
+export type SourceRegistryEntry = z.infer<typeof SourceRegistryEntrySchema>;
+
+export const SitegraphFilterOptionSchema = z.object({
+    id: z.string(),
+    label: z.string(),
+    count: z.number()
+});
+
+export const SitegraphFilterOptionsSchema = z.object({
+    sources: z.array(SitegraphFilterOptionSchema),
+    facets: z.array(SitegraphFilterOptionSchema)
+});
+
+export const SitegraphSourceRegistrySchema = z.object({
+    version: z.string().min(1),
+    collection_id: z.literal('njupt-public'),
+    sources: z.array(SourceRegistryEntrySchema).min(1),
+    filter_options: SitegraphFilterOptionsSchema
+}).passthrough();
+export type SitegraphSourceRegistry = z.infer<typeof SitegraphSourceRegistrySchema>;
+
+export const QueryDirectoryRouteSchema = z.object({
+    term: z.string().nullable().optional(),
+    likely_sources: z.array(z.string()),
+    likely_facets: z.array(z.string()),
+    likely_years: z.array(z.string()),
+    likely_task_kinds: z.array(z.string()),
+    expected_result_types: z.array(z.string()),
+    local_index_ids: z.array(z.string()),
+    sample_shard_ids: z.array(z.string()).optional(),
+    candidate_shard_group_count: z.number().optional(),
+    authority_priors: z.record(z.string(), z.number()),
+    freshness_policy: z.string().min(1),
+    matched_document_count: z.number()
+}).passthrough();
+export type QueryDirectoryRoute = z.infer<typeof QueryDirectoryRouteSchema>;
+
+export const SitegraphGlobalQueryDirectorySchema = z.object({
+    version: z.string().min(1),
+    tokenizer: z.string().min(1),
+    entry_count: z.number(),
+    entries: z.record(z.string(), QueryDirectoryRouteSchema),
+    intents: z.record(z.string(), QueryDirectoryRouteSchema),
+    fallback: z.record(z.string(), z.unknown())
+}).passthrough();
+export type SitegraphGlobalQueryDirectory = z.infer<typeof SitegraphGlobalQueryDirectorySchema>;
+
 export const CollectionSourceSchema = z.object({
     source_id: z.string().min(1),
     source_kind: z.literal('sitegraph'),
-    artifact_root: z.string().min(1),
+    artifact_root: z.string().min(1).optional(),
     upstream_generated_at: z.string().min(1).nullable().optional(),
     display_name: z.string().min(1).optional()
 }).passthrough();
@@ -39,12 +150,11 @@ export type CollectionSource = z.infer<typeof CollectionSourceSchema>;
 
 export const SitegraphSearchManifestSchema = z.object({
     generated_at: z.string().min(1),
-    strategy: z.literal('progressive-verifiable-static-search'),
+    strategy: z.literal('routed-verifiable-static-search'),
     producer_repo: z.string().min(1),
     producer_ref: z.string().min(1),
     site_id: z.string().min(1),
     collection_id: z.literal('njupt-public'),
-    sources: z.array(CollectionSourceSchema).min(1),
     artifact_path: z.string().min(1),
     upstream_generated_at: z.string().min(1),
     truth_counts: z.record(z.string(), z.number()),
@@ -55,14 +165,16 @@ export const SitegraphSearchManifestSchema = z.object({
     core_search: z.object({
         algorithm: z.string().min(1),
         execution_model: z.literal('pure_frontend_worker'),
-        light_first_screen: z.literal(true),
+        readiness: z.literal('routed_bootstrap'),
+        legacy_global_first_screen: z.literal(false),
         first_screen_artifacts: z.tuple([
-            z.literal('doc_meta_light'),
-            z.literal('light_inverted_index'),
+            z.literal('source_registry'),
+            z.literal('global_query_directory'),
             z.literal('query_aliases')
         ]),
-        body_index_loading: z.literal('on_deep_search'),
-        full_text_loading: z.literal('progressive_candidate_hydration_then_exhaustive_full_scan'),
+        local_index_loading: z.literal('query_planned_on_demand'),
+        body_index_loading: z.literal('query_planned_on_demand'),
+        full_text_loading: z.literal('lazy_candidate_hydration_then_verified_scope_scan'),
         search_worker: z.literal(true)
     }).passthrough(),
     progressive_search: z.object({
@@ -73,10 +185,12 @@ export const SitegraphSearchManifestSchema = z.object({
         artifact_roles: z.array(z.string())
     }).passthrough(),
     coverage_contract: z.object({
+        states: z.array(z.string()),
         coverage_fields: z.array(z.string()),
         proof: z.object({
             indexed_fields: z.array(z.string()),
-            full_scan_fields: z.array(z.string())
+            full_scan_fields: z.array(z.string()),
+            complete_requires: z.array(z.string())
         }).passthrough(),
         total_shards: z.number(),
         total_documents: z.number()
@@ -85,20 +199,23 @@ export const SitegraphSearchManifestSchema = z.object({
         shard_filter_supported: z.literal(true),
         proved_skip_supported: z.literal(true),
         scan_fallback_supported: z.literal(true),
-        filter_artifact: z.literal('shard_filter'),
-        catalog_artifact: z.literal('shard_catalog')
+        filter_artifact_family: z.literal('shard_filters'),
+        catalog_artifact_family: z.literal('shard_catalogs')
+    }).passthrough(),
+    routing_contract: z.object({
+        planner: z.string().min(1),
+        directory_contains_doc_postings: z.literal(false),
+        startup_loads_local_indexes: z.literal(false),
+        startup_loads_full_shards: z.literal(false),
+        startup_loads_global_document_metadata: z.literal(false)
     }).passthrough(),
     artifacts: z.object({
-        doc_meta_light: SitegraphArtifactSchema,
-        light_inverted_index: SitegraphArtifactSchema,
-        body_inverted_index: SitegraphArtifactSchema,
-        section_index: SitegraphArtifactSchema,
-        attachment_index: SitegraphArtifactSchema,
-        external_index: SitegraphArtifactSchema,
+        source_registry: SitegraphArtifactSchema,
+        global_query_directory: SitegraphArtifactSchema,
         query_aliases: SitegraphArtifactSchema,
-        shard_catalog: SitegraphArtifactSchema,
-        shard_filter: SitegraphArtifactSchema,
         outcomes: SitegraphArtifactSchema,
+        quality_report: SitegraphArtifactSchema,
+        query_eval_report: SitegraphArtifactSchema,
         size_report: SitegraphArtifactSchema
     }).passthrough(),
     sitegraph: z.object({
@@ -113,7 +230,8 @@ export const SitegraphSearchManifestSchema = z.object({
         utility_link_records: z.number(),
         attachment_policy: z.literal('metadata_only'),
         external_link_policy: z.literal('record_only'),
-        full_shards: z.array(SitegraphFullShardSchema),
+        source_manifests: z.record(z.string(), SitegraphArtifactSchema),
+        source_manifest_summaries: z.record(z.string(), z.record(z.string(), z.number())),
         shard_strategy: z.object({
             version: z.string().min(1),
             dimensions: z.array(z.string()),
@@ -125,38 +243,30 @@ export const SitegraphSearchManifestSchema = z.object({
 }).passthrough();
 export type SitegraphSearchManifest = z.infer<typeof SitegraphSearchManifestSchema>;
 
-export interface SitegraphIndexBundle {
+export interface SitegraphRoutedSession {
     manifest: SitegraphSearchManifest;
-    docMeta: SitegraphDocMeta[];
-    lightInvertedIndex: SitegraphInvertedIndex;
-    bodyInvertedIndex?: SitegraphInvertedIndex;
-    shardFilter?: Record<string, {
-        bitset_base64: string;
-        bit_count: number;
-        hash_count: number;
-        token_count: number;
-        sha256: string;
-        hash_algorithm: string;
-    }>;
+    sourceRegistry: SitegraphSourceRegistry;
+    globalQueryDirectory: SitegraphGlobalQueryDirectory;
     queryAliases: Record<string, unknown>;
 }
 
 export type SitegraphSearchPhase =
-    | 'quick_started'
-    | 'quick_results'
-    | 'body_started'
-    | 'body_results'
-    | 'hydrate_started'
-    | 'hydrate_results'
-    | 'verify_started'
-    | 'verify_progress'
-    | 'verify_results'
-    | 'exhaustive_complete'
+    | 'plan_started'
+    | 'local_index_started'
+    | 'first_trusted_results'
+    | 'body_index_started'
+    | 'top_results_hydrated'
+    | 'verification_started'
+    | 'partial_verified'
+    | 'scoped_exhaustive_complete'
+    | 'global_exhaustive_complete'
     | 'cancelled'
     | 'error';
 
 export interface SitegraphSearchCoverage {
     phase: SitegraphSearchPhase;
+    coverage_state: SitegraphSearchPhase;
+    scope: 'global' | 'scoped';
     searched_fields: string[];
     proved_no_match_shards: number;
     scanned_shards: number;
@@ -164,25 +274,44 @@ export interface SitegraphSearchCoverage {
     searched_documents: number;
     total_documents: number;
     loaded_bytes: number;
+    first_screen_bytes: number;
+    local_index_bytes: number;
+    hydrated_shard_bytes: number;
     used_body_index: boolean;
     exhaustive_complete: boolean;
 }
 
 export interface SitegraphFallbackStats {
-    lightMetaFallbackDocuments: number;
+    localMetaFallbackDocuments: number;
     snippetFallbackResults: number;
-    exhaustiveFullScanMatches: number;
+    verifiedFullScanMatches: number;
+}
+
+export interface SitegraphQueryPlan {
+    normalized_query: string;
+    aliases: string[];
+    intent: string;
+    authority_sources: string[];
+    expected_result_types: string[];
+    source_ids: string[];
+    local_index_ids: string[];
+    verification_source_ids: string[];
 }
 
 export interface SitegraphQueryStats {
     phase: SitegraphSearchPhase;
     coverage: SitegraphSearchCoverage;
+    plan: SitegraphQueryPlan;
     usedBodyIndex: boolean;
+    loadedLocalIndexCount: number;
+    loadedLocalIndexIds: string[];
     loadedShardCount: number;
     loadedShardPaths: string[];
     candidateCount: number;
     exhaustiveComplete: boolean;
     resultCount: number;
+    localIndexBytes: number;
+    hydratedShardBytes: number;
     fallbacks: SitegraphFallbackStats;
 }
 

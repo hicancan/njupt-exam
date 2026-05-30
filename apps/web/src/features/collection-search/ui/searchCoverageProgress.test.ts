@@ -3,7 +3,9 @@ import type { SitegraphSearchCoverage } from '@/shared/lib/contracts';
 import { getSearchCoverageProgress } from './searchCoverageProgress';
 
 const coverage = (partial: Partial<SitegraphSearchCoverage>): SitegraphSearchCoverage => ({
-    phase: 'verify_progress',
+    phase: 'partial_verified',
+    coverage_state: 'partial_verified',
+    scope: 'global',
     searched_fields: [],
     proved_no_match_shards: 0,
     scanned_shards: 0,
@@ -11,6 +13,9 @@ const coverage = (partial: Partial<SitegraphSearchCoverage>): SitegraphSearchCov
     searched_documents: 0,
     total_documents: 1000,
     loaded_bytes: 0,
+    first_screen_bytes: 0,
+    local_index_bytes: 0,
+    hydrated_shard_bytes: 0,
     used_body_index: true,
     exhaustive_complete: false,
     ...partial,
@@ -40,7 +45,7 @@ describe('getSearchCoverageProgress', () => {
             completedShards: 100,
             totalShards: 100,
             percent: 100,
-            label: '已全量核查',
+            label: '全站范围已核查',
             complete: true,
             showBar: false,
         });

@@ -10,9 +10,13 @@ PUBLIC_ROOT = ROOT / "apps" / "web" / "public"
 COLLECTION_DIR = PUBLIC_ROOT / "generated" / "collections" / "njupt-public"
 
 SIZE_BUDGETS = {
-    "first_screen_total_bytes": 16_000_000,
-    "body_index_bytes": 19_000_000,
-    "full_shard_count": 650,
+    "routed_first_screen_total_bytes": 1_000_000,
+    "global_query_directory_bytes": 300_000,
+    "source_registry_bytes": 50_000,
+    "query_aliases_bytes": 20_000,
+    "local_index_count": 300,
+    "artifact_count": 1_600,
+    "full_shard_count": 1_000,
     "max_full_shard_bytes": 512 * 1024,
     "avg_full_shard_bytes": 96 * 1024,
 }
@@ -35,6 +39,10 @@ def main() -> None:
     if not size_path.exists():
         fail(f"size_report artifact is missing: {size_path}")
     size_report = read_json(size_path)
+    if size_report.get("first_screen_bytes") not in (0, None):
+        fail("legacy first_screen_bytes must not be used for routed readiness")
+    if size_report.get("routed_first_screen_total_bytes") != size_report.get("routed_first_screen_bytes"):
+        fail("routed first-screen total must equal routed first-screen bytes")
 
     for field, budget in SIZE_BUDGETS.items():
         actual = size_report.get(field)

@@ -1,7 +1,7 @@
 from __future__ import annotations
 
-import json
 import base64
+import json
 import re
 import unicodedata
 from datetime import datetime, timezone
@@ -17,7 +17,6 @@ SEARCH_INTENT_CONFIG = json.loads(
 )
 
 FIELD_WEIGHTS = {key: float(value) for key, value in SEARCH_INTENT_CONFIG["field_weights"].items()}
-
 DEFAULT_MAX_SHARD_LOADS = 32
 FULL_SCAN_FIELDS = ["title", "section", "nav_path", "summary", "content", "attachments", "url"]
 
@@ -30,14 +29,6 @@ def read_json(path: Path) -> Any:
 def normalize_text(value: Any) -> str:
     text = unicodedata.normalize("NFKC", str(value or "")).lower()
     return re.sub(r"\s+", "", text)
-
-
-def filter_token_hash_int(text: str, seed: int) -> int:
-    value = (2166136261 ^ seed) & 0xFFFFFFFF
-    for byte in text.encode("utf-8"):
-        value ^= byte
-        value = (value * 16777619) & 0xFFFFFFFF
-    return value
 
 
 def tokens_for_query(query: str, aliases: dict[str, Any]) -> list[str]:
@@ -70,126 +61,82 @@ def expand_query_phrases(query: str, aliases: dict[str, Any]) -> list[str]:
     return sorted({normalize_text(item) for item in candidates if len(normalize_text(item)) >= 2}, key=len, reverse=True)
 
 
+def artifact_payload(manifest: dict[str, Any], name: str) -> Any:
+    entry = manifest.get("artifacts", {}).get(name)
+    if not isinstance(entry, dict) or not entry.get("path"):
+        raise FileNotFoundError(f"manifest.artifacts.{name}.path is missing")
+    return read_json(PUBLIC_ROOT / str(entry["path"]))
+
+
 def load_index() -> dict[str, Any]:
     manifest = read_json(PUBLIC_INDEX_DIR / "manifest.json")
-    artifacts = manifest.get("artifacts") if isinstance(manifest.get("artifacts"), dict) else {}
-
-    def artifact(name: str) -> Any:
-        entry = artifacts.get(name)
-        if not isinstance(entry, dict) or not entry.get("path"):
-            raise FileNotFoundError(f"manifest.artifacts.{name}.path is missing")
-        return read_json(PUBLIC_ROOT / str(entry["path"]))
-
     return {
         "manifest": manifest,
-        "doc_meta": artifact("doc_meta_light"),
-        "light_inverted": artifact("light_inverted_index"),
-        "body_inverted": None,
-        "shard_filter": None,
-        "aliases": artifact("query_aliases"),
+        "source_registry": artifact_payload(manifest, "source_registry"),
+        "global_query_directory": artifact_payload(manifest, "global_query_directory"),
+        "aliases": artifact_payload(manifest, "query_aliases"),
+        "source_manifest_cache": {},
+        "local_light_cache": {},
+        "local_body_cache": {},
+        "shard_filter_cache": {},
     }
 
 
-def load_body_index(index: dict[str, Any]) -> dict[str, Any]:
-    if index.get("body_inverted") is not None:
-        return index["body_inverted"]
-    manifest = index["manifest"]
-    entry = manifest["artifacts"]["body_inverted_index"]
-    index["body_inverted"] = read_json(PUBLIC_ROOT / str(entry["path"]))
-    return index["body_inverted"]
+def source_entries_by_id(index: dict[str, Any]) -> dict[str, dict[str, Any]]:
+    return {
+        str(item["source_id"]): item
+        for item in index["source_registry"]["sources"]
+    }
 
 
-def load_shard_filter(index: dict[str, Any]) -> dict[str, Any]:
-    if index.get("shard_filter") is not None:
-        return index["shard_filter"]
-    manifest = index["manifest"]
-    entry = manifest["artifacts"]["shard_filter"]
-    index["shard_filter"] = read_json(PUBLIC_ROOT / str(entry["path"]))
-    return index["shard_filter"]
+def load_source_manifest(index: dict[str, Any], source_id: str) -> dict[str, Any] | None:
+    cache = index["source_manifest_cache"]
+    if source_id in cache:
+        return cache[source_id]
+    entry = source_entries_by_id(index).get(source_id)
+    if not entry:
+        return None
+    path = PUBLIC_ROOT / str(entry["artifact_manifest"]["path"])
+    payload = read_json(path)
+    cache[source_id] = payload
+    return payload
 
 
-def shard_path_for_meta(manifest: dict[str, Any], meta: dict[str, Any]) -> str:
-    shard = meta.get("shard") if isinstance(meta.get("shard"), dict) else {}
-    path = str(shard.get("path") or "")
-    if path:
-        return path
-    shard_id = str(shard.get("shard_id") or "")
-    for item in ((manifest.get("sitegraph") or {}).get("full_shards") or []):
-        if isinstance(item, dict) and item.get("shard_id") == shard_id:
-            return str(item.get("path") or "")
-    return ""
+def load_local_light(index: dict[str, Any], ref: dict[str, Any]) -> dict[str, Any]:
+    path = str(ref["light_index"]["path"])
+    cache = index["local_light_cache"]
+    if path not in cache:
+        cache[path] = read_json(PUBLIC_ROOT / path)
+    return cache[path]
 
 
-def load_shards_for_indices(
-    manifest: dict[str, Any],
-    doc_meta: list[dict[str, Any]],
-    indices: set[int],
-) -> tuple[dict[int, dict[str, Any]], set[str]]:
-    docs_by_index: dict[int, dict[str, Any]] = {}
-    wanted_paths: set[str] = set()
-    for index in indices:
-        if index < 0 or index >= len(doc_meta):
-            continue
-        path = shard_path_for_meta(manifest, doc_meta[index])
-        if path:
-            wanted_paths.add(path)
-    for path in wanted_paths:
-        payload = read_json(PUBLIC_ROOT / path)
-        for doc in payload:
-            docs_by_index[int(doc["doc_index"])] = doc
-    return docs_by_index, wanted_paths
+def load_local_body(index: dict[str, Any], ref: dict[str, Any]) -> dict[str, Any]:
+    path = str(ref["body_index"]["path"])
+    cache = index["local_body_cache"]
+    if path not in cache:
+        cache[path] = read_json(PUBLIC_ROOT / path)
+    return cache[path]
 
 
-def text_blob(document: dict[str, Any], *fields: str) -> str:
-    values: list[str] = []
-    for field in fields:
-        value = document.get(field)
-        if isinstance(value, list):
-            values.extend(str(item) for item in value)
-        elif value is not None:
-            values.append(str(value))
-    return normalize_text(" ".join(values))
+def load_shard_filter(index: dict[str, Any], source_manifest: dict[str, Any]) -> dict[str, Any]:
+    path = str(source_manifest["artifacts"]["shard_filter"]["path"])
+    cache = index["shard_filter_cache"]
+    if path not in cache:
+        cache[path] = read_json(PUBLIC_ROOT / path)
+    return cache[path]
 
 
-def freshness_score(document: dict[str, Any]) -> float:
-    if document.get("facet") not in {"notice_article", "exam", "news"}:
-        return 0.0
-    raw = document.get("published_at")
-    if not raw:
-        return 0.0
-    try:
-        published = datetime.fromisoformat(str(raw).replace("Z", "+00:00"))
-    except ValueError:
-        return 0.0
-    if published.tzinfo is None:
-        published = published.replace(tzinfo=timezone.utc)
-    days = max(0.0, (datetime.now(timezone.utc) - published).total_seconds() / 86400)
-    return max(0.0, 600.0 - min(days, 3650.0) / 3650.0 * 600.0)
+def load_shard(path: str) -> list[dict[str, Any]]:
+    return read_json(PUBLIC_ROOT / path)
 
 
-def date_sort_value(raw: Any) -> float:
-    if not raw:
-        return 0.0
-    try:
-        published = datetime.fromisoformat(str(raw).replace("Z", "+00:00"))
-    except ValueError:
-        return 0.0
-    if published.tzinfo is None:
-        published = published.replace(tzinfo=timezone.utc)
-    return published.timestamp()
-
-
-def ranking_date_sort_value(document: dict[str, Any]) -> float:
-    return date_sort_value(document.get("published_at")) or date_sort_value(document.get("version_date"))
-
-
-def source_id_for(document: dict[str, Any]) -> str:
-    if document.get("source_id"):
-        return str(document["source_id"])
-    provenance = document.get("provenance") if isinstance(document.get("provenance"), dict) else {}
+def source_id_for(item: dict[str, Any]) -> str:
+    if item.get("source_id"):
+        return str(item["source_id"])
+    provenance = item.get("provenance") if isinstance(item.get("provenance"), dict) else {}
     if provenance.get("site_id"):
         return str(provenance["site_id"])
-    return str(document.get("id") or "").split("-", 1)[0]
+    return str(item.get("id") or "").split("-", 1)[0]
 
 
 def includes_any(text: str, terms: tuple[str, ...]) -> bool:
@@ -227,6 +174,123 @@ def detect_query_intent(query: str) -> dict[str, Any]:
         "authority_sources": [str(source_id) for source_id in fallback["authority_sources"]],
         "freshness_mode": str(fallback["freshness_mode"]),
     }
+
+
+def route_for_terms(index: dict[str, Any], terms: list[str], intent: str) -> list[dict[str, Any]]:
+    directory = index["global_query_directory"]
+    routes: list[dict[str, Any]] = []
+    seen: set[int] = set()
+    for term in terms:
+        route = directory.get("entries", {}).get(normalize_text(term))
+        if isinstance(route, dict) and id(route) not in seen:
+            seen.add(id(route))
+            routes.append(route)
+    intent_route = directory.get("intents", {}).get(intent)
+    if isinstance(intent_route, dict) and id(intent_route) not in seen:
+        routes.append(intent_route)
+    return routes
+
+
+def unique_ordered(values: list[str]) -> list[str]:
+    seen: set[str] = set()
+    result: list[str] = []
+    for value in values:
+        if not value or value in seen:
+            continue
+        seen.add(value)
+        result.append(value)
+    return result
+
+
+def build_plan(index: dict[str, Any], query: str, terms: list[str]) -> dict[str, Any]:
+    profile = detect_query_intent(query)
+    routes = route_for_terms(index, terms, profile["intent"])
+    all_sources = [str(source["source_id"]) for source in index["source_registry"]["sources"]]
+    route_sources = [str(source) for route in routes for source in route.get("likely_sources", [])]
+    local_index_ids = [str(item) for route in routes for item in route.get("local_index_ids", [])]
+    result_types = [str(item) for route in routes for item in route.get("expected_result_types", [])]
+    return {
+        "normalized_query": normalize_text(query),
+        "aliases": expand_query_phrases(query, index["aliases"]),
+        "intent": profile["intent"],
+        "authority_sources": profile["authority_sources"],
+        "expected_result_types": unique_ordered(result_types),
+        "source_ids": [source_id for source_id in unique_ordered([*profile["authority_sources"], *route_sources, *all_sources]) if source_id in all_sources],
+        "local_index_ids": unique_ordered(local_index_ids),
+        "verification_source_ids": all_sources,
+    }
+
+
+def select_local_refs(index: dict[str, Any], plan: dict[str, Any]) -> tuple[list[dict[str, Any]], list[dict[str, Any]], int]:
+    source_manifests = [
+        source_manifest
+        for source_id in plan["source_ids"]
+        if (source_manifest := load_source_manifest(index, source_id)) is not None
+    ]
+    planned_ids = set(plan["local_index_ids"])
+    planned_order = {str(index_id): order for order, index_id in enumerate(plan["local_index_ids"])}
+    refs = [ref for manifest in source_manifests for ref in manifest["local_indexes"]]
+    if planned_ids:
+        routed_refs = [ref for ref in refs if ref["index_id"] in planned_ids]
+        if routed_refs:
+            refs = sorted(
+                routed_refs,
+                key=lambda ref: (
+                    planned_order.get(str(ref["index_id"]), 999_999),
+                    -int(ref.get("doc_count") or 0),
+                    str(ref["index_id"]),
+                ),
+            )[:48]
+        else:
+            refs = sorted(
+                refs,
+                key=lambda ref: (
+                    -int(str(ref["scope"].get("year", "0")).replace("undated", "0") or 0),
+                    -int(ref.get("doc_count") or 0),
+                    str(ref["index_id"]),
+                ),
+            )[:48]
+    else:
+        refs = sorted(
+            refs,
+            key=lambda ref: (
+                -int(str(ref["scope"].get("year", "0")).replace("undated", "0") or 0),
+                -int(ref.get("doc_count") or 0),
+                str(ref["index_id"]),
+            ),
+        )[:48]
+    source_manifest_bytes = sum(
+        int(source_entries_by_id(index)[manifest["source_id"]]["artifact_manifest"]["bytes"])
+        for manifest in source_manifests
+    )
+    return source_manifests, refs, source_manifest_bytes
+
+
+def text_blob(document: dict[str, Any], *fields: str) -> str:
+    values: list[str] = []
+    for field in fields:
+        value = document.get(field)
+        if isinstance(value, list):
+            values.extend(str(item) for item in value)
+        elif value is not None:
+            values.append(str(value))
+    return normalize_text(" ".join(values))
+
+
+def date_sort_value(raw: Any) -> float:
+    if not raw:
+        return 0.0
+    try:
+        published = datetime.fromisoformat(str(raw).replace("Z", "+00:00"))
+    except ValueError:
+        return 0.0
+    if published.tzinfo is None:
+        published = published.replace(tzinfo=timezone.utc)
+    return published.timestamp()
+
+
+def ranking_date_sort_value(document: dict[str, Any]) -> float:
+    return date_sort_value(document.get("published_at")) or date_sort_value(document.get("version_date"))
 
 
 def age_days(timestamp: float) -> float:
@@ -391,7 +455,7 @@ def rank_document(document: dict[str, Any], query: str, terms: list[str], light_
 
     ranked = dict(document)
     ranked["score"] = round(score, 4)
-    ranked["score_reason"] = "；".join(reasons or ["倒排候选"])
+    ranked["score_reason"] = "；".join(reasons or ["局部索引候选"])
     return ranked
 
 
@@ -432,6 +496,14 @@ def full_scan_matches(document: dict[str, Any], match_phrases: list[str]) -> boo
     return any(phrase in blob for phrase in match_phrases)
 
 
+def filter_token_hash_int(text: str, seed: int) -> int:
+    value = (2166136261 ^ seed) & 0xFFFFFFFF
+    for byte in text.encode("utf-8"):
+        value ^= byte
+        value = (value * 16777619) & 0xFFFFFFFF
+    return value
+
+
 def shard_filter_proves_no_match(shard_id: str, shard_filter: dict[str, Any], terms: list[str]) -> bool:
     payload = shard_filter.get(shard_id)
     if not isinstance(payload, dict) or payload.get("hash_algorithm") != "bloom-fnv1a32-utf8":
@@ -464,36 +536,58 @@ def sorted_ranked(results: list[dict[str, Any]]) -> list[dict[str, Any]]:
     )
 
 
+def first_screen_bytes(index: dict[str, Any]) -> int:
+    artifacts = index["manifest"]["artifacts"]
+    manifest_bytes = (PUBLIC_INDEX_DIR / "manifest.json").stat().st_size
+    return manifest_bytes + sum(int(artifacts[name]["bytes"]) for name in ("source_registry", "global_query_directory", "query_aliases"))
+
+
 def coverage(
-    manifest: dict[str, Any],
+    index: dict[str, Any],
     *,
     phase: str,
     fields: list[str],
     proved_no_match_shards: int,
     scanned_shards: int,
     searched_documents: int,
+    total_shards: int,
+    total_documents: int,
     loaded_paths: set[str],
+    local_index_bytes: int,
+    filter_bytes: int,
     used_body_index: bool,
     exhaustive_complete: bool,
 ) -> dict[str, Any]:
-    artifacts = manifest["artifacts"]
-    loaded_bytes = sum(int(artifacts[name]["bytes"]) for name in ("doc_meta_light", "light_inverted_index", "query_aliases"))
-    if used_body_index:
-        loaded_bytes += int(artifacts["body_inverted_index"]["bytes"])
-    shard_bytes = {str(item["path"]): int(item["bytes"]) for item in manifest["sitegraph"]["full_shards"]}
-    loaded_bytes += sum(shard_bytes.get(path, 0) for path in loaded_paths)
+    shard_bytes: dict[str, int] = {}
+    for source_manifest in (load_source_manifest(index, source["source_id"]) for source in index["source_registry"]["sources"]):
+        if not source_manifest:
+            continue
+        for shard in source_manifest["full_shards"]:
+            shard_bytes[str(shard["path"])] = int(shard["bytes"])
+    hydrated_shard_bytes = sum(shard_bytes.get(path, 0) for path in loaded_paths)
+    first_bytes = first_screen_bytes(index)
     return {
         "phase": phase,
+        "coverage_state": phase,
+        "scope": "global",
         "searched_fields": fields,
         "proved_no_match_shards": proved_no_match_shards,
         "scanned_shards": scanned_shards,
-        "total_shards": int(manifest["progressive_search"]["total_shards"]),
+        "total_shards": total_shards,
         "searched_documents": searched_documents,
-        "total_documents": int(manifest["progressive_search"]["total_documents"]),
-        "loaded_bytes": loaded_bytes,
+        "total_documents": total_documents,
+        "loaded_bytes": first_bytes + local_index_bytes + hydrated_shard_bytes + filter_bytes,
+        "first_screen_bytes": first_bytes,
+        "local_index_bytes": local_index_bytes,
+        "hydrated_shard_bytes": hydrated_shard_bytes,
         "used_body_index": used_body_index,
         "exhaustive_complete": exhaustive_complete,
     }
+
+
+def shard_path_for_meta(meta: dict[str, Any], shard_path_by_id: dict[str, str]) -> str:
+    shard = meta.get("shard") if isinstance(meta.get("shard"), dict) else {}
+    return str(shard.get("path") or shard_path_by_id.get(str(shard.get("shard_id") or ""), ""))
 
 
 def recall_documents_with_stats(
@@ -504,29 +598,49 @@ def recall_documents_with_stats(
     max_shard_loads: int = DEFAULT_MAX_SHARD_LOADS,
 ) -> dict[str, Any]:
     index = load_index()
-    manifest = index["manifest"]
-    doc_meta = index["doc_meta"]
     terms = tokens_for_query(query, index["aliases"])
     match_phrases = expand_query_phrases(query, index["aliases"])
+    plan = build_plan(index, query, terms)
+    source_manifests, local_refs, source_manifest_bytes = select_local_refs(index, plan)
+    shard_path_by_id = {
+        str(shard["shard_id"]): str(shard["path"])
+        for source_manifest in source_manifests
+        for shard in source_manifest["full_shards"]
+    }
+    shard_bytes_by_path = {
+        str(shard["path"]): int(shard["bytes"])
+        for source_manifest in source_manifests
+        for shard in source_manifest["full_shards"]
+    }
+
+    docs_by_index: dict[int, dict[str, Any]] = {}
     scores: dict[int, float] = {}
-    apply_postings(scores, index["light_inverted"]["tokens"], terms)
+    local_index_bytes = source_manifest_bytes
+    for ref in local_refs:
+        local_index = load_local_light(index, ref)
+        local_index_bytes += int(ref["light_index"]["bytes"])
+        for document in local_index.get("documents", []):
+            docs_by_index[int(document["doc_index"])] = document
+        apply_postings(scores, local_index.get("tokens", {}), terms)
 
     normalized_query = normalize_text(query)
-    used_body_index = False
+    local_meta_fallbacks = 0
     if len(scores) < 8:
-        for meta in doc_meta:
+        for meta in docs_by_index.values():
             haystack = text_blob(meta, "title", "section", "nav_path_text")
             if normalized_query and normalized_query in haystack:
                 index_id = int(meta["doc_index"])
                 scores[index_id] = scores.get(index_id, 0.0) + 90.0
+                local_meta_fallbacks += 1
 
     def select_candidates(limit_count: int, shard_limit: int) -> tuple[list[int], set[str]]:
         selected: list[int] = []
         paths: set[str] = set()
         for doc_index, _ in sorted(scores.items(), key=lambda item: (-item[1], item[0]))[:limit_count]:
-            if doc_index < 0 or doc_index >= len(doc_meta):
+            meta = docs_by_index.get(doc_index)
+            if not meta:
                 continue
-            path = shard_path_for_meta(manifest, doc_meta[doc_index])
+            path = shard_path_for_meta(meta, shard_path_by_id)
             is_new_shard = bool(path) and path not in paths
             if is_new_shard and len(paths) >= shard_limit:
                 continue
@@ -535,61 +649,73 @@ def recall_documents_with_stats(
                 paths.add(path)
         return selected, paths
 
+    def load_shards_for_paths(paths: set[str]) -> dict[int, dict[str, Any]]:
+        docs: dict[int, dict[str, Any]] = {}
+        for path in paths:
+            for document in load_shard(path):
+                docs[int(document["doc_index"])] = document
+        return docs
+
     quick_indices, quick_paths = select_candidates(min(candidate_limit, 48), min(max_shard_loads, 8))
-    quick_docs, loaded_paths = load_shards_for_indices(manifest, doc_meta, set(quick_indices))
+    loaded_paths = set(quick_paths)
+    quick_docs = load_shards_for_paths(quick_paths)
     quick_ranked = sorted_ranked([
         rank_document(quick_docs[doc_index], query, terms, scores.get(doc_index, 0.0))
         for doc_index in quick_indices
         if doc_index in quick_docs and full_scan_matches(quick_docs[doc_index], match_phrases)
     ])
 
-    body_index = load_body_index(index)
-    apply_postings(scores, body_index["tokens"], terms)
-    used_body_index = True
-
-    if len(scores) < 8:
-        for meta in doc_meta:
-            haystack = text_blob(meta, "title", "section", "nav_path_text")
-            if normalized_query and normalized_query in haystack:
-                index_id = int(meta["doc_index"])
-                scores[index_id] = scores.get(index_id, 0.0) + 90.0
+    used_body_index = False
+    for ref in local_refs:
+        body_index = load_local_body(index, ref)
+        local_index_bytes += int(ref["body_index"]["bytes"])
+        apply_postings(scores, body_index.get("tokens", {}), terms)
+        used_body_index = True
 
     selected_candidate_indices, candidate_paths = select_candidates(candidate_limit, max_shard_loads)
-    full_docs, candidate_loaded_paths = load_shards_for_indices(manifest, doc_meta, set(selected_candidate_indices))
-    loaded_paths |= candidate_loaded_paths
+    loaded_paths |= candidate_paths
+    full_docs = load_shards_for_paths(candidate_paths)
     ranked_by_id: dict[str, dict[str, Any]] = {
         str(item["id"]): item
         for item in quick_ranked
     }
     for doc_index in selected_candidate_indices:
-        if doc_index < 0 or doc_index >= len(doc_meta):
-            continue
-        if doc_index not in full_docs:
-            continue
-        if not full_scan_matches(full_docs[doc_index], match_phrases):
+        if doc_index not in full_docs or not full_scan_matches(full_docs[doc_index], match_phrases):
             continue
         item = rank_document(full_docs[doc_index], query, terms, scores.get(doc_index, 0.0))
         existing = ranked_by_id.get(str(item["id"]))
         if existing is None or float(item["score"]) > float(existing.get("score") or 0):
             ranked_by_id[str(item["id"])] = item
 
-    shard_filter = load_shard_filter(index)
+    verification_manifests = [
+        source_manifest
+        for source in index["source_registry"]["sources"]
+        if (source_manifest := load_source_manifest(index, str(source["source_id"]))) is not None
+    ]
+    in_scope_shards = [shard for source_manifest in verification_manifests for shard in source_manifest["full_shards"]]
+    shard_filters = {
+        str(source_manifest["source_id"]): load_shard_filter(index, source_manifest)
+        for source_manifest in verification_manifests
+    }
+    filter_bytes = sum(int(source_manifest["artifacts"]["shard_filter"]["bytes"]) for source_manifest in verification_manifests)
     proved_no_match_shards = 0
     scanned_shards = 0
     searched_documents = 0
-    for shard in manifest["sitegraph"]["full_shards"]:
+    verified_matches = 0
+    for shard in in_scope_shards:
         shard_id = str(shard["shard_id"])
-        if shard_filter_proves_no_match(shard_id, shard_filter, terms):
+        source_id = str(shard.get("source_id") or "")
+        if shard_filter_proves_no_match(shard_id, shard_filters.get(source_id, {}), terms):
             proved_no_match_shards += 1
             continue
         path = str(shard["path"])
-        documents = read_json(PUBLIC_ROOT / path)
         loaded_paths.add(path)
         scanned_shards += 1
-        for document in documents:
+        for document in load_shard(path):
             searched_documents += 1
             doc_index = int(document["doc_index"])
             if full_scan_matches(document, match_phrases):
+                verified_matches += 1
                 item = rank_document(document, query, terms, scores.get(doc_index, 24.0))
                 existing = ranked_by_id.get(str(item["id"]))
                 if existing is None or float(item["score"]) > float(existing.get("score") or 0):
@@ -597,13 +723,17 @@ def recall_documents_with_stats(
 
     ranked = sorted_ranked(list(ranked_by_id.values()))
     final_coverage = coverage(
-        manifest,
-        phase="exhaustive_complete",
+        index,
+        phase="global_exhaustive_complete",
         fields=FULL_SCAN_FIELDS,
         proved_no_match_shards=proved_no_match_shards,
         scanned_shards=scanned_shards,
         searched_documents=searched_documents,
+        total_shards=len(in_scope_shards),
+        total_documents=sum(int(shard["count"]) for shard in in_scope_shards),
         loaded_paths=loaded_paths,
+        local_index_bytes=local_index_bytes,
+        filter_bytes=filter_bytes,
         used_body_index=used_body_index,
         exhaustive_complete=True,
     )
@@ -613,6 +743,10 @@ def recall_documents_with_stats(
             "used_body_index": used_body_index,
             "loaded_shard_count": len(loaded_paths),
             "loaded_shard_paths": sorted(loaded_paths),
+            "loaded_local_index_count": len(local_refs),
+            "loaded_local_index_ids": [str(ref["index_id"]) for ref in local_refs],
+            "local_index_bytes": local_index_bytes,
+            "hydrated_shard_bytes": sum(shard_bytes_by_path.get(path, 0) for path in loaded_paths),
             "candidate_count": len(selected_candidate_indices),
             "quick_result_count": len(quick_ranked),
             "quick_results": quick_ranked[:limit],
@@ -620,7 +754,10 @@ def recall_documents_with_stats(
             "coverage": final_coverage,
             "proved_no_match_shards": proved_no_match_shards,
             "scanned_shards": scanned_shards,
+            "verified_full_scan_matches": verified_matches,
+            "local_meta_fallback_documents": local_meta_fallbacks,
             "exhaustive_complete": True,
+            "plan": plan,
         },
     }
 

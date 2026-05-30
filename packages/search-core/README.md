@@ -6,8 +6,9 @@ Current responsibilities:
 
 - tokenizer and query alias expansion;
 - generated sitegraph/search-index contract parsing;
-- retrieval and ranking;
-- full-shard loading and hydration;
+- routed query planning from `source_registry` and `global_query_directory`;
+- query-planned local light/body index retrieval and ranking;
+- candidate full-shard loading and hydration;
 - shard-filter proof and scan fallback;
 - progressive search phases and coverage accounting;
 - non-React result formatting.
