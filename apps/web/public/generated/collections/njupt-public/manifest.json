@@ -1,8 +1,8 @@
 {
-  "generated_at": "2026-05-30T07:05:06.598991+00:00",
+  "generated_at": "2026-05-30T08:46:15.582559+00:00",
   "strategy": "progressive-verifiable-static-search",
   "producer_repo": "hicancan/njupt-search",
-  "producer_ref": "e456531372a74782e8d4dfc9ac4538793aca6958",
+  "producer_ref": "18834c3f1cbdd10fac3d8109832781f8826c4abf",
   "site_id": "njupt-public",
   "collection_id": "njupt-public",
   "sources": [
@@ -10,7 +10,7 @@
       "source_id": "jwc",
       "source_kind": "sitegraph",
       "artifact_root": "generated/collections/njupt-public/sitegraph",
-      "upstream_generated_at": "2026-05-30T01:53:30.555186+00:00",
+      "upstream_generated_at": "2026-05-30T08:13:43.797535+00:00",
       "display_name": "本科生院 / 教务处",
       "truth_counts": {
         "sections": 139,
@@ -83,7 +83,7 @@
     }
   ],
   "artifact_path": "generated/collections/njupt-public",
-  "upstream_generated_at": "2026-05-30T01:53:30.555186+00:00",
+  "upstream_generated_at": "2026-05-30T08:13:43.797535+00:00",
   "truth_counts": {
     "sections": 212,
     "nav_nodes": 178,
@@ -189,16 +189,16 @@
   },
   "artifacts": {
     "doc_meta_light": {
-      "path": "generated/collections/njupt-public/sitegraph/artifacts/doc_meta_light.12d32323517694c9.json",
-      "sha256": "12d32323517694c96e6b855f38b68443cbb7c918861f439232f834ddc2825bef",
+      "path": "generated/collections/njupt-public/sitegraph/artifacts/doc_meta_light.ab1d6590ed8234ac.json",
+      "sha256": "ab1d6590ed8234ac6aeb6665b369a4f6816780b04de500281cc339cb1b98a31a",
       "bytes": 4599325,
       "role": "doc_meta_light",
       "load": "initial",
       "count": 10260
     },
     "light_inverted_index": {
-      "path": "generated/collections/njupt-public/sitegraph/artifacts/light_inverted_index.ca910955dac2a345.json",
-      "sha256": "ca910955dac2a3452ae76c4374bf0b274fb100a8eef54a9c27790d722017dd6f",
+      "path": "generated/collections/njupt-public/sitegraph/artifacts/light_inverted_index.fc374a4fbb7fb635.json",
+      "sha256": "fc374a4fbb7fb635eec96573b7026bd41224a521f4708516a4cff480360a2b63",
       "bytes": 10695827,
       "role": "light_inverted_index",
       "load": "initial"
@@ -212,8 +212,8 @@
       "count": 24
     },
     "body_inverted_index": {
-      "path": "generated/collections/njupt-public/sitegraph/artifacts/body_inverted_index.fe06270ee61b7304.json",
-      "sha256": "fe06270ee61b73045d0294bd0bde00501ca5f98728c492db1372b7bbfe4eb779",
+      "path": "generated/collections/njupt-public/sitegraph/artifacts/body_inverted_index.2c6e4c2dea289f66.json",
+      "sha256": "2c6e4c2dea289f66753e5d3aaf2c4fe36ecfebae0f37251af8a54d4163ef5900",
       "bytes": 17507136,
       "role": "body_inverted_index",
       "load": "deep_search"
@@ -266,8 +266,8 @@
       "load": "audit"
     },
     "size_report": {
-      "path": "generated/collections/njupt-public/sitegraph/artifacts/size_report.bbd16160779b1b3f.json",
-      "sha256": "bbd16160779b1b3f93975414e6801f6fa51965f40682672910691a72f8cc0006",
+      "path": "generated/collections/njupt-public/sitegraph/artifacts/size_report.14bbf1ca7c49c494.json",
+      "sha256": "14bbf1ca7c49c494d304abdbbbf4db28530607dd6878b1113203ecda0b109340",
       "bytes": 1431,
       "role": "size_report",
       "load": "audit"
@@ -350,7 +350,7 @@
         }
       }
     },
-    "upstream_generated_at": "2026-05-30T01:53:30.555186+00:00",
+    "upstream_generated_at": "2026-05-30T08:13:43.797535+00:00",
     "detail_page_records": 9143,
     "attachment_metadata_records": 8094,
     "direct_attachment_records": 241,
@@ -15979,16 +15979,16 @@
     },
     "indexes": {
       "doc_meta_light": {
-        "path": "generated/collections/njupt-public/sitegraph/artifacts/doc_meta_light.12d32323517694c9.json",
-        "sha256": "12d32323517694c96e6b855f38b68443cbb7c918861f439232f834ddc2825bef",
+        "path": "generated/collections/njupt-public/sitegraph/artifacts/doc_meta_light.ab1d6590ed8234ac.json",
+        "sha256": "ab1d6590ed8234ac6aeb6665b369a4f6816780b04de500281cc339cb1b98a31a",
         "bytes": 4599325,
         "role": "doc_meta_light",
         "load": "initial",
         "count": 10260
       },
       "light_inverted_index": {
-        "path": "generated/collections/njupt-public/sitegraph/artifacts/light_inverted_index.ca910955dac2a345.json",
-        "sha256": "ca910955dac2a3452ae76c4374bf0b274fb100a8eef54a9c27790d722017dd6f",
+        "path": "generated/collections/njupt-public/sitegraph/artifacts/light_inverted_index.fc374a4fbb7fb635.json",
+        "sha256": "fc374a4fbb7fb635eec96573b7026bd41224a521f4708516a4cff480360a2b63",
         "bytes": 10695827,
         "role": "light_inverted_index",
         "load": "initial"
@@ -16002,8 +16002,8 @@
         "count": 24
       },
       "body_inverted_index": {
-        "path": "generated/collections/njupt-public/sitegraph/artifacts/body_inverted_index.fe06270ee61b7304.json",
-        "sha256": "fe06270ee61b73045d0294bd0bde00501ca5f98728c492db1372b7bbfe4eb779",
+        "path": "generated/collections/njupt-public/sitegraph/artifacts/body_inverted_index.2c6e4c2dea289f66.json",
+        "sha256": "2c6e4c2dea289f66753e5d3aaf2c4fe36ecfebae0f37251af8a54d4163ef5900",
         "bytes": 17507136,
         "role": "body_inverted_index",
         "load": "deep_search"
@@ -16056,8 +16056,8 @@
         "load": "audit"
       },
       "size_report": {
-        "path": "generated/collections/njupt-public/sitegraph/artifacts/size_report.bbd16160779b1b3f.json",
-        "sha256": "bbd16160779b1b3f93975414e6801f6fa51965f40682672910691a72f8cc0006",
+        "path": "generated/collections/njupt-public/sitegraph/artifacts/size_report.14bbf1ca7c49c494.json",
+        "sha256": "14bbf1ca7c49c494d304abdbbbf4db28530607dd6878b1113203ecda0b109340",
         "bytes": 1431,
         "role": "size_report",
         "load": "audit"
